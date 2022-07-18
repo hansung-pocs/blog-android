@@ -4,4 +4,5 @@
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="notice">공지사항</string>
+    <string name="article">게시글</string>
 </resources>

@@ -5,4 +5,11 @@
         android:enabled="true"
         android:icon="@drawable/ic_notification_filled_24"
         android:title="@string/notice" />
+
+    <item
+        android:id="@id/ArticleFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_article_24"
+        android:title="@string/article" />
+
 </menu>
