@@ -1,0 +1,11 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+apply from: rootProject.file("android.gradle")
+
+dependencies {
+
+    testImplementation 'junit:junit:4.13.2'
+}
