@@ -9,10 +9,12 @@
         android:id="@+id/NoticeFragment"
         android:name="com.pocs.presentation.NoticeFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_notice">
+        tools:layout="@layout/fragment_notice" />
 
-<!--        <action-->
-<!--            android:id="@+id/action_FirstFragment_to_SecondFragment"-->
-<!--            app:destination="@id/SecondFragment" />-->
-    </fragment>
+    <fragment
+        android:id="@+id/ArticleFragment"
+        android:name="com.pocs.presentation.ArticleFragment"
+        android:label="@string/article"
+        tools:layout="@layout/fragment_article" />
+
 </navigation>
