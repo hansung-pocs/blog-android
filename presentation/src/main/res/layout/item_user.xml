@@ -8,23 +8,24 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="16dp"
-        app:cardBackgroundColor="?attr/colorSurface">
+        app:cardBackgroundColor="?attr/colorSurface"
+        app:cardCornerRadius="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dp">
 
+            <!-- TODO: 이미지가 추가되면 mock 이미지를 tools로 옮기기  -->
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
+                android:contentDescription="@string/user_image"
+                android:src="@drawable/ic_baseline_people_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/ic_baseline_people_24"
-                android:contentDescription="@string/user_image" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="0dp"
