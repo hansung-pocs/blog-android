@@ -46,6 +46,7 @@ class HomeActivity : AppCompatActivity() {
     private fun onSelectNavigationItem(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_user_list -> {
+                // TODO(민성): UserListActivity 구현 후 액션 추가하기
             }
         }
         return true
