@@ -10,6 +10,15 @@ apply from: rootProject.file("android.gradle")
 dependencies {
     implementation project(":domain")
 
+    // fragment
+    def fragment_version = "1.5.0"
+    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
+
+    // paging
+    implementation "androidx.paging:paging-common-ktx:$paging"
+    implementation "androidx.paging:paging-runtime-ktx:$paging"
+
     // hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
