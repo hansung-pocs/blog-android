@@ -18,6 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/title"
             style="?attr/textAppearanceTitleMedium"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -32,6 +33,7 @@
             android:layout_height="6dp" />
 
         <TextView
+            android:id="@+id/subtitle"
             style="?attr/textAppearanceBodySmall"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

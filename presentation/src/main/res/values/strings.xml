@@ -6,4 +6,5 @@
     <string name="notice">공지사항</string>
     <string name="article">게시글</string>
     <string name="user_list">회원 목록</string>
+    <string name="article_subtitle">%s · %s</string>
 </resources>
