@@ -12,6 +12,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.databinding.ActivityHomeBinding
+import com.pocs.presentation.userlist.UserListActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -31,7 +32,11 @@ class HomeActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         val navController = findNavController(R.id.nav_host_fragment_content_home)
-        appBarConfiguration = AppBarConfiguration(navController.graph, binding.drawerLayout)
+        appBarConfiguration = AppBarConfiguration(
+            topLevelDestinationIds = setOf(R.id.NoticeFragment, R.id.ArticleFragment),
+            drawerLayout = binding.drawerLayout,
+            fallbackOnNavigateUpListener = ::onSupportNavigateUp
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         binding.navigationView.setNavigationItemSelectedListener(::onSelectNavigationItem)
@@ -46,9 +51,11 @@ class HomeActivity : AppCompatActivity() {
     private fun onSelectNavigationItem(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_user_list -> {
-                // TODO(민성): UserListActivity 구현 후 액션 추가하기
+                val intent = UserListActivity.getIntent(this)
+                startActivity(intent)
             }
         }
+        binding.drawerLayout.close()
         return true
     }
 
