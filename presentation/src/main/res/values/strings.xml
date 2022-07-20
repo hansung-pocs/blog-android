@@ -7,7 +7,7 @@
     <string name="article">게시글</string>
     <string name="user_list">회원 목록</string>
     <string name="article_subtitle">%s · %s</string>
-    <string name="user_studentId_generation">%s · %s기</string>
+    <string name="user_item_subtitle">%s · %s기</string>
     <string name="fail_to_connect">연결에 실패하였습니다.</string>
     <string name="retry">재시도</string>
     <string name="user_image">회원 사진</string>

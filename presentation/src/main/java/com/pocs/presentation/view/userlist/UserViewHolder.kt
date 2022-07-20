@@ -10,10 +10,9 @@ class UserViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(uiState: UserItemUiState) = with(binding) {
-
         name.text = uiState.name
-        studentIdGeneration.text = root.context.getString(
-            R.string.user_studentId_generation,
+        subtitle.text = root.context.getString(
+            R.string.user_item_subtitle,
             uiState.studentId,
             uiState.generation
         )

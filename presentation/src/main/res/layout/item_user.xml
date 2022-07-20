@@ -61,7 +61,7 @@
                     android:layout_height="6dp" />
 
                 <TextView
-                    android:id="@+id/studentId_generation"
+                    android:id="@+id/subtitle"
                     style="?attr/textAppearanceBodyMedium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
