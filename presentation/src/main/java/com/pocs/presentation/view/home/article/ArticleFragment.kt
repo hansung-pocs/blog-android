@@ -14,7 +14,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentArticleBinding
-import com.pocs.presentation.model.PostUiState
+import com.pocs.presentation.model.ArticleUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
 import com.pocs.presentation.view.common.PostAdapter
 import kotlinx.coroutines.launch
@@ -70,7 +70,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
         _binding = null
     }
 
-    private fun updateUi(uiState: PostUiState, adapter: PostAdapter) {
+    private fun updateUi(uiState: ArticleUiState, adapter: PostAdapter) {
         adapter.submitData(viewLifecycleOwner.lifecycle, uiState.articlePagingData)
     }
 }
