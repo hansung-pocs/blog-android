@@ -14,7 +14,7 @@ class UserViewHolder(
         subtitle.text = root.context.getString(
             R.string.user_item_subtitle,
             uiState.studentId,
-            uiState.generation
+            uiState.generation.toString()
         )
 
         root.setOnClickListener {
