@@ -61,7 +61,7 @@
                     android:layout_height="6dp" />
 
                 <TextView
-                    android:id="@+id/student_id"
+                    android:id="@+id/subtitle"
                     style="?attr/textAppearanceBodyMedium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
                     android:textColor="?attr/colorOnPrimaryContainer"
                     app:layout_constraintStart_toEndOf="@+id/imageView"
                     tools:layout_editor_absoluteY="61dp"
-                    tools:text="183945"
+                    tools:text="183945 · 9"
                     tools:textColor="@color/black" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
