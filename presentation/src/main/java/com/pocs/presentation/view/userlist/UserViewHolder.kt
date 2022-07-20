@@ -1,4 +1,4 @@
-package com.pocs.presentation.userlist
+package com.pocs.presentation.view.userlist
 
 import androidx.recyclerview.widget.RecyclerView
 import com.pocs.presentation.databinding.ItemUserBinding

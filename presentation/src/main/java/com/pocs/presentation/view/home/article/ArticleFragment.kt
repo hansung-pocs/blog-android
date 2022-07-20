@@ -1,4 +1,4 @@
-package com.pocs.presentation
+package com.pocs.presentation.view.home.article
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentArticleBinding
 import com.pocs.presentation.paging.PagingLoadStateAdapter
 import kotlinx.coroutines.launch

@@ -1,8 +1,7 @@
 package com.pocs.presentation.mock
 
 import androidx.paging.PagingData
-import com.pocs.presentation.ArticleItemUiState
-import kotlinx.coroutines.flow.flow
+import com.pocs.presentation.view.home.article.ArticleItemUiState
 
 val mockArticleItemsPagingData = PagingData.from(
     listOf(

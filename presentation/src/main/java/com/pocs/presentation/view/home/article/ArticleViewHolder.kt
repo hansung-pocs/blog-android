@@ -1,6 +1,7 @@
-package com.pocs.presentation
+package com.pocs.presentation.view.home.article
 
 import androidx.recyclerview.widget.RecyclerView
+import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ItemArticleBinding
 
 class ArticleViewHolder(

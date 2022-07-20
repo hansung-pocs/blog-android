@@ -1,4 +1,4 @@
-package com.pocs.presentation
+package com.pocs.presentation.view.home
 
 import android.os.Bundle
 import android.view.Menu
@@ -11,8 +11,9 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
+import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityHomeBinding
-import com.pocs.presentation.userlist.UserListActivity
+import com.pocs.presentation.view.userlist.UserListActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 

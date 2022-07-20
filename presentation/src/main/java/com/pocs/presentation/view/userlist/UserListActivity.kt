@@ -1,4 +1,4 @@
-package com.pocs.presentation.userlist
+package com.pocs.presentation.view.userlist
 
 import android.content.Context
 import android.content.Intent

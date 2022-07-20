@@ -1,4 +1,4 @@
-package com.pocs.presentation
+package com.pocs.presentation.view.home.article
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
