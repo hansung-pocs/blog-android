@@ -10,7 +10,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_article"/>
+        tools:listitem="@layout/item_post"/>
 
     <ProgressBar
         android:id="@+id/progressBar"

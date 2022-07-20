@@ -1,15 +1,15 @@
-package com.pocs.presentation.view.home.article
+package com.pocs.presentation.view.common
 
 import androidx.recyclerview.widget.RecyclerView
 import com.pocs.presentation.R
-import com.pocs.presentation.databinding.ItemArticleBinding
-import com.pocs.presentation.model.ArticleItemUiState
+import com.pocs.presentation.databinding.ItemPostBinding
+import com.pocs.presentation.model.PostItemUiState
 
-class ArticleViewHolder(
-    private val binding: ItemArticleBinding,
+class PostViewHolder(
+    private val binding: ItemPostBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(uiState: ArticleItemUiState) = with(binding) {
+    fun bind(uiState: PostItemUiState) = with(binding) {
         title.text = uiState.title
         subtitle.text = root.context.getString(
             R.string.article_subtitle,
