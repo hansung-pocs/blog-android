@@ -38,7 +38,7 @@ class NoticeFragment : Fragment(R.id.NoticeFragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = PostAdapter()
+        val adapter = PostAdapter {}
         binding.apply {
             recyclerView.adapter = adapter.withLoadStateFooter(
                 PagingLoadStateAdapter { adapter.retry() }
