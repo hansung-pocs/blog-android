@@ -1,6 +1,6 @@
 package com.pocs.presentation.model
 
-data class UserUiState(
+data class UserItemUiState(
     val name: String,
     val studentId: String,
 )
