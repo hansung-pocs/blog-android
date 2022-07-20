@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.DiffUtil
 import com.pocs.presentation.databinding.ItemPostBinding
 import com.pocs.presentation.model.PostItemUiState
 
-class PostAdapter : PagingDataAdapter<PostItemUiState, PostViewHolder>(diffCallback) {
+class PostAdapter(
+    private val onClickItem: (PostItemUiState) -> Unit
+) : PagingDataAdapter<PostItemUiState, PostViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemPostBinding.inflate(layoutInflater, parent, false)
-        return PostViewHolder(binding)
+        return PostViewHolder(binding, onClickItem)
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -21,7 +23,10 @@ class PostAdapter : PagingDataAdapter<PostItemUiState, PostViewHolder>(diffCallb
 
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<PostItemUiState>() {
-            override fun areItemsTheSame(oldItem: PostItemUiState, newItem: PostItemUiState): Boolean {
+            override fun areItemsTheSame(
+                oldItem: PostItemUiState,
+                newItem: PostItemUiState
+            ): Boolean {
                 return oldItem === newItem
             }
 

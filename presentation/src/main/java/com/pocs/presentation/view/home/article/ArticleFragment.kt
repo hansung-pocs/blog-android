@@ -15,8 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentArticleBinding
 import com.pocs.presentation.model.ArticleUiState
+import com.pocs.presentation.model.PostItemUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
 import com.pocs.presentation.view.common.PostAdapter
+import com.pocs.presentation.view.detail.article.ArticleDetailActivity
 import kotlinx.coroutines.launch
 
 class ArticleFragment : Fragment(R.layout.fragment_article) {
@@ -37,7 +39,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = PostAdapter()
+        val adapter = PostAdapter(::onClickArticle)
         binding.apply {
             recyclerView.adapter = adapter.withLoadStateFooter(
                 PagingLoadStateAdapter { adapter.retry() }
@@ -73,5 +75,10 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
 
     private fun updateUi(uiState: ArticleUiState, adapter: PostAdapter) {
         adapter.submitData(viewLifecycleOwner.lifecycle, uiState.articlePagingData)
+    }
+
+    private fun onClickArticle(postItemUiState: PostItemUiState) {
+        val intent = ArticleDetailActivity.getIntent(requireContext(), postItemUiState.id)
+        startActivity(intent)
     }
 }

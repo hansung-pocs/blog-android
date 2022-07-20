@@ -18,6 +18,10 @@
         <activity
             android:name=".view.userlist.UserListActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".view.detail.article.ArticleDetailActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

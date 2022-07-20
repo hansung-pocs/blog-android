@@ -7,6 +7,7 @@ import com.pocs.presentation.model.PostItemUiState
 
 class PostViewHolder(
     private val binding: ItemPostBinding,
+    private val onClickItem: (PostItemUiState) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(uiState: PostItemUiState) = with(binding) {
@@ -16,5 +17,7 @@ class PostViewHolder(
             uiState.date,
             uiState.writer
         )
+
+        root.setOnClickListener { onClickItem(uiState) }
     }
 }
