@@ -2,7 +2,7 @@ package com.pocs.presentation.view.home.article
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pocs.presentation.mock.mockArticleItemsPagingData
+import com.pocs.presentation.mock.mockPostItemsPagingData
 import com.pocs.presentation.model.PostUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +20,7 @@ class ArticleViewModel @Inject constructor() : ViewModel() {
     init {
         viewModelScope.launch {
             _uiState.update {
-                it.copy(articlePagingData = mockArticleItemsPagingData)
+                it.copy(articlePagingData = mockPostItemsPagingData)
             }
         }
     }
