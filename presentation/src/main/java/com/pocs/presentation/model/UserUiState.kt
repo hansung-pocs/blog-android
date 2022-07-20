@@ -1,4 +1,4 @@
-package com.pocs.presentation.view.userlist
+package com.pocs.presentation.model
 
 data class UserUiState(
     val name: String,

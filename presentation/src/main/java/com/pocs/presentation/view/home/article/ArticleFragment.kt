@@ -14,6 +14,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentArticleBinding
+import com.pocs.presentation.model.ArticleUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
 import kotlinx.coroutines.launch
 

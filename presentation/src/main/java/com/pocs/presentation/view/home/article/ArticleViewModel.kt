@@ -3,6 +3,7 @@ package com.pocs.presentation.view.home.article
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pocs.presentation.mock.mockArticleItemsPagingData
+import com.pocs.presentation.model.ArticleUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -1,7 +1,7 @@
 package com.pocs.presentation.mock
 
 import androidx.paging.PagingData
-import com.pocs.presentation.view.home.article.ArticleItemUiState
+import com.pocs.presentation.model.ArticleItemUiState
 
 val mockArticleItemsPagingData = PagingData.from(
     listOf(

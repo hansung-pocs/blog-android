@@ -3,6 +3,7 @@ package com.pocs.presentation.view.home.article
 import androidx.recyclerview.widget.RecyclerView
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ItemArticleBinding
+import com.pocs.presentation.model.ArticleItemUiState
 
 class ArticleViewHolder(
     private val binding: ItemArticleBinding,

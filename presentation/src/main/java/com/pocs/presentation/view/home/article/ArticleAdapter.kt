@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.pocs.presentation.databinding.ItemArticleBinding
+import com.pocs.presentation.model.ArticleItemUiState
 
 class ArticleAdapter : PagingDataAdapter<ArticleItemUiState, ArticleViewHolder>(diffCallback) {
 

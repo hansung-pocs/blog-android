@@ -1,4 +1,4 @@
-package com.pocs.presentation.view.home.article
+package com.pocs.presentation.model
 
 data class ArticleItemUiState(
     val title : String,
