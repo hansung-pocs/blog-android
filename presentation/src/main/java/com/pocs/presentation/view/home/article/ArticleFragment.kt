@@ -44,15 +44,16 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
             )
             recyclerView.layoutManager = LinearLayoutManager(view.context)
 
-            retryButton.setOnClickListener {
+            val loadStateBinding = loadState
+            loadStateBinding.retryButton.setOnClickListener {
                 adapter.retry()
             }
 
             adapter.addLoadStateListener { loadStates ->
                 val isError = loadStates.refresh is LoadState.Error
-                progressBar.isVisible = loadStates.refresh is LoadState.Loading
-                retryButton.isVisible = isError
-                errorMsg.isVisible = isError
+                loadStateBinding.progressBar.isVisible = loadStates.refresh is LoadState.Loading
+                loadStateBinding.retryButton.isVisible = isError
+                loadStateBinding.errorMsg.isVisible = isError
             }
 
             viewLifecycleOwner.lifecycleScope.launch {
