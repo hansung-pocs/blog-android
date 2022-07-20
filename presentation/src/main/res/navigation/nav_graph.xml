@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/NoticeFragment"
-        android:name="com.pocs.presentation.NoticeFragment"
+        android:name="com.pocs.presentation.view.home.notice.NoticeFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_notice" />
 
     <fragment
         android:id="@+id/ArticleFragment"
-        android:name="com.pocs.presentation.ArticleFragment"
+        android:name="com.pocs.presentation.view.home.article.ArticleFragment"
         android:label="@string/article"
         tools:layout="@layout/fragment_article" />
 

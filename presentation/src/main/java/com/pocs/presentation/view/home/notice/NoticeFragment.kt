@@ -1,10 +1,11 @@
-package com.pocs.presentation
+package com.pocs.presentation.view.home.notice
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentNoticeBinding
 
 class NoticeFragment : Fragment(R.id.NoticeFragment) {
