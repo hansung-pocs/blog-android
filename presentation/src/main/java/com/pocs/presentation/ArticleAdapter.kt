@@ -6,7 +6,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.pocs.presentation.databinding.ItemArticleBinding
 
-class ArticleAdapter : PagingDataAdapter<ArticleItemUiState, ArticleViewHolder >(diffCallback) {
+class ArticleAdapter : PagingDataAdapter<ArticleItemUiState, ArticleViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

@@ -2,7 +2,7 @@ buildscript {
     ext {
         androidx_core = "1.8.0"
         hilt_version = "2.42"
-        fragment_version = "1.4.1"
+        fragment_version = "1.5.0"
         paging = "3.1.1"
     }
     dependencies {

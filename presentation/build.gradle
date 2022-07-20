@@ -11,7 +11,6 @@ dependencies {
     implementation project(":domain")
 
     // fragment
-    def fragment_version = "1.5.0"
     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
