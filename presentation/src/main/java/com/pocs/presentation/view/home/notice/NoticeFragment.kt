@@ -24,7 +24,7 @@ class NoticeFragment : Fragment(R.id.NoticeFragment) {
     private var _binding: FragmentNoticeBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel : NoticeViewModel by activityViewModels()
+    private val viewModel: NoticeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +37,7 @@ class NoticeFragment : Fragment(R.id.NoticeFragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val adapter = PostAdapter()
         binding.apply {
             recyclerView.adapter = adapter.withLoadStateFooter(
@@ -44,15 +45,16 @@ class NoticeFragment : Fragment(R.id.NoticeFragment) {
             )
             recyclerView.layoutManager = LinearLayoutManager(view.context)
 
-            retryButton.setOnClickListener {
+            val loadStateBinding = loadState
+            loadStateBinding.retryButton.setOnClickListener {
                 adapter.retry()
             }
 
             adapter.addLoadStateListener { loadStates ->
                 val isError = loadStates.refresh is LoadState.Error
-                progressBar.isVisible = loadStates.refresh is LoadState.Loading
-                retryButton.isVisible = isError
-                errorMsg.isVisible = isError
+                loadStateBinding.progressBar.isVisible = loadStates.refresh is LoadState.Loading
+                loadStateBinding.retryButton.isVisible = isError
+                loadStateBinding.errorMsg.isVisible = isError
             }
 
             viewLifecycleOwner.lifecycleScope.launch {
