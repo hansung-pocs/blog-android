@@ -13,7 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityHomeBinding
-import com.pocs.presentation.view.userlist.UserListActivity
+import com.pocs.presentation.view.userlist.UserActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -52,7 +52,7 @@ class HomeActivity : AppCompatActivity() {
     private fun onSelectNavigationItem(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_user_list -> {
-                val intent = UserListActivity.getIntent(this)
+                val intent = UserActivity.getIntent(this)
                 startActivity(intent)
             }
         }
