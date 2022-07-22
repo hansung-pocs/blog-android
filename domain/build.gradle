@@ -1,11 +1,20 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 apply from: rootProject.file("android.gradle")
 
 dependencies {
+
+    // hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    // paging
+    implementation "androidx.paging:paging-common-ktx:$paging"
 
     testImplementation 'junit:junit:4.13.2'
 }

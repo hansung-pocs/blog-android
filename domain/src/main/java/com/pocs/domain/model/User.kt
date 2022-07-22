@@ -9,6 +9,5 @@ data class User(
     val company: String,
     val generation: Int,
     val github: String,
-    val createdAt: Int,
-    val posts: List<Post>?
+    val createdAt: Int
 )
