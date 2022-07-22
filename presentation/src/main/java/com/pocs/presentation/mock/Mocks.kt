@@ -15,7 +15,7 @@ val mockArticleItemsPagingData = PagingData.from(
     )
 )
 
-val mockArticleDetailItems = listOf(
+val mockPostDetailItems = listOf(
     PostDetailItemUiState(
         1,
         title = "가나다라마",
@@ -46,6 +46,76 @@ val mockArticleDetailItems = listOf(
     ),
     PostDetailItemUiState(
         5,
+        title = "가나다라마",
+        writer = "작성자",
+        date = "2022.07.19",
+        content = "Material Design은 사용자 인터페이스 설계의 모범 사례를 지원하는 지침, 구성 요소 및 도구의 적응 가능한 시스템입니다. 오픈 소스 코드를 기반으로 하는 Material Design은 디자이너와 개발자 간의 협업을 간소화하고 팀이 아름다운 제품을 신속하게 제작할 수 있도록 지원합니다."
+    ),
+    PostDetailItemUiState(
+        6,
+        title = "가나다라마",
+        writer = "작성자",
+        date = "2022.07.19",
+        content = "Material Design은 사용자 인터페이스 설계의 모범 사례를 지원하는 지침, 구성 요소 및 도구의 적응 가능한 시스템입니다. 오픈 소스 코드를 기반으로 하는 Material Design은 디자이너와 개발자 간의 협업을 간소화하고 팀이 아름다운 제품을 신속하게 제작할 수 있도록 지원합니다."
+    ),
+    PostDetailItemUiState(
+        7,
+        title = "가나다라마",
+        writer = "작성자",
+        date = "2022.07.19",
+        content = "Material Design은 사용자 인터페이스 설계의 모범 사례를 지원하는 지침, 구성 요소 및 도구의 적응 가능한 시스템입니다. 오픈 소스 코드를 기반으로 하는 Material Design은 디자이너와 개발자 간의 협업을 간소화하고 팀이 아름다운 제품을 신속하게 제작할 수 있도록 지원합니다."
+    ),
+    PostDetailItemUiState(
+        8,
+        title = "가나다라마",
+        writer = "작성자",
+        date = "2022.07.19",
+        content = "Material Design은 사용자 인터페이스 설계의 모범 사례를 지원하는 지침, 구성 요소 및 도구의 적응 가능한 시스템입니다. 오픈 소스 코드를 기반으로 하는 Material Design은 디자이너와 개발자 간의 협업을 간소화하고 팀이 아름다운 제품을 신속하게 제작할 수 있도록 지원합니다."
+    ),
+    PostDetailItemUiState(
+        9,
+        title = "가나다라마",
+        writer = "작성자",
+        date = "2022.07.19",
+        content = "Material Design은 사용자 인터페이스 설계의 모범 사례를 지원하는 지침, 구성 요소 및 도구의 적응 가능한 시스템입니다. 오픈 소스 코드를 기반으로 하는 Material Design은 디자이너와 개발자 간의 협업을 간소화하고 팀이 아름다운 제품을 신속하게 제작할 수 있도록 지원합니다."
+    ),
+    PostDetailItemUiState(
+        10,
+        title = "가나다라마",
+        writer = "작성자",
+        date = "2022.07.19",
+        content = "Material Design은 사용자 인터페이스 설계의 모범 사례를 지원하는 지침, 구성 요소 및 도구의 적응 가능한 시스템입니다. 오픈 소스 코드를 기반으로 하는 Material Design은 디자이너와 개발자 간의 협업을 간소화하고 팀이 아름다운 제품을 신속하게 제작할 수 있도록 지원합니다."
+    ),
+    PostDetailItemUiState(
+        11,
+        title = "가나다라마",
+        writer = "작성자",
+        date = "2022.07.19",
+        content = "Material Design은 사용자 인터페이스 설계의 모범 사례를 지원하는 지침, 구성 요소 및 도구의 적응 가능한 시스템입니다. 오픈 소스 코드를 기반으로 하는 Material Design은 디자이너와 개발자 간의 협업을 간소화하고 팀이 아름다운 제품을 신속하게 제작할 수 있도록 지원합니다."
+    ),
+    PostDetailItemUiState(
+        12,
+        title = "가나다라마",
+        writer = "작성자",
+        date = "2022.07.19",
+        content = "Material Design은 사용자 인터페이스 설계의 모범 사례를 지원하는 지침, 구성 요소 및 도구의 적응 가능한 시스템입니다. 오픈 소스 코드를 기반으로 하는 Material Design은 디자이너와 개발자 간의 협업을 간소화하고 팀이 아름다운 제품을 신속하게 제작할 수 있도록 지원합니다."
+    ),
+    PostDetailItemUiState(
+        13,
+        title = "가나다라마",
+        writer = "작성자",
+        date = "2022.07.19",
+        content = "Material Design은 사용자 인터페이스 설계의 모범 사례를 지원하는 지침, 구성 요소 및 도구의 적응 가능한 시스템입니다. 오픈 소스 코드를 기반으로 하는 Material Design은 디자이너와 개발자 간의 협업을 간소화하고 팀이 아름다운 제품을 신속하게 제작할 수 있도록 지원합니다."
+    ),
+    PostDetailItemUiState(
+        14,
+        title = "가나다라마",
+        writer = "작성자",
+        date = "2022.07.19",
+        content = "Material Design은 사용자 인터페이스 설계의 모범 사례를 지원하는 지침, 구성 요소 및 도구의 적응 가능한 시스템입니다. 오픈 소스 코드를 기반으로 하는 Material Design은 디자이너와 개발자 간의 협업을 간소화하고 팀이 아름다운 제품을 신속하게 제작할 수 있도록 지원합니다."
+    ),
+    PostDetailItemUiState(
+        15,
         title = "가나다라마",
         writer = "작성자",
         date = "2022.07.19",

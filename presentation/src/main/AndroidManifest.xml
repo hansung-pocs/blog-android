@@ -20,7 +20,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".view.detail.article.ArticleDetailActivity"
+            android:name=".view.post.detail.PostDetailActivity"
             android:exported="false" />
     </application>
 
