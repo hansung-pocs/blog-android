@@ -13,7 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityHomeBinding
-import com.pocs.presentation.view.userlist.UserActivity
+import com.pocs.presentation.view.user.UserActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 

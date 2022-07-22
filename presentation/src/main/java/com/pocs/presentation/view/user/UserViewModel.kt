@@ -1,4 +1,4 @@
-package com.pocs.presentation.view.userlist
+package com.pocs.presentation.view.user
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
