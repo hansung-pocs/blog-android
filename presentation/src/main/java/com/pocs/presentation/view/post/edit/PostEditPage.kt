@@ -50,21 +50,28 @@ fun PostEditContent(
                 actions = {
                     val scope = rememberCoroutineScope()
 
-                    IconButton(onClick = {
-                        if (!uiState.isInSaving) {
-                            scope.launch {
-                                uiState.onSave()
-                                popBack()
+                    IconButton(
+                        enabled = uiState.canSave,
+                        onClick = {
+                            if (!uiState.isInSaving) {
+                                scope.launch {
+                                    uiState.onSave()
+                                    popBack()
+                                }
                             }
                         }
-                    }) {
+                    ) {
                         if (uiState.isInSaving) {
                             CircularProgressIndicator()
                         } else {
                             Icon(
                                 imageVector = Icons.Filled.Send,
                                 contentDescription = stringResource(R.string.save),
-                                tint = MaterialTheme.colorScheme.primary
+                                tint = if (uiState.canSave) {
+                                    MaterialTheme.colorScheme.primary
+                                } else {
+                                    MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
+                                }
                             )
                         }
                     }
