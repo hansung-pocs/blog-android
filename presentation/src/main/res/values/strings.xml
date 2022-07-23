@@ -11,4 +11,7 @@
     <string name="fail_to_connect">연결에 실패하였습니다.</string>
     <string name="retry">재시도</string>
     <string name="user_image">회원 사진</string>
+    <string name="admin_page">관리자 페이지</string>
+    <string name="delete">삭제하기</string>
+    <string name="modify">수정하기</string>
 </resources>

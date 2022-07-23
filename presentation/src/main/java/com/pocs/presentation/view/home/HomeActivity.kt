@@ -13,6 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityHomeBinding
+import com.pocs.presentation.view.admin.AdminActivity
 import com.pocs.presentation.view.user.UserActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -53,6 +54,10 @@ class HomeActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.action_user_list -> {
                 val intent = UserActivity.getIntent(this)
+                startActivity(intent)
+            }
+            R.id.action_Admin ->{
+                val intent = AdminActivity.getIntent(this)
                 startActivity(intent)
             }
         }

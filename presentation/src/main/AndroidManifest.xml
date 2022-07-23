@@ -4,6 +4,9 @@
 
     <application>
         <activity
+            android:name=".view.admin.AdminActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.home.HomeActivity"
             android:exported="true"
             android:label="@string/app_name"
@@ -14,11 +17,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.user.UserActivity"
             android:exported="false" />
-
         <activity
             android:name=".view.post.detail.PostDetailActivity"
             android:exported="false" />
