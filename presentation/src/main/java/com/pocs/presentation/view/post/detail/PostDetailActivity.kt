@@ -12,11 +12,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityPostDetailBinding
-import com.pocs.presentation.model.ArticleDetailUiState
+import com.pocs.presentation.model.PostDetailUiState
 import com.pocs.presentation.view.post.edit.PostEditActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-
 
 @AndroidEntryPoint
 class PostDetailActivity : AppCompatActivity() {
@@ -86,16 +85,21 @@ class PostDetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
-    private fun updateUi(uiState: ArticleDetailUiState) = with(binding) {
-        val article = uiState.article ?: return@with
-        title.text = article.title
-        subtitle.text = getString(R.string.article_subtitle, article.date, article.writer)
-        content.text = article.content
+    private fun updateUi(uiState: PostDetailUiState) = with(binding) {
+        title.text = uiState.title
+        subtitle.text = getString(R.string.article_subtitle, uiState.date, uiState.writer)
+        content.text = uiState.content
     }
 
     private fun startPostEditActivity() {
-        val id = intent.getIntExtra("id", -1)
-        val intent = PostEditActivity.getIntent(this, id)
+        val uiState = viewModel.uiState.value
+        val intent = PostEditActivity.getIntent(
+            this,
+            uiState.id!!,
+            uiState.title,
+            uiState.content,
+            uiState.category!!
+        )
         startActivity(intent)
     }
 }

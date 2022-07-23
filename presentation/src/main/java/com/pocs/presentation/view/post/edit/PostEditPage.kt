@@ -1,29 +1,100 @@
 package com.pocs.presentation.view.post.edit
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.runtime.Composable
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.pocs.presentation.R
+import com.pocs.presentation.model.PostEditUiState
+import kotlinx.coroutines.launch
 
 @Composable
-fun PostEditPage() {
+fun PostEditPage(uiState: PostEditUiState) {
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+
+    PostEditContent(
+        popBack = { onBackPressedDispatcher?.onBackPressed() },
+        uiState = uiState,
+    )
+}
+
+@Composable
+fun PostEditContent(
+    popBack: () -> Unit,
+    uiState: PostEditUiState,
+) {
     Scaffold(
         topBar = {
-            TopAppBar(contentPadding = PaddingValues(horizontal = 24.dp)) {
-                Text(text = "게시글 수정")
+            TopAppBar(
+                title = {
+                    Text(text = stringResource(R.string.edit_post))
+                },
+                navigationIcon = {
+                    IconButton(
+                        onClick = popBack
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back)
+                        )
+                    }
+                }
+            )
+        },
+        floatingActionButton = {
+            val scope = rememberCoroutineScope()
+
+            FloatingActionButton(onClick = {
+                scope.launch {
+                    uiState.onSave()
+                    popBack()
+                }
+            }) {
+                Icon(
+                    imageVector = Icons.Filled.Check,
+                    contentDescription = stringResource(R.string.save)
+                )
             }
         }
     ) {
-        val scrollState = rememberScrollState()
-
-        Column(Modifier.verticalScroll(scrollState)) {
-            Text(text = "이것이 컴포즈")
+        Column {
+            TextField(
+                label = {
+                    Text(text = stringResource(R.string.title))
+                },
+                value = uiState.title,
+                onValueChange = uiState.onChangeTitle,
+                modifier = Modifier.fillMaxWidth()
+            )
+            TextField(
+                label = {
+                    Text(text = stringResource(R.string.content))
+                },
+                value = uiState.content,
+                onValueChange = uiState.onChangeContent,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+            )
         }
     }
+}
+
+@Preview
+@Composable
+fun PostEditContentPreview() {
+    PostEditContent(
+        {},
+        PostEditUiState(
+            onChangeTitle = {},
+            onChangeContent = {},
+            onSave = { Result.success(true) }
+        ),
+    )
 }
