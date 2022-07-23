@@ -1,4 +1,4 @@
-package com.pocs.presentation.view.userlist
+package com.pocs.presentation.view.user
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

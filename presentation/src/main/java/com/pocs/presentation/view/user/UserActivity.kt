@@ -1,4 +1,4 @@
-package com.pocs.presentation.view.userlist
+package com.pocs.presentation.view.user
 
 import android.content.Context
 import android.content.Intent
@@ -12,22 +12,22 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pocs.presentation.databinding.ActivityUserListBinding
-import com.pocs.presentation.model.UserListUiState
+import com.pocs.presentation.model.UserUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class UserListActivity : AppCompatActivity() {
+class UserActivity : AppCompatActivity() {
 
     private var _binding: ActivityUserListBinding? = null
     private val binding: ActivityUserListBinding get() = requireNotNull(_binding)
 
-    private val viewModel: UserListViewModel by viewModels()
+    private val viewModel: UserViewModel by viewModels()
 
     companion object {
         fun getIntent(context: Context): Intent {
-            return Intent(context, UserListActivity::class.java)
+            return Intent(context, UserActivity::class.java)
         }
     }
 
@@ -57,7 +57,7 @@ class UserListActivity : AppCompatActivity() {
         recyclerView.adapter = adapter.withLoadStateFooter(
             PagingLoadStateAdapter { adapter.retry() }
         )
-        recyclerView.layoutManager = LinearLayoutManager(this@UserListActivity)
+        recyclerView.layoutManager = LinearLayoutManager(this@UserActivity)
 
         val loadStateBinding = loadState
         loadStateBinding.retryButton.setOnClickListener {
@@ -80,7 +80,7 @@ class UserListActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateUi(uiState: UserListUiState, adapter: UserAdapter) {
+    private fun updateUi(uiState: UserUiState, adapter: UserAdapter) {
         adapter.submitData(lifecycle, uiState.userPagingData)
     }
 }
