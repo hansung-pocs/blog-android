@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import com.google.android.material.tabs.TabLayoutMediator
 import com.pocs.presentation.databinding.ActivityAdminBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,6 +18,12 @@ class AdminActivity : AppCompatActivity() {
     private val binding: ActivityAdminBinding get() = requireNotNull(_binding)
 
     private val viewModel: AdminViewModel by viewModels()
+
+    private val tabTitleArray = arrayOf(
+        "공지사항",
+        "회원목록"
+    )
+
 
     companion object {
         fun getIntent(context: Context): Intent {
@@ -30,6 +38,14 @@ class AdminActivity : AppCompatActivity() {
         setContentView(binding.root)
         initToolBar()
 
+        val viewPager = binding.viewpager
+        val tabLayout = binding.tabLayout
+
+        viewPager.adapter = AdminAdapter(supportFragmentManager,lifecycle)
+
+        TabLayoutMediator(tabLayout,viewPager){ tab , position ->
+            tab.text = tabTitleArray[position]
+        }.attach()
     }
 
     override fun onSupportNavigateUp(): Boolean {
