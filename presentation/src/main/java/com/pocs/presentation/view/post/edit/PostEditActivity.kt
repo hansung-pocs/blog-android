@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.composethemeadapter3.Mdc3Theme
 import com.pocs.domain.model.PostCategory
+import com.pocs.presentation.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -47,7 +48,7 @@ class PostEditActivity : AppCompatActivity() {
         setContent {
             // TODO: 뷰 테마 설정이 compose로 전환이 안되고 있다. 수정해야 함.
             Mdc3Theme(this) {
-                PostEditPage(viewModel.uiState)
+                PostEditPage(title = getString(R.string.edit_post), uiState = viewModel.uiState)
             }
         }
     }
