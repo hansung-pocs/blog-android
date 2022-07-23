@@ -37,10 +37,12 @@ class PostEditViewModel @Inject constructor() : ViewModel() {
     }
 
     private suspend fun savePost(): Result<Boolean> {
+        uiState = uiState.copy(isInSaving = true)
         // TODO: API 연결하여야 함
         withContext(Dispatchers.IO) {
             delay(500)
         }
+        uiState = uiState.copy(isInSaving = false)
         return Result.success(true)
     }
 }

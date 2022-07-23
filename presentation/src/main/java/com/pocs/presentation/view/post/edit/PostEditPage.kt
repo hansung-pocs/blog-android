@@ -50,16 +50,24 @@ fun PostEditContent(
         floatingActionButton = {
             val scope = rememberCoroutineScope()
 
-            FloatingActionButton(onClick = {
-                scope.launch {
-                    uiState.onSave()
-                    popBack()
+            FloatingActionButton(
+                onClick = {
+                    if (!uiState.isInSaving) {
+                        scope.launch {
+                            uiState.onSave()
+                            popBack()
+                        }
+                    }
                 }
-            }) {
-                Icon(
-                    imageVector = Icons.Filled.Check,
-                    contentDescription = stringResource(R.string.save)
-                )
+            ) {
+                if (uiState.isInSaving) {
+                    CircularProgressIndicator()
+                } else {
+                    Icon(
+                        imageVector = Icons.Filled.Check,
+                        contentDescription = stringResource(R.string.save)
+                    )
+                }
             }
         }
     ) {

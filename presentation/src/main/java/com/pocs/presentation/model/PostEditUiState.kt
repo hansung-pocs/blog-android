@@ -7,6 +7,7 @@ data class PostEditUiState(
     val title: String = "",
     val content: String = "",
     val category: PostCategory? = null,
+    val isInSaving: Boolean = false,
     val onChangeTitle: (String) -> Unit,
     val onChangeContent: (String) -> Unit,
     val onSave: suspend () -> Result<Boolean>
