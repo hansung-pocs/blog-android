@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class AdminActivity : AppCompatActivity() {
 
     private var _binding: ActivityAdminBinding? = null
-    private val binding : ActivityAdminBinding get() = requireNotNull(_binding)
+    private val binding: ActivityAdminBinding get() = requireNotNull(_binding)
 
     private val viewModel: AdminViewModel by viewModels()
 
@@ -22,11 +22,26 @@ class AdminActivity : AppCompatActivity() {
             return Intent(context, AdminActivity::class.java)
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         _binding = ActivityAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initToolBar()
 
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
+    private fun initToolBar() {
+        setSupportActionBar(binding.toolBar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(true)
+        supportActionBar?.title = "관리자 페이지"
+    }
+
 }
