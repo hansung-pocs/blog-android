@@ -36,7 +36,10 @@ fun PostEditContent(
     popBack: () -> Unit,
     uiState: PostEditUiState,
 ) {
+    val snackBarHostState = remember { SnackbarHostState() }
+
     Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
         topBar = {
             SmallTopAppBar(
                 title = { Text(text = title) },
@@ -63,8 +66,13 @@ fun PostEditContent(
                             onClick = {
                                 if (!uiState.isInSaving) {
                                     scope.launch {
-                                        uiState.onSave()
-                                        popBack()
+                                        val result = uiState.onSave()
+                                        if (result.isSuccess) {
+                                            popBack()
+                                        } else {
+                                            val exception = result.exceptionOrNull()!!
+                                            snackBarHostState.showSnackbar(exception.message!!)
+                                        }
                                     }
                                 }
                             }

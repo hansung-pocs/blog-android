@@ -42,7 +42,10 @@ class PostEditViewModel @Inject constructor() : ViewModel() {
         withContext(Dispatchers.IO) {
             delay(500)
         }
-        uiState = uiState.copy(isInSaving = false)
-        return Result.success(true)
+        val result = Result.success(true)
+        if (result.isFailure) {
+            uiState = uiState.copy(isInSaving = false)
+        }
+        return result
     }
 }
