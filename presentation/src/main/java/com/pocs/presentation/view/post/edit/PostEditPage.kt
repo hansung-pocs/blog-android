@@ -24,7 +24,7 @@ fun PostEditPage(title: String, uiState: PostEditUiState) {
 
     PostEditContent(
         title = title,
-        popBack = { onBackPressedDispatcher?.onBackPressed() },
+        onBackPressed = { onBackPressedDispatcher?.onBackPressed() },
         uiState = uiState,
     )
 }
@@ -33,7 +33,7 @@ fun PostEditPage(title: String, uiState: PostEditUiState) {
 @Composable
 fun PostEditContent(
     title: String,
-    popBack: () -> Unit,
+    onBackPressed: () -> Unit,
     uiState: PostEditUiState,
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
@@ -41,42 +41,24 @@ fun PostEditContent(
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
         topBar = {
-            SmallTopAppBar(
-                title = { Text(text = title) },
-                navigationIcon = {
-                    IconButton(onClick = popBack) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                },
-                actions = {
-                    val scope = rememberCoroutineScope()
+            val coroutineScope = rememberCoroutineScope()
 
-                    if (uiState.isInSaving) {
-                        CircularProgressIndicator(
-                            modifier = Modifier
-                                .testTag("CircularProgressIndicator")
-                                .padding(8.dp)
-                        )
-                    } else {
-                        SendIconButton(
-                            enabled = uiState.canSave,
-                            onClick = {
-                                if (!uiState.isInSaving) {
-                                    scope.launch {
-                                        val result = uiState.onSave()
-                                        if (result.isSuccess) {
-                                            popBack()
-                                        } else {
-                                            val exception = result.exceptionOrNull()!!
-                                            snackBarHostState.showSnackbar(exception.message!!)
-                                        }
-                                    }
-                                }
+            PostEditAppBar(
+                title = title,
+                onBackPressed = onBackPressed,
+                isInSaving = uiState.isInSaving,
+                enableSendIcon = uiState.canSave,
+                onClickSend = {
+                    if (!uiState.isInSaving) {
+                        coroutineScope.launch {
+                            val result = uiState.onSave()
+                            if (result.isSuccess) {
+                                onBackPressed()
+                            } else {
+                                val exception = result.exceptionOrNull()!!
+                                snackBarHostState.showSnackbar(exception.message!!)
                             }
-                        )
+                        }
                     }
                 }
             )
@@ -87,14 +69,14 @@ fun PostEditContent(
                 .padding(innerPadding)
                 .padding(bottom = 16.dp)
         ) {
-            PocsTextField(
+            SimpleTextField(
                 hint = stringResource(R.string.title),
                 value = uiState.title,
                 onValueChange = uiState.onChangeTitle,
                 modifier = Modifier.fillMaxWidth()
             )
             Divider(startIndent = 16.dp, modifier = Modifier.alpha(0.4f))
-            PocsTextField(
+            SimpleTextField(
                 hint = stringResource(R.string.content),
                 value = uiState.content,
                 onValueChange = uiState.onChangeContent,
@@ -107,7 +89,42 @@ fun PostEditContent(
 }
 
 @Composable
-fun PocsTextField(
+fun PostEditAppBar(
+    title: String,
+    onBackPressed: () -> Unit,
+    isInSaving: Boolean,
+    enableSendIcon: Boolean,
+    onClickSend: () -> Unit
+) {
+    SmallTopAppBar(
+        title = { Text(text = title) },
+        navigationIcon = {
+            IconButton(onClick = onBackPressed) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.back)
+                )
+            }
+        },
+        actions = {
+            if (isInSaving) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .testTag("CircularProgressIndicator")
+                        .padding(8.dp)
+                )
+            } else {
+                SendIconButton(
+                    enabled = enableSendIcon,
+                    onClick = onClickSend
+                )
+            }
+        }
+    )
+}
+
+@Composable
+fun SimpleTextField(
     hint: String,
     value: String,
     onValueChange: (String) -> Unit,
