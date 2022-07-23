@@ -1,4 +1,4 @@
-package com.pocs.presentation.view.common
+package com.pocs.presentation.view.post.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -1,4 +1,4 @@
-package com.pocs.presentation.view.detail.article
+package com.pocs.presentation.view.post.detail
 
 import android.content.Context
 import android.content.Intent
@@ -15,16 +15,16 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ArticleDetailActivity : AppCompatActivity() {
+class PostDetailActivity : AppCompatActivity() {
 
     private var _binding: ActivityPostDetailBinding? = null
     private val binding: ActivityPostDetailBinding get() = requireNotNull(_binding)
 
-    private val viewModel: ArticleDetailViewModel by viewModels()
+    private val viewModel: PostDetailViewModel by viewModels()
 
     companion object {
         fun getIntent(context: Context, id: Int): Intent {
-            return Intent(context, ArticleDetailActivity::class.java).apply {
+            return Intent(context, PostDetailActivity::class.java).apply {
                 putExtra("id", id)
             }
         }

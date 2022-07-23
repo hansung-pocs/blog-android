@@ -17,8 +17,8 @@ import com.pocs.presentation.databinding.FragmentArticleBinding
 import com.pocs.presentation.model.ArticleUiState
 import com.pocs.presentation.model.PostItemUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
-import com.pocs.presentation.view.common.PostAdapter
-import com.pocs.presentation.view.detail.article.ArticleDetailActivity
+import com.pocs.presentation.view.post.adapter.PostAdapter
+import com.pocs.presentation.view.post.detail.PostDetailActivity
 import kotlinx.coroutines.launch
 
 class ArticleFragment : Fragment(R.layout.fragment_article) {
@@ -78,7 +78,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
     }
 
     private fun onClickArticle(postItemUiState: PostItemUiState) {
-        val intent = ArticleDetailActivity.getIntent(requireContext(), postItemUiState.id)
+        val intent = PostDetailActivity.getIntent(requireContext(), postItemUiState.id)
         startActivity(intent)
     }
 }

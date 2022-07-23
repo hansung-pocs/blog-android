@@ -15,8 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentNoticeBinding
 import com.pocs.presentation.model.NoticeUiState
+import com.pocs.presentation.model.PostItemUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
-import com.pocs.presentation.view.common.PostAdapter
+import com.pocs.presentation.view.post.adapter.PostAdapter
+import com.pocs.presentation.view.post.detail.PostDetailActivity
 import kotlinx.coroutines.launch
 
 class NoticeFragment : Fragment(R.id.NoticeFragment) {
@@ -38,7 +40,7 @@ class NoticeFragment : Fragment(R.id.NoticeFragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = PostAdapter {}
+        val adapter = PostAdapter(::onClickArticle)
         binding.apply {
             recyclerView.adapter = adapter.withLoadStateFooter(
                 PagingLoadStateAdapter { adapter.retry() }
@@ -74,5 +76,10 @@ class NoticeFragment : Fragment(R.id.NoticeFragment) {
 
     private fun updateUi(uiState: NoticeUiState, adapter: PostAdapter) {
         adapter.submitData(viewLifecycleOwner.lifecycle, uiState.noticePagingData)
+    }
+
+    private fun onClickArticle(postItemUiState: PostItemUiState) {
+        val intent = PostDetailActivity.getIntent(requireContext(), postItemUiState.id)
+        startActivity(intent)
     }
 }
