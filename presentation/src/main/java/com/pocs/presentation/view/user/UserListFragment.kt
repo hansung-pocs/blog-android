@@ -13,14 +13,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pocs.presentation.R
-import com.pocs.presentation.databinding.FragmentUserlistBinding
+import com.pocs.presentation.databinding.FragmentUserBinding
 import com.pocs.presentation.model.UserUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
 import kotlinx.coroutines.launch
 
-class UserListFragment : Fragment(R.layout.fragment_userlist) {
+class UserListFragment : Fragment(R.layout.fragment_user) {
 
-    private var _binding: FragmentUserlistBinding? = null
+    private var _binding: FragmentUserBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: UserViewModel by activityViewModels()
@@ -29,7 +29,7 @@ class UserListFragment : Fragment(R.layout.fragment_userlist) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentUserlistBinding.inflate(inflater, container, false)
+        _binding = FragmentUserBinding.inflate(inflater, container, false)
         return binding.root
     }
 

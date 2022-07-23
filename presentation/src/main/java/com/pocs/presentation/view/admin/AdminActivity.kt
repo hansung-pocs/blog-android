@@ -3,10 +3,9 @@ package com.pocs.presentation.view.admin
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
 import com.google.android.material.tabs.TabLayoutMediator
+import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityAdminBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,14 +15,6 @@ class AdminActivity : AppCompatActivity() {
 
     private var _binding: ActivityAdminBinding? = null
     private val binding: ActivityAdminBinding get() = requireNotNull(_binding)
-
-    private val viewModel: AdminViewModel by viewModels()
-
-    private val tabTitleArray = arrayOf(
-        "공지사항",
-        "회원목록"
-    )
-
 
     companion object {
         fun getIntent(context: Context): Intent {
@@ -38,12 +29,14 @@ class AdminActivity : AppCompatActivity() {
         setContentView(binding.root)
         initToolBar()
 
-        val viewPager = binding.viewpager
+        val viewPager = binding.viewPager
         val tabLayout = binding.tabLayout
 
-        viewPager.adapter = AdminAdapter(supportFragmentManager,lifecycle)
+        val tabTitleArray = resources.getStringArray(R.array.admin_tab)
 
-        TabLayoutMediator(tabLayout,viewPager){ tab , position ->
+        viewPager.adapter = AdminAdapter(supportFragmentManager, lifecycle)
+
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabTitleArray[position]
         }.attach()
     }
@@ -57,7 +50,7 @@ class AdminActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolBar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(true)
-        supportActionBar?.title = "관리자 페이지"
+        supportActionBar?.title = getString(R.string.admin_page)
     }
 
 }
