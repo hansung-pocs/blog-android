@@ -3,19 +3,9 @@ package com.pocs.presentation.view.user
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.paging.LoadState
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.pocs.presentation.databinding.ActivityUserBinding
-import com.pocs.presentation.model.UserUiState
-import com.pocs.presentation.paging.PagingLoadStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class UserActivity : AppCompatActivity() {
