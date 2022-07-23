@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -50,30 +51,24 @@ fun PostEditContent(
                 actions = {
                     val scope = rememberCoroutineScope()
 
-                    IconButton(
-                        enabled = uiState.canSave,
-                        onClick = {
-                            if (!uiState.isInSaving) {
-                                scope.launch {
-                                    uiState.onSave()
-                                    popBack()
+                    if (uiState.isInSaving) {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .testTag("CircularProgressIndicator")
+                                .padding(8.dp)
+                        )
+                    } else {
+                        SendIconButton(
+                            enabled = uiState.canSave,
+                            onClick = {
+                                if (!uiState.isInSaving) {
+                                    scope.launch {
+                                        uiState.onSave()
+                                        popBack()
+                                    }
                                 }
                             }
-                        }
-                    ) {
-                        if (uiState.isInSaving) {
-                            CircularProgressIndicator()
-                        } else {
-                            Icon(
-                                imageVector = Icons.Filled.Send,
-                                contentDescription = stringResource(R.string.save),
-                                tint = if (uiState.canSave) {
-                                    MaterialTheme.colorScheme.primary
-                                } else {
-                                    MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
-                                }
-                            )
-                        }
+                        )
                     }
                 }
             )
@@ -122,6 +117,27 @@ fun PocsTextField(
         onValueChange = onValueChange,
         modifier = modifier
     )
+}
+
+@Composable
+fun SendIconButton(
+    enabled: Boolean,
+    onClick: () -> Unit
+) {
+    IconButton(
+        enabled = enabled,
+        onClick = onClick
+    ) {
+        Icon(
+            imageVector = Icons.Filled.Send,
+            contentDescription = stringResource(R.string.save),
+            tint = if (enabled) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
+            }
+        )
+    }
 }
 
 @Preview
