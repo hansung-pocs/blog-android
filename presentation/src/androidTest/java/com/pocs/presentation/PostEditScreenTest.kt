@@ -2,6 +2,7 @@ package com.pocs.presentation
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
+import com.pocs.domain.model.PostCategory
 import com.pocs.presentation.model.PostEditUiState
 import com.pocs.presentation.view.post.edit.PostEditScreen
 import org.junit.Rule
@@ -12,14 +13,21 @@ class PostEditScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
+    private val emptyUiState = PostEditUiState(
+        id = 1,
+        title = "",
+        content = "",
+        category = PostCategory.NOTICE,
+        onChangeTitle = {},
+        onChangeContent = {},
+        onSave = { Result.success(true) }
+    )
+
     @Test
     fun disableSendButton_IfTitleIsEmpty() {
-        val fakeUiState = PostEditUiState(
+        val fakeUiState = emptyUiState.copy(
             title = "",
             content = "hello",
-            onChangeTitle = {},
-            onChangeContent = {},
-            onSave = { Result.success(true) }
         )
         composeTestRule.setContent {
             PostEditScreen(uiState = fakeUiState)
@@ -30,12 +38,9 @@ class PostEditScreenTest {
 
     @Test
     fun disableSendButton_IfContentIsEmpty() {
-        val fakeUiState = PostEditUiState(
+        val fakeUiState = emptyUiState.copy(
             title = "title",
             content = "",
-            onChangeTitle = {},
-            onChangeContent = {},
-            onSave = { Result.success(true) }
         )
         composeTestRule.setContent {
             PostEditScreen(uiState = fakeUiState)
@@ -46,12 +51,9 @@ class PostEditScreenTest {
 
     @Test
     fun enableSendButton_IfTitleAndContentAreNotEmpty() {
-        val fakeUiState = PostEditUiState(
+        val fakeUiState = emptyUiState.copy(
             title = "title",
             content = "content",
-            onChangeTitle = {},
-            onChangeContent = {},
-            onSave = { Result.success(true) }
         )
         composeTestRule.setContent {
             PostEditScreen(uiState = fakeUiState)
@@ -62,13 +64,10 @@ class PostEditScreenTest {
 
     @Test
     fun showCircularProgressIndicator_IfUiStateIsInSaving() {
-        val fakeUiState = PostEditUiState(
+        val fakeUiState = emptyUiState.copy(
             title = "title",
             content = "content",
             isInSaving = true,
-            onChangeTitle = {},
-            onChangeContent = {},
-            onSave = { Result.success(true) }
         )
         composeTestRule.setContent {
             PostEditScreen(uiState = fakeUiState)
@@ -81,12 +80,10 @@ class PostEditScreenTest {
     @Test
     fun showSnackBar_IfFailedToSavePost() {
         val exception = Exception("fail!!")
-        val fakeUiState = PostEditUiState(
+        val fakeUiState = emptyUiState.copy(
             title = "title",
             content = "content",
             isInSaving = false,
-            onChangeTitle = {},
-            onChangeContent = {},
             onSave = { Result.failure(exception) }
         )
         composeTestRule.setContent {

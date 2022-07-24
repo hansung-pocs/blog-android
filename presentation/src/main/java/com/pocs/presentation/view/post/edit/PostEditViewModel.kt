@@ -1,8 +1,6 @@
 package com.pocs.presentation.view.post.edit
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import com.pocs.domain.model.PostCategory
 import com.pocs.presentation.model.PostEditUiState
@@ -15,36 +13,41 @@ import javax.inject.Inject
 @HiltViewModel
 class PostEditViewModel @Inject constructor() : ViewModel() {
 
-    var uiState by mutableStateOf(
-        PostEditUiState(
-            onChangeTitle = ::updateTitle,
-            onChangeContent = ::updateContent,
-            onSave = ::savePost
-        )
-    )
-        private set
+    private lateinit var _uiState: MutableState<PostEditUiState>
+    val uiState: State<PostEditUiState> get() = _uiState
 
     fun initUiState(id: Int, title: String, content: String, category: PostCategory) {
-        uiState = uiState.copy(id = id, title = title, content = content, category = category)
+        assert(id > 0)
+        _uiState = mutableStateOf(
+            PostEditUiState(
+                id = id,
+                title = title,
+                content = content,
+                category = category,
+                onChangeTitle = ::updateTitle,
+                onChangeContent = ::updateContent,
+                onSave = ::savePost
+            )
+        )
     }
 
     private fun updateTitle(title: String) {
-        uiState = uiState.copy(title = title)
+        _uiState.value = uiState.value.copy(title = title)
     }
 
     private fun updateContent(content: String) {
-        uiState = uiState.copy(content = content)
+        _uiState.value = uiState.value.copy(content = content)
     }
 
     private suspend fun savePost(): Result<Boolean> {
-        uiState = uiState.copy(isInSaving = true)
+        _uiState.value = uiState.value.copy(isInSaving = true)
         // TODO: API 연결하여야 함
         withContext(Dispatchers.IO) {
             delay(500)
         }
         val result = Result.success(true)
         if (result.isFailure) {
-            uiState = uiState.copy(isInSaving = false)
+            _uiState.value = uiState.value.copy(isInSaving = false)
         }
         return result
     }

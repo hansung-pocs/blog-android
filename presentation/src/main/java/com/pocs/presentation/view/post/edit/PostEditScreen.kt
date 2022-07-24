@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.pocs.domain.model.PostCategory
 import com.pocs.presentation.R
 import com.pocs.presentation.model.PostEditUiState
 import kotlinx.coroutines.launch
@@ -172,6 +173,10 @@ fun PostEditContentPreview() {
         "게시글 수정",
         {},
         PostEditUiState(
+            id = 1,
+            title = "",
+            content = "",
+            category = PostCategory.STUDY,
             onChangeTitle = {},
             onChangeContent = {},
             onSave = { Result.success(true) }
@@ -186,8 +191,10 @@ fun PostEditContentWithTitleAndContentPreview() {
         "게시글 수정",
         {},
         PostEditUiState(
+            id = 1,
             title = "공지입니다.",
             content = "안녕하세요.",
+            category = PostCategory.STUDY,
             onChangeTitle = {},
             onChangeContent = {},
             onSave = { Result.success(true) }
