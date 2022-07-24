@@ -56,7 +56,7 @@ class HomeActivity : AppCompatActivity() {
                 val intent = UserActivity.getIntent(this)
                 startActivity(intent)
             }
-            R.id.action_Admin ->{
+            R.id.action_Admin -> {
                 val intent = AdminActivity.getIntent(this)
                 startActivity(intent)
             }
