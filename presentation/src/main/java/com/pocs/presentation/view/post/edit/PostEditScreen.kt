@@ -19,7 +19,7 @@ import com.pocs.presentation.model.PostEditUiState
 import kotlinx.coroutines.launch
 
 @Composable
-fun PostEditPage(title: String, uiState: PostEditUiState) {
+fun PostEditScreen(title: String, uiState: PostEditUiState) {
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
     PostEditContent(

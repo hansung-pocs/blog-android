@@ -3,11 +3,11 @@ package com.pocs.presentation
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import com.pocs.presentation.model.PostEditUiState
-import com.pocs.presentation.view.post.edit.PostEditPage
+import com.pocs.presentation.view.post.edit.PostEditScreen
 import org.junit.Rule
 import org.junit.Test
 
-class PostEditPageTest {
+class PostEditScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -22,7 +22,7 @@ class PostEditPageTest {
             onSave = { Result.success(true) }
         )
         composeTestRule.setContent {
-            PostEditPage(title = "", uiState = fakeUiState)
+            PostEditScreen(title = "", uiState = fakeUiState)
         }
 
         composeTestRule.onNodeWithContentDescription("저장하기").assertIsNotEnabled()
@@ -38,7 +38,7 @@ class PostEditPageTest {
             onSave = { Result.success(true) }
         )
         composeTestRule.setContent {
-            PostEditPage(title = "", uiState = fakeUiState)
+            PostEditScreen(title = "", uiState = fakeUiState)
         }
 
         composeTestRule.onNodeWithContentDescription("저장하기").assertIsNotEnabled()
@@ -54,7 +54,7 @@ class PostEditPageTest {
             onSave = { Result.success(true) }
         )
         composeTestRule.setContent {
-            PostEditPage(title = "", uiState = fakeUiState)
+            PostEditScreen(title = "", uiState = fakeUiState)
         }
 
         composeTestRule.onNodeWithContentDescription("저장하기").assertIsEnabled()
@@ -71,7 +71,7 @@ class PostEditPageTest {
             onSave = { Result.success(true) }
         )
         composeTestRule.setContent {
-            PostEditPage(title = "", uiState = fakeUiState)
+            PostEditScreen(title = "", uiState = fakeUiState)
         }
 
         composeTestRule.onNodeWithTag("CircularProgressIndicator").assertIsDisplayed()
@@ -90,7 +90,7 @@ class PostEditPageTest {
             onSave = { Result.failure(exception) }
         )
         composeTestRule.setContent {
-            PostEditPage(title = "", uiState = fakeUiState)
+            PostEditScreen(title = "", uiState = fakeUiState)
         }
 
         composeTestRule.onNodeWithContentDescription("저장하기").performClick()

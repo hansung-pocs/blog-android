@@ -47,7 +47,7 @@ class PostEditActivity : AppCompatActivity() {
 
         setContent {
             Mdc3Theme(this) {
-                PostEditPage(title = getString(R.string.edit_post), uiState = viewModel.uiState)
+                PostEditScreen(title = getString(R.string.edit_post), uiState = viewModel.uiState)
             }
         }
     }
