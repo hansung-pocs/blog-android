@@ -22,7 +22,7 @@ class PostEditScreenTest {
             onSave = { Result.success(true) }
         )
         composeTestRule.setContent {
-            PostEditScreen(title = "", uiState = fakeUiState)
+            PostEditScreen(uiState = fakeUiState)
         }
 
         composeTestRule.onNodeWithContentDescription("저장하기").assertIsNotEnabled()
@@ -38,7 +38,7 @@ class PostEditScreenTest {
             onSave = { Result.success(true) }
         )
         composeTestRule.setContent {
-            PostEditScreen(title = "", uiState = fakeUiState)
+            PostEditScreen(uiState = fakeUiState)
         }
 
         composeTestRule.onNodeWithContentDescription("저장하기").assertIsNotEnabled()
@@ -54,7 +54,7 @@ class PostEditScreenTest {
             onSave = { Result.success(true) }
         )
         composeTestRule.setContent {
-            PostEditScreen(title = "", uiState = fakeUiState)
+            PostEditScreen(uiState = fakeUiState)
         }
 
         composeTestRule.onNodeWithContentDescription("저장하기").assertIsEnabled()
@@ -71,7 +71,7 @@ class PostEditScreenTest {
             onSave = { Result.success(true) }
         )
         composeTestRule.setContent {
-            PostEditScreen(title = "", uiState = fakeUiState)
+            PostEditScreen(uiState = fakeUiState)
         }
 
         composeTestRule.onNodeWithTag("CircularProgressIndicator").assertIsDisplayed()
@@ -90,7 +90,7 @@ class PostEditScreenTest {
             onSave = { Result.failure(exception) }
         )
         composeTestRule.setContent {
-            PostEditScreen(title = "", uiState = fakeUiState)
+            PostEditScreen(uiState = fakeUiState)
         }
 
         composeTestRule.onNodeWithContentDescription("저장하기").performClick()

@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.composethemeadapter3.Mdc3Theme
 import com.pocs.domain.model.PostCategory
-import com.pocs.presentation.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -47,7 +46,7 @@ class PostEditActivity : AppCompatActivity() {
 
         setContent {
             Mdc3Theme(this) {
-                PostEditScreen(title = getString(R.string.edit_post), uiState = viewModel.uiState)
+                PostEditScreen(uiState = viewModel.uiState)
             }
         }
     }

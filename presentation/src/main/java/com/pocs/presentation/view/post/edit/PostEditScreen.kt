@@ -19,11 +19,11 @@ import com.pocs.presentation.model.PostEditUiState
 import kotlinx.coroutines.launch
 
 @Composable
-fun PostEditScreen(title: String, uiState: PostEditUiState) {
+fun PostEditScreen(uiState: PostEditUiState) {
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
     PostEditContent(
-        title = title,
+        title = stringResource(id = R.string.edit_post),
         onBackPressed = { onBackPressedDispatcher?.onBackPressed() },
         uiState = uiState,
     )
@@ -172,6 +172,22 @@ fun PostEditContentPreview() {
         "게시글 수정",
         {},
         PostEditUiState(
+            onChangeTitle = {},
+            onChangeContent = {},
+            onSave = { Result.success(true) }
+        ),
+    )
+}
+
+@Preview
+@Composable
+fun PostEditContentWithTitleAndContentPreview() {
+    PostEditContent(
+        "게시글 수정",
+        {},
+        PostEditUiState(
+            title = "공지입니다.",
+            content = "안녕하세요.",
             onChangeTitle = {},
             onChangeContent = {},
             onSave = { Result.success(true) }
