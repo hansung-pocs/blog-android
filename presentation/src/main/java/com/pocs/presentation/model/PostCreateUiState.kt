@@ -2,10 +2,9 @@ package com.pocs.presentation.model
 
 import com.pocs.domain.model.PostCategory
 
-data class PostEditUiState(
-    val id: Int,
-    val title: String,
-    val content: String,
+data class PostCreateUiState(
+    val title: String = "",
+    val content: String = "",
     val category: PostCategory,
     val isInSaving: Boolean = false,
     val onTitleChange: (String) -> Unit,
