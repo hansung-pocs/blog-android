@@ -1,5 +1,13 @@
 buildscript {
     ext {
+        // Android
+        android_compile_sdk_version = 32
+        android_min_sdk_version = 23
+        android_target_sdk_version = 32
+        android_version_code = 1
+        android_version_name = "1.0.0"
+
+        // Dependencies
         androidx_core = "1.8.0"
         hilt_version = "2.42"
         fragment_version = "1.5.0"
