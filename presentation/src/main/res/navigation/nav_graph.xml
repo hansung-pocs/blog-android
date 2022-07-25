@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/NoticeFragment"
         android:name="com.pocs.presentation.view.home.notice.NoticeFragment"
-        android:label="@string/first_fragment_label"
+        android:label="@string/notice"
         tools:layout="@layout/fragment_notice" />
 
     <fragment

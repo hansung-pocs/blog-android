@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">presentation</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
     <string name="notice">공지사항</string>
     <string name="article">게시글</string>
     <string name="user_list">회원 목록</string>
