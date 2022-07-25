@@ -3,6 +3,8 @@ package com.pocs.presentation.view.post.detail
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
@@ -10,7 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityPostDetailBinding
-import com.pocs.presentation.model.ArticleDetailUiState
+import com.pocs.presentation.model.PostDetailUiState
+import com.pocs.presentation.view.post.edit.PostEditActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -51,6 +54,26 @@ class PostDetailActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // TODO: 작성자일때만 메뉴 버튼 보이기
+        menuInflater.inflate(R.menu.menu_post_detail, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_edit_post -> {
+                startPostEditActivity()
+                true
+            }
+            R.id.action_delete_post -> {
+                // TODO: 삭제 API 연동 후 구현하기
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun loadArticle() {
         val id = intent.getIntExtra("id", -1)
         viewModel.loadArticle(id)
@@ -62,10 +85,21 @@ class PostDetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
-    private fun updateUi(uiState: ArticleDetailUiState) = with(binding) {
-        val article = uiState.article ?: return@with
-        title.text = article.title
-        subtitle.text = getString(R.string.article_subtitle, article.date, article.writer)
-        content.text = article.content
+    private fun updateUi(uiState: PostDetailUiState) = with(binding) {
+        title.text = uiState.title
+        subtitle.text = getString(R.string.article_subtitle, uiState.date, uiState.writer)
+        content.text = uiState.content
+    }
+
+    private fun startPostEditActivity() {
+        val uiState = viewModel.uiState.value
+        val intent = PostEditActivity.getIntent(
+            this,
+            uiState.id!!,
+            uiState.title,
+            uiState.content,
+            uiState.category!!
+        )
+        startActivity(intent)
     }
 }

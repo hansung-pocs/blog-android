@@ -20,6 +20,7 @@ interface PostRepository {
     ): Result<Boolean>
 
     suspend fun updatePost(
+        id: Int,
         title: String,
         content: String,
         userId: Int,

@@ -8,9 +8,16 @@ class UpdatePostUseCase @Inject constructor(
     private val repository: PostRepository
 ) {
     suspend operator fun invoke(
+        id: Int,
         title: String,
         content: String,
         userId: Int,
         category: PostCategory
-    ) = repository.updatePost(title = title, content = content, userId = userId, category = category)
+    ) = repository.updatePost(
+        id = id,
+        title = title,
+        content = content,
+        userId = userId,
+        category = category
+    )
 }
