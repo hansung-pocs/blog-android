@@ -5,6 +5,8 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import com.pocs.domain.model.PostCategory
 import com.pocs.presentation.model.PostEditUiState
 import com.pocs.presentation.view.post.edit.PostEditScreen
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
@@ -77,8 +79,9 @@ class PostEditScreenTest {
         composeTestRule.onNodeWithContentDescription("저장하기").assertDoesNotExist()
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun showSnackBar_IfFailedToSavePost() {
+    fun showSnackBar_IfFailedToSavePost() = runTest {
         val exception = Exception("fail!!")
         val fakeUiState = emptyUiState.copy(
             title = "title",
@@ -92,6 +95,7 @@ class PostEditScreenTest {
 
         composeTestRule.onNodeWithContentDescription("저장하기").performClick()
 
+        composeTestRule.awaitIdle()
         composeTestRule.onNodeWithText(exception.message!!).assertIsDisplayed()
     }
 }
