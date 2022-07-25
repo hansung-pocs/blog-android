@@ -4,13 +4,11 @@ import com.pocs.domain.model.PostCategory
 
 data class PostEditUiState(
     val id: Int,
-    val title: String,
-    val content: String,
-    val category: PostCategory,
-    val isInSaving: Boolean = false,
-    val onTitleChange: (String) -> Unit,
-    val onContentChange: (String) -> Unit,
-    val onSave: suspend () -> Result<Boolean>
-) {
-    val canSave get() = title.isNotEmpty() && content.isNotEmpty()
-}
+    override val title: String,
+    override val content: String,
+    override val category: PostCategory,
+    override val isInSaving: Boolean = false,
+    override val onTitleChange: (String) -> Unit,
+    override val onContentChange: (String) -> Unit,
+    override val onSave: suspend () -> Result<Boolean>
+) : BasePostEditUiState

@@ -13,14 +13,8 @@ fun PostCreateScreen(uiState: PostCreateUiState) {
 
     PostEditContent(
         // TODO: 게시글 속성에 따라 "OOO 편집"과 같이 다르게 보이기
-        appBarTitle = stringResource(R.string.write_post),
-        title = uiState.title,
-        content = uiState.content,
-        isInSaving = uiState.isInSaving,
-        enableSendIcon = uiState.canSave,
+        title = stringResource(R.string.write_post),
         onBackPressed = { onBackPressedDispatcher?.onBackPressed() },
-        onTitleChange = uiState.onTitleChange,
-        onContentChange = uiState.onContentChange,
-        onSave = uiState.onSave
+        uiState = uiState
     )
 }

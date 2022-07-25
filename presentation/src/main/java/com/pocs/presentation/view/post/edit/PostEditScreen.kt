@@ -14,7 +14,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.pocs.domain.model.PostCategory
 import com.pocs.presentation.R
+import com.pocs.presentation.model.BasePostEditUiState
 import com.pocs.presentation.model.PostEditUiState
 import kotlinx.coroutines.launch
 
@@ -24,30 +26,18 @@ fun PostEditScreen(uiState: PostEditUiState) {
 
     PostEditContent(
         // TODO: 게시글 속성에 따라 "OOO 편집"과 같이 다르게 보이기
-        appBarTitle = stringResource(id = R.string.edit_post),
-        title = uiState.title,
-        content = uiState.content,
-        isInSaving = uiState.isInSaving,
-        enableSendIcon = uiState.canSave,
+        title = stringResource(id = R.string.edit_post),
         onBackPressed = { onBackPressedDispatcher?.onBackPressed() },
-        onTitleChange = uiState.onTitleChange,
-        onContentChange = uiState.onContentChange,
-        onSave = uiState.onSave
+        uiState = uiState,
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostEditContent(
-    appBarTitle: String,
     title: String,
-    content: String,
-    isInSaving: Boolean,
-    enableSendIcon: Boolean,
     onBackPressed: () -> Unit,
-    onSave: suspend () -> Result<Boolean>,
-    onTitleChange: (String) -> Unit,
-    onContentChange: (String) -> Unit
+    uiState: BasePostEditUiState
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
 
@@ -57,14 +47,14 @@ fun PostEditContent(
             val coroutineScope = rememberCoroutineScope()
 
             PostEditAppBar(
-                title = appBarTitle,
+                title = title,
                 onBackPressed = onBackPressed,
-                isInSaving = isInSaving,
-                enableSendIcon = enableSendIcon,
+                isInSaving = uiState.isInSaving,
+                enableSendIcon = uiState.canSave,
                 onClickSend = {
-                    if (!isInSaving) {
+                    if (!uiState.isInSaving) {
                         coroutineScope.launch {
-                            val result = onSave()
+                            val result = uiState.onSave()
                             if (result.isSuccess) {
                                 onBackPressed()
                             } else {
@@ -84,15 +74,15 @@ fun PostEditContent(
         ) {
             SimpleTextField(
                 hint = stringResource(R.string.title),
-                value = title,
-                onValueChange = onTitleChange,
+                value = uiState.title,
+                onValueChange = uiState.onTitleChange,
                 modifier = Modifier.fillMaxWidth()
             )
             Divider(startIndent = 16.dp, modifier = Modifier.alpha(0.4f))
             SimpleTextField(
                 hint = stringResource(R.string.content),
-                value = content,
-                onValueChange = onContentChange,
+                value = uiState.content,
+                onValueChange = uiState.onContentChange,
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
@@ -182,15 +172,17 @@ fun SendIconButton(
 @Composable
 fun PostEditContentEmptyPreview() {
     PostEditContent(
-        appBarTitle = "게시글 수정",
-        title = "",
-        content = "",
-        isInSaving = false,
-        enableSendIcon = true,
-        onBackPressed = {},
-        onTitleChange = {},
-        onContentChange = {},
-        onSave = { Result.success(true) }
+        "게시글 수정",
+        {},
+        PostEditUiState(
+            id = 1,
+            title = "",
+            content = "",
+            category = PostCategory.STUDY,
+            onTitleChange = {},
+            onContentChange = {},
+            onSave = { Result.success(true) }
+        ),
     )
 }
 
@@ -198,14 +190,16 @@ fun PostEditContentEmptyPreview() {
 @Composable
 fun PostEditContentPreview() {
     PostEditContent(
-        appBarTitle = "게시글 수정",
-        title = "Hello",
-        content = "",
-        isInSaving = false,
-        enableSendIcon = true,
-        onBackPressed = {},
-        onTitleChange = {},
-        onContentChange = {},
-        onSave = { Result.success(true) }
+        "게시글 수정",
+        {},
+        PostEditUiState(
+            id = 1,
+            title = "공지입니다.",
+            content = "안녕하세요.",
+            category = PostCategory.STUDY,
+            onTitleChange = {},
+            onContentChange = {},
+            onSave = { Result.success(true) }
+        ),
     )
 }
