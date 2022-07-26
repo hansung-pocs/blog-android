@@ -10,10 +10,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pocs.domain.model.PostCategory
 import com.pocs.presentation.R
+import com.pocs.presentation.databinding.ContentLoadStateBinding
 import com.pocs.presentation.databinding.FragmentArticleBinding
 import com.pocs.presentation.model.ArticleUiState
 import com.pocs.presentation.model.PostItemUiState
@@ -22,6 +24,7 @@ import com.pocs.presentation.view.post.adapter.PostAdapter
 import com.pocs.presentation.view.post.create.PostCreateActivity
 import com.pocs.presentation.view.post.detail.PostDetailActivity
 import kotlinx.coroutines.launch
+import java.net.ConnectException
 
 class ArticleFragment : Fragment(R.layout.fragment_article) {
 
@@ -54,10 +57,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
             }
 
             adapter.addLoadStateListener { loadStates ->
-                val isError = loadStates.refresh is LoadState.Error
-                loadStateBinding.progressBar.isVisible = loadStates.refresh is LoadState.Loading
-                loadStateBinding.retryButton.isVisible = isError
-                loadStateBinding.errorMsg.isVisible = isError
+                listenLoadState(loadStates, loadStateBinding)
             }
 
             fab.setOnClickListener { startPostCreateActivity() }
@@ -75,6 +75,25 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun listenLoadState(
+        loadStates: CombinedLoadStates,
+        loadStateBinding: ContentLoadStateBinding
+    ) {
+        val refreshLoadState = loadStates.refresh
+        val isError = refreshLoadState is LoadState.Error
+        loadStateBinding.apply {
+            progressBar.isVisible = refreshLoadState is LoadState.Loading
+            retryButton.isVisible = isError
+            errorMsg.isVisible = isError
+            if (refreshLoadState is LoadState.Error) {
+                errorMsg.text = when (val exception = refreshLoadState.error) {
+                    is ConnectException -> getString(R.string.fail_to_connect)
+                    else -> exception.message
+                }
+            }
+        }
     }
 
     private fun updateUi(uiState: ArticleUiState, adapter: PostAdapter) {
