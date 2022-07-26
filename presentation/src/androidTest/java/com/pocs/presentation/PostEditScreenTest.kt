@@ -95,7 +95,8 @@ class PostEditScreenTest {
 
         composeTestRule.onNodeWithContentDescription("저장하기").performClick()
 
-        composeTestRule.awaitIdle()
+        // "SnackBar"가 보이는 시간으로 앞당긴다.
+        composeTestRule.mainClock.advanceTimeBy(50)
         composeTestRule.onNodeWithText(exception.message!!).assertIsDisplayed()
     }
 }
