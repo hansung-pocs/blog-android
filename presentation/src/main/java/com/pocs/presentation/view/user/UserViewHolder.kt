@@ -1,14 +1,13 @@
 package com.pocs.presentation.view.user
 
-import android.content.Context
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ItemUserBinding
 import com.pocs.presentation.model.UserItemUiState
+import com.pocs.presentation.view.user.detail.UserDetailActivity
 
 class UserViewHolder(
     private val binding: ItemUserBinding
@@ -36,7 +35,9 @@ class UserViewHolder(
             inflate(R.menu.menu_admin_user)
             setOnMenuItemClickListener {
                 when (it.itemId) {
-
+                    R.id.admin_user_written -> {
+                        true
+                    }
                     else -> false
                 }
             }

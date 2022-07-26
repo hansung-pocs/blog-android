@@ -9,7 +9,6 @@ import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityAdminBinding
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class AdminActivity : AppCompatActivity() {
 
@@ -39,8 +38,6 @@ class AdminActivity : AppCompatActivity() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabTitleArray[position]
         }.attach()
-
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -54,5 +51,4 @@ class AdminActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(true)
         supportActionBar?.title = getString(R.string.admin_page)
     }
-
 }
