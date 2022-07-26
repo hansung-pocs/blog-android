@@ -8,6 +8,8 @@ buildscript {
         android_version_name = "1.0.0"
 
         // Dependencies
+        paging = "3.1.1"
+        retrofit_version = "2.9.0"
         androidx_core = "1.8.0"
         hilt_version = "2.42"
         fragment_version = "1.5.0"

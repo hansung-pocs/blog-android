@@ -1,12 +1,25 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 apply from: rootProject.file("android.gradle")
 
 dependencies {
     implementation project(":domain")
+
+    // paging
+    implementation "androidx.paging:paging-common-ktx:$paging"
+
+    // Retrofit2
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    // hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     implementation "androidx.core:core-ktx:$androidx_core"
     implementation 'androidx.appcompat:appcompat:1.4.2'
