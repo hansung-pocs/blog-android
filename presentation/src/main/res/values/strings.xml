@@ -20,6 +20,7 @@
     <string name="write_notice">공지 쓰기</string>
     <string name="write_article">글 쓰기</string>
     <string name="write_post">게시글 쓰기</string>
+    <string name="failed_to_load">불러오기에 실패했습니다.</string>
     <string-array name="admin_tab">
         <item>공지사항</item>
         <item>회원목록</item>

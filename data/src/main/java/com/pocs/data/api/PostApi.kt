@@ -11,7 +11,7 @@ interface PostApi {
     suspend fun getAll(): ResponseBody<PostListDto>
 
     @GET("posts/{postId}")
-    suspend fun getDetail(
+    suspend fun getPostDetail(
         @Path("postId") postId: Int
     ): ResponseBody<PostDetailDto>
 }
