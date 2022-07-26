@@ -117,10 +117,10 @@ class PostDetailActivity : AppCompatActivity() {
 
         val intent = PostEditActivity.getIntent(
             this,
-            uiState.id!!,
+            uiState.id,
             uiState.title,
             uiState.content,
-            uiState.category!!
+            uiState.category
         )
         startActivity(intent)
     }
