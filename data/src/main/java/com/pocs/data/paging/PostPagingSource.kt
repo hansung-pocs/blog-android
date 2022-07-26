@@ -5,7 +5,6 @@ import androidx.paging.PagingState
 import com.pocs.data.api.PostApi
 import com.pocs.data.mapper.toEntity
 import com.pocs.domain.model.Post
-import retrofit2.HttpException
 import java.lang.Exception
 import javax.inject.Inject
 

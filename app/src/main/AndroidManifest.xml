@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.pocs.blog">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".PocsBlogApplication"
         android:allowBackup="false"
@@ -13,6 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PocsBlog"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31" />
 
 </manifest>
