@@ -23,7 +23,7 @@ import com.pocs.presentation.view.post.create.PostCreateActivity
 import com.pocs.presentation.view.post.detail.PostDetailActivity
 import kotlinx.coroutines.launch
 
-class NoticeFragment : Fragment(R.id.NoticeFragment) {
+class NoticeFragment : Fragment(R.layout.fragment_notice) {
 
     private var _binding: FragmentNoticeBinding? = null
     private val binding get() = _binding!!

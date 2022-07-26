@@ -6,13 +6,15 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+
+    compileSdk globalConfiguration["android_compile_sdk_version"]
 
     defaultConfig {
-        minSdk 23
-        targetSdk 32
-        versionCode 1
-        versionName "1.0"
+        minSdk globalConfiguration["android_min_sdk_version"]
+        targetSdk globalConfiguration["android_target_sdk_version"]
+        versionCode globalConfiguration["android_version_code"]
+        versionName globalConfiguration["android_version_name"]
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

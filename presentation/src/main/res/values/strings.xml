@@ -13,12 +13,10 @@
     <string name="delete">삭제</string>
     <string name="edit_post">게시글 편집</string>
     <string name="back">뒤로가기</string>
-    <string name="add_as_notice">공지로 등록</string>
     <string name="title">제목</string>
     <string name="content">내용</string>
     <string name="save">저장하기</string>
     <string name="admin_page">관리자 페이지</string>
-    <string name="modify">수정</string>
     <string name="write_notice">공지 쓰기</string>
     <string name="write_article">글 쓰기</string>
     <string name="write_post">게시글 쓰기</string>
