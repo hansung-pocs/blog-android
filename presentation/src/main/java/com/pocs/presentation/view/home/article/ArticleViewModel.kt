@@ -1,6 +1,5 @@
 package com.pocs.presentation.view.home.article
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
@@ -8,10 +7,8 @@ import androidx.paging.map
 import com.pocs.domain.model.PostCategory
 import com.pocs.domain.usecase.post.GetAllPostsUseCase
 import com.pocs.presentation.mapper.toUiState
-import com.pocs.presentation.mock.mockArticleItemsPagingData
 import com.pocs.presentation.model.ArticleUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
