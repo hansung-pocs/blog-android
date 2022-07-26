@@ -16,6 +16,8 @@
     <string name="title">제목</string>
     <string name="content">내용</string>
     <string name="save">저장하기</string>
+    <string name="secession">탈퇴하기</string>
+    <string name="written">작성글 보기</string>
     <string name="admin_page">관리자 페이지</string>
     <string name="write_notice">공지 쓰기</string>
     <string name="write_article">글 쓰기</string>

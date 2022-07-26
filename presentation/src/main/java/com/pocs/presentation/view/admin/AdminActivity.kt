@@ -39,6 +39,8 @@ class AdminActivity : AppCompatActivity() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabTitleArray[position]
         }.attach()
+
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
