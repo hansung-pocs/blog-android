@@ -88,8 +88,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
             retryButton.isVisible = isError
             errorMsg.isVisible = isError
             if (refreshLoadState is LoadState.Error) {
-                val exception = refreshLoadState.error
-                errorMsg.text = when (exception) {
+                errorMsg.text = when (val exception = refreshLoadState.error) {
                     is ConnectException -> getString(R.string.fail_to_connect)
                     else -> exception.message
                 }
