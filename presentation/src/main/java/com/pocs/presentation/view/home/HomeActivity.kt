@@ -10,13 +10,11 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityHomeBinding
 import com.pocs.presentation.view.admin.AdminActivity
 import com.pocs.presentation.view.user.UserActivity
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
@@ -43,11 +41,6 @@ class HomeActivity : AppCompatActivity() {
 
         binding.navigationView.setNavigationItemSelectedListener(::onSelectNavigationItem)
         binding.bottomNav.setupWithNavController(navController)
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAnchorView(R.id.fab)
-                .setAction("Action", null).show()
-        }
     }
 
     private fun onSelectNavigationItem(item: MenuItem): Boolean {

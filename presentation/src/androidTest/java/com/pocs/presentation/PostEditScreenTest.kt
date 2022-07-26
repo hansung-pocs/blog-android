@@ -20,8 +20,8 @@ class PostEditScreenTest {
         title = "",
         content = "",
         category = PostCategory.NOTICE,
-        onChangeTitle = {},
-        onChangeContent = {},
+        onTitleChange = {},
+        onContentChange = {},
         onSave = { Result.success(true) }
     )
 

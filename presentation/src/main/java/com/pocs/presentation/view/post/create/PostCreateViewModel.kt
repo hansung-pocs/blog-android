@@ -1,9 +1,11 @@
-package com.pocs.presentation.view.post.edit
+package com.pocs.presentation.view.post.create
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.pocs.domain.model.PostCategory
-import com.pocs.presentation.model.PostEditUiState
+import com.pocs.presentation.model.PostCreateUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -11,18 +13,14 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class PostEditViewModel @Inject constructor() : ViewModel() {
+class PostCreateViewModel @Inject constructor() : ViewModel() {
 
-    private lateinit var _uiState: MutableState<PostEditUiState>
-    val uiState: State<PostEditUiState> get() = _uiState
+    private lateinit var _uiState: MutableState<PostCreateUiState>
+    val uiState: State<PostCreateUiState> get() = _uiState
 
-    fun initUiState(id: Int, title: String, content: String, category: PostCategory) {
-        assert(id > 0)
+    fun initUiState(category: PostCategory) {
         _uiState = mutableStateOf(
-            PostEditUiState(
-                id = id,
-                title = title,
-                content = content,
+            PostCreateUiState(
                 category = category,
                 onTitleChange = ::updateTitle,
                 onContentChange = ::updateContent,

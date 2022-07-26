@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pocs.domain.model.PostCategory
 import com.pocs.presentation.R
+import com.pocs.presentation.model.BasePostEditUiState
 import com.pocs.presentation.model.PostEditUiState
 import kotlinx.coroutines.launch
 
@@ -36,7 +37,7 @@ fun PostEditScreen(uiState: PostEditUiState) {
 fun PostEditContent(
     title: String,
     onBackPressed: () -> Unit,
-    uiState: PostEditUiState,
+    uiState: BasePostEditUiState
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
 
@@ -74,14 +75,14 @@ fun PostEditContent(
             SimpleTextField(
                 hint = stringResource(R.string.title),
                 value = uiState.title,
-                onValueChange = uiState.onChangeTitle,
+                onValueChange = uiState.onTitleChange,
                 modifier = Modifier.fillMaxWidth()
             )
             Divider(startIndent = 16.dp, modifier = Modifier.alpha(0.4f))
             SimpleTextField(
                 hint = stringResource(R.string.content),
                 value = uiState.content,
-                onValueChange = uiState.onChangeContent,
+                onValueChange = uiState.onContentChange,
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
@@ -169,7 +170,7 @@ fun SendIconButton(
 
 @Preview
 @Composable
-fun PostEditContentPreview() {
+fun PostEditContentEmptyPreview() {
     PostEditContent(
         "게시글 수정",
         {},
@@ -178,8 +179,8 @@ fun PostEditContentPreview() {
             title = "",
             content = "",
             category = PostCategory.STUDY,
-            onChangeTitle = {},
-            onChangeContent = {},
+            onTitleChange = {},
+            onContentChange = {},
             onSave = { Result.success(true) }
         ),
     )
@@ -187,7 +188,7 @@ fun PostEditContentPreview() {
 
 @Preview
 @Composable
-fun PostEditContentWithTitleAndContentPreview() {
+fun PostEditContentPreview() {
     PostEditContent(
         "게시글 수정",
         {},
@@ -196,8 +197,8 @@ fun PostEditContentWithTitleAndContentPreview() {
             title = "공지입니다.",
             content = "안녕하세요.",
             category = PostCategory.STUDY,
-            onChangeTitle = {},
-            onChangeContent = {},
+            onTitleChange = {},
+            onContentChange = {},
             onSave = { Result.success(true) }
         ),
     )

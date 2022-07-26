@@ -12,12 +12,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.pocs.domain.model.PostCategory
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentArticleBinding
 import com.pocs.presentation.model.ArticleUiState
 import com.pocs.presentation.model.PostItemUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
 import com.pocs.presentation.view.post.adapter.PostAdapter
+import com.pocs.presentation.view.post.create.PostCreateActivity
 import com.pocs.presentation.view.post.detail.PostDetailActivity
 import kotlinx.coroutines.launch
 
@@ -58,6 +60,8 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
                 loadStateBinding.errorMsg.isVisible = isError
             }
 
+            fab.setOnClickListener { startPostCreateActivity() }
+
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.uiState.collect {
@@ -79,6 +83,13 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
 
     private fun onClickArticle(postItemUiState: PostItemUiState) {
         val intent = PostDetailActivity.getIntent(requireContext(), postItemUiState.id)
+        startActivity(intent)
+    }
+
+    private fun startPostCreateActivity() {
+        // TODO: 글 작성 후 성공했다면 adapter refresh 하기
+        // TODO: 적절한 카테고리로 수정하기
+        val intent = PostCreateActivity.getIntent(requireContext(), PostCategory.STUDY)
         startActivity(intent)
     }
 }
