@@ -22,12 +22,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun PostEditScreen(uiState: PostEditUiState) {
-    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-
     PostEditContent(
         // TODO: 게시글 속성에 따라 "OOO 편집"과 같이 다르게 보이기
         title = stringResource(id = R.string.edit_post),
-        onBackPressed = { onBackPressedDispatcher?.onBackPressed() },
         uiState = uiState,
     )
 }
@@ -36,9 +33,12 @@ fun PostEditScreen(uiState: PostEditUiState) {
 @Composable
 fun PostEditContent(
     title: String,
-    onBackPressed: () -> Unit,
     uiState: BasePostEditUiState
 ) {
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    val onBackPressed: () -> Unit = {
+        onBackPressedDispatcher?.onBackPressed()
+    }
     val snackBarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -173,7 +173,6 @@ fun SendIconButton(
 fun PostEditContentEmptyPreview() {
     PostEditContent(
         "게시글 수정",
-        {},
         PostEditUiState(
             id = 1,
             title = "",
@@ -191,7 +190,6 @@ fun PostEditContentEmptyPreview() {
 fun PostEditContentPreview() {
     PostEditContent(
         "게시글 수정",
-        {},
         PostEditUiState(
             id = 1,
             title = "공지입니다.",
