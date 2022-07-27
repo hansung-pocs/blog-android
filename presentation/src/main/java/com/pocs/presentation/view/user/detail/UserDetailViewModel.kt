@@ -9,6 +9,7 @@ import com.pocs.presentation.mapper.toDetailItemUiState
 import com.pocs.presentation.mock.mockUserList
 import com.pocs.presentation.model.UserDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,13 +21,20 @@ class UserDetailViewModel @Inject constructor(
     var uiState by mutableStateOf<UserDetailUiState>(UserDetailUiState.Loading)
         private set
 
-    fun loadUserInfo(id: Int) = viewModelScope.launch {
-        val result = Result.success(mockUserList.first { it.id == id }) // getUserUseCase(id)
-        uiState = if (result.isSuccess) {
-            val user = result.getOrNull()!!
-            UserDetailUiState.Success(user.toDetailItemUiState())
-        } else {
-            UserDetailUiState.Failure(result.exceptionOrNull()!!)
+    private var job: Job? = null
+
+    fun loadUserInfo(id: Int) {
+        job?.cancel()
+        job = viewModelScope.launch {
+            val result = Result.success(mockUserList.first { it.id == id }) // getUserUseCase(id)
+            uiState = if (result.isSuccess) {
+                val user = result.getOrNull()!!
+                UserDetailUiState.Success(user.toDetailItemUiState())
+            } else {
+                UserDetailUiState.Failure(e = result.exceptionOrNull()!!, onRetryClick = {
+                    loadUserInfo(id)
+                })
+            }
         }
     }
 }
