@@ -8,4 +8,6 @@ class PostRemoteDataSourceImpl @Inject constructor(
 ): PostRemoteDataSource {
 
     override suspend fun getAll() = api.getAll()
+
+    override suspend fun getPostDetail(postId: Int) = api.getPostDetail(postId)
 }

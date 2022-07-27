@@ -4,7 +4,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.pocs.data.api.PostApi
+import com.pocs.data.mapper.toEntity
 import com.pocs.data.paging.PostPagingSource
+import com.pocs.data.source.PostRemoteDataSource
 import com.pocs.domain.model.Post
 import com.pocs.domain.model.PostCategory
 import com.pocs.domain.model.PostDetail
@@ -13,6 +15,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(
+    private val dataSource: PostRemoteDataSource,
     private val api: PostApi
 ) : PostRepository {
 
@@ -25,7 +28,16 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getPostDetail(id: Int): Result<PostDetail> {
-        TODO("Not yet implemented")
+        return try {
+            val response = dataSource.getPostDetail(id)
+            if (response.isSuccess) {
+                Result.success(response.data.toEntity(id))
+            } else {
+                throw Exception(response.message)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     override suspend fun addPost(

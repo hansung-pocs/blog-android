@@ -2,6 +2,7 @@ package com.pocs.data.di
 
 import com.pocs.data.api.PostApi
 import com.pocs.data.repository.PostRepositoryImpl
+import com.pocs.data.source.PostRemoteDataSource
 import com.pocs.domain.repository.PostRepository
 import dagger.Module
 import dagger.Provides
@@ -15,7 +16,7 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun providePostRepository(api: PostApi) : PostRepository {
-        return PostRepositoryImpl(api)
+    fun providePostRepository(api: PostApi, dataSource: PostRemoteDataSource) : PostRepository {
+        return PostRepositoryImpl(api = api, dataSource = dataSource)
     }
 }

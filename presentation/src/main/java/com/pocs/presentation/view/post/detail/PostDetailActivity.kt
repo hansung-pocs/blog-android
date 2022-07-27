@@ -7,6 +7,8 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.children
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -55,8 +57,15 @@ class PostDetailActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // TODO: 작성자일때만 메뉴 버튼 보이기
         menuInflater.inflate(R.menu.menu_post_detail, menu)
+        return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        val uiState = viewModel.uiState.value
+        val isSuccess = uiState is PostDetailUiState.Success
+        // TODO: 작성자인 경우에만 보이도록 하기
+        menu.children.forEach { it.isVisible = isSuccess }
         return true
     }
 
@@ -86,19 +95,32 @@ class PostDetailActivity : AppCompatActivity() {
     }
 
     private fun updateUi(uiState: PostDetailUiState) = with(binding) {
-        title.text = uiState.title
-        subtitle.text = getString(R.string.article_subtitle, uiState.date, uiState.writer)
-        content.text = uiState.content
+        invalidateOptionsMenu()
+        progressBar.isVisible = uiState is PostDetailUiState.Loading
+        when (uiState) {
+            is PostDetailUiState.Success -> {
+                title.text = uiState.title
+                subtitle.text = getString(R.string.article_subtitle, uiState.date, uiState.writer)
+                content.text = uiState.content
+            }
+            is PostDetailUiState.Failure -> {
+                title.text = getString(R.string.failed_to_load)
+                content.text = uiState.message
+            }
+            else -> {}
+        }
     }
 
     private fun startPostEditActivity() {
         val uiState = viewModel.uiState.value
+        if (uiState !is PostDetailUiState.Success) return
+
         val intent = PostEditActivity.getIntent(
             this,
-            uiState.id!!,
+            uiState.id,
             uiState.title,
             uiState.content,
-            uiState.category!!
+            uiState.category
         )
         startActivity(intent)
     }

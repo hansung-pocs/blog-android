@@ -20,7 +20,7 @@ class PostPagingSource @Inject constructor(
         val page = params.key ?: START_PAGE
         return try {
             val response = api.getAll()
-            if (response.isSuccessful) {
+            if (response.isSuccess) {
                 val posts = response.data.posts.map { it.toEntity() }
                 // TODO: API에서 페이지네이션 구현되면 수정하기
                 val isEnd = true
