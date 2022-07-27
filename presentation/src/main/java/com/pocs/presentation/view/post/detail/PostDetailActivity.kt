@@ -95,7 +95,7 @@ class PostDetailActivity : AppCompatActivity() {
     }
 
     private fun updateUi(uiState: PostDetailUiState) = with(binding) {
-        supportActionBar?.invalidateOptionsMenu()
+        invalidateOptionsMenu()
         progressBar.isVisible = uiState is PostDetailUiState.Loading
         when (uiState) {
             is PostDetailUiState.Success -> {
