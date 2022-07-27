@@ -16,6 +16,7 @@ import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentUserBinding
 import com.pocs.presentation.model.UserUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
+import com.pocs.presentation.view.user.detail.UserDetailActivity
 import kotlinx.coroutines.launch
 
 class UserListFragment : Fragment(R.layout.fragment_user) {
@@ -36,7 +37,7 @@ class UserListFragment : Fragment(R.layout.fragment_user) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = UserAdapter()
+        val adapter = UserAdapter(::startUserDetailActivity)
         binding.apply {
             recyclerView.adapter = adapter.withLoadStateFooter(
                 PagingLoadStateAdapter { adapter.retry() }
@@ -72,5 +73,10 @@ class UserListFragment : Fragment(R.layout.fragment_user) {
 
     private fun updateUi(uiState: UserUiState, adapter: UserAdapter) {
         adapter.submitData(lifecycle, uiState.userPagingData)
+    }
+
+    private fun startUserDetailActivity(userId: Int) {
+        val intent = UserDetailActivity.getIntent(requireContext(), userId)
+        startActivity(intent)
     }
 }

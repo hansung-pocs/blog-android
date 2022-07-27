@@ -6,7 +6,8 @@ import com.pocs.presentation.databinding.ItemUserBinding
 import com.pocs.presentation.model.UserItemUiState
 
 class UserViewHolder(
-    private val binding: ItemUserBinding
+    private val binding: ItemUserBinding,
+    private val onItemClick: (userId: Int) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(uiState: UserItemUiState) = with(binding) {
@@ -17,8 +18,6 @@ class UserViewHolder(
             uiState.generation.toString()
         )
 
-        root.setOnClickListener {
-            // TODO: UserDetailActivity로 전환하기
-        }
+        cardView.setOnClickListener { onItemClick(uiState.id) }
     }
 }
