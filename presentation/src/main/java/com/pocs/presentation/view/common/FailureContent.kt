@@ -16,9 +16,9 @@ import androidx.compose.ui.unit.dp
 import com.pocs.presentation.R
 
 @Composable
-fun FailureContent(message: String, onRetryClick: () -> Unit) {
+fun FailureContent(modifier: Modifier = Modifier, message: String, onRetryClick: () -> Unit) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.Center,
