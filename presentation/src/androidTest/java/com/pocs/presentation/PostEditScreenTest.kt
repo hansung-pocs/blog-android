@@ -1,12 +1,16 @@
 package com.pocs.presentation
 
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.pocs.domain.model.PostCategory
 import com.pocs.presentation.model.PostEditUiState
 import com.pocs.presentation.view.post.edit.PostEditScreen
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
@@ -25,6 +29,29 @@ class PostEditScreenTest {
         onSave = { Result.success(true) }
     )
 
+    companion object {
+        private const val HOME_STACK_TEXT = "Home"
+    }
+
+    @Suppress("TestFunctionName")
+    @Composable
+    private fun PostEditScreenWithHomeBackStack(uiState: PostEditUiState) {
+        val navController = rememberNavController()
+
+        SideEffect {
+            navController.navigate("edit")
+        }
+
+        NavHost(navController, startDestination = "home") {
+            composable(route = "home") {
+                Text(HOME_STACK_TEXT)
+            }
+            composable(route = "edit") {
+                PostEditScreen(uiState = uiState, navigateUp = navController::navigateUp)
+            }
+        }
+    }
+
     @Test
     fun disableSendButton_IfTitleIsEmpty() {
         val fakeUiState = emptyUiState.copy(
@@ -32,7 +59,7 @@ class PostEditScreenTest {
             content = "hello",
         )
         composeTestRule.setContent {
-            PostEditScreen(uiState = fakeUiState)
+            PostEditScreen(uiState = fakeUiState) {}
         }
 
         composeTestRule.onNodeWithContentDescription("저장하기").assertIsNotEnabled()
@@ -45,7 +72,7 @@ class PostEditScreenTest {
             content = "",
         )
         composeTestRule.setContent {
-            PostEditScreen(uiState = fakeUiState)
+            PostEditScreen(uiState = fakeUiState) {}
         }
 
         composeTestRule.onNodeWithContentDescription("저장하기").assertIsNotEnabled()
@@ -58,7 +85,7 @@ class PostEditScreenTest {
             content = "content",
         )
         composeTestRule.setContent {
-            PostEditScreen(uiState = fakeUiState)
+            PostEditScreen(uiState = fakeUiState) {}
         }
 
         composeTestRule.onNodeWithContentDescription("저장하기").assertIsEnabled()
@@ -72,16 +99,15 @@ class PostEditScreenTest {
             isInSaving = true,
         )
         composeTestRule.setContent {
-            PostEditScreen(uiState = fakeUiState)
+            PostEditScreen(uiState = fakeUiState) {}
         }
 
         composeTestRule.onNodeWithTag("CircularProgressIndicator").assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("저장하기").assertDoesNotExist()
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun showSnackBar_IfFailedToSavePost() = runTest {
+    fun showSnackBar_IfFailedToSavePost() {
         val exception = Exception("fail!!")
         val fakeUiState = emptyUiState.copy(
             title = "title",
@@ -90,13 +116,56 @@ class PostEditScreenTest {
             onSave = { Result.failure(exception) }
         )
         composeTestRule.setContent {
-            PostEditScreen(uiState = fakeUiState)
+            PostEditScreen(uiState = fakeUiState) {}
         }
 
         composeTestRule.onNodeWithContentDescription("저장하기").performClick()
 
-        // "SnackBar"가 보이는 시간으로 앞당긴다.
-        composeTestRule.mainClock.advanceTimeBy(50)
         composeTestRule.onNodeWithText(exception.message!!).assertIsDisplayed()
+    }
+
+    @Test
+    fun navigateToUp_WhenSuccessSaving() {
+        composeTestRule.run {
+            setContent {
+                PostEditScreenWithHomeBackStack(emptyUiState.copy(title = "a", content = "a"))
+            }
+
+            onNodeWithContentDescription("저장하기").performClick()
+
+            onNodeWithText(HOME_STACK_TEXT).assertIsDisplayed()
+        }
+    }
+
+    @Test
+    fun navigateToUp_WhenClickOkButtonOfAlertDialog() {
+        composeTestRule.run {
+            setContent {
+                PostEditScreenWithHomeBackStack(emptyUiState)
+            }
+
+            onNodeWithContentDescription("뒤로가기").performClick()
+            onNodeWithText("정말로 중단할까요?").assertIsDisplayed()
+
+            onNodeWithText("확인").performClick()
+
+            onNodeWithText(HOME_STACK_TEXT).assertIsDisplayed()
+        }
+    }
+
+    @Test
+    fun continueEditing_WhenClickCancelButtonOfAlertDialog() {
+        composeTestRule.run {
+            setContent {
+                PostEditScreenWithHomeBackStack(emptyUiState)
+            }
+
+            onNodeWithContentDescription("뒤로가기").performClick()
+            onNodeWithText("정말로 중단할까요?").assertIsDisplayed()
+
+            onNodeWithText("취소").performClick()
+
+            onNodeWithText(HOME_STACK_TEXT).assertDoesNotExist()
+        }
     }
 }

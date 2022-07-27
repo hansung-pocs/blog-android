@@ -7,10 +7,11 @@ import com.pocs.presentation.model.PostCreateUiState
 import com.pocs.presentation.view.post.edit.PostEditContent
 
 @Composable
-fun PostCreateScreen(uiState: PostCreateUiState) {
+fun PostCreateScreen(uiState: PostCreateUiState, navigateUp: () -> Unit) {
     PostEditContent(
         // TODO: 게시글 속성에 따라 "OOO 편집"과 같이 다르게 보이기
         title = stringResource(R.string.write_post),
-        uiState = uiState
+        uiState = uiState,
+        navigateUp = navigateUp
     )
 }
