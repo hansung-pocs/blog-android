@@ -202,6 +202,7 @@ fun UserDetailFailureContent(message: String, onRetryClick: () -> Unit) {
         topBar = { UserDetailTopBar("") }
     ) {
         FailureContent(
+            modifier = Modifier.padding(it),
             message = message,
             onRetryClick = onRetryClick
         )
