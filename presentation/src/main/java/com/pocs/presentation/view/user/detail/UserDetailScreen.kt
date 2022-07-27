@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -49,7 +50,21 @@ fun UserDetailScreen(uiState: UserDetailUiState) {
 @Composable
 fun UserDetailContent(itemUiState: UserDetailItemUiState) {
     Scaffold(
-        topBar = { UserDetailTopBar(itemUiState.name) }
+        topBar = { UserDetailTopBar(itemUiState.name) },
+        floatingActionButton = {
+            // TODO: 본인 정보인 경우에만 내 정보 수정 버튼 보이기
+            ExtendedFloatingActionButton(
+                onClick = {
+                    // TODO: 회원 정보 편집 페이지 보이기
+                }
+            ) {
+                Icon(Icons.Filled.Edit, contentDescription = stringResource(id = R.string.edit))
+                Text(
+                    stringResource(R.string.edit_my_info),
+                    modifier = Modifier.padding(start = 12.dp)
+                )
+            }
+        }
     ) {
         LazyColumn(
             modifier = Modifier
