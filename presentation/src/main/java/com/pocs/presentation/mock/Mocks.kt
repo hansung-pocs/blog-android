@@ -36,13 +36,13 @@ val mockUsersPagingData = PagingData.from(
 )
 
 val mockUserList = listOf(
-    User(1, "오인성", "1891065", 2, UserType.MEMBER, "google", 30, "http", ""),
-    User(2, "김민성", "1871034", 3, UserType.MEMBER, "google", 30, "http", ""),
-    User(3, "가가가", "1991066", 5, UserType.MEMBER, "google", 30, "http", ""),
-    User(4, "나나나", "1891067", 6, UserType.MEMBER, "google", 30, "http", ""),
-    User(5, "다다다", "1891068", 1, UserType.MEMBER, "google", 30, "http", ""),
-    User(6, "마마마", "1891069", 3, UserType.MEMBER, "google", 30, "http", ""),
-    User(7, "바바바", "1691010", 8, UserType.MEMBER, "google", 30, "http", ""),
-    User(8, "사사사", "1791011", 9, UserType.MEMBER, "google", 30, "http", ""),
-    User(9, "아아아", "1891012", 10, UserType.MEMBER, "google", 30, "http", ""),
+    User(1, "오인성", "1891065", 2, UserType.MEMBER, "google", 30, "https://github/jja08111", ""),
+    User(2, "김민성", "1871034", 3, UserType.MEMBER, "google", 30, "https://github/jja08111", ""),
+    User(3, "가가가", "jja08111@gmail.com", 5, UserType.MEMBER, "google", 30, "https://github/jja08111", ""),
+    User(4, "나나나", "1891067", 6, UserType.MEMBER, "google", 30, "https://github/jja08111", ""),
+    User(5, "다다다", "1891068", 1, UserType.MEMBER, "google", 30, "https://github/jja08111", ""),
+    User(6, "마마마", "1891069", 3, UserType.MEMBER, "google", 30, "https://github/jja08111", ""),
+    User(7, "바바바", "1691010", 8, UserType.MEMBER, "google", 30, "https://github/jja08111", ""),
+    User(8, "사사사", "1791011", 9, UserType.MEMBER, "google", 30, "https://github/jja08111", ""),
+    User(9, "아아아", "1891012", 10, UserType.MEMBER, "google", 30, "https://github/jja08111", ""),
 )
