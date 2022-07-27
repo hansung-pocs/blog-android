@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.DiffUtil
 import com.pocs.presentation.databinding.ItemUserBinding
 import com.pocs.presentation.model.UserItemUiState
 
-class UserAdapter : PagingDataAdapter<UserItemUiState, UserViewHolder>(diffCallback) {
+class UserAdapter(
+    private val onItemClick: (userId: Int) -> Unit
+) : PagingDataAdapter<UserItemUiState, UserViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemUserBinding.inflate(layoutInflater, parent, false)
-        return UserViewHolder(binding)
+        return UserViewHolder(binding, onItemClick)
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
@@ -21,7 +23,10 @@ class UserAdapter : PagingDataAdapter<UserItemUiState, UserViewHolder>(diffCallb
 
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<UserItemUiState>() {
-            override fun areItemsTheSame(oldItem: UserItemUiState, newItem: UserItemUiState): Boolean {
+            override fun areItemsTheSame(
+                oldItem: UserItemUiState,
+                newItem: UserItemUiState
+            ): Boolean {
                 // TODO: uid가 추가되면 그걸로 수정하기
                 return oldItem.studentId == newItem.studentId
             }
