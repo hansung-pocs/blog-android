@@ -22,17 +22,26 @@ import com.pocs.presentation.R
 import com.pocs.presentation.model.UserDetailItemUiState
 import com.pocs.presentation.model.UserDetailUiState
 import com.pocs.presentation.view.common.AppBarBackButton
+import com.pocs.presentation.view.common.FailureContent
+import com.pocs.presentation.view.common.LoadingContent
 
 private const val URL_TAG = "url"
 
 @Composable
 fun UserDetailScreen(uiState: UserDetailUiState) {
     when (uiState) {
-        is UserDetailUiState.Loading -> {}
+        is UserDetailUiState.Loading -> {
+            LoadingContent()
+        }
         is UserDetailUiState.Success -> {
             UserDetailContent(uiState.userDetailItem)
         }
-        is UserDetailUiState.Failure -> {}
+        is UserDetailUiState.Failure -> {
+            UserDetailFailureContent(
+                message = uiState.e.message ?: stringResource(R.string.failed_to_load),
+                onRetryClick = uiState.onRetryClick
+            )
+        }
     }
 }
 
@@ -171,6 +180,18 @@ fun UserInfoContainer(label: String, annotatedString: AnnotatedString) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun UserDetailFailureContent(message: String, onRetryClick: () -> Unit) {
+    Scaffold(
+        topBar = { UserDetailTopBar("") }
+    ) {
+        FailureContent(
+            message = message,
+            onRetryClick = onRetryClick
+        )
+    }
+}
 
 @Composable
 @Preview
