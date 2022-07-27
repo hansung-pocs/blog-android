@@ -28,7 +28,7 @@ class UserDetailScreenTest {
     )
 
     @Test
-    fun showUserDetailContent_WhenResultIsSuccess() {
+    fun showUserDetailContent_WhenUiStateIsSuccess() {
         val uiState = UserDetailUiState.Success(userDetailItemUiState)
         composeTestRule.setContent { UserDetailScreen(uiState = uiState) }
 
@@ -36,7 +36,7 @@ class UserDetailScreenTest {
     }
 
     @Test
-    fun showFailureContent_WhenResultIsFailure() {
+    fun showFailureContent_WhenUiStateIsFailure() {
         val exception = Exception("에러")
         val uiState = UserDetailUiState.Failure(exception) {}
         composeTestRule.setContent { UserDetailScreen(uiState = uiState) }
