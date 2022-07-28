@@ -7,14 +7,12 @@ import androidx.recyclerview.widget.DiffUtil
 import com.pocs.presentation.databinding.ItemUserBinding
 import com.pocs.presentation.model.UserItemUiState
 
-class UserAdapter(
-    private val onItemClick: (userId: Int) -> Unit
-) : PagingDataAdapter<UserItemUiState, UserViewHolder>(diffCallback) {
+class UserAdapter : PagingDataAdapter<UserItemUiState, UserViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemUserBinding.inflate(layoutInflater, parent, false)
-        return UserViewHolder(binding, onItemClick)
+        return UserViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
