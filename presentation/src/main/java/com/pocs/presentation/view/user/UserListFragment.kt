@@ -37,7 +37,7 @@ class UserListFragment : Fragment(R.layout.fragment_user) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = UserAdapter(::startUserDetailActivity)
+        val adapter = UserAdapter()
         binding.apply {
             recyclerView.adapter = adapter.withLoadStateFooter(
                 PagingLoadStateAdapter { adapter.retry() }
@@ -73,10 +73,5 @@ class UserListFragment : Fragment(R.layout.fragment_user) {
 
     private fun updateUi(uiState: UserUiState, adapter: UserAdapter) {
         adapter.submitData(lifecycle, uiState.userPagingData)
-    }
-
-    private fun startUserDetailActivity(userId: Int) {
-        val intent = UserDetailActivity.getIntent(requireContext(), userId)
-        startActivity(intent)
     }
 }
