@@ -1,16 +1,19 @@
 package com.pocs.presentation.view.user
 
 import android.view.View
-import android.widget.PopupMenu
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ItemUserBinding
 import com.pocs.presentation.model.UserItemUiState
 import com.pocs.presentation.view.user.detail.UserDetailActivity
+import com.pocs.presentation.view.user.detail.UserPostListActivity
 
 class UserViewHolder(
     private val binding: ItemUserBinding
 ) : RecyclerView.ViewHolder(binding.root) {
+
+    private val context = binding.root.context
 
     fun bind(uiState: UserItemUiState) = with(binding) {
         name.text = uiState.name
@@ -25,6 +28,7 @@ class UserViewHolder(
             val intent = UserDetailActivity.getIntent(context, uiState.id)
             context.startActivity(intent)
         }
+
         button.setOnClickListener {
             showPopup(it)
         }
@@ -35,9 +39,15 @@ class UserViewHolder(
             inflate(R.menu.menu_admin_user)
             setOnMenuItemClickListener {
                 when (it.itemId) {
-
+                    R.id.admin_user_written -> {
+                        val intent = UserPostListActivity.getIntent(context)
+                        //TODO : User_ID 정보 넘기기 intent.putExtra("userdata", )
+                        intent.run { context.startActivity(this) }
+                        true
+                    }
                     else -> false
                 }
             }
         }.show()
+    }
 }
