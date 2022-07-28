@@ -1,6 +1,6 @@
 package com.pocs.data.api
 
-import com.pocs.data.model.PostCreateDto
+import com.pocs.data.model.PostAddBody
 import com.pocs.data.model.PostDetailDto
 import com.pocs.data.model.PostListDto
 import com.pocs.data.model.ResponseBody
@@ -17,6 +17,6 @@ interface PostApi {
 
     @POST("posts")
     suspend fun addPost(
-        @Body postCreateDto: PostCreateDto,
+        @Body postAddBody: PostAddBody,
     ): ResponseBody<Unit>
 }

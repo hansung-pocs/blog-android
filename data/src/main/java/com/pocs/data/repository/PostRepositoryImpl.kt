@@ -6,7 +6,7 @@ import androidx.paging.PagingData
 import com.pocs.data.api.PostApi
 import com.pocs.data.mapper.toDto
 import com.pocs.data.mapper.toEntity
-import com.pocs.data.model.PostCreateDto
+import com.pocs.data.model.PostAddBody
 import com.pocs.data.paging.PostPagingSource
 import com.pocs.data.source.PostRemoteDataSource
 import com.pocs.domain.model.Post
@@ -50,7 +50,7 @@ class PostRepositoryImpl @Inject constructor(
     ): Result<Unit> {
         return try {
             val result = dataSource.addPost(
-                PostCreateDto(
+                PostAddBody(
                     title = title,
                     content = content,
                     userId = userId,
