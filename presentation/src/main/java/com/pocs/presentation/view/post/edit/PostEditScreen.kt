@@ -1,5 +1,6 @@
 package com.pocs.presentation.view.post.edit
 
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -21,14 +22,12 @@ import com.pocs.presentation.model.PostEditUiState
 import kotlinx.coroutines.launch
 
 @Composable
-fun PostEditScreen(uiState: PostEditUiState) {
-    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-
+fun PostEditScreen(uiState: PostEditUiState, navigateUp: () -> Unit) {
     PostEditContent(
         // TODO: 게시글 속성에 따라 "OOO 편집"과 같이 다르게 보이기
         title = stringResource(id = R.string.edit_post),
-        onBackPressed = { onBackPressedDispatcher?.onBackPressed() },
         uiState = uiState,
+        navigateUp = navigateUp
     )
 }
 
@@ -36,19 +35,32 @@ fun PostEditScreen(uiState: PostEditUiState) {
 @Composable
 fun PostEditContent(
     title: String,
-    onBackPressed: () -> Unit,
-    uiState: BasePostEditUiState
+    uiState: BasePostEditUiState,
+    navigateUp: () -> Unit
 ) {
+    var enabledAlertDialog by remember { mutableStateOf(false) }
+    val enabledBackHandler = rememberUpdatedState(newValue = !uiState.isEmpty)
     val snackBarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+
+    if (enabledAlertDialog) {
+        PostEditAlertDialog(
+            onDismissRequest = { enabledAlertDialog = false },
+            onOkClick = { navigateUp() }
+        )
+    }
+
+    BackHandler(enabledBackHandler.value) {
+        enabledAlertDialog = true
+    }
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
         topBar = {
-            val coroutineScope = rememberCoroutineScope()
-
             PostEditAppBar(
                 title = title,
-                onBackPressed = onBackPressed,
+                onBackPressed = { onBackPressedDispatcher?.onBackPressed() },
                 isInSaving = uiState.isInSaving,
                 enableSendIcon = uiState.canSave,
                 onClickSend = {
@@ -56,7 +68,7 @@ fun PostEditContent(
                         coroutineScope.launch {
                             val result = uiState.onSave()
                             if (result.isSuccess) {
-                                onBackPressed()
+                                navigateUp()
                             } else {
                                 val exception = result.exceptionOrNull()!!
                                 snackBarHostState.showSnackbar(exception.message!!)
@@ -66,10 +78,10 @@ fun PostEditContent(
                 }
             )
         }
-    ) { innerPadding ->
+    ) {
         Column(
             Modifier
-                .padding(innerPadding)
+                .padding(it)
                 .padding(bottom = 16.dp)
         ) {
             SimpleTextField(
@@ -168,12 +180,30 @@ fun SendIconButton(
     }
 }
 
+@Composable
+private fun PostEditAlertDialog(onOkClick: () -> Unit, onDismissRequest: () -> Unit) {
+    AlertDialog(
+        title = {
+            Text(text = stringResource(R.string.post_alert_dialog_title))
+        },
+        text = {
+            Text(text = stringResource(R.string.post_alert_dialog_text))
+        },
+        onDismissRequest = onDismissRequest,
+        dismissButton = {
+            TextButton(onClick = onDismissRequest) { Text(stringResource(R.string.cancel)) }
+        },
+        confirmButton = {
+            TextButton(onClick = onOkClick) { Text(stringResource(R.string.ok)) }
+        }
+    )
+}
+
 @Preview
 @Composable
 fun PostEditContentEmptyPreview() {
     PostEditContent(
         "게시글 수정",
-        {},
         PostEditUiState(
             id = 1,
             title = "",
@@ -182,8 +212,8 @@ fun PostEditContentEmptyPreview() {
             onTitleChange = {},
             onContentChange = {},
             onSave = { Result.success(true) }
-        ),
-    )
+        )
+    ) {}
 }
 
 @Preview
@@ -191,7 +221,6 @@ fun PostEditContentEmptyPreview() {
 fun PostEditContentPreview() {
     PostEditContent(
         "게시글 수정",
-        {},
         PostEditUiState(
             id = 1,
             title = "공지입니다.",
@@ -200,6 +229,6 @@ fun PostEditContentPreview() {
             onTitleChange = {},
             onContentChange = {},
             onSave = { Result.success(true) }
-        ),
-    )
+        )
+    ) {}
 }

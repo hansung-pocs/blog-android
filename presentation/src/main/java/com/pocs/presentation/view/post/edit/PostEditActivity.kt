@@ -46,7 +46,7 @@ class PostEditActivity : AppCompatActivity() {
 
         setContent {
             Mdc3Theme(this) {
-                PostEditScreen(uiState = viewModel.uiState.value)
+                PostEditScreen(uiState = viewModel.uiState.value, navigateUp = ::finish)
             }
         }
     }
