@@ -23,5 +23,19 @@ class UserViewHolder(
             val intent = UserDetailActivity.getIntent(context, uiState.id)
             context.startActivity(intent)
         }
+        button.setOnClickListener {
+            showPopup(it)
+        }
     }
+
+    private fun showPopup(v: View) {
+        PopupMenu(binding.root.context, v).apply {
+            inflate(R.menu.menu_admin_user)
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+
+                    else -> false
+                }
+            }
+        }.show()
 }
