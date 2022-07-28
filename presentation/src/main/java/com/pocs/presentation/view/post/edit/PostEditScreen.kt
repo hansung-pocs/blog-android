@@ -21,6 +21,7 @@ import com.pocs.domain.model.PostCategory
 import com.pocs.presentation.R
 import com.pocs.presentation.model.BasePostEditUiState
 import com.pocs.presentation.model.PostEditUiState
+import com.pocs.presentation.view.common.button.SendButton
 import kotlinx.coroutines.launch
 
 @Composable
@@ -142,7 +143,7 @@ fun PostEditAppBar(
                         .padding(8.dp)
                 )
             } else {
-                SendIconButton(
+                SendButton(
                     enabled = enableSendIcon,
                     onClick = onClickSend
                 )
@@ -170,27 +171,6 @@ fun SimpleTextField(
         onValueChange = onValueChange,
         modifier = modifier
     )
-}
-
-@Composable
-fun SendIconButton(
-    enabled: Boolean,
-    onClick: () -> Unit
-) {
-    IconButton(
-        enabled = enabled,
-        onClick = onClick
-    ) {
-        Icon(
-            imageVector = Icons.Filled.Send,
-            contentDescription = stringResource(R.string.save),
-            tint = if (enabled) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
-            }
-        )
-    }
 }
 
 @Composable

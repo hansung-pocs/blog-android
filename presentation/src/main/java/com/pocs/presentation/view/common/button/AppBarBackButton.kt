@@ -1,4 +1,4 @@
-package com.pocs.presentation.view.common
+package com.pocs.presentation.view.common.button
 
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.material.icons.Icons
