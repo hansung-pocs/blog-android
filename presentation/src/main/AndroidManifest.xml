@@ -28,9 +28,11 @@
             android:exported="false" />
         <activity
             android:name=".view.post.create.PostCreateActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".view.post.edit.PostEditActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".view.post.detail.PostDetailActivity"

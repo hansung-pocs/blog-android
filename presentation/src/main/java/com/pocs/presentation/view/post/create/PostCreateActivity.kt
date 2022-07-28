@@ -26,6 +26,8 @@ class PostCreateActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        window.setDecorFitsSystemWindows(true)
+
         val category = intent.getSerializableExtra("category") as PostCategory
         viewModel.initUiState(category = category)
 

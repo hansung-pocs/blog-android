@@ -35,6 +35,8 @@ class PostEditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        window.setDecorFitsSystemWindows(true)
+
         with(intent) {
             viewModel.initUiState(
                 id = getIntExtra("id", -1),
