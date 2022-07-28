@@ -33,7 +33,11 @@ class PostCreateActivity : AppCompatActivity() {
 
         setContent {
             Mdc3Theme(this) {
-                PostCreateScreen(uiState = viewModel.uiState.value, navigateUp = ::finish)
+                PostCreateScreen(
+                    uiState = viewModel.uiState.value,
+                    navigateUp = ::finish,
+                    onSuccessSave = { setResult(RESULT_OK) }
+                )
             }
         }
     }

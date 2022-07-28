@@ -1,9 +1,13 @@
 package com.pocs.presentation.view.home.article
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -12,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pocs.domain.model.PostCategory
 import com.pocs.presentation.R
@@ -32,6 +37,8 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
     private val binding get() = _binding!!
 
     private val viewModel: ArticleViewModel by activityViewModels()
+
+    private var launcher: ActivityResultLauncher<Intent>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,6 +77,12 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
                 }
             }
         }
+
+        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                adapter.refresh()
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -106,9 +119,8 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
     }
 
     private fun startPostCreateActivity() {
-        // TODO: 글 작성 후 성공했다면 adapter refresh 하기
         // TODO: 적절한 카테고리로 수정하기
         val intent = PostCreateActivity.getIntent(requireContext(), PostCategory.STUDY)
-        startActivity(intent)
+        launcher?.launch(intent)
     }
 }

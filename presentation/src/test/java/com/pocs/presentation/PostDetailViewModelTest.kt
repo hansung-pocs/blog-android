@@ -45,7 +45,7 @@ class PostDetailViewModelTest {
             viewModel.uiState.collect()
         }
 
-        viewModel.loadArticle(mockPostDetail1.id)
+        viewModel.fetchPost(mockPostDetail1.id)
 
         assertTrue(viewModel.uiState.value is PostDetailUiState.Success)
 
@@ -61,7 +61,7 @@ class PostDetailViewModelTest {
             viewModel.uiState.collect()
         }
 
-        viewModel.loadArticle(mockPostDetail1.id)
+        viewModel.fetchPost(mockPostDetail1.id)
 
         assertTrue(viewModel.uiState.value is PostDetailUiState.Failure)
         assertEquals(

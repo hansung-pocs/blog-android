@@ -1,10 +1,13 @@
 package com.pocs.presentation.view.post.detail
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
@@ -27,6 +30,8 @@ class PostDetailActivity : AppCompatActivity() {
 
     private val viewModel: PostDetailViewModel by viewModels()
 
+    private var launcher: ActivityResultLauncher<Intent>? = null
+
     companion object {
         fun getIntent(context: Context, id: Int): Intent {
             return Intent(context, PostDetailActivity::class.java).apply {
@@ -41,12 +46,18 @@ class PostDetailActivity : AppCompatActivity() {
         _binding = ActivityPostDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        loadArticle()
+        fetchPost()
         initToolBar()
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect(::updateUi)
+            }
+        }
+
+        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                fetchPost()
             }
         }
     }
@@ -83,9 +94,9 @@ class PostDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadArticle() {
+    private fun fetchPost() {
         val id = intent.getIntExtra("id", -1)
-        viewModel.loadArticle(id)
+        viewModel.fetchPost(id)
     }
 
     private fun initToolBar() {
@@ -122,6 +133,6 @@ class PostDetailActivity : AppCompatActivity() {
             uiState.content,
             uiState.category
         )
-        startActivity(intent)
+        launcher?.launch(intent)
     }
 }
