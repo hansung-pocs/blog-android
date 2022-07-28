@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ItemUserBinding
 import com.pocs.presentation.model.UserItemUiState
+import com.pocs.presentation.view.user.detail.UserDetailActivity
 
 class UserViewHolder(
     private val binding: ItemUserBinding
@@ -17,8 +18,10 @@ class UserViewHolder(
             uiState.generation.toString()
         )
 
-        root.setOnClickListener {
-            // TODO: UserDetailActivity로 전환하기
+        cardView.setOnClickListener {
+            val context = binding.root.context
+            val intent = UserDetailActivity.getIntent(context, uiState.id)
+            context.startActivity(intent)
         }
     }
 }

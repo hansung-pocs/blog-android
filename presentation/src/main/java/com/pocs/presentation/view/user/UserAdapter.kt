@@ -21,7 +21,10 @@ class UserAdapter : PagingDataAdapter<UserItemUiState, UserViewHolder>(diffCallb
 
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<UserItemUiState>() {
-            override fun areItemsTheSame(oldItem: UserItemUiState, newItem: UserItemUiState): Boolean {
+            override fun areItemsTheSame(
+                oldItem: UserItemUiState,
+                newItem: UserItemUiState
+            ): Boolean {
                 // TODO: uid가 추가되면 그걸로 수정하기
                 return oldItem.studentId == newItem.studentId
             }

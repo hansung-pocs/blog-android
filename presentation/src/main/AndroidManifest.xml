@@ -21,6 +21,9 @@
             android:name=".view.user.UserActivity"
             android:exported="false" />
         <activity
+            android:name=".view.user.detail.UserDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.post.create.PostCreateActivity"
             android:exported="false" />
         <activity
