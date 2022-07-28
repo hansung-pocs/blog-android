@@ -22,7 +22,7 @@
             android:exported="false" />
         <activity
             android:name=".view.user.detail.UserDetailActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".view.post.create.PostCreateActivity"
             android:exported="false" />
