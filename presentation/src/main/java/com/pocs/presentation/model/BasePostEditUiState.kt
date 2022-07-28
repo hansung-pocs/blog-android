@@ -9,7 +9,7 @@ interface BasePostEditUiState {
     val isInSaving: Boolean
     val onTitleChange: (String) -> Unit
     val onContentChange: (String) -> Unit
-    val onSave: suspend () -> Result<Boolean>
+    val onSave: suspend () -> Result<Unit>
 
     val canSave get() = title.isNotEmpty() && content.isNotEmpty()
     val isEmpty get() = title.isEmpty() && content.isEmpty()

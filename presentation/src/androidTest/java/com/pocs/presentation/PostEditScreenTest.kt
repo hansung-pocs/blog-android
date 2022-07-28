@@ -26,7 +26,7 @@ class PostEditScreenTest {
         category = PostCategory.NOTICE,
         onTitleChange = {},
         onContentChange = {},
-        onSave = { Result.success(true) }
+        onSave = { Result.success(Unit) }
     )
 
     companion object {

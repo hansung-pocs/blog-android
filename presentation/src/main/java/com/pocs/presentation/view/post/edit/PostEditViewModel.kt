@@ -39,13 +39,13 @@ class PostEditViewModel @Inject constructor() : ViewModel() {
         _uiState.value = uiState.value.copy(content = content)
     }
 
-    private suspend fun savePost(): Result<Boolean> {
+    private suspend fun savePost(): Result<Unit> {
         _uiState.value = uiState.value.copy(isInSaving = true)
         // TODO: API 연결하여야 함
         withContext(Dispatchers.IO) {
             delay(500)
         }
-        val result = Result.success(true)
+        val result = Result.success(Unit)
         if (result.isFailure) {
             _uiState.value = uiState.value.copy(isInSaving = false)
         }

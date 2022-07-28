@@ -78,10 +78,10 @@ fun PostEditContent(
                 }
             )
         }
-    ) {
+    ) { innerPadding ->
         Column(
             Modifier
-                .padding(it)
+                .padding(innerPadding)
                 .padding(bottom = 16.dp)
         ) {
             SimpleTextField(
@@ -211,7 +211,7 @@ fun PostEditContentEmptyPreview() {
             category = PostCategory.STUDY,
             onTitleChange = {},
             onContentChange = {},
-            onSave = { Result.success(true) }
+            onSave = { Result.success(Unit) }
         )
     ) {}
 }
@@ -228,7 +228,7 @@ fun PostEditContentPreview() {
             category = PostCategory.STUDY,
             onTitleChange = {},
             onContentChange = {},
-            onSave = { Result.success(true) }
+            onSave = { Result.success(Unit) }
         )
     ) {}
 }

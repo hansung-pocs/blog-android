@@ -10,5 +10,5 @@ data class PostEditUiState(
     override val isInSaving: Boolean = false,
     override val onTitleChange: (String) -> Unit,
     override val onContentChange: (String) -> Unit,
-    override val onSave: suspend () -> Result<Boolean>
+    override val onSave: suspend () -> Result<Unit>
 ) : BasePostEditUiState

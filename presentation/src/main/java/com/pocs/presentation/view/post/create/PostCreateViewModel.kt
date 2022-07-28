@@ -5,15 +5,15 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.pocs.domain.model.PostCategory
+import com.pocs.domain.usecase.post.AddPostUseCase
 import com.pocs.presentation.model.PostCreateUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class PostCreateViewModel @Inject constructor() : ViewModel() {
+class PostCreateViewModel @Inject constructor(
+    private val addPostUseCase: AddPostUseCase
+) : ViewModel() {
 
     private lateinit var _uiState: MutableState<PostCreateUiState>
     val uiState: State<PostCreateUiState> get() = _uiState
@@ -37,16 +37,16 @@ class PostCreateViewModel @Inject constructor() : ViewModel() {
         _uiState.value = uiState.value.copy(content = content)
     }
 
-    private suspend fun savePost(): Result<Boolean> {
+    private suspend fun savePost(): Result<Unit> {
         _uiState.value = uiState.value.copy(isInSaving = true)
-        // TODO: API 연결하여야 함
-        withContext(Dispatchers.IO) {
-            delay(500)
-        }
-        val result = Result.success(true)
-        if (result.isFailure) {
-            _uiState.value = uiState.value.copy(isInSaving = false)
-        }
+        val result = addPostUseCase(
+            title = uiState.value.title,
+            content = uiState.value.content,
+            // TODO: 현재 접속중인 유저의 ID로 변경하기
+            userId = 1,
+            category = uiState.value.category
+        )
+        _uiState.value = uiState.value.copy(isInSaving = false)
         return result
     }
 }

@@ -45,7 +45,7 @@ class PostRepositoryImpl @Inject constructor(
         content: String,
         userId: Int,
         category: PostCategory
-    ): Result<Boolean> {
+    ): Result<Unit> {
         TODO("Not yet implemented")
     }
 
@@ -55,11 +55,11 @@ class PostRepositoryImpl @Inject constructor(
         content: String,
         userId: Int,
         category: PostCategory
-    ): Result<Boolean> {
+    ): Result<Unit> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun deletePost(postId: Int, userId: Int): Result<Boolean> {
+    override suspend fun deletePost(postId: Int, userId: Int): Result<Unit> {
         TODO("Not yet implemented")
     }
 }
