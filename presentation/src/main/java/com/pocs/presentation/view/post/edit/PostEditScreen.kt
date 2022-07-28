@@ -1,6 +1,7 @@
 package com.pocs.presentation.view.post.edit
 
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
@@ -38,8 +39,10 @@ fun PostEditContent(
     navigateUp: () -> Unit
 ) {
     var enabledAlertDialog by remember { mutableStateOf(false) }
+    val enabledBackHandler = rememberUpdatedState(newValue = !uiState.isEmpty)
     val snackBarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
     if (enabledAlertDialog) {
         PostEditAlertDialog(
@@ -48,7 +51,7 @@ fun PostEditContent(
         )
     }
 
-    BackHandler {
+    BackHandler(enabledBackHandler.value) {
         enabledAlertDialog = true
     }
 
@@ -57,7 +60,7 @@ fun PostEditContent(
         topBar = {
             PostEditAppBar(
                 title = title,
-                onBackPressed = { enabledAlertDialog = true },
+                onBackPressed = { onBackPressedDispatcher?.onBackPressed() },
                 isInSaving = uiState.isInSaving,
                 enableSendIcon = uiState.canSave,
                 onClickSend = {

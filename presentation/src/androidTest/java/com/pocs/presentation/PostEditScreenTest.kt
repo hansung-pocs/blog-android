@@ -141,7 +141,7 @@ class PostEditScreenTest {
     fun navigateToUp_WhenClickOkButtonOfAlertDialog() {
         composeTestRule.run {
             setContent {
-                PostEditScreenWithHomeBackStack(emptyUiState)
+                PostEditScreenWithHomeBackStack(emptyUiState.copy(title = "Hi"))
             }
 
             onNodeWithContentDescription("뒤로가기").performClick()
@@ -157,7 +157,7 @@ class PostEditScreenTest {
     fun continueEditing_WhenClickCancelButtonOfAlertDialog() {
         composeTestRule.run {
             setContent {
-                PostEditScreenWithHomeBackStack(emptyUiState)
+                PostEditScreenWithHomeBackStack(emptyUiState.copy(title = "Hi"))
             }
 
             onNodeWithContentDescription("뒤로가기").performClick()
@@ -166,6 +166,20 @@ class PostEditScreenTest {
             onNodeWithText("취소").performClick()
 
             onNodeWithText(HOME_STACK_TEXT).assertDoesNotExist()
+        }
+    }
+
+    @Test
+    fun shouldNotShowAlertDialog_WhenPressingBackButtonWithEmptyTitleAndContent() {
+        composeTestRule.run {
+            setContent {
+                PostEditScreenWithHomeBackStack(emptyUiState)
+            }
+
+            onNodeWithContentDescription("뒤로가기").performClick()
+
+            onNodeWithText("정말로 중단할까요?").assertDoesNotExist()
+            onNodeWithText(HOME_STACK_TEXT).assertIsDisplayed()
         }
     }
 }
