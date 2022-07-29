@@ -1,6 +1,5 @@
 package com.pocs.presentation.view.post.edit
 
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -17,6 +16,7 @@ import com.pocs.domain.model.PostCategory
 import com.pocs.presentation.R
 import com.pocs.presentation.model.BasePostEditUiState
 import com.pocs.presentation.model.PostEditUiState
+import com.pocs.presentation.view.common.RecheckHandler
 import com.pocs.presentation.view.common.appbar.EditContentAppBar
 import kotlinx.coroutines.launch
 
@@ -39,22 +39,14 @@ fun PostEditContent(
     navigateUp: () -> Unit,
     onSuccessSave: () -> Unit
 ) {
-    var enabledAlertDialog by remember { mutableStateOf(false) }
-    val enabledBackHandler = rememberUpdatedState(newValue = !uiState.isEmpty)
     val snackBarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
-    if (enabledAlertDialog) {
-        PostEditAlertDialog(
-            onDismissRequest = { enabledAlertDialog = false },
-            onOkClick = { navigateUp() }
-        )
-    }
-
-    BackHandler(enabledBackHandler.value) {
-        enabledAlertDialog = true
-    }
+    RecheckHandler(
+        navigateUp = navigateUp,
+        enableRechecking = !uiState.isEmpty
+    )
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
@@ -131,25 +123,6 @@ fun SimpleTextField(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier
-    )
-}
-
-@Composable
-private fun PostEditAlertDialog(onOkClick: () -> Unit, onDismissRequest: () -> Unit) {
-    AlertDialog(
-        title = {
-            Text(text = stringResource(R.string.post_alert_dialog_title))
-        },
-        text = {
-            Text(text = stringResource(R.string.post_alert_dialog_text))
-        },
-        onDismissRequest = onDismissRequest,
-        dismissButton = {
-            TextButton(onClick = onDismissRequest) { Text(stringResource(R.string.cancel)) }
-        },
-        confirmButton = {
-            TextButton(onClick = onOkClick) { Text(stringResource(R.string.ok)) }
-        }
     )
 }
 
