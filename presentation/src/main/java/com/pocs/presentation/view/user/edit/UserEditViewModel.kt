@@ -24,13 +24,20 @@ class UserEditViewModel @Inject constructor() : ViewModel() {
                 studentId = user.studentId.toString(),
                 company = user.company,
                 github = user.github,
+                onUpdate = ::update,
                 onSave = ::save
             )
         )
     }
 
+    private fun update(uiState: UserEditUiState) {
+        _uiState.value = uiState
+    }
+
     private suspend fun save(): Result<Unit> {
+        _uiState.value = _uiState.value.copy(isInSaving = true)
         delay(500)
+        _uiState.value = _uiState.value.copy(isInSaving = false)
         return Result.success(Unit)
     }
 }
