@@ -36,6 +36,8 @@
     <string name="ok">확인</string>
     <string name="post_alert_dialog_title">정말로 중단할까요?</string>
     <string name="post_alert_dialog_text">작성하신 내용은 저장되지 않습니다.</string>
+    <string name="title_text_field">제목 입력창</string>
+    <string name="content_text_field">내용 입력창</string>
     <string-array name="admin_tab">
         <item>공지사항</item>
         <item>회원목록</item>

@@ -13,6 +13,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pocs.domain.model.PostCategory
@@ -87,11 +89,15 @@ fun PostEditContent(
                 .padding(innerPadding)
                 .padding(bottom = 16.dp)
         ) {
+            val titleContentDescription = stringResource(R.string.title_text_field)
+            val contentContentDescription = stringResource(R.string.content_text_field)
             SimpleTextField(
                 hint = stringResource(R.string.title),
                 value = uiState.title,
                 onValueChange = uiState.onTitleChange,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .semantics { contentDescription = titleContentDescription }
             )
             Divider(startIndent = 16.dp, modifier = Modifier.alpha(0.4f))
             SimpleTextField(
@@ -101,6 +107,7 @@ fun PostEditContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
+                    .semantics { contentDescription = contentContentDescription }
             )
         }
     }
