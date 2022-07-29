@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -74,7 +75,6 @@ fun UserDetailContent(user: User) {
             modifier = Modifier
                 .padding(it)
                 .padding(horizontal = 24.dp)
-                .padding(bottom = FloatingActionButtonDefaults.LargeIconSize)
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -114,6 +114,9 @@ fun UserDetailContent(user: User) {
                     link = user.email,
                     annotation = stringResource(R.string.mailto_scheme, user.email)
                 )
+            }
+            item {
+                Box(modifier = Modifier.height(dimensionResource(id = R.dimen.fab_height)))
             }
         }
     }
