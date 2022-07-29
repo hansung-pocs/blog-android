@@ -2,6 +2,7 @@ package com.pocs.presentation.view.user
 
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ItemUserBinding
@@ -42,7 +43,7 @@ class UserViewHolder(
                     R.id.admin_user_written -> {
                         val intent = UserPostListActivity.getIntent(context)
                         //TODO : User_ID 정보 넘기기 intent.putExtra("userdata", )
-                        intent.run { context.startActivity(this) }
+                        context.startActivity(intent)
                         true
                     }
                     else -> false
