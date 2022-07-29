@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pocs.presentation.mapper.toDetailItemUiState
 import com.pocs.presentation.mock.mockUserList
 import com.pocs.presentation.model.UserDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,7 +28,7 @@ class UserDetailViewModel @Inject constructor(
             val result = Result.success(mockUserList.first { it.id == id }) // getUserUseCase(id)
             uiState = if (result.isSuccess) {
                 val user = result.getOrNull()!!
-                UserDetailUiState.Success(user.toDetailItemUiState())
+                UserDetailUiState.Success(user)
             } else {
                 UserDetailUiState.Failure(e = result.exceptionOrNull()!!, onRetryClick = {
                     loadUserInfo(id)
