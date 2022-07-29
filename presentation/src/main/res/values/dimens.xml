@@ -1,4 +1,4 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="CollapsingToolbar">150dp</dimen>
+    <dimen name="collapsing_toolbar_height">150dp</dimen>
 </resources>
