@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.pocs.domain.model.PostCategory
 import com.pocs.presentation.model.PostEditUiState
 import com.pocs.presentation.view.post.edit.PostEditScreen
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 
@@ -181,5 +182,18 @@ class PostEditScreenTest {
             onNodeWithText("정말로 중단할까요?").assertDoesNotExist()
             onNodeWithText(HOME_STACK_TEXT).assertIsDisplayed()
         }
+    }
+
+    @Test
+    fun shouldNotInputEnterCharacter_AtTitleTextField() {
+        composeTestRule.setContent {
+            PostEditScreen(uiState = emptyUiState.copy(
+                onTitleChange = {
+                    assertEquals("hello", it)
+                }
+            ), {}) {}
+        }
+
+        composeTestRule.onNodeWithContentDescription("제목 입력창").performTextInput("he\nll\no\n")
     }
 }

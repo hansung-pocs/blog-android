@@ -91,10 +91,13 @@ fun PostEditContent(
         ) {
             val titleContentDescription = stringResource(R.string.title_text_field)
             val contentContentDescription = stringResource(R.string.content_text_field)
+
             SimpleTextField(
                 hint = stringResource(R.string.title),
                 value = uiState.title,
-                onValueChange = uiState.onTitleChange,
+                onValueChange = {
+                    uiState.onTitleChange(it.filter { char -> char != '\n' })
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .semantics { contentDescription = titleContentDescription }
