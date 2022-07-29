@@ -47,7 +47,7 @@ class PostEditScreenTest {
                 Text(HOME_STACK_TEXT)
             }
             composable(route = "edit") {
-                PostEditScreen(uiState = uiState, navigateUp = navController::navigateUp)
+                PostEditScreen(uiState = uiState, navigateUp = navController::navigateUp) {}
             }
         }
     }
@@ -59,7 +59,7 @@ class PostEditScreenTest {
             content = "hello",
         )
         composeTestRule.setContent {
-            PostEditScreen(uiState = fakeUiState) {}
+            PostEditScreen(uiState = fakeUiState, {}) {}
         }
 
         composeTestRule.onNodeWithContentDescription("저장하기").assertIsNotEnabled()
@@ -72,7 +72,7 @@ class PostEditScreenTest {
             content = "",
         )
         composeTestRule.setContent {
-            PostEditScreen(uiState = fakeUiState) {}
+            PostEditScreen(uiState = fakeUiState, {}) {}
         }
 
         composeTestRule.onNodeWithContentDescription("저장하기").assertIsNotEnabled()
@@ -85,7 +85,7 @@ class PostEditScreenTest {
             content = "content",
         )
         composeTestRule.setContent {
-            PostEditScreen(uiState = fakeUiState) {}
+            PostEditScreen(uiState = fakeUiState, {}) {}
         }
 
         composeTestRule.onNodeWithContentDescription("저장하기").assertIsEnabled()
@@ -99,7 +99,7 @@ class PostEditScreenTest {
             isInSaving = true,
         )
         composeTestRule.setContent {
-            PostEditScreen(uiState = fakeUiState) {}
+            PostEditScreen(uiState = fakeUiState, {}) {}
         }
 
         composeTestRule.onNodeWithTag("CircularProgressIndicator").assertIsDisplayed()
@@ -116,7 +116,7 @@ class PostEditScreenTest {
             onSave = { Result.failure(exception) }
         )
         composeTestRule.setContent {
-            PostEditScreen(uiState = fakeUiState) {}
+            PostEditScreen(uiState = fakeUiState, {}) {}
         }
 
         composeTestRule.onNodeWithContentDescription("저장하기").performClick()
