@@ -4,14 +4,10 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -21,7 +17,7 @@ import com.pocs.domain.model.PostCategory
 import com.pocs.presentation.R
 import com.pocs.presentation.model.BasePostEditUiState
 import com.pocs.presentation.model.PostEditUiState
-import com.pocs.presentation.view.common.button.SendButton
+import com.pocs.presentation.view.common.appbar.EditContentAppBar
 import kotlinx.coroutines.launch
 
 @Composable
@@ -63,7 +59,7 @@ fun PostEditContent(
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
         topBar = {
-            PostEditAppBar(
+            EditContentAppBar(
                 title = title,
                 onBackPressed = { onBackPressedDispatcher?.onBackPressed() },
                 isInSaving = uiState.isInSaving,
@@ -115,41 +111,6 @@ fun PostEditContent(
             )
         }
     }
-}
-
-@Composable
-fun PostEditAppBar(
-    title: String,
-    onBackPressed: () -> Unit,
-    isInSaving: Boolean,
-    enableSendIcon: Boolean,
-    onClickSend: () -> Unit
-) {
-    SmallTopAppBar(
-        title = { Text(text = title) },
-        navigationIcon = {
-            IconButton(onClick = onBackPressed) {
-                Icon(
-                    imageVector = Icons.Filled.ArrowBack,
-                    contentDescription = stringResource(R.string.back)
-                )
-            }
-        },
-        actions = {
-            if (isInSaving) {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .testTag("CircularProgressIndicator")
-                        .padding(8.dp)
-                )
-            } else {
-                SendButton(
-                    enabled = enableSendIcon,
-                    onClick = onClickSend
-                )
-            }
-        }
-    )
 }
 
 @Composable

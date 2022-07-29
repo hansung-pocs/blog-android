@@ -22,7 +22,7 @@ import com.pocs.domain.model.UserType
 import com.pocs.presentation.R
 import com.pocs.presentation.model.UserDetailItemUiState
 import com.pocs.presentation.model.UserDetailUiState
-import com.pocs.presentation.view.common.AppBarBackButton
+import com.pocs.presentation.view.common.button.AppBarBackButton
 import com.pocs.presentation.view.common.FailureContent
 import com.pocs.presentation.view.common.LoadingContent
 
