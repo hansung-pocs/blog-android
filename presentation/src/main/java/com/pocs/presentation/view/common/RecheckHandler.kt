@@ -19,7 +19,6 @@ fun RecheckHandler(
     enableRechecking: Boolean = true
 ) {
     var enabledAlertDialog by remember { mutableStateOf(false) }
-    val enabledBackHandler = rememberUpdatedState(newValue = enableRechecking)
 
     if (enabledAlertDialog) {
         RecheckDialog(
@@ -28,7 +27,7 @@ fun RecheckHandler(
         )
     }
 
-    BackHandler(enabledBackHandler.value) {
+    BackHandler(enableRechecking) {
         enabledAlertDialog = true
     }
 }
