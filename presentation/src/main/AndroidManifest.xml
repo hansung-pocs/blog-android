@@ -18,6 +18,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".view.user.detail.UserPostListActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.user.UserActivity"
             android:exported="false" />
         <activity

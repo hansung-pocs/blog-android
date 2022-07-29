@@ -29,6 +29,8 @@
     <string name="github">깃허브</string>
     <string name="email">이메일</string>
     <string name="mailto_scheme">mailto:%s</string>
+    <string name="secession">탈퇴하기</string>
+    <string name="written">작성글 보기</string>
     <string name="edit_my_info">내 정보 수정</string>
     <string name="cancel">취소</string>
     <string name="ok">확인</string>
