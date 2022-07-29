@@ -2,7 +2,6 @@ package com.pocs.presentation.view.user
 
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ItemUserBinding

@@ -21,11 +21,11 @@ class UserPostListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         _binding = ActivityUserPostListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         initToolBar()
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
