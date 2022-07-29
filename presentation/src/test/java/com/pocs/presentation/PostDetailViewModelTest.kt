@@ -1,10 +1,10 @@
 package com.pocs.presentation
 
 import com.pocs.domain.usecase.post.GetPostDetailUseCase
-import com.pocs.presentation.fake.FakePostRepositoryImpl
-import com.pocs.presentation.mock.mockPostDetail1
 import com.pocs.presentation.model.PostDetailUiState
 import com.pocs.presentation.view.post.detail.PostDetailViewModel
+import com.pocs.test_library.fake.FakePostRepositoryImpl
+import com.pocs.test_library.mock.mockPostDetail1
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
