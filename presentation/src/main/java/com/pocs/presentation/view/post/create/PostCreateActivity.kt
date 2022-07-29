@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import com.google.android.material.composethemeadapter3.Mdc3Theme
 import com.pocs.domain.model.PostCategory
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +27,7 @@ class PostCreateActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        window.setDecorFitsSystemWindows(true)
+        WindowCompat.setDecorFitsSystemWindows(window, true)
 
         val category = intent.getSerializableExtra("category") as PostCategory
         viewModel.initUiState(category = category)
