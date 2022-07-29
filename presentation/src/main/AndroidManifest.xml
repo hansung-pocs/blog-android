@@ -27,6 +27,10 @@
             android:name=".view.user.detail.UserDetailActivity"
             android:exported="false" />
         <activity
+            android:name=".view.user.edit.UserEditActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".view.post.create.PostCreateActivity"
             android:exported="false"
             android:theme="@style/Theme.PocsBlog"
