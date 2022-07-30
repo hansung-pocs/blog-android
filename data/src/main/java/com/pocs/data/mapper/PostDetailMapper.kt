@@ -1,12 +1,7 @@
 package com.pocs.data.mapper
 
 import com.pocs.data.model.PostDetailDto
-import com.pocs.data.model.PostDto
-import com.pocs.data.model.UserDto
-import com.pocs.domain.model.Post
-import com.pocs.domain.model.PostCategory
-import com.pocs.domain.model.PostDetail
-import java.util.*
+import com.pocs.domain.model.post.PostDetail
 
 fun PostDetailDto.toEntity(id: Int) = PostDetail(
     id = id,

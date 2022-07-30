@@ -1,6 +1,6 @@
 package com.pocs.presentation.model
 
-import com.pocs.domain.model.User
+import com.pocs.domain.model.user.User
 
 sealed class UserDetailUiState {
     class Success(val user: User) : UserDetailUiState()

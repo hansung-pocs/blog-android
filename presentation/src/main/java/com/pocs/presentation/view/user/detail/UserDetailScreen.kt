@@ -20,8 +20,8 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.pocs.domain.model.User
-import com.pocs.domain.model.UserType
+import com.pocs.domain.model.user.User
+import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.R
 import com.pocs.presentation.model.UserDetailUiState
 import com.pocs.presentation.view.component.button.AppBarBackButton

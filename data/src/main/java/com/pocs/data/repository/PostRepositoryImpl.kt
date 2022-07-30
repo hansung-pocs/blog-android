@@ -9,9 +9,9 @@ import com.pocs.data.mapper.toEntity
 import com.pocs.data.model.PostAddBody
 import com.pocs.data.paging.PostPagingSource
 import com.pocs.data.source.PostRemoteDataSource
-import com.pocs.domain.model.Post
-import com.pocs.domain.model.PostCategory
-import com.pocs.domain.model.PostDetail
+import com.pocs.domain.model.post.Post
+import com.pocs.domain.model.post.PostCategory
+import com.pocs.domain.model.post.PostDetail
 import com.pocs.domain.repository.PostRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

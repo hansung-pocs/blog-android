@@ -3,8 +3,8 @@ package com.pocs.presentation
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import com.pocs.domain.model.User
-import com.pocs.domain.model.UserType
+import com.pocs.domain.model.user.User
+import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.model.UserDetailUiState
 import com.pocs.presentation.view.user.detail.UserDetailScreen
 import org.junit.Rule

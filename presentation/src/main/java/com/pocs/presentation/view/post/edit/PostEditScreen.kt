@@ -12,7 +12,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.pocs.domain.model.PostCategory
+import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
 import com.pocs.presentation.model.BasePostEditUiState
 import com.pocs.presentation.model.PostEditUiState

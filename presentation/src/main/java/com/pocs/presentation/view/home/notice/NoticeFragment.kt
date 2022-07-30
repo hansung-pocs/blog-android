@@ -16,7 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.pocs.domain.model.PostCategory
+import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentNoticeBinding
 import com.pocs.presentation.model.NoticeUiState

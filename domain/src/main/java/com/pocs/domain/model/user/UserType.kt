@@ -1,4 +1,4 @@
-package com.pocs.domain.model
+package com.pocs.domain.model.user
 
 enum class UserType {
     ADMIN,

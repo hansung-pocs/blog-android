@@ -1,13 +1,11 @@
 package com.pocs.test_library.fake
 
 import androidx.paging.PagingData
-import com.pocs.domain.model.Post
-import com.pocs.domain.model.PostCategory
-import com.pocs.domain.model.PostDetail
+import com.pocs.domain.model.post.Post
+import com.pocs.domain.model.post.PostCategory
+import com.pocs.domain.model.post.PostDetail
 import com.pocs.domain.repository.PostRepository
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
 
 class FakePostRepositoryImpl: PostRepository {
 

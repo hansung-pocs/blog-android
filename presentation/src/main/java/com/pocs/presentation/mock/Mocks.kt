@@ -1,8 +1,8 @@
 package com.pocs.presentation.mock
 
 import androidx.paging.PagingData
-import com.pocs.domain.model.User
-import com.pocs.domain.model.UserType
+import com.pocs.domain.model.user.User
+import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.model.PostItemUiState
 import com.pocs.presentation.model.UserItemUiState
 

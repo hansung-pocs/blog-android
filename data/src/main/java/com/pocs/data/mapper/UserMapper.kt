@@ -1,7 +1,7 @@
 package com.pocs.data.mapper
 
 import com.pocs.data.model.UserDto
-import com.pocs.domain.model.User
+import com.pocs.domain.model.user.User
 
 fun UserDto.toEntity() = User(
     id = id,

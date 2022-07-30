@@ -1,7 +1,7 @@
 package com.pocs.domain.repository
 
 import androidx.paging.PagingData
-import com.pocs.domain.model.User
+import com.pocs.domain.model.user.User
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {

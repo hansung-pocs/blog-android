@@ -1,6 +1,6 @@
 package com.pocs.presentation.model
 
-import com.pocs.domain.model.PostCategory
+import com.pocs.domain.model.post.PostCategory
 
 interface BasePostEditUiState {
     val title: String

@@ -8,7 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import com.google.android.material.composethemeadapter3.Mdc3Theme
-import com.pocs.domain.model.PostCategory
+import com.pocs.domain.model.post.PostCategory
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

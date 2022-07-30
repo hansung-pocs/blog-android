@@ -8,7 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import com.google.android.material.composethemeadapter3.Mdc3Theme
-import com.pocs.domain.model.User
+import com.pocs.domain.model.user.User
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
