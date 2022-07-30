@@ -1,6 +1,6 @@
 package com.pocs.data.mapper
 
-import com.pocs.data.model.PostDto
+import com.pocs.data.model.post.PostDto
 import com.pocs.domain.model.post.Post
 
 fun PostDto.toEntity() = Post(

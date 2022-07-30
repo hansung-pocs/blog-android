@@ -1,7 +1,7 @@
 package com.pocs.data.source
 
 import com.pocs.data.api.PostApi
-import com.pocs.data.model.PostAddBody
+import com.pocs.data.model.post.PostAddBody
 import javax.inject.Inject
 
 class PostRemoteDataSourceImpl @Inject constructor(
