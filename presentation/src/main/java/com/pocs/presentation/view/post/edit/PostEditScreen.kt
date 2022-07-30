@@ -13,6 +13,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pocs.domain.model.PostCategory
@@ -22,12 +24,13 @@ import com.pocs.presentation.model.PostEditUiState
 import kotlinx.coroutines.launch
 
 @Composable
-fun PostEditScreen(uiState: PostEditUiState, navigateUp: () -> Unit) {
+fun PostEditScreen(uiState: PostEditUiState, navigateUp: () -> Unit, onSuccessSave: () -> Unit) {
     PostEditContent(
         // TODO: 게시글 속성에 따라 "OOO 편집"과 같이 다르게 보이기
         title = stringResource(id = R.string.edit_post),
         uiState = uiState,
-        navigateUp = navigateUp
+        navigateUp = navigateUp,
+        onSuccessSave = onSuccessSave
     )
 }
 
@@ -36,7 +39,8 @@ fun PostEditScreen(uiState: PostEditUiState, navigateUp: () -> Unit) {
 fun PostEditContent(
     title: String,
     uiState: BasePostEditUiState,
-    navigateUp: () -> Unit
+    navigateUp: () -> Unit,
+    onSuccessSave: () -> Unit
 ) {
     var enabledAlertDialog by remember { mutableStateOf(false) }
     val enabledBackHandler = rememberUpdatedState(newValue = !uiState.isEmpty)
@@ -68,6 +72,7 @@ fun PostEditContent(
                         coroutineScope.launch {
                             val result = uiState.onSave()
                             if (result.isSuccess) {
+                                onSuccessSave()
                                 navigateUp()
                             } else {
                                 val exception = result.exceptionOrNull()!!
@@ -78,17 +83,24 @@ fun PostEditContent(
                 }
             )
         }
-    ) {
+    ) { innerPadding ->
         Column(
             Modifier
-                .padding(it)
+                .padding(innerPadding)
                 .padding(bottom = 16.dp)
         ) {
+            val titleContentDescription = stringResource(R.string.title_text_field)
+            val contentContentDescription = stringResource(R.string.content_text_field)
+
             SimpleTextField(
                 hint = stringResource(R.string.title),
                 value = uiState.title,
-                onValueChange = uiState.onTitleChange,
-                modifier = Modifier.fillMaxWidth()
+                onValueChange = {
+                    uiState.onTitleChange(it.filter { char -> char != '\n' })
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .semantics { contentDescription = titleContentDescription }
             )
             Divider(startIndent = 16.dp, modifier = Modifier.alpha(0.4f))
             SimpleTextField(
@@ -98,6 +110,7 @@ fun PostEditContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
+                    .semantics { contentDescription = contentContentDescription }
             )
         }
     }
@@ -211,8 +224,9 @@ fun PostEditContentEmptyPreview() {
             category = PostCategory.STUDY,
             onTitleChange = {},
             onContentChange = {},
-            onSave = { Result.success(true) }
-        )
+            onSave = { Result.success(Unit) }
+        ),
+        {}
     ) {}
 }
 
@@ -228,7 +242,8 @@ fun PostEditContentPreview() {
             category = PostCategory.STUDY,
             onTitleChange = {},
             onContentChange = {},
-            onSave = { Result.success(true) }
-        )
+            onSave = { Result.success(Unit) }
+        ),
+        {}
     ) {}
 }

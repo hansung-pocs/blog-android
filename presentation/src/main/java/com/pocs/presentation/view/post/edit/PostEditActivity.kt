@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import com.google.android.material.composethemeadapter3.Mdc3Theme
 import com.pocs.domain.model.PostCategory
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,6 +36,8 @@ class PostEditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+
         with(intent) {
             viewModel.initUiState(
                 id = getIntExtra("id", -1),
@@ -46,7 +49,11 @@ class PostEditActivity : AppCompatActivity() {
 
         setContent {
             Mdc3Theme(this) {
-                PostEditScreen(uiState = viewModel.uiState.value, navigateUp = ::finish)
+                PostEditScreen(
+                    uiState = viewModel.uiState.value,
+                    navigateUp = ::finish,
+                    onSuccessSave = { setResult(RESULT_OK) }
+                )
             }
         }
     }

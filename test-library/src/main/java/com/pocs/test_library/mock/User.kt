@@ -1,4 +1,4 @@
-package com.pocs.presentation.mock
+package com.pocs.test_library.mock
 
 import com.pocs.domain.model.User
 import com.pocs.domain.model.UserType

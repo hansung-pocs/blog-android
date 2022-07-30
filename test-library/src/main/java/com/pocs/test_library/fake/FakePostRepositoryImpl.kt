@@ -1,4 +1,4 @@
-package com.pocs.presentation.fake
+package com.pocs.test_library.fake
 
 import androidx.paging.PagingData
 import com.pocs.domain.model.Post
@@ -6,14 +6,19 @@ import com.pocs.domain.model.PostCategory
 import com.pocs.domain.model.PostDetail
 import com.pocs.domain.repository.PostRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 
 class FakePostRepositoryImpl: PostRepository {
 
+    private val postFlow = MutableSharedFlow<PagingData<Post>>()
     var postDetailResult : Result<PostDetail> = Result.failure(Exception())
 
-    override fun getAll(category: PostCategory): Flow<PagingData<Post>> {
-        TODO("Not yet implemented")
-    }
+//    suspend fun emit(pagingData: PagingData<Post>) {
+//        postFlow.emit(pagingData)
+//    }
+
+    override fun getAll(category: PostCategory) = postFlow
 
     override suspend fun getPostDetail(id: Int): Result<PostDetail> {
         return postDetailResult
@@ -24,8 +29,8 @@ class FakePostRepositoryImpl: PostRepository {
         content: String,
         userId: Int,
         category: PostCategory
-    ): Result<Boolean> {
-        TODO("Not yet implemented")
+    ): Result<Unit> {
+        return Result.success(Unit)
     }
 
     override suspend fun updatePost(
@@ -34,11 +39,11 @@ class FakePostRepositoryImpl: PostRepository {
         content: String,
         userId: Int,
         category: PostCategory
-    ): Result<Boolean> {
+    ): Result<Unit> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun deletePost(postId: Int, userId: Int): Result<Boolean> {
+    override suspend fun deletePost(postId: Int, userId: Int): Result<Unit> {
         TODO("Not yet implemented")
     }
 }

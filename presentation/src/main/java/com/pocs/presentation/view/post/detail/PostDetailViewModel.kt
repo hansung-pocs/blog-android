@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.pocs.domain.usecase.post.GetPostDetailUseCase
 import com.pocs.presentation.model.PostDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -19,8 +20,11 @@ class PostDetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<PostDetailUiState>(PostDetailUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    fun loadArticle(id: Int) {
-        viewModelScope.launch {
+    private var fetchJob: Job? = null
+
+    fun fetchPost(id: Int) {
+        fetchJob?.cancel()
+        fetchJob = viewModelScope.launch {
             val result = getPostDetailUseCase(id)
             if (result.isSuccess) {
                 val data = result.getOrNull()!!

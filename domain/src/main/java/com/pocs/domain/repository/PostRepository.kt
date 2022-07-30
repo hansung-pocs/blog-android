@@ -17,7 +17,7 @@ interface PostRepository {
         content: String,
         userId: Int,
         category: PostCategory
-    ): Result<Boolean>
+    ): Result<Unit>
 
     suspend fun updatePost(
         id: Int,
@@ -25,7 +25,7 @@ interface PostRepository {
         content: String,
         userId: Int,
         category: PostCategory
-    ): Result<Boolean>
+    ): Result<Unit>
 
-    suspend fun deletePost(postId: Int, userId: Int): Result<Boolean>
+    suspend fun deletePost(postId: Int, userId: Int): Result<Unit>
 }

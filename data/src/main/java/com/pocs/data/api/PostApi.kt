@@ -1,10 +1,10 @@
 package com.pocs.data.api
 
+import com.pocs.data.model.PostAddBody
 import com.pocs.data.model.PostDetailDto
 import com.pocs.data.model.PostListDto
 import com.pocs.data.model.ResponseBody
-import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface PostApi {
     @GET("posts")
@@ -14,4 +14,9 @@ interface PostApi {
     suspend fun getPostDetail(
         @Path("postId") postId: Int
     ): ResponseBody<PostDetailDto>
+
+    @POST("posts")
+    suspend fun addPost(
+        @Body postAddBody: PostAddBody,
+    ): ResponseBody<Unit>
 }

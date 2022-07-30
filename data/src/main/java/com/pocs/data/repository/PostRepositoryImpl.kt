@@ -4,7 +4,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.pocs.data.api.PostApi
+import com.pocs.data.mapper.toDto
 import com.pocs.data.mapper.toEntity
+import com.pocs.data.model.PostAddBody
 import com.pocs.data.paging.PostPagingSource
 import com.pocs.data.source.PostRemoteDataSource
 import com.pocs.domain.model.Post
@@ -45,8 +47,24 @@ class PostRepositoryImpl @Inject constructor(
         content: String,
         userId: Int,
         category: PostCategory
-    ): Result<Boolean> {
-        TODO("Not yet implemented")
+    ): Result<Unit> {
+        return try {
+            val result = dataSource.addPost(
+                PostAddBody(
+                    title = title,
+                    content = content,
+                    userId = userId,
+                    category = category.toDto()
+                )
+            )
+            if (result.isSuccess) {
+                Result.success(Unit)
+            } else {
+                throw Exception(result.message)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     override suspend fun updatePost(
@@ -55,11 +73,11 @@ class PostRepositoryImpl @Inject constructor(
         content: String,
         userId: Int,
         category: PostCategory
-    ): Result<Boolean> {
+    ): Result<Unit> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun deletePost(postId: Int, userId: Int): Result<Boolean> {
+    override suspend fun deletePost(postId: Int, userId: Int): Result<Unit> {
         TODO("Not yet implemented")
     }
 }
