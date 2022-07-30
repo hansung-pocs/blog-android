@@ -1,11 +1,11 @@
-package com.pocs.domain.model
+package com.pocs.domain.model.post
 
-data class Post(
+data class PostDetail(
     val id: Int,
     val title: String,
+    val writer: PostWriter,
     val content: String,
-    val writer: String,
     val createdAt: String,
     val updatedAt: String,
-    val category: PostCategory,
+    val category: PostCategory
 )

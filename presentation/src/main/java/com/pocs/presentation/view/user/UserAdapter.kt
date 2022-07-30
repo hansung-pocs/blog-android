@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.pocs.presentation.databinding.ItemUserBinding
-import com.pocs.presentation.model.UserItemUiState
+import com.pocs.presentation.model.user.item.UserItemUiState
 
 class UserAdapter : PagingDataAdapter<UserItemUiState, UserViewHolder>(diffCallback) {
 

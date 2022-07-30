@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
-import com.pocs.presentation.model.UserEditUiState
+import com.pocs.presentation.model.user.UserEditUiState
 import com.pocs.presentation.view.user.edit.UserEditContent
 import org.junit.Rule
 import org.junit.Test

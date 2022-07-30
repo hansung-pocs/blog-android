@@ -17,12 +17,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.pocs.domain.model.PostCategory
+import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ContentLoadStateBinding
 import com.pocs.presentation.databinding.FragmentArticleBinding
 import com.pocs.presentation.model.ArticleUiState
-import com.pocs.presentation.model.PostItemUiState
+import com.pocs.presentation.model.post.item.PostItemUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
 import com.pocs.presentation.view.post.adapter.PostAdapter
 import com.pocs.presentation.view.post.create.PostCreateActivity

@@ -1,5 +1,5 @@
 package com.pocs.data.mapper
 
-import com.pocs.domain.model.UserType
+import com.pocs.domain.model.user.UserType
 
 fun String.toUserType() = UserType.valueOf(this.uppercase())

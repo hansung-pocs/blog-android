@@ -1,7 +1,7 @@
 package com.pocs.presentation
 
 import com.pocs.domain.usecase.post.GetPostDetailUseCase
-import com.pocs.presentation.model.PostDetailUiState
+import com.pocs.presentation.model.post.PostDetailUiState
 import com.pocs.presentation.view.post.detail.PostDetailViewModel
 import com.pocs.test_library.fake.FakePostRepositoryImpl
 import com.pocs.test_library.mock.mockPostDetail1

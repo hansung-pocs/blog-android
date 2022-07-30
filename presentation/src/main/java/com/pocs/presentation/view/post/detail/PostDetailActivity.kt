@@ -17,7 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityPostDetailBinding
-import com.pocs.presentation.model.PostDetailUiState
+import com.pocs.presentation.model.post.PostDetailUiState
 import com.pocs.presentation.view.post.edit.PostEditActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -110,9 +110,11 @@ class PostDetailActivity : AppCompatActivity() {
         progressBar.isVisible = uiState is PostDetailUiState.Loading
         when (uiState) {
             is PostDetailUiState.Success -> {
-                title.text = uiState.title
-                subtitle.text = getString(R.string.article_subtitle, uiState.date, uiState.writer)
-                content.text = uiState.content
+                val postDetail = uiState.postDetail
+
+                title.text = postDetail.title
+                subtitle.text = getString(R.string.article_subtitle, postDetail.date, postDetail.writer)
+                content.text = postDetail.content
             }
             is PostDetailUiState.Failure -> {
                 title.text = getString(R.string.failed_to_load)
@@ -126,12 +128,13 @@ class PostDetailActivity : AppCompatActivity() {
         val uiState = viewModel.uiState.value
         if (uiState !is PostDetailUiState.Success) return
 
+        val postDetail = uiState.postDetail
         val intent = PostEditActivity.getIntent(
             this,
-            uiState.id,
-            uiState.title,
-            uiState.content,
-            uiState.category
+            postDetail.id,
+            postDetail.title,
+            postDetail.content,
+            postDetail.category
         )
         launcher?.launch(intent)
     }

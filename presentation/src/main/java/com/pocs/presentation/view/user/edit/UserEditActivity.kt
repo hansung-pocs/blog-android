@@ -8,7 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import com.google.android.material.composethemeadapter3.Mdc3Theme
-import com.pocs.domain.model.User
+import com.pocs.presentation.model.user.item.UserDetailItemUiState
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -20,9 +20,9 @@ class UserEditActivity : AppCompatActivity() {
     private val viewModel: UserEditViewModel by viewModels()
 
     companion object {
-        fun getIntent(context: Context, user: User): Intent {
+        fun getIntent(context: Context, userDetail: UserDetailItemUiState): Intent {
             return Intent(context, UserEditActivity::class.java).apply {
-                putExtra("user", user)
+                putExtra("userDetail", userDetail)
             }
         }
     }
@@ -32,8 +32,8 @@ class UserEditActivity : AppCompatActivity() {
 
         WindowCompat.setDecorFitsSystemWindows(window, true)
 
-        val user = intent.getSerializableExtra("user") as User
-        viewModel.init(user)
+        val userDetail = intent.getSerializableExtra("userDetail") as UserDetailItemUiState
+        viewModel.init(userDetail)
 
         setContent {
             Mdc3Theme {

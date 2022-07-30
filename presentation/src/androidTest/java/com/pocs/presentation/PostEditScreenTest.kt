@@ -8,8 +8,8 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.pocs.domain.model.PostCategory
-import com.pocs.presentation.model.PostEditUiState
+import com.pocs.domain.model.post.PostCategory
+import com.pocs.presentation.model.post.PostEditUiState
 import com.pocs.presentation.view.post.edit.PostEditScreen
 import org.junit.Assert.assertEquals
 import org.junit.Rule

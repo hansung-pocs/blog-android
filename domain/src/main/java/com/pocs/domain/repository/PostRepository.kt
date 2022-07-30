@@ -1,9 +1,9 @@
 package com.pocs.domain.repository
 
 import androidx.paging.PagingData
-import com.pocs.domain.model.PostDetail
-import com.pocs.domain.model.PostCategory
-import com.pocs.domain.model.Post
+import com.pocs.domain.model.post.PostDetail
+import com.pocs.domain.model.post.PostCategory
+import com.pocs.domain.model.post.Post
 import kotlinx.coroutines.flow.Flow
 
 interface PostRepository {

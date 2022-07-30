@@ -1,4 +1,4 @@
-package com.pocs.data.model
+package com.pocs.data.model.post
 
 import com.google.gson.annotations.SerializedName
 

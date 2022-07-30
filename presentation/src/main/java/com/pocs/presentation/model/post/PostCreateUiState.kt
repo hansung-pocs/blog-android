@@ -1,11 +1,11 @@
-package com.pocs.presentation.model
+package com.pocs.presentation.model.post
 
-import com.pocs.domain.model.PostCategory
+import com.pocs.domain.model.post.PostCategory
+import com.pocs.presentation.model.BasePostEditUiState
 
-data class PostEditUiState(
-    val id: Int,
-    override val title: String,
-    override val content: String,
+data class PostCreateUiState(
+    override val title: String = "",
+    override val content: String = "",
     override val category: PostCategory,
     override val isInSaving: Boolean = false,
     override val onTitleChange: (String) -> Unit,

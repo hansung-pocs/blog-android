@@ -5,7 +5,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ItemUserBinding
-import com.pocs.presentation.model.UserItemUiState
+import com.pocs.presentation.model.user.item.UserItemUiState
 import com.pocs.presentation.view.user.detail.UserDetailActivity
 import com.pocs.presentation.view.user.detail.UserPostListActivity
 
