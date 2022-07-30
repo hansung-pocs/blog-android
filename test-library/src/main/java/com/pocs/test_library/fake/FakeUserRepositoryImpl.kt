@@ -7,8 +7,9 @@ import com.pocs.domain.model.user.UserListSortingMethod
 import com.pocs.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class FakeUserRepositoryImpl: UserRepository {
+class FakeUserRepositoryImpl @Inject constructor() : UserRepository {
 
     override fun getAll(sortingMethod: UserListSortingMethod): Flow<PagingData<User>> {
         return flow {

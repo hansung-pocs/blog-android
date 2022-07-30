@@ -6,11 +6,12 @@ import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.model.post.PostDetail
 import com.pocs.domain.repository.PostRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
+import javax.inject.Inject
 
-class FakePostRepositoryImpl: PostRepository {
+class FakePostRepositoryImpl @Inject constructor() : PostRepository {
 
     private val postFlow = MutableSharedFlow<PagingData<Post>>()
-    var postDetailResult : Result<PostDetail> = Result.failure(Exception())
+    var postDetailResult: Result<PostDetail> = Result.failure(Exception())
 
 //    suspend fun emit(pagingData: PagingData<Post>) {
 //        postFlow.emit(pagingData)

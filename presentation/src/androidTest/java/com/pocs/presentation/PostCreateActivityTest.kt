@@ -9,24 +9,16 @@ import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.launchActivity
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.pocs.data.di.RepositoryModule
-import com.pocs.domain.repository.PostRepository
-import com.pocs.domain.usecase.post.AddPostUseCase
 import com.pocs.presentation.view.post.create.PostCreateActivity
-import com.pocs.presentation.view.post.create.PostCreateViewModel
-import com.pocs.test_library.fake.FakePostRepositoryImpl
 import com.pocs.test_library.mock.mockPostDetail2
-import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import dagger.hilt.android.testing.UninstallModules
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@UninstallModules(RepositoryModule::class)
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 class PostCreateActivityTest {
@@ -36,12 +28,6 @@ class PostCreateActivityTest {
 
     @get:Rule(order = 1)
     val composeRule = createEmptyComposeRule()
-
-    @BindValue
-    val repository: PostRepository = FakePostRepositoryImpl()
-
-    @BindValue
-    val viewModel = PostCreateViewModel(AddPostUseCase(repository))
 
     private lateinit var context: Context
 
