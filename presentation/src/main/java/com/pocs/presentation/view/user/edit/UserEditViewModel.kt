@@ -4,7 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.pocs.domain.model.user.UserDetail
+import com.pocs.presentation.model.user.item.UserDetailItemUiState
 import com.pocs.presentation.model.user.UserEditUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -16,7 +16,7 @@ class UserEditViewModel @Inject constructor() : ViewModel() {
     private lateinit var _uiState: MutableState<UserEditUiState>
     val uiState: State<UserEditUiState> get() = _uiState
 
-    fun init(userDetail: UserDetail) {
+    fun init(userDetail: UserDetailItemUiState) {
         _uiState = mutableStateOf(
             UserEditUiState(
                 name = userDetail.name,

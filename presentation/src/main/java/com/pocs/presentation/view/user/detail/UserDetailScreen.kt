@@ -20,9 +20,9 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.R
+import com.pocs.presentation.model.user.item.UserDetailItemUiState
 import com.pocs.presentation.model.user.UserDetailUiState
 import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.component.FailureContent
@@ -51,7 +51,7 @@ fun UserDetailScreen(uiState: UserDetailUiState) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserDetailContent(userDetail: UserDetail) {
+fun UserDetailContent(userDetail: UserDetailItemUiState) {
     Scaffold(
         topBar = { UserDetailTopBar(userDetail.name) },
         floatingActionButton = {
@@ -220,7 +220,7 @@ fun UserDetailFailureContent(message: String, onRetryClick: () -> Unit) {
 @Preview
 fun UserDetailContentPreview() {
     UserDetailContent(
-        userDetail = UserDetail(
+        userDetail = UserDetailItemUiState(
             1,
             "김민성",
             "jja08111@gmail.com",

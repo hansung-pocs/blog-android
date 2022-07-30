@@ -1,6 +1,9 @@
-package com.pocs.domain.model.user
+package com.pocs.presentation.model.user.item
 
-data class UserDetail(
+import com.pocs.domain.model.user.UserType
+import java.io.Serializable
+
+data class UserDetailItemUiState(
     val id: Int,
     val name: String,
     val email: String,
@@ -10,4 +13,4 @@ data class UserDetail(
     val generation: Int,
     val github: String,
     val createdAt: String
-)
+) : Serializable
