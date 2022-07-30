@@ -20,7 +20,7 @@ import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentNoticeBinding
 import com.pocs.presentation.model.NoticeUiState
-import com.pocs.presentation.model.post.PostItemUiState
+import com.pocs.presentation.model.post.item.PostItemUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
 import com.pocs.presentation.view.post.adapter.PostAdapter
 import com.pocs.presentation.view.post.create.PostCreateActivity

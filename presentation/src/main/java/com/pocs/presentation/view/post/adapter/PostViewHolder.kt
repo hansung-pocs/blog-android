@@ -3,7 +3,7 @@ package com.pocs.presentation.view.post.adapter
 import androidx.recyclerview.widget.RecyclerView
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ItemPostBinding
-import com.pocs.presentation.model.post.PostItemUiState
+import com.pocs.presentation.model.post.item.PostItemUiState
 
 class PostViewHolder(
     private val binding: ItemPostBinding,

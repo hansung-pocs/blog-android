@@ -1,4 +1,4 @@
-package com.pocs.presentation.model.post
+package com.pocs.presentation.model.post.item
 
 data class PostItemUiState(
     val id: Int,

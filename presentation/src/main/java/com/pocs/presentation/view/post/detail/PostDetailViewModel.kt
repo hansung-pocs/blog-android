@@ -3,7 +3,7 @@ package com.pocs.presentation.view.post.detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pocs.domain.usecase.post.GetPostDetailUseCase
-import com.pocs.presentation.mapper.toSuccessUiState
+import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.post.PostDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -29,7 +29,7 @@ class PostDetailViewModel @Inject constructor(
             val result = getPostDetailUseCase(id)
             if (result.isSuccess) {
                 val data = result.getOrNull()!!
-                _uiState.update { data.toSuccessUiState() }
+                _uiState.update { PostDetailUiState.Success(data.toUiState()) }
             } else {
                 val errorMessage = result.exceptionOrNull()!!.message
                 _uiState.update { PostDetailUiState.Failure(message = errorMessage) }

@@ -1,17 +1,10 @@
 package com.pocs.presentation.model.post
 
-import com.pocs.domain.model.post.PostCategory
+import com.pocs.presentation.model.post.item.PostDetailItemUiState
 
 sealed class PostDetailUiState {
 
-    class Success(
-        val id: Int,
-        val title: String,
-        val content: String,
-        val writer: String,
-        val date: String,
-        val category: PostCategory,
-    ) : PostDetailUiState()
+    class Success(val postDetail: PostDetailItemUiState) : PostDetailUiState()
 
     class Failure(val message: String?) : PostDetailUiState()
 
