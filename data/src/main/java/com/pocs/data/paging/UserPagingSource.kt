@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class UserPagingSource @Inject constructor(
     private val api: UserApi,
-    private val sortType: UserListSortingMethod
+    private val sortingMethod: UserListSortingMethod
 ) : PagingSource<Int, User>() {
 
     companion object {
@@ -22,7 +22,7 @@ class UserPagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, User> {
         val page = params.key ?: START_PAGE
         return try {
-            val response = api.getAll(sortType.toDto())
+            val response = api.getAll(sortingMethod.toDto())
             if (response.isSuccess) {
                 val users = response.data.users.map { it.toEntity() }
                 // TODO: API에서 페이지네이션 구현되면 수정하기

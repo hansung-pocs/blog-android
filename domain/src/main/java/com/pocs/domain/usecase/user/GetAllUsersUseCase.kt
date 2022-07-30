@@ -7,5 +7,5 @@ import javax.inject.Inject
 class GetAllUsersUseCase @Inject constructor(
     private val repository: UserRepository
 ) {
-    operator fun invoke(sortType: UserListSortingMethod) = repository.getAll(sortType)
+    operator fun invoke(sortingMethod: UserListSortingMethod) = repository.getAll(sortingMethod)
 }

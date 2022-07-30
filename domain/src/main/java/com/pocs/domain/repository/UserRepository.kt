@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
 
-    fun getAll(sortType: UserListSortingMethod): Flow<PagingData<User>>
+    fun getAll(sortingMethod: UserListSortingMethod): Flow<PagingData<User>>
 
     suspend fun getUserDetail(id: Int): Result<UserDetail>
 

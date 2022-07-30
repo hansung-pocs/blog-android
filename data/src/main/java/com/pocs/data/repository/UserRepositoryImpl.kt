@@ -16,11 +16,11 @@ class UserRepositoryImpl @Inject constructor(
     private val api: UserApi
 ): UserRepository {
 
-    override fun getAll(sortType: UserListSortingMethod): Flow<PagingData<User>> {
+    override fun getAll(sortingMethod: UserListSortingMethod): Flow<PagingData<User>> {
         return Pager(
             // TODO: API 페이지네이션 구현되면 페이지 사이즈 수정하기
             config = PagingConfig(pageSize = 30),
-            pagingSourceFactory = { UserPagingSource(api, sortType) }
+            pagingSourceFactory = { UserPagingSource(api, sortingMethod) }
         ).flow
     }
 
