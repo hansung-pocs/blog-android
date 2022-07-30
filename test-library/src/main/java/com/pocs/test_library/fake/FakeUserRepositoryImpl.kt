@@ -11,15 +11,15 @@ import javax.inject.Inject
 
 class FakeUserRepositoryImpl @Inject constructor() : UserRepository {
 
+    var userDetailResult: Result<UserDetail> = Result.failure(Exception("Empty"))
+
     override fun getAll(sortingMethod: UserListSortingMethod): Flow<PagingData<User>> {
         return flow {
             PagingData.from<User>(listOf())
         }
     }
 
-    override suspend fun getUserDetail(id: Int): Result<UserDetail> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getUserDetail(id: Int) = userDetailResult
 
     override suspend fun updateUser(
         id: Int,

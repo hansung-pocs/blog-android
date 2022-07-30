@@ -4,7 +4,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.pocs.data.api.UserApi
+import com.pocs.data.mapper.toDetailEntity
+import com.pocs.data.mapper.toEntity
 import com.pocs.data.paging.UserPagingSource
+import com.pocs.data.source.UserRemoteDataSource
 import com.pocs.domain.model.user.User
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserListSortingMethod
@@ -13,8 +16,9 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
-    private val api: UserApi
-): UserRepository {
+    private val api: UserApi,
+    private val dataSource: UserRemoteDataSource
+) : UserRepository {
 
     override fun getAll(sortingMethod: UserListSortingMethod): Flow<PagingData<User>> {
         return Pager(
@@ -25,7 +29,16 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getUserDetail(id: Int): Result<UserDetail> {
-        TODO("Not yet implemented")
+        return try {
+            val response = dataSource.getUserDetail(id)
+            if (response.isSuccess) {
+                Result.success(response.data.toDetailEntity())
+            } else {
+                throw Exception(response.message)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     override suspend fun updateUser(
