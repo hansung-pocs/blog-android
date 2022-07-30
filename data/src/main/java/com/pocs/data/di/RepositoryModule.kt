@@ -5,6 +5,7 @@ import com.pocs.data.api.UserApi
 import com.pocs.data.repository.PostRepositoryImpl
 import com.pocs.data.repository.UserRepositoryImpl
 import com.pocs.data.source.PostRemoteDataSource
+import com.pocs.data.source.UserRemoteDataSource
 import com.pocs.domain.repository.PostRepository
 import com.pocs.domain.repository.UserRepository
 import dagger.Module
@@ -25,7 +26,7 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideUserRepository(api: UserApi): UserRepository {
-        return UserRepositoryImpl(api = api)
+    fun provideUserRepository(api: UserApi, dataSource: UserRemoteDataSource): UserRepository {
+        return UserRepositoryImpl(api = api, dataSource = dataSource)
     }
 }
