@@ -2,6 +2,7 @@ package com.pocs.data.di
 
 import com.pocs.data.BuildConfig
 import com.pocs.data.api.PostApi
+import com.pocs.data.api.UserApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,5 +46,11 @@ class NetworkModule {
     @Singleton
     fun providePostApiService(retrofit: Retrofit): PostApi {
         return retrofit.create(PostApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserApiService(retrofit: Retrofit): UserApi {
+        return retrofit.create(UserApi::class.java)
     }
 }

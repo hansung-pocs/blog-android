@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -12,13 +13,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.pocs.domain.model.user.UserListSortingMethod
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentUserBinding
 import com.pocs.presentation.model.user.UserUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
 import kotlinx.coroutines.launch
 
-class UserListFragment : Fragment(R.layout.fragment_user) {
+
+class UserFragment : Fragment(R.layout.fragment_user) {
 
     private var _binding: FragmentUserBinding? = null
     private val binding get() = _binding!!
@@ -55,6 +58,8 @@ class UserListFragment : Fragment(R.layout.fragment_user) {
                 loadStateBinding.errorMsg.isVisible = isError
             }
 
+            sortBox.setOnClickListener { showSortingMethodPopUpMenu() }
+
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.uiState.collect {
@@ -70,7 +75,27 @@ class UserListFragment : Fragment(R.layout.fragment_user) {
         _binding = null
     }
 
+    private fun showSortingMethodPopUpMenu() {
+        PopupMenu(requireContext(), binding.sortButton).apply {
+            menuInflater.inflate(R.menu.menu_sorting_method_pop_up, menu)
+            setOnMenuItemClickListener {
+                val newSortingMethod = when (it.itemId) {
+                    R.id.action_generation_descending -> UserListSortingMethod.GENERATION
+                    R.id.action_student_id_ascending -> UserListSortingMethod.STUDENT_ID
+                    else -> throw IllegalArgumentException()
+                }
+                viewModel.updateSortingMethod(newSortingMethod)
+                true
+            }
+        }.show()
+    }
+
     private fun updateUi(uiState: UserUiState, adapter: UserAdapter) {
         adapter.submitData(lifecycle, uiState.userPagingData)
+        val stringResource = when (uiState.sortingMethod) {
+            UserListSortingMethod.STUDENT_ID -> R.string.sorting_by_student_id_ascending
+            UserListSortingMethod.GENERATION -> R.string.sorting_by_generation_descending
+        }
+        binding.sortText.text = getString(stringResource)
     }
 }

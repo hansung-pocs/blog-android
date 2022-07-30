@@ -42,6 +42,9 @@
     <string name="github_placeholder">https://github.com/user</string>
     <string name="title_text_field">제목 입력창</string>
     <string name="content_text_field">내용 입력창</string>
+    <string name="sort_button">정렬 버튼</string>
+    <string name="sorting_by_generation_descending">기수 내림차순으로 정렬</string>
+    <string name="sorting_by_student_id_ascending">학번 오름차순으로 정렬</string>
     <string-array name="admin_tab">
         <item>공지사항</item>
         <item>회원목록</item>
