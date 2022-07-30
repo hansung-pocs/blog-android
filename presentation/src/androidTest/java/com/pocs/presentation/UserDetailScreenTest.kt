@@ -3,8 +3,8 @@ package com.pocs.presentation
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import com.pocs.domain.model.User
 import com.pocs.domain.model.UserType
-import com.pocs.presentation.model.UserDetailItemUiState
 import com.pocs.presentation.model.UserDetailUiState
 import com.pocs.presentation.view.user.detail.UserDetailScreen
 import org.junit.Rule
@@ -15,7 +15,7 @@ class UserDetailScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private val userDetailItemUiState = UserDetailItemUiState(
+    private val user = User(
         1,
         "김민성",
         "jja08111@gmail.com",
@@ -29,10 +29,10 @@ class UserDetailScreenTest {
 
     @Test
     fun showUserDetailContent_WhenUiStateIsSuccess() {
-        val uiState = UserDetailUiState.Success(userDetailItemUiState)
+        val uiState = UserDetailUiState.Success(user)
         composeTestRule.setContent { UserDetailScreen(uiState = uiState) }
 
-        composeTestRule.onNodeWithText(userDetailItemUiState.email).assertIsDisplayed()
+        composeTestRule.onNodeWithText(user.email).assertIsDisplayed()
     }
 
     @Test
@@ -41,7 +41,7 @@ class UserDetailScreenTest {
         val uiState = UserDetailUiState.Failure(exception) {}
         composeTestRule.setContent { UserDetailScreen(uiState = uiState) }
 
-        composeTestRule.onNodeWithText(userDetailItemUiState.email).assertDoesNotExist()
+        composeTestRule.onNodeWithText(user.email).assertDoesNotExist()
         composeTestRule.onNodeWithText(exception.message!!).assertIsDisplayed()
     }
 }

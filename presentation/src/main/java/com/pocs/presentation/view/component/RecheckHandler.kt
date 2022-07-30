@@ -1,0 +1,52 @@
+package com.pocs.presentation.view.component
+
+import androidx.activity.compose.BackHandler
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.*
+import androidx.compose.ui.res.stringResource
+import com.pocs.presentation.R
+
+/**
+ * Shows a AlertDialog when pressing a back button if satisfy a some condition.
+ *
+ * [navigateUp] is used to navigate up after click the ok button of the dialog.
+ */
+@Composable
+fun RecheckHandler(
+    navigateUp: () -> Unit,
+    enableRechecking: Boolean = true
+) {
+    var enabledAlertDialog by remember { mutableStateOf(false) }
+
+    if (enabledAlertDialog) {
+        RecheckDialog(
+            onDismissRequest = { enabledAlertDialog = false },
+            onOkClick = { navigateUp() }
+        )
+    }
+
+    BackHandler(enableRechecking) {
+        enabledAlertDialog = true
+    }
+}
+
+@Composable
+fun RecheckDialog(onOkClick: () -> Unit, onDismissRequest: () -> Unit) {
+    AlertDialog(
+        title = {
+            Text(text = stringResource(R.string.recheck_dialog_title))
+        },
+        text = {
+            Text(text = stringResource(R.string.recheck_dialog_text))
+        },
+        onDismissRequest = onDismissRequest,
+        dismissButton = {
+            TextButton(onClick = onDismissRequest) { Text(stringResource(R.string.cancel)) }
+        },
+        confirmButton = {
+            TextButton(onClick = onOkClick) { Text(stringResource(R.string.ok)) }
+        }
+    )
+}

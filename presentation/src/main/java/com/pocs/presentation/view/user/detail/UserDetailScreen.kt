@@ -10,7 +10,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -18,13 +20,14 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.pocs.domain.model.User
 import com.pocs.domain.model.UserType
 import com.pocs.presentation.R
-import com.pocs.presentation.model.UserDetailItemUiState
 import com.pocs.presentation.model.UserDetailUiState
-import com.pocs.presentation.view.common.AppBarBackButton
-import com.pocs.presentation.view.common.FailureContent
-import com.pocs.presentation.view.common.LoadingContent
+import com.pocs.presentation.view.component.button.AppBarBackButton
+import com.pocs.presentation.view.component.FailureContent
+import com.pocs.presentation.view.component.LoadingContent
+import com.pocs.presentation.view.user.edit.UserEditActivity
 
 private const val URL_TAG = "url"
 
@@ -35,7 +38,7 @@ fun UserDetailScreen(uiState: UserDetailUiState) {
             LoadingContent()
         }
         is UserDetailUiState.Success -> {
-            UserDetailContent(uiState.userDetailItem)
+            UserDetailContent(uiState.user)
         }
         is UserDetailUiState.Failure -> {
             UserDetailFailureContent(
@@ -48,14 +51,16 @@ fun UserDetailScreen(uiState: UserDetailUiState) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserDetailContent(itemUiState: UserDetailItemUiState) {
+fun UserDetailContent(user: User) {
     Scaffold(
-        topBar = { UserDetailTopBar(itemUiState.name) },
+        topBar = { UserDetailTopBar(user.name) },
         floatingActionButton = {
+            val context = LocalContext.current
             // TODO: 본인 정보인 경우에만 내 정보 수정 버튼 보이기
             ExtendedFloatingActionButton(
                 onClick = {
-                    // TODO: 회원 정보 편집 페이지 보이기
+                    val intent = UserEditActivity.getIntent(context, user)
+                    context.startActivity(intent)
                 }
             ) {
                 Icon(Icons.Filled.Edit, contentDescription = stringResource(id = R.string.edit))
@@ -70,46 +75,48 @@ fun UserDetailContent(itemUiState: UserDetailItemUiState) {
             modifier = Modifier
                 .padding(it)
                 .padding(horizontal = 24.dp)
-                .padding(bottom = FloatingActionButtonDefaults.LargeIconSize)
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             item {
-                UserAvatar(itemUiState.name)
+                UserAvatar(user.name)
             }
             item {
                 UserInfo(
                     stringResource(R.string.generation),
-                    stringResource(R.string.user_generation_info, itemUiState.generation)
+                    stringResource(R.string.user_generation_info, user.generation)
                 )
             }
             item {
                 UserInfo(
                     stringResource(R.string.student_id),
-                    itemUiState.studentId.toString()
+                    user.studentId.toString()
                 )
             }
-            if (itemUiState.company.isNotEmpty()) {
+            if (user.company.isNotEmpty()) {
                 item {
                     UserInfo(
                         stringResource(R.string.company),
-                        itemUiState.company
+                        user.company
                     )
                 }
             }
             item {
                 UserInfo(
                     label = stringResource(R.string.github),
-                    link = itemUiState.github,
-                    annotation = itemUiState.github
+                    link = user.github,
+                    annotation = user.github
                 )
             }
             item {
                 UserInfo(
                     label = stringResource(R.string.email),
-                    link = itemUiState.email,
-                    annotation = stringResource(R.string.mailto_scheme, itemUiState.email)
+                    link = user.email,
+                    annotation = stringResource(R.string.mailto_scheme, user.email)
                 )
+            }
+            item {
+                Box(modifier = Modifier.height(dimensionResource(id = R.dimen.fab_height)))
             }
         }
     }
@@ -213,7 +220,7 @@ fun UserDetailFailureContent(message: String, onRetryClick: () -> Unit) {
 @Preview
 fun UserDetailContentPreview() {
     UserDetailContent(
-        itemUiState = UserDetailItemUiState(
+        user = User(
             1,
             "김민성",
             "jja08111@gmail.com",

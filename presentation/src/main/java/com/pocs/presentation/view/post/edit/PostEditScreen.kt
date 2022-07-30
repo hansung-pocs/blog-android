@@ -1,17 +1,12 @@
 package com.pocs.presentation.view.post.edit
 
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -21,6 +16,8 @@ import com.pocs.domain.model.PostCategory
 import com.pocs.presentation.R
 import com.pocs.presentation.model.BasePostEditUiState
 import com.pocs.presentation.model.PostEditUiState
+import com.pocs.presentation.view.component.RecheckHandler
+import com.pocs.presentation.view.component.appbar.EditContentAppBar
 import kotlinx.coroutines.launch
 
 @Composable
@@ -42,27 +39,19 @@ fun PostEditContent(
     navigateUp: () -> Unit,
     onSuccessSave: () -> Unit
 ) {
-    var enabledAlertDialog by remember { mutableStateOf(false) }
-    val enabledBackHandler = rememberUpdatedState(newValue = !uiState.isEmpty)
     val snackBarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
-    if (enabledAlertDialog) {
-        PostEditAlertDialog(
-            onDismissRequest = { enabledAlertDialog = false },
-            onOkClick = { navigateUp() }
-        )
-    }
-
-    BackHandler(enabledBackHandler.value) {
-        enabledAlertDialog = true
-    }
+    RecheckHandler(
+        navigateUp = navigateUp,
+        enableRechecking = !uiState.isEmpty
+    )
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
         topBar = {
-            PostEditAppBar(
+            EditContentAppBar(
                 title = title,
                 onBackPressed = { onBackPressedDispatcher?.onBackPressed() },
                 isInSaving = uiState.isInSaving,
@@ -117,41 +106,6 @@ fun PostEditContent(
 }
 
 @Composable
-fun PostEditAppBar(
-    title: String,
-    onBackPressed: () -> Unit,
-    isInSaving: Boolean,
-    enableSendIcon: Boolean,
-    onClickSend: () -> Unit
-) {
-    SmallTopAppBar(
-        title = { Text(text = title) },
-        navigationIcon = {
-            IconButton(onClick = onBackPressed) {
-                Icon(
-                    imageVector = Icons.Filled.ArrowBack,
-                    contentDescription = stringResource(R.string.back)
-                )
-            }
-        },
-        actions = {
-            if (isInSaving) {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .testTag("CircularProgressIndicator")
-                        .padding(8.dp)
-                )
-            } else {
-                SendIconButton(
-                    enabled = enableSendIcon,
-                    onClick = onClickSend
-                )
-            }
-        }
-    )
-}
-
-@Composable
 fun SimpleTextField(
     hint: String,
     value: String,
@@ -169,46 +123,6 @@ fun SimpleTextField(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier
-    )
-}
-
-@Composable
-fun SendIconButton(
-    enabled: Boolean,
-    onClick: () -> Unit
-) {
-    IconButton(
-        enabled = enabled,
-        onClick = onClick
-    ) {
-        Icon(
-            imageVector = Icons.Filled.Send,
-            contentDescription = stringResource(R.string.save),
-            tint = if (enabled) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
-            }
-        )
-    }
-}
-
-@Composable
-private fun PostEditAlertDialog(onOkClick: () -> Unit, onDismissRequest: () -> Unit) {
-    AlertDialog(
-        title = {
-            Text(text = stringResource(R.string.post_alert_dialog_title))
-        },
-        text = {
-            Text(text = stringResource(R.string.post_alert_dialog_text))
-        },
-        onDismissRequest = onDismissRequest,
-        dismissButton = {
-            TextButton(onClick = onDismissRequest) { Text(stringResource(R.string.cancel)) }
-        },
-        confirmButton = {
-            TextButton(onClick = onOkClick) { Text(stringResource(R.string.ok)) }
-        }
     )
 }
 

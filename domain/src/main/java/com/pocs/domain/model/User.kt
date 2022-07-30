@@ -1,5 +1,7 @@
 package com.pocs.domain.model
 
+import java.io.Serializable
+
 data class User(
     val id: Int,
     val name: String,
@@ -10,4 +12,4 @@ data class User(
     val generation: Int,
     val github: String,
     val createdAt: String
-)
+) : Serializable
