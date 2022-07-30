@@ -18,7 +18,7 @@ import com.pocs.presentation.model.user.UserUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
 import kotlinx.coroutines.launch
 
-class UserListFragment : Fragment(R.layout.fragment_user) {
+class UserFragment : Fragment(R.layout.fragment_user) {
 
     private var _binding: FragmentUserBinding? = null
     private val binding get() = _binding!!
