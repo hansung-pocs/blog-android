@@ -35,7 +35,7 @@ val mockUsersPagingData = PagingData.from(
     )
 )
 
-val mockUserDetailLists = listOf(
+val mockUserDetails = listOf(
     UserDetail(1, "오인성", "1891065", 2, UserType.MEMBER, "google", 30, "https://github/jja08111", ""),
     UserDetail(2, "김민성", "1871034", 3, UserType.MEMBER, "google", 30, "https://github/jja08111", ""),
     UserDetail(3, "가가가", "jja08111@gmail.com", 5, UserType.MEMBER, "google", 30, "https://github/jja08111", ""),
