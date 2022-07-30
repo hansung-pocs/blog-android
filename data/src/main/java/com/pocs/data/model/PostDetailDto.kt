@@ -6,5 +6,5 @@ data class PostDetailDto(
     val createdAt: String,
     val updatedAt: String,
     val category: String,
-    val writer: UserDto
+    val writer: PostWriterDto
 )
