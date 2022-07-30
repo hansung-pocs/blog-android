@@ -20,7 +20,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.pocs.domain.model.user.User
+import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.R
 import com.pocs.presentation.model.UserDetailUiState
@@ -38,7 +38,7 @@ fun UserDetailScreen(uiState: UserDetailUiState) {
             LoadingContent()
         }
         is UserDetailUiState.Success -> {
-            UserDetailContent(uiState.user)
+            UserDetailContent(uiState.userDetail)
         }
         is UserDetailUiState.Failure -> {
             UserDetailFailureContent(
@@ -51,15 +51,15 @@ fun UserDetailScreen(uiState: UserDetailUiState) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserDetailContent(user: User) {
+fun UserDetailContent(userDetail: UserDetail) {
     Scaffold(
-        topBar = { UserDetailTopBar(user.name) },
+        topBar = { UserDetailTopBar(userDetail.name) },
         floatingActionButton = {
             val context = LocalContext.current
             // TODO: 본인 정보인 경우에만 내 정보 수정 버튼 보이기
             ExtendedFloatingActionButton(
                 onClick = {
-                    val intent = UserEditActivity.getIntent(context, user)
+                    val intent = UserEditActivity.getIntent(context, userDetail)
                     context.startActivity(intent)
                 }
             ) {
@@ -79,40 +79,40 @@ fun UserDetailContent(user: User) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             item {
-                UserAvatar(user.name)
+                UserAvatar(userDetail.name)
             }
             item {
                 UserInfo(
                     stringResource(R.string.generation),
-                    stringResource(R.string.user_generation_info, user.generation)
+                    stringResource(R.string.user_generation_info, userDetail.generation)
                 )
             }
             item {
                 UserInfo(
                     stringResource(R.string.student_id),
-                    user.studentId.toString()
+                    userDetail.studentId.toString()
                 )
             }
-            if (user.company.isNotEmpty()) {
+            if (userDetail.company.isNotEmpty()) {
                 item {
                     UserInfo(
                         stringResource(R.string.company),
-                        user.company
+                        userDetail.company
                     )
                 }
             }
             item {
                 UserInfo(
                     label = stringResource(R.string.github),
-                    link = user.github,
-                    annotation = user.github
+                    link = userDetail.github,
+                    annotation = userDetail.github
                 )
             }
             item {
                 UserInfo(
                     label = stringResource(R.string.email),
-                    link = user.email,
-                    annotation = stringResource(R.string.mailto_scheme, user.email)
+                    link = userDetail.email,
+                    annotation = stringResource(R.string.mailto_scheme, userDetail.email)
                 )
             }
             item {
@@ -220,7 +220,7 @@ fun UserDetailFailureContent(message: String, onRetryClick: () -> Unit) {
 @Preview
 fun UserDetailContentPreview() {
     UserDetailContent(
-        user = User(
+        userDetail = UserDetail(
             1,
             "김민성",
             "jja08111@gmail.com",
