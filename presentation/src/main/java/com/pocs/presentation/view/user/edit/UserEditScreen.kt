@@ -19,8 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pocs.presentation.R
 import com.pocs.presentation.model.UserEditUiState
-import com.pocs.presentation.view.common.RecheckHandler
-import com.pocs.presentation.view.common.appbar.EditContentAppBar
+import com.pocs.presentation.view.component.RecheckHandler
+import com.pocs.presentation.view.component.appbar.EditContentAppBar
 import kotlinx.coroutines.launch
 
 @Composable

@@ -1,4 +1,4 @@
-package com.pocs.presentation.view.common
+package com.pocs.presentation.view.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.selection.SelectionContainer

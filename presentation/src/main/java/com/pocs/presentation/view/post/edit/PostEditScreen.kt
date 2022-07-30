@@ -16,8 +16,8 @@ import com.pocs.domain.model.PostCategory
 import com.pocs.presentation.R
 import com.pocs.presentation.model.BasePostEditUiState
 import com.pocs.presentation.model.PostEditUiState
-import com.pocs.presentation.view.common.RecheckHandler
-import com.pocs.presentation.view.common.appbar.EditContentAppBar
+import com.pocs.presentation.view.component.RecheckHandler
+import com.pocs.presentation.view.component.appbar.EditContentAppBar
 import kotlinx.coroutines.launch
 
 @Composable

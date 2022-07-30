@@ -1,4 +1,4 @@
-package com.pocs.presentation.view.common
+package com.pocs.presentation.view.component
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.material3.AlertDialog

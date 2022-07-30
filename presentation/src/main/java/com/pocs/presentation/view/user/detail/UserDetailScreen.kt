@@ -24,9 +24,9 @@ import com.pocs.domain.model.User
 import com.pocs.domain.model.UserType
 import com.pocs.presentation.R
 import com.pocs.presentation.model.UserDetailUiState
-import com.pocs.presentation.view.common.button.AppBarBackButton
-import com.pocs.presentation.view.common.FailureContent
-import com.pocs.presentation.view.common.LoadingContent
+import com.pocs.presentation.view.component.button.AppBarBackButton
+import com.pocs.presentation.view.component.FailureContent
+import com.pocs.presentation.view.component.LoadingContent
 import com.pocs.presentation.view.user.edit.UserEditActivity
 
 private const val URL_TAG = "url"

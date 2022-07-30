@@ -1,4 +1,4 @@
-package com.pocs.presentation.view.common.button
+package com.pocs.presentation.view.component.button
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send

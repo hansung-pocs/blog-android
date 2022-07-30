@@ -1,4 +1,4 @@
-package com.pocs.presentation.view.common.appbar
+package com.pocs.presentation.view.component.appbar
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -10,7 +10,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.pocs.presentation.R
-import com.pocs.presentation.view.common.button.SendButton
+import com.pocs.presentation.view.component.button.SendButton
 
 @Composable
 fun EditContentAppBar(
