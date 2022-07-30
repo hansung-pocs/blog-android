@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.pocs.presentation.databinding.ItemPostBinding
-import com.pocs.presentation.model.PostItemUiState
+import com.pocs.presentation.model.post.PostItemUiState
 
 class PostAdapter(
     private val onClickItem: (PostItemUiState) -> Unit

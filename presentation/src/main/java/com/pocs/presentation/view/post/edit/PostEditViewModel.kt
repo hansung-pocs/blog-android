@@ -3,7 +3,7 @@ package com.pocs.presentation.view.post.edit
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import com.pocs.domain.model.post.PostCategory
-import com.pocs.presentation.model.PostEditUiState
+import com.pocs.presentation.model.post.PostEditUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

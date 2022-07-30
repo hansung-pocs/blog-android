@@ -3,8 +3,8 @@ package com.pocs.presentation.mock
 import androidx.paging.PagingData
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserType
-import com.pocs.presentation.model.PostItemUiState
-import com.pocs.presentation.model.UserItemUiState
+import com.pocs.presentation.model.post.PostItemUiState
+import com.pocs.presentation.model.user.UserItemUiState
 
 val mockNoticeItemsPagingData = PagingData.from(
     listOf(

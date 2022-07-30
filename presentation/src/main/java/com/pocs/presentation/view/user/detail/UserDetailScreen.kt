@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.R
-import com.pocs.presentation.model.UserDetailUiState
+import com.pocs.presentation.model.user.UserDetailUiState
 import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.component.FailureContent
 import com.pocs.presentation.view.component.LoadingContent

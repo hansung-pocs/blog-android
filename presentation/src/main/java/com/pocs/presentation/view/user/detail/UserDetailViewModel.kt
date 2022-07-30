@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pocs.presentation.mock.mockUserDetailLists
-import com.pocs.presentation.model.UserDetailUiState
+import com.pocs.presentation.model.user.UserDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package com.pocs.presentation.model
+package com.pocs.presentation.model.user
 
 import androidx.paging.PagingData
 

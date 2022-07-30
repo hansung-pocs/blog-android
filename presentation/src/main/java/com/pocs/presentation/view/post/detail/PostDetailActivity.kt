@@ -17,7 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityPostDetailBinding
-import com.pocs.presentation.model.PostDetailUiState
+import com.pocs.presentation.model.post.PostDetailUiState
 import com.pocs.presentation.view.post.edit.PostEditActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

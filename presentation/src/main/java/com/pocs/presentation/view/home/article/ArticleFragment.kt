@@ -22,7 +22,7 @@ import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ContentLoadStateBinding
 import com.pocs.presentation.databinding.FragmentArticleBinding
 import com.pocs.presentation.model.ArticleUiState
-import com.pocs.presentation.model.PostItemUiState
+import com.pocs.presentation.model.post.PostItemUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
 import com.pocs.presentation.view.post.adapter.PostAdapter
 import com.pocs.presentation.view.post.create.PostCreateActivity

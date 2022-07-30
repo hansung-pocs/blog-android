@@ -5,7 +5,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserType
-import com.pocs.presentation.model.UserDetailUiState
+import com.pocs.presentation.model.user.UserDetailUiState
 import com.pocs.presentation.view.user.detail.UserDetailScreen
 import org.junit.Rule
 import org.junit.Test
