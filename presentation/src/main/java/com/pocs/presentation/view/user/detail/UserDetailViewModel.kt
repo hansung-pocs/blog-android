@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pocs.domain.usecase.user.GetUserDetailUseCase
 import com.pocs.presentation.mapper.toUiState
-import com.pocs.presentation.mock.mockUserDetails
 import com.pocs.presentation.model.user.UserDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserDetailViewModel @Inject constructor(
-    // private val getUserUseCase: GetUserUseCase
+    private val getUserDetailUseCase: GetUserDetailUseCase
 ) : ViewModel() {
 
     var uiState by mutableStateOf<UserDetailUiState>(UserDetailUiState.Loading)
@@ -26,14 +26,15 @@ class UserDetailViewModel @Inject constructor(
     fun loadUserInfo(id: Int) {
         job?.cancel()
         job = viewModelScope.launch {
-            val result = Result.success(mockUserDetails.first { it.id == id }) // getUserUseCase(id)
+            val result = getUserDetailUseCase(id)
             uiState = if (result.isSuccess) {
                 val user = result.getOrNull()!!
                 UserDetailUiState.Success(user.toUiState())
             } else {
-                UserDetailUiState.Failure(e = result.exceptionOrNull()!!, onRetryClick = {
-                    loadUserInfo(id)
-                })
+                UserDetailUiState.Failure(
+                    e = result.exceptionOrNull()!!,
+                    onRetryClick = { loadUserInfo(id) }
+                )
             }
         }
     }
