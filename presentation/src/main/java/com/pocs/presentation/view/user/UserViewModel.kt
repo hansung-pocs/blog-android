@@ -4,24 +4,33 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
+import com.pocs.domain.model.user.UserListSortingMethod
 import com.pocs.domain.usecase.user.GetAllUsersUseCase
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.user.UserUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    getAllUsersUseCase: GetAllUsersUseCase
+    private val getAllUsersUseCase: GetAllUsersUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UserUiState())
     val uiState = _uiState.asStateFlow()
 
+    private var fetchJob: Job? = null
+
     init {
-        viewModelScope.launch {
+        fetchUserList()
+    }
+
+    private fun fetchUserList() {
+        fetchJob?.cancel()
+        fetchJob = viewModelScope.launch {
             getAllUsersUseCase(uiState.value.sortingMethod)
                 .cachedIn(viewModelScope)
                 .map { it.map { user -> user.toUiState() } }
@@ -31,5 +40,10 @@ class UserViewModel @Inject constructor(
                     }
                 }
         }
+    }
+
+    fun updateSortingMethod(sortingMethod: UserListSortingMethod) {
+        _uiState.update { it.copy(sortingMethod = sortingMethod) }
+        fetchUserList()
     }
 }

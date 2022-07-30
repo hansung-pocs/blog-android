@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_generation_descending"
+        android:title="@string/sorting_by_generation_descending" />
+    <item
+        android:id="@+id/action_student_id_ascending"
+        android:title="@string/sorting_by_student_id_ascending" />
+</menu>
