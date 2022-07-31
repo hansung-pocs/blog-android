@@ -2,6 +2,7 @@ package com.pocs.presentation.view.post.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pocs.domain.usecase.post.DeletePostUseCase
 import com.pocs.domain.usecase.post.GetPostDetailUseCase
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.post.PostDetailUiState
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PostDetailViewModel @Inject constructor(
-    private val getPostDetailUseCase: GetPostDetailUseCase
+    private val getPostDetailUseCase: GetPostDetailUseCase,
+    private val deletePostUseCase : DeletePostUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<PostDetailUiState>(PostDetailUiState.Loading)
@@ -34,6 +36,11 @@ class PostDetailViewModel @Inject constructor(
                 val errorMessage = result.exceptionOrNull()!!.message
                 _uiState.update { PostDetailUiState.Failure(message = errorMessage) }
             }
+        }
+    }
+    fun deletePost(id : Int){
+        viewModelScope.launch {
+            val result = deletePostUseCase
         }
     }
 }

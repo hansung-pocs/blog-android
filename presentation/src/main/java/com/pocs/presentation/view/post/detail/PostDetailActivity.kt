@@ -88,6 +88,7 @@ class PostDetailActivity : AppCompatActivity() {
             }
             R.id.action_delete_post -> {
                 // TODO: 삭제 API 연동 후 구현하기
+                deletePost()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -137,5 +138,9 @@ class PostDetailActivity : AppCompatActivity() {
             postDetail.category
         )
         launcher?.launch(intent)
+    }
+    private fun deletePost(){
+        //viewModel.deletePost()
+        this.finish()
     }
 }
