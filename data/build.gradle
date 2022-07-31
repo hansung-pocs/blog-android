@@ -16,6 +16,7 @@ dependencies {
     // Retrofit2
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.2'
 
     // hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
