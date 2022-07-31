@@ -33,7 +33,7 @@ class PostEditActivityTest {
     @BindValue
     val viewModel = PostEditViewModel()
 
-    lateinit var context: Context
+    private lateinit var context: Context
 
     @Before
     fun setUp() {

@@ -8,13 +8,15 @@ class UpdateUserUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         id: Int,
-        password: Int,
+        password: String,
+        name: String,
         email: String,
-        company: String?,
+        company: String,
         github: String
     ) = repository.updateUser(
         id = id,
         password = password,
+        name = name,
         email = email,
         company = company,
         github = github

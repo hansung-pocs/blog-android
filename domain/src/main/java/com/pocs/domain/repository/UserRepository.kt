@@ -14,9 +14,10 @@ interface UserRepository {
 
     suspend fun updateUser(
         id: Int,
-        password: Int,
+        password: String,
+        name: String,
         email: String,
-        company: String?,
+        company: String,
         github: String
-    ): Result<Boolean>
+    ): Result<Unit>
 }
