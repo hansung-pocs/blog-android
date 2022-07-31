@@ -26,6 +26,9 @@ class UserFragment : Fragment(R.layout.fragment_user) {
     private var _binding: FragmentUserBinding? = null
     private val binding get() = _binding!!
 
+    private var _adapter: UserAdapter? = null
+    private val adapter get() = _adapter!!
+
     private val viewModel: UserViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -39,7 +42,8 @@ class UserFragment : Fragment(R.layout.fragment_user) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = UserAdapter()
+        _adapter = UserAdapter()
+
         binding.apply {
             recyclerView.adapter = adapter.withLoadStateFooter(
                 PagingLoadStateAdapter { adapter.retry() }
@@ -62,17 +66,21 @@ class UserFragment : Fragment(R.layout.fragment_user) {
 
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.uiState.collect {
-                        updateUi(it, adapter)
-                    }
+                    viewModel.uiState.collect(::updateUi)
                 }
             }
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        adapter.refresh()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        _adapter = null
     }
 
     private fun showSortingMethodPopUpMenu() {
@@ -90,7 +98,7 @@ class UserFragment : Fragment(R.layout.fragment_user) {
         }.show()
     }
 
-    private fun updateUi(uiState: UserUiState, adapter: UserAdapter) {
+    private fun updateUi(uiState: UserUiState) {
         adapter.submitData(lifecycle, uiState.userPagingData)
         val stringResource = when (uiState.sortingMethod) {
             UserListSortingMethod.STUDENT_ID -> R.string.sorting_by_student_id_ascending
