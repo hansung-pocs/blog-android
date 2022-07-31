@@ -1,10 +1,9 @@
-package com.pocs.presentation.view.user
+package com.pocs.presentation.view.admin.user
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -13,30 +12,29 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.pocs.domain.model.user.UserListSortingMethod
 import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.R
-import com.pocs.presentation.databinding.FragmentUserBinding
-import com.pocs.presentation.model.user.UserUiState
+import com.pocs.presentation.databinding.FragmentAdminUserBinding
+import com.pocs.presentation.model.admin.AdminUserUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
+import com.pocs.presentation.view.user.UserAdapter
 import kotlinx.coroutines.launch
 
+class AdminUserFragment : Fragment(R.layout.fragment_admin_user) {
 
-class UserFragment : Fragment(R.layout.fragment_user) {
-
-    private var _binding: FragmentUserBinding? = null
+    private var _binding: FragmentAdminUserBinding? = null
     private val binding get() = _binding!!
 
     private var _adapter: UserAdapter? = null
     private val adapter get() = _adapter!!
 
-    private val viewModel: UserViewModel by activityViewModels()
+    private val viewModel: AdminUserViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentUserBinding.inflate(inflater, container, false)
+        _binding = FragmentAdminUserBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -64,8 +62,6 @@ class UserFragment : Fragment(R.layout.fragment_user) {
                 loadStateBinding.errorMsg.isVisible = isError
             }
 
-            sortBox.setOnClickListener { showSortingMethodPopUpMenu() }
-
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.uiState.collect(::updateUi)
@@ -85,27 +81,7 @@ class UserFragment : Fragment(R.layout.fragment_user) {
         _adapter = null
     }
 
-    private fun showSortingMethodPopUpMenu() {
-        PopupMenu(requireContext(), binding.sortButton).apply {
-            menuInflater.inflate(R.menu.menu_sorting_method_pop_up, menu)
-            setOnMenuItemClickListener {
-                val newSortingMethod = when (it.itemId) {
-                    R.id.action_generation_descending -> UserListSortingMethod.GENERATION
-                    R.id.action_student_id_ascending -> UserListSortingMethod.STUDENT_ID
-                    else -> throw IllegalArgumentException()
-                }
-                viewModel.updateSortingMethod(newSortingMethod)
-                true
-            }
-        }.show()
-    }
-
-    private fun updateUi(uiState: UserUiState) {
+    private fun updateUi(uiState: AdminUserUiState) {
         adapter.submitData(viewLifecycleOwner.lifecycle, uiState.userPagingData)
-        val stringResource = when (uiState.sortingMethod) {
-            UserListSortingMethod.STUDENT_ID -> R.string.sorting_by_student_id_ascending
-            UserListSortingMethod.GENERATION -> R.string.sorting_by_generation_descending
-        }
-        binding.sortText.text = getString(stringResource)
     }
 }
