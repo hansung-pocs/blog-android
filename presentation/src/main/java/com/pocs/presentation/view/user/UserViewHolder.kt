@@ -29,7 +29,8 @@ class UserViewHolder(
             context.startActivity(intent)
         }
 
-        button.setOnClickListener {
+        // TODO: 관리자인 경우에만 보이도록 하기
+        moreInfoButton.setOnClickListener {
             showPopup(it)
         }
     }
