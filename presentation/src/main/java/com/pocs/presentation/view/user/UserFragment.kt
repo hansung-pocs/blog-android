@@ -5,22 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pocs.domain.model.user.UserListSortingMethod
 import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentUserBinding
+import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.user.UserUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
 import kotlinx.coroutines.launch
-
 
 class UserFragment : Fragment(R.layout.fragment_user) {
 
@@ -52,17 +50,7 @@ class UserFragment : Fragment(R.layout.fragment_user) {
             )
             recyclerView.layoutManager = LinearLayoutManager(view.context)
 
-            val loadStateBinding = loadState
-            loadStateBinding.retryButton.setOnClickListener {
-                adapter.retry()
-            }
-
-            adapter.addLoadStateListener { loadStates ->
-                val isError = loadStates.refresh is LoadState.Error
-                loadStateBinding.progressBar.isVisible = loadStates.refresh is LoadState.Loading
-                loadStateBinding.retryButton.isVisible = isError
-                loadStateBinding.errorMsg.isVisible = isError
-            }
+            loadState.setListeners(adapter)
 
             sortBox.setOnClickListener { showSortingMethodPopUpMenu() }
 
