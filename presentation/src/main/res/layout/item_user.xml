@@ -45,7 +45,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/button"
+                app:layout_constraintEnd_toStartOf="@+id/moreInfoButton"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -79,14 +79,15 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <ImageButton
-                android:id="@+id/button"
+                android:id="@+id/moreInfoButton"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/more_vert_ripple"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/more_info_button" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
