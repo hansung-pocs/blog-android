@@ -32,6 +32,8 @@ class PostDetailActivity : AppCompatActivity() {
 
     private var launcher: ActivityResultLauncher<Intent>? = null
 
+    private val id = intent.getIntExtra("id", -1)
+
     companion object {
         fun getIntent(context: Context, id: Int): Intent {
             return Intent(context, PostDetailActivity::class.java).apply {
@@ -87,7 +89,6 @@ class PostDetailActivity : AppCompatActivity() {
                 true
             }
             R.id.action_delete_post -> {
-                // TODO: 삭제 API 연동 후 구현하기
                 deletePost()
                 true
             }
@@ -96,7 +97,6 @@ class PostDetailActivity : AppCompatActivity() {
     }
 
     private fun fetchPost() {
-        val id = intent.getIntExtra("id", -1)
         viewModel.fetchPost(id)
     }
 
@@ -114,7 +114,8 @@ class PostDetailActivity : AppCompatActivity() {
                 val postDetail = uiState.postDetail
 
                 title.text = postDetail.title
-                subtitle.text = getString(R.string.article_subtitle, postDetail.date, postDetail.writer)
+                subtitle.text =
+                    getString(R.string.article_subtitle, postDetail.date, postDetail.writer)
                 content.text = postDetail.content
             }
             is PostDetailUiState.Failure -> {
@@ -139,8 +140,9 @@ class PostDetailActivity : AppCompatActivity() {
         )
         launcher?.launch(intent)
     }
-    private fun deletePost(){
-        //viewModel.deletePost()
+
+    private fun deletePost() {
+        viewModel.deletePost(id)
         this.finish()
     }
 }

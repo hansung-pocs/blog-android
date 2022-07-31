@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PostDetailViewModel @Inject constructor(
     private val getPostDetailUseCase: GetPostDetailUseCase,
-    private val deletePostUseCase : DeletePostUseCase
+    private val deletePostUseCase: DeletePostUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<PostDetailUiState>(PostDetailUiState.Loading)
@@ -38,9 +38,14 @@ class PostDetailViewModel @Inject constructor(
             }
         }
     }
-    fun deletePost(id : Int){
+
+    fun deletePost(id: Int) {
         viewModelScope.launch {
-            val result = deletePostUseCase
+            deletePostUseCase(
+                postId = id,
+                // TODO: 현재 접속중인 유저의 ID로 변경하기
+                userId = 1
+            )
         }
     }
 }
