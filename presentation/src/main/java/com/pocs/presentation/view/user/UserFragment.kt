@@ -99,7 +99,7 @@ class UserFragment : Fragment(R.layout.fragment_user) {
     }
 
     private fun updateUi(uiState: UserUiState) {
-        adapter.submitData(lifecycle, uiState.userPagingData)
+        adapter.submitData(viewLifecycleOwner.lifecycle, uiState.userPagingData)
         val stringResource = when (uiState.sortingMethod) {
             UserListSortingMethod.STUDENT_ID -> R.string.sorting_by_student_id_ascending
             UserListSortingMethod.GENERATION -> R.string.sorting_by_generation_descending
