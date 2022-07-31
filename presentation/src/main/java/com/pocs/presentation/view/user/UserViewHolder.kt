@@ -30,7 +30,9 @@ class UserViewHolder(
             uiState.generation.toString()
         )
 
-        if (currentUserType != UserType.UNKNOWN) {
+        val isUnknownUser = currentUserType == UserType.UNKNOWN
+        cardView.isClickable = !isUnknownUser
+        if (!isUnknownUser) {
             cardView.setOnClickListener {
                 val intent = UserDetailActivity.getIntent(context, uiState.id)
                 context.startActivity(intent)
