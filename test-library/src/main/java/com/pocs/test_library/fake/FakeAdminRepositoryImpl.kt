@@ -5,13 +5,14 @@ import com.pocs.domain.model.user.User
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.repository.AdminRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 class FakeAdminRepositoryImpl @Inject constructor() : AdminRepository {
 
-    override fun getAllUsers(): Flow<PagingData<User>> {
-        TODO("Not yet implemented")
-    }
+    var userList: List<User> = emptyList()
+
+    override fun getAllUsers(): Flow<PagingData<User>> = flowOf(PagingData.from(userList))
 
     override suspend fun getUserDetail(id: Int): Result<UserDetail> {
         TODO("Not yet implemented")
