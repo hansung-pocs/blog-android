@@ -5,7 +5,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.pocs.data.api.UserApi
 import com.pocs.data.mapper.toDetailEntity
-import com.pocs.data.mapper.toEntity
 import com.pocs.data.paging.UserPagingSource
 import com.pocs.data.source.UserRemoteDataSource
 import com.pocs.domain.model.user.User
@@ -43,11 +42,28 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun updateUser(
         id: Int,
-        password: Int,
+        password: String,
+        name: String,
         email: String,
-        company: String?,
+        company: String,
         github: String
-    ): Result<Boolean> {
-        TODO("Not yet implemented")
+    ): Result<Unit> {
+        return try {
+            val response = dataSource.updateUser(
+                id = id,
+                password = password,
+                name = name,
+                email = email,
+                company = company,
+                github = github
+            )
+            if (response.code() == 302) {
+                Result.success(Unit)
+            } else {
+                throw Exception(response.message())
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }

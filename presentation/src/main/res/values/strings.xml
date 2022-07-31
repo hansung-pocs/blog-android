@@ -45,6 +45,10 @@
     <string name="sort_button">정렬 버튼</string>
     <string name="sorting_by_generation_descending">기수 내림차순으로 정렬</string>
     <string name="sorting_by_student_id_ascending">학번 오름차순으로 정렬</string>
+    <string name="enter_password">비밀번호를 입력하세요</string>
+    <string name="show_password">비밀번호 보이기</string>
+    <string name="hide_password">비밀번호 숨기기</string>
+    <string name="failed_to_update">수정에 실패했습니다.</string>
     <string-array name="admin_tab">
         <item>공지사항</item>
         <item>회원목록</item>

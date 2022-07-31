@@ -59,6 +59,7 @@ fun UserDetailContent(userDetail: UserDetailItemUiState) {
             // TODO: 본인 정보인 경우에만 내 정보 수정 버튼 보이기
             ExtendedFloatingActionButton(
                 onClick = {
+                    // TODO: 수정 완료하면 화면 갱신하고 스낵바 띄우기
                     val intent = UserEditActivity.getIntent(context, userDetail)
                     context.startActivity(intent)
                 }
