@@ -1,7 +1,7 @@
 package com.pocs.presentation.model.user.item
 
-import java.text.ParseException
-import java.text.SimpleDateFormat
+import com.pocs.presentation.extension.DatePattern
+import com.pocs.presentation.extension.isDateFormat
 
 data class UserItemUiState(
     val id: Int,
@@ -10,14 +10,5 @@ data class UserItemUiState(
     val generation: Int,
     val canceledAt: String
 ) {
-    val isKicked: Boolean
-        get() {
-            val dateFormat = SimpleDateFormat("yyyy-MM-DD")
-            return try {
-                dateFormat.parse(canceledAt)
-                true
-            } catch (e: ParseException) {
-                false
-            }
-        }
+    val isKicked: Boolean get() = canceledAt.isDateFormat(DatePattern.COMPACT)
 }
