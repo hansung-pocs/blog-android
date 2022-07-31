@@ -19,7 +19,6 @@ class UserEditScreenTest {
         1,
         "박민석",
         "hello@gmiad.com",
-        "18294012",
         "google",
         "https://github.com/",
         isInSaving = false,

@@ -8,7 +8,6 @@ import com.pocs.domain.usecase.user.UpdateUserUseCase
 import com.pocs.presentation.model.user.item.UserDetailItemUiState
 import com.pocs.presentation.model.user.UserEditUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,7 +24,6 @@ class UserEditViewModel @Inject constructor(
                 id = userDetail.id,
                 name = userDetail.name,
                 email = userDetail.email,
-                studentId = userDetail.studentId.toString(),
                 company = userDetail.company,
                 github = userDetail.github,
                 onUpdate = ::update,

@@ -107,16 +107,6 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit) {
                 }
             )
             UserEditTextField(
-                value = uiState.studentId,
-                label = stringResource(R.string.student_id),
-                onValueChange = { studentId ->
-                    uiState.update { it.copy(studentId = studentId) }
-                },
-                onClearClick = {
-                    uiState.update { it.copy(studentId = "") }
-                }
-            )
-            UserEditTextField(
                 value = uiState.email,
                 label = stringResource(R.string.email),
                 placeholder = stringResource(R.string.email_placeholder),
@@ -295,7 +285,6 @@ fun UserEditContentPreview() {
             1,
             "박민석",
             "hello@gmiad.com",
-            "18294012",
             "google",
             "https://github.com/",
             isInSaving = false,

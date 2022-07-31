@@ -3,7 +3,6 @@ package com.pocs.presentation.model.user
 data class UserEditUiState(
     val id: Int,
     val name: String,
-    val studentId: String,
     val email: String,
     val company: String,
     val github: String,
