@@ -1,11 +1,11 @@
-package com.pocs.domain.model.user
+package com.pocs.data.model.admin
 
-data class UserDetail(
-    val id: Int,
-    val name: String,
+data class AdminUserDto(
+    val userId: Int,
+    val userName: String,
     val email: String,
     val studentId: Int,
-    val type: UserType,
+    val type: String,
     val company: String,
     val generation: Int,
     val github: String,

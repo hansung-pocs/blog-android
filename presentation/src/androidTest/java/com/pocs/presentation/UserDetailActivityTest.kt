@@ -49,7 +49,8 @@ class UserDetailActivityTest {
         company = "google",
         generation = 10,
         github = "https://github.com/",
-        createdAt = ""
+        createdAt = "",
+        canceledAt = ""
     )
 
     @Before
