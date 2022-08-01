@@ -12,7 +12,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,7 +32,6 @@ fun UserEditScreen(viewModel: UserEditViewModel, navigateUp: () -> Unit) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit) {
-    val localFocusManager = LocalFocusManager.current
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     val coroutineScope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
@@ -73,10 +71,7 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit) {
                 onBackPressed = { onBackPressedDispatcher?.onBackPressed() },
                 isInSaving = uiState.isInSaving,
                 enableSendIcon = true,
-                onClickSend = {
-                    localFocusManager.clearFocus()
-                    showPasswordDialog = true
-                }
+                onClickSend = { showPasswordDialog = true }
             )
         }
     ) { innerPadding ->
