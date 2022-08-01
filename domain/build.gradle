@@ -8,6 +8,7 @@ plugins {
 apply from: rootProject.file("android.gradle")
 
 dependencies {
+    testImplementation project(":test-library")
 
     // hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"

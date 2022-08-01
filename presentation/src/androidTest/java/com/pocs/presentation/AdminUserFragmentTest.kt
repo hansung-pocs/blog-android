@@ -4,10 +4,12 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.pocs.domain.usecase.admin.GetAllUsersAsAdminUseCase
+import com.pocs.domain.usecase.user.GetCurrentUserTypeUseCase
 import com.pocs.presentation.view.admin.user.AdminUserFragment
 import com.pocs.presentation.view.admin.user.AdminUserViewModel
 import com.pocs.test_library.extension.launchFragmentInHiltContainer
 import com.pocs.test_library.fake.FakeAdminRepositoryImpl
+import com.pocs.test_library.fake.FakeUserRepositoryImpl
 import com.pocs.test_library.mock.mockKickedUser
 import com.pocs.test_library.mock.mockNormalUser
 import dagger.hilt.android.testing.BindValue
@@ -28,7 +30,10 @@ class AdminUserFragmentTest {
     val hiltRule = HiltAndroidRule(this)
 
     @BindValue
-    val repository = FakeAdminRepositoryImpl()
+    val adminRepository = FakeAdminRepositoryImpl()
+
+    @BindValue
+    val userRepository = FakeUserRepositoryImpl()
 
     @BindValue
     lateinit var viewModel: AdminUserViewModel
@@ -39,12 +44,15 @@ class AdminUserFragmentTest {
     }
 
     private fun initViewModel() {
-        viewModel = AdminUserViewModel(GetAllUsersAsAdminUseCase(repository))
+        viewModel = AdminUserViewModel(
+            GetAllUsersAsAdminUseCase(adminRepository),
+            GetCurrentUserTypeUseCase(userRepository)
+        )
     }
 
     @Test
     fun showUserData_AfterInitViewModel() = runTest {
-        repository.userList = listOf(mockNormalUser)
+        adminRepository.userList = listOf(mockNormalUser)
         initViewModel()
 
         launchFragmentInHiltContainer<AdminUserFragment>(themeResId = R.style.Theme_PocsBlog)
@@ -56,7 +64,7 @@ class AdminUserFragmentTest {
 
     @Test
     fun showKickedText_WhenUserWasKicked() = runTest {
-        repository.userList = listOf(mockKickedUser)
+        adminRepository.userList = listOf(mockKickedUser)
         initViewModel()
 
         launchFragmentInHiltContainer<AdminUserFragment>(themeResId = R.style.Theme_PocsBlog)
@@ -66,7 +74,7 @@ class AdminUserFragmentTest {
 
     @Test
     fun shouldNotShowKickedText_WhenUserWasNotKicked() = runTest {
-        repository.userList = listOf(mockNormalUser)
+        adminRepository.userList = listOf(mockNormalUser)
         initViewModel()
 
         launchFragmentInHiltContainer<AdminUserFragment>(themeResId = R.style.Theme_PocsBlog)

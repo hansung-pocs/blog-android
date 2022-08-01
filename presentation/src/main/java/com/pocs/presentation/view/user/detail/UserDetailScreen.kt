@@ -80,7 +80,7 @@ fun UserDetailContent(userDetail: UserDetailItemUiState) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             item {
-                UserAvatar(userDetail.name)
+                UserAvatar(name = userDetail.name, isKicked = userDetail.isKicked)
             }
             item {
                 UserInfo(
@@ -132,7 +132,7 @@ fun UserDetailTopBar(name: String) {
 }
 
 @Composable
-fun UserAvatar(name: String) {
+fun UserAvatar(name: String, isKicked: Boolean) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(top = 16.dp, bottom = 32.dp)
@@ -144,6 +144,15 @@ fun UserAvatar(name: String) {
             contentDescription = stringResource(id = R.string.user_image)
         )
         Text(text = name, style = MaterialTheme.typography.titleMedium)
+        if (isKicked) {
+            Text(
+                modifier = Modifier.padding(top = 8.dp),
+                text = stringResource(R.string.is_kicked),
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = MaterialTheme.colorScheme.error
+                )
+            )
+        }
     }
 }
 
@@ -230,6 +239,26 @@ fun UserDetailContentPreview() {
             "Hello",
             30,
             "https://github/jja08111",
+            "2022-04-04",
+            "-"
+        )
+    )
+}
+
+@Composable
+@Preview
+fun KickedUserDetailContentPreview() {
+    UserDetailContent(
+        userDetail = UserDetailItemUiState(
+            1,
+            "김민성",
+            "jja08111@gmail.com",
+            1234528,
+            UserType.MEMBER,
+            "Hello",
+            30,
+            "https://github/jja08111",
+            "2022-04-04",
             "2022-04-04"
         )
     )

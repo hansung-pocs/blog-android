@@ -4,6 +4,7 @@ import androidx.paging.PagingData
 import com.pocs.domain.model.user.User
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserListSortingMethod
+import com.pocs.domain.model.user.UserType
 import com.pocs.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -12,6 +13,8 @@ import javax.inject.Inject
 class FakeUserRepositoryImpl @Inject constructor() : UserRepository {
 
     var userDetailResult: Result<UserDetail> = Result.failure(Exception("Empty"))
+
+    var userType: UserType = UserType.MEMBER
 
     override fun getAll(sortingMethod: UserListSortingMethod): Flow<PagingData<User>> {
         return flow {
@@ -31,4 +34,6 @@ class FakeUserRepositoryImpl @Inject constructor() : UserRepository {
     ): Result<Unit> {
         TODO("Not yet implemented")
     }
+
+    override fun getCurrentUserType() = userType
 }

@@ -24,7 +24,8 @@ class UserDetailScreenTest {
         "Hello",
         30,
         "https://github.com/jja08111",
-        "2022-04-04"
+        "2022-04-04",
+        "-"
     )
 
     @Test

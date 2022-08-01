@@ -6,6 +6,7 @@ import com.pocs.data.api.UserApi
 import com.pocs.data.repository.AdminRepositoryImpl
 import com.pocs.data.repository.PostRepositoryImpl
 import com.pocs.data.repository.UserRepositoryImpl
+import com.pocs.data.source.AdminRemoteDataSource
 import com.pocs.data.source.PostRemoteDataSource
 import com.pocs.data.source.UserRemoteDataSource
 import com.pocs.domain.repository.AdminRepository
@@ -35,7 +36,7 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideAdminRepository(api: AdminApi): AdminRepository {
-        return AdminRepositoryImpl(api)
+    fun provideAdminRepository(api: AdminApi, dataSource: AdminRemoteDataSource): AdminRepository {
+        return AdminRepositoryImpl(api = api, dataSource = dataSource)
     }
 }

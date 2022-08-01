@@ -4,6 +4,7 @@ import androidx.paging.PagingData
 import com.pocs.domain.model.user.User
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserListSortingMethod
+import com.pocs.domain.model.user.UserType
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
@@ -20,4 +21,6 @@ interface UserRepository {
         company: String,
         github: String
     ): Result<Unit>
+
+    fun getCurrentUserType(): UserType
 }
