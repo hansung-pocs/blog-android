@@ -7,30 +7,22 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pocs.presentation.R
 import com.pocs.presentation.model.user.UserEditUiState
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
-import kotlinx.coroutines.delay
+import com.pocs.presentation.view.component.dialog.PasswordDialog
+import com.pocs.presentation.view.component.textfield.PocsOutlineTextField
 import kotlinx.coroutines.launch
 
 @Composable
@@ -52,7 +44,7 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit) {
     if (showPasswordDialog) {
         val failedToUpdateString = stringResource(R.string.failed_to_update)
 
-        UserEditPasswordDialog(
+        PasswordDialog(
             onDismissRequest = { showPasswordDialog = false },
             onSaveClick = { password ->
                 if (!uiState.isInSaving) {
@@ -98,7 +90,7 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit) {
                 .fillMaxWidth()
         ) {
             UserEditAvatar {}
-            UserEditTextField(
+            PocsOutlineTextField(
                 value = uiState.name,
                 label = stringResource(R.string.name),
                 onValueChange = { name ->
@@ -108,7 +100,7 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit) {
                     uiState.update { it.copy(name = "") }
                 }
             )
-            UserEditTextField(
+            PocsOutlineTextField(
                 value = uiState.email,
                 label = stringResource(R.string.email),
                 placeholder = stringResource(R.string.email_placeholder),
@@ -120,7 +112,7 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit) {
                     uiState.update { it.copy(email = "") }
                 }
             )
-            UserEditTextField(
+            PocsOutlineTextField(
                 value = uiState.company,
                 label = stringResource(R.string.company),
                 onValueChange = { company ->
@@ -130,7 +122,7 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit) {
                     uiState.update { it.copy(company = "") }
                 }
             )
-            UserEditTextField(
+            PocsOutlineTextField(
                 value = uiState.github,
                 label = stringResource(R.string.github),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
@@ -166,124 +158,6 @@ fun UserEditAvatar(onClick: () -> Unit) {
     }
 }
 
-@Composable
-fun UserEditTextField(
-    value: String,
-    label: String,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    placeholder: String? = null,
-    onValueChange: (String) -> Unit,
-    onClearClick: () -> Unit
-) {
-    OutlinedTextField(
-        keyboardOptions = keyboardOptions,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        value = value,
-        onValueChange = onValueChange,
-        label = {
-            Text(text = label)
-        },
-        placeholder = {
-            placeholder?.let { Text(text = it) }
-        },
-        trailingIcon = {
-            IconButton(onClick = onClearClick) {
-                Icon(
-                    imageVector = Icons.Filled.Clear,
-                    contentDescription = stringResource(R.string.clear_text_field),
-                    tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
-                )
-            }
-        }
-    )
-}
-
-@Composable
-fun UserEditPasswordDialog(
-    onDismissRequest: () -> Unit,
-    onSaveClick: (password: String) -> Unit
-) {
-    var password by remember { mutableStateOf("") }
-    var passwordVisible by remember { mutableStateOf(false) }
-
-    UserEditPasswordDialogContent(
-        password = password,
-        passwordVisible = passwordVisible,
-        onPasswordChange = { password = it },
-        onClickPasswordVisibleButton = { passwordVisible = !passwordVisible },
-        onDismissRequest = onDismissRequest,
-        onSaveClick = onSaveClick
-    )
-}
-
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-private fun UserEditPasswordDialogContent(
-    password: String,
-    passwordVisible: Boolean,
-    onPasswordChange: (String) -> Unit,
-    onClickPasswordVisibleButton: () -> Unit,
-    onDismissRequest: () -> Unit,
-    onSaveClick: (password: String) -> Unit
-) {
-    AlertDialog(
-        onDismissRequest = onDismissRequest,
-        title = { Text(text = stringResource(R.string.enter_password)) },
-        text = {
-            val keyboardController = LocalSoftwareKeyboardController.current
-            val focusRequester = remember { FocusRequester() }
-
-            LaunchedEffect(focusRequester) {
-                focusRequester.requestFocus()
-                delay(100)
-                keyboardController?.show()
-            }
-
-            OutlinedTextField(
-                modifier = Modifier.focusRequester(focusRequester),
-                value = password,
-                onValueChange = onPasswordChange,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                visualTransformation = if (passwordVisible) {
-                    VisualTransformation.None
-                } else {
-                    PasswordVisualTransformation()
-                },
-                trailingIcon = {
-                    val imageVector = if (passwordVisible) {
-                        Icons.Filled.Visibility
-                    } else {
-                        Icons.Filled.VisibilityOff
-                    }
-
-                    val description = if (passwordVisible) {
-                        stringResource(R.string.hide_password)
-                    } else {
-                        stringResource(R.string.show_password)
-                    }
-
-                    IconButton(onClick = onClickPasswordVisibleButton) {
-                        Icon(imageVector = imageVector, description)
-                    }
-                }
-            )
-        },
-        dismissButton = {
-            TextButton(onClick = onDismissRequest) {
-                Text(text = stringResource(id = R.string.cancel))
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = { onSaveClick(password) }, enabled = password.isNotEmpty()) {
-                Text(text = stringResource(id = R.string.save))
-            }
-        }
-    )
-}
-
-
 @Preview
 @Composable
 fun UserEditContentPreview() {
@@ -298,10 +172,4 @@ fun UserEditContentPreview() {
             {}
         ) { Result.success(Unit) }
     ) {}
-}
-
-@Preview(showBackground = true)
-@Composable
-fun UserEditPasswordDialogContent() {
-    UserEditPasswordDialogContent("1234", false, {}, {}, {}) {}
 }
