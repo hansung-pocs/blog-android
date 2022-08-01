@@ -19,20 +19,18 @@ import com.pocs.presentation.model.admin.AdminUserCreateUiState
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
 import com.pocs.presentation.view.component.textfield.PocsOutlineTextField
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdminUserCreateScreen(uiState: AdminUserCreateUiState, navigateUp: () -> Unit) {
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     val snackBarHostState = remember { SnackbarHostState() }
-    val coroutineScope = rememberCoroutineScope()
 
     if (uiState.isSuccessToSave) {
         navigateUp()
     }
     if (uiState.errorMessage != null) {
-        coroutineScope.launch {
+        LaunchedEffect(uiState.errorMessage) {
             snackBarHostState.showSnackbar(uiState.errorMessage)
             uiState.shownErrorMessage()
         }
