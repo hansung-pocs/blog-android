@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.pocs.domain.usecase.admin.GetAllUsersAsAdmin
+import com.pocs.domain.usecase.admin.GetAllUsersAsAdminUseCase
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.admin.AdminUserUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AdminUserViewModel @Inject constructor(
-    private val getAllUsersAsAdmin: GetAllUsersAsAdmin
+    private val getAllUsersAsAdminUseCase: GetAllUsersAsAdminUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AdminUserUiState())
@@ -22,7 +22,7 @@ class AdminUserViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getAllUsersAsAdmin()
+            getAllUsersAsAdminUseCase()
                 .cachedIn(viewModelScope)
                 .map { it.map { user -> user.toUiState() } }
                 .collectLatest { pagingData ->

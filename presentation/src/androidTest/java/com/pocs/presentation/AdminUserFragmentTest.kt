@@ -3,7 +3,7 @@ package com.pocs.presentation
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
-import com.pocs.domain.usecase.admin.GetAllUsersAsAdmin
+import com.pocs.domain.usecase.admin.GetAllUsersAsAdminUseCase
 import com.pocs.presentation.view.admin.user.AdminUserFragment
 import com.pocs.presentation.view.admin.user.AdminUserViewModel
 import com.pocs.test_library.extension.launchFragmentInHiltContainer
@@ -39,7 +39,7 @@ class AdminUserFragmentTest {
     }
 
     private fun initViewModel() {
-        viewModel = AdminUserViewModel(GetAllUsersAsAdmin(repository))
+        viewModel = AdminUserViewModel(GetAllUsersAsAdminUseCase(repository))
     }
 
     @Test
