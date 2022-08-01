@@ -1,8 +1,8 @@
 package com.pocs.test_library.fake
 
 import androidx.paging.PagingData
+import com.pocs.domain.model.admin.UserCreateInfo
 import com.pocs.domain.model.user.User
-import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.repository.AdminRepository
 import com.pocs.test_library.mock.mockKickedUserDetail
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +19,7 @@ class FakeAdminRepositoryImpl @Inject constructor() : AdminRepository {
 
     override suspend fun getUserDetail(id: Int) = userDetailResult
 
-    override suspend fun createUser(userDetail: UserDetail, password: String): Result<Unit> {
+    override suspend fun createUser(userCreateInfo: UserCreateInfo): Result<Unit> {
         TODO("Not yet implemented")
     }
 

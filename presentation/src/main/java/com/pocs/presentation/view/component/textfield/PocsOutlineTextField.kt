@@ -19,7 +19,8 @@ fun PocsOutlineTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     placeholder: String? = null,
     onValueChange: (String) -> Unit,
-    onClearClick: () -> Unit
+    onClearClick: () -> Unit,
+    preventToInputEnterKey: Boolean = true
 ) {
     OutlinedTextField(
         keyboardOptions = keyboardOptions,
@@ -27,7 +28,13 @@ fun PocsOutlineTextField(
             .fillMaxWidth()
             .padding(vertical = 8.dp),
         value = value,
-        onValueChange = onValueChange,
+        onValueChange = {
+            var newValue = it
+            if (preventToInputEnterKey) {
+                newValue = newValue.filterNot { char -> char == '\n' }
+            }
+            onValueChange(newValue)
+        },
         label = {
             Text(text = label)
         },
