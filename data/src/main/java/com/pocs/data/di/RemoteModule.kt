@@ -1,11 +1,9 @@
 package com.pocs.data.di
 
+import com.pocs.data.api.AdminApi
 import com.pocs.data.api.PostApi
 import com.pocs.data.api.UserApi
-import com.pocs.data.source.PostRemoteDataSource
-import com.pocs.data.source.PostRemoteDataSourceImpl
-import com.pocs.data.source.UserRemoteDataSource
-import com.pocs.data.source.UserRemoteDataSourceImpl
+import com.pocs.data.source.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,5 +24,11 @@ class RemoteModule {
     @Provides
     fun provideUserRemoteDataSource(api: UserApi): UserRemoteDataSource {
         return UserRemoteDataSourceImpl(api)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAdminRemoteDataSource(api: AdminApi): AdminRemoteDataSource {
+        return AdminRemoteDataSourceImpl(api)
     }
 }

@@ -10,7 +10,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentAdminUserBinding
 import com.pocs.presentation.extension.setListeners
@@ -40,8 +39,7 @@ class AdminUserFragment : Fragment(R.layout.fragment_admin_user) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO: 로그인 기능 구현되면 현재 로그인한 유저의 타입을 넘기기
-        _adapter = UserAdapter(UserType.ADMIN)
+        _adapter = UserAdapter(viewModel.uiState.value.currentUserType)
 
         binding.apply {
             recyclerView.adapter = adapter.withLoadStateFooter(

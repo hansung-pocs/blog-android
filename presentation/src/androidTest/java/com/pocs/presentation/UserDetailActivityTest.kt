@@ -10,10 +10,12 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserType
+import com.pocs.domain.usecase.user.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.user.GetUserDetailUseCase
 import com.pocs.presentation.model.user.UserDetailUiState
 import com.pocs.presentation.view.user.detail.UserDetailActivity
 import com.pocs.presentation.view.user.detail.UserDetailViewModel
+import com.pocs.test_library.fake.FakeAdminRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
 import com.pocs.test_library.mock.HiltTestActivity
 import dagger.hilt.android.testing.BindValue
@@ -33,10 +35,19 @@ class UserDetailActivityTest {
     val hiltRule = HiltAndroidRule(this)
 
     @BindValue
-    val repository = FakeUserRepositoryImpl()
+    val userRepository = FakeUserRepositoryImpl()
 
     @BindValue
-    val viewModel = UserDetailViewModel(GetUserDetailUseCase(repository))
+    val adminRepository = FakeAdminRepositoryImpl()
+
+    @BindValue
+    val viewModel = UserDetailViewModel(
+        GetUserDetailUseCase(
+            userRepository = userRepository,
+            adminRepository = adminRepository,
+            GetCurrentUserTypeUseCase(userRepository)
+        )
+    )
 
     private lateinit var context: Context
 
@@ -61,7 +72,7 @@ class UserDetailActivityTest {
 
     @Test
     fun shouldLoadUserDetail_WhenLifecycleReachedOnResume() {
-        repository.userDetailResult = Result.success(userDetail)
+        userRepository.userDetailResult = Result.success(userDetail)
 
         val intent = UserDetailActivity.getIntent(context, userDetail.id)
         val scenario = launchActivity<UserDetailActivity>(intent)
@@ -69,7 +80,7 @@ class UserDetailActivityTest {
         assertEquals(userDetail.id, (viewModel.uiState as UserDetailUiState.Success).userDetail.id)
 
         val exception = Exception("error")
-        repository.userDetailResult = Result.failure(exception)
+        userRepository.userDetailResult = Result.failure(exception)
 
         scenario.onActivity {
             it.startActivity(Intent(context, HiltTestActivity::class.java))

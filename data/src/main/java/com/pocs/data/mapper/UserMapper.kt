@@ -33,3 +33,16 @@ fun AdminUserDto.toEntity() = User(
     generation = generation,
     canceledAt = canceledAt
 )
+
+fun AdminUserDto.toDetailEntity() = UserDetail(
+    id = userId,
+    name = userName,
+    email = email,
+    studentId = studentId,
+    type = type.toUserType(),
+    company = company,
+    generation = generation,
+    github = github,
+    createdAt = createdAt,
+    canceledAt = canceledAt
+)

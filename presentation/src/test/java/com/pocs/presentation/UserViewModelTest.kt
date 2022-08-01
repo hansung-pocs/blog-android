@@ -2,6 +2,7 @@ package com.pocs.presentation
 
 import com.pocs.domain.model.user.UserListSortingMethod
 import com.pocs.domain.usecase.user.GetAllUsersUseCase
+import com.pocs.domain.usecase.user.GetCurrentUserTypeUseCase
 import com.pocs.presentation.view.user.UserViewModel
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +29,10 @@ class UserViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(dispatcher)
-        viewModel = UserViewModel(GetAllUsersUseCase(repository))
+        viewModel = UserViewModel(
+            GetAllUsersUseCase(repository),
+            GetCurrentUserTypeUseCase(repository)
+        )
     }
 
     @After

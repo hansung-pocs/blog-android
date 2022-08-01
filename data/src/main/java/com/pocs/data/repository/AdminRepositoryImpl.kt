@@ -4,7 +4,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.pocs.data.api.AdminApi
+import com.pocs.data.mapper.toDetailEntity
 import com.pocs.data.paging.AdminPagingSource
+import com.pocs.data.source.AdminRemoteDataSource
 import com.pocs.domain.model.user.User
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.repository.AdminRepository
@@ -12,7 +14,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class AdminRepositoryImpl @Inject constructor(
-    private val api: AdminApi
+    private val api: AdminApi,
+    private val dataSource: AdminRemoteDataSource
 ): AdminRepository {
 
     override fun getAllUsers(): Flow<PagingData<User>> {
@@ -24,7 +27,16 @@ class AdminRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getUserDetail(id: Int): Result<UserDetail> {
-        TODO("Not yet implemented")
+        return try {
+            val response = dataSource.getUserDetail(id)
+            if (response.isSuccess) {
+                Result.success(response.data.toDetailEntity())
+            } else {
+                throw Exception(response.message)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     override suspend fun createUser(userDetail: UserDetail, password: String): Result<Unit> {

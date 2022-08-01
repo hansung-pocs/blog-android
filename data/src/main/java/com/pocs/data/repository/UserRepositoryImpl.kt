@@ -10,6 +10,7 @@ import com.pocs.data.source.UserRemoteDataSource
 import com.pocs.domain.model.user.User
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserListSortingMethod
+import com.pocs.domain.model.user.UserType
 import com.pocs.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -65,5 +66,10 @@ class UserRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    override fun getCurrentUserType(): UserType {
+        // TODO: 로그인 기능 API 구현되면 현재 로그인한 유저의 타입을 반환하도록 수정하기
+        return UserType.ADMIN
     }
 }

@@ -1,6 +1,8 @@
 package com.pocs.presentation.model.user.item
 
 import com.pocs.domain.model.user.UserType
+import com.pocs.presentation.extension.DatePattern
+import com.pocs.presentation.extension.isDateFormat
 import java.io.Serializable
 
 data class UserDetailItemUiState(
@@ -12,5 +14,8 @@ data class UserDetailItemUiState(
     val company: String,
     val generation: Int,
     val github: String,
-    val createdAt: String
-) : Serializable
+    val createdAt: String,
+    val canceledAt: String,
+) : Serializable {
+    val isKicked: Boolean get() = canceledAt.isDateFormat(DatePattern.COMPACT)
+}

@@ -2,9 +2,11 @@ package com.pocs.presentation
 
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserType
+import com.pocs.domain.usecase.user.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.user.GetUserDetailUseCase
 import com.pocs.presentation.model.user.UserDetailUiState
 import com.pocs.presentation.view.user.detail.UserDetailViewModel
+import com.pocs.test_library.fake.FakeAdminRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,7 +23,9 @@ class UserDetailViewModelTest {
 
     private val dispatcher = UnconfinedTestDispatcher()
 
-    private val repository = FakeUserRepositoryImpl()
+    private val userRepository = FakeUserRepositoryImpl()
+    private val adminRepository = FakeAdminRepositoryImpl()
+
     private lateinit var viewModel: UserDetailViewModel
 
     private val mockUserDetail = UserDetail(
@@ -40,7 +44,13 @@ class UserDetailViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(dispatcher)
-        viewModel = UserDetailViewModel(GetUserDetailUseCase(repository))
+        viewModel = UserDetailViewModel(
+            getUserDetailUseCase = GetUserDetailUseCase(
+                userRepository = userRepository,
+                adminRepository = adminRepository,
+                getCurrentUserTypeUseCase = GetCurrentUserTypeUseCase(userRepository)
+            ),
+        )
     }
 
     @After
@@ -50,7 +60,7 @@ class UserDetailViewModelTest {
 
     @Test
     fun shouldUiStateIsSuccess_WhenSuccessToGetUserDetail() {
-        repository.userDetailResult = Result.success(mockUserDetail)
+        userRepository.userDetailResult = Result.success(mockUserDetail)
 
         viewModel.loadUserInfo(mockUserDetail.id)
 
@@ -59,7 +69,7 @@ class UserDetailViewModelTest {
 
     @Test
     fun shouldUiStateIsFailure_WhenFailToGetUserDetail() {
-        repository.userDetailResult = Result.failure(Exception())
+        userRepository.userDetailResult = Result.failure(Exception())
 
         viewModel.loadUserInfo(mockUserDetail.id)
 

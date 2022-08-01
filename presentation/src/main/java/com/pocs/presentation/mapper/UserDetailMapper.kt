@@ -13,4 +13,5 @@ fun UserDetail.toUiState() = UserDetailItemUiState(
     generation = generation,
     github = github,
     createdAt = createdAt,
+    canceledAt = canceledAt
 )
