@@ -4,6 +4,7 @@ import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -20,6 +21,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -110,6 +112,7 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit) {
                 value = uiState.email,
                 label = stringResource(R.string.email),
                 placeholder = stringResource(R.string.email_placeholder),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 onValueChange = { email ->
                     uiState.update { it.copy(email = email) }
                 },
@@ -130,6 +133,7 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit) {
             UserEditTextField(
                 value = uiState.github,
                 label = stringResource(R.string.github),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
                 placeholder = stringResource(R.string.github_placeholder),
                 onValueChange = { github ->
                     uiState.update { it.copy(github = github) }
@@ -166,11 +170,13 @@ fun UserEditAvatar(onClick: () -> Unit) {
 fun UserEditTextField(
     value: String,
     label: String,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     placeholder: String? = null,
     onValueChange: (String) -> Unit,
     onClearClick: () -> Unit
 ) {
     OutlinedTextField(
+        keyboardOptions = keyboardOptions,
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
@@ -239,6 +245,7 @@ private fun UserEditPasswordDialogContent(
                 modifier = Modifier.focusRequester(focusRequester),
                 value = password,
                 onValueChange = onPasswordChange,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 visualTransformation = if (passwordVisible) {
                     VisualTransformation.None
                 } else {
