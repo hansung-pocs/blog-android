@@ -2,7 +2,9 @@ package com.pocs.presentation.view.user
 
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ItemUserBinding
 import com.pocs.presentation.model.user.item.UserItemUiState
@@ -10,32 +12,43 @@ import com.pocs.presentation.view.user.detail.UserDetailActivity
 import com.pocs.presentation.view.user.detail.UserPostListActivity
 
 class UserViewHolder(
-    private val binding: ItemUserBinding
+    private val binding: ItemUserBinding,
+    private val currentUserType: UserType
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    private val context = binding.root.context
-
     fun bind(uiState: UserItemUiState) = with(binding) {
+        val context = root.context
+
         name.text = uiState.name
-        subtitle.text = root.context.getString(
-            R.string.user_item_subtitle,
+        subtitle.text = context.getString(
+            if (uiState.isKicked) {
+                R.string.kicked_user_item_subtitle
+            } else {
+                R.string.user_item_subtitle
+            },
             uiState.studentId,
             uiState.generation.toString()
         )
 
-        cardView.setOnClickListener {
-            val context = binding.root.context
-            val intent = UserDetailActivity.getIntent(context, uiState.id)
-            context.startActivity(intent)
+        val isUnknownUser = currentUserType == UserType.UNKNOWN
+        cardView.isClickable = !isUnknownUser
+        if (!isUnknownUser) {
+            cardView.setOnClickListener {
+                val intent = UserDetailActivity.getIntent(context, uiState.id)
+                context.startActivity(intent)
+            }
         }
 
-        button.setOnClickListener {
-            showPopup(it)
+        if (currentUserType == UserType.ADMIN) {
+            moreInfoButton.isVisible = true
+            moreInfoButton.setOnClickListener { showPopup(it) }
         }
     }
 
     private fun showPopup(v: View) {
-        PopupMenu(binding.root.context, v).apply {
+        val context = binding.root.context
+
+        PopupMenu(context, v).apply {
             inflate(R.menu.menu_admin_user)
             setOnMenuItemClickListener {
                 when (it.itemId) {

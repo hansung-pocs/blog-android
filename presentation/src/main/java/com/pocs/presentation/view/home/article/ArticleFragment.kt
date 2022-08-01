@@ -8,19 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.paging.CombinedLoadStates
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
-import com.pocs.presentation.databinding.ContentLoadStateBinding
 import com.pocs.presentation.databinding.FragmentArticleBinding
+import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.ArticleUiState
 import com.pocs.presentation.model.post.item.PostItemUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
@@ -28,7 +25,6 @@ import com.pocs.presentation.view.post.adapter.PostAdapter
 import com.pocs.presentation.view.post.create.PostCreateActivity
 import com.pocs.presentation.view.post.detail.PostDetailActivity
 import kotlinx.coroutines.launch
-import java.net.ConnectException
 
 class ArticleFragment : Fragment(R.layout.fragment_article) {
 
@@ -57,14 +53,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
             )
             recyclerView.layoutManager = LinearLayoutManager(view.context)
 
-            val loadStateBinding = loadState
-            loadStateBinding.retryButton.setOnClickListener {
-                adapter.retry()
-            }
-
-            adapter.addLoadStateListener { loadStates ->
-                listenLoadState(loadStates, loadStateBinding)
-            }
+            loadState.setListeners(adapter)
 
             fab.setOnClickListener { startPostCreateActivity() }
 
@@ -87,25 +76,6 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun listenLoadState(
-        loadStates: CombinedLoadStates,
-        loadStateBinding: ContentLoadStateBinding
-    ) {
-        val refreshLoadState = loadStates.refresh
-        val isError = refreshLoadState is LoadState.Error
-        loadStateBinding.apply {
-            progressBar.isVisible = refreshLoadState is LoadState.Loading
-            retryButton.isVisible = isError
-            errorMsg.isVisible = isError
-            if (refreshLoadState is LoadState.Error) {
-                errorMsg.text = when (val exception = refreshLoadState.error) {
-                    is ConnectException -> getString(R.string.fail_to_connect)
-                    else -> exception.message
-                }
-            }
-        }
     }
 
     private fun updateUi(uiState: ArticleUiState, adapter: PostAdapter) {

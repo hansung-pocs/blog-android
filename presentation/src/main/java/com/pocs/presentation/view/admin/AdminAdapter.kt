@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.pocs.presentation.view.admin.user.AdminUserFragment
 import com.pocs.presentation.view.home.notice.NoticeFragment
-import com.pocs.presentation.view.user.UserFragment
 
 class AdminAdapter(
     fragmentManager: FragmentManager,
@@ -23,7 +23,7 @@ class AdminAdapter(
     override fun createFragment(position: Int): Fragment {
         when (position) {
             0 -> return NoticeFragment()
-            1 -> return UserFragment()
+            1 -> return AdminUserFragment()
         }
         throw IllegalArgumentException()
     }

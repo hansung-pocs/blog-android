@@ -45,7 +45,6 @@ dependencies {
     implementation project(":domain")
     testImplementation project(":test-library")
     androidTestImplementation project(":test-library")
-    androidTestImplementation project(":data")
 
     // fragment
     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"

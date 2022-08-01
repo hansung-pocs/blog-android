@@ -7,5 +7,6 @@ fun User.toUiState() = UserItemUiState(
     id = id,
     name = name,
     studentId = studentId.toString(),
-    generation = generation
+    generation = generation,
+    canceledAt = canceledAt
 )

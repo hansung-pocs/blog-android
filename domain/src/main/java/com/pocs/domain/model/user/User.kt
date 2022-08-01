@@ -4,5 +4,6 @@ data class User(
     val id: Int,
     val name: String,
     val studentId: Int,
-    val generation: Int
+    val generation: Int,
+    val canceledAt: String
 )

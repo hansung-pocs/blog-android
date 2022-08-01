@@ -33,6 +33,7 @@ class UserDetailViewModelTest {
         "google",
         30,
         "https://github/jja08111",
+        "",
         ""
     )
 
