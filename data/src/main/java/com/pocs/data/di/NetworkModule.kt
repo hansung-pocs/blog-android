@@ -4,6 +4,7 @@ import com.pocs.data.BuildConfig
 import com.pocs.data.api.AdminApi
 import com.pocs.data.api.PostApi
 import com.pocs.data.api.UserApi
+import com.pocs.data.mapper.EnumConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,6 +46,7 @@ class NetworkModule {
             .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(EnumConverterFactory())
             .build()
     }
 
