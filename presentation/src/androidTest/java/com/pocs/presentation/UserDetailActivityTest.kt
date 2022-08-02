@@ -10,6 +10,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserType
+import com.pocs.domain.usecase.admin.KickUserUseCase
 import com.pocs.domain.usecase.user.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.user.GetUserDetailUseCase
 import com.pocs.presentation.model.user.UserDetailUiState
@@ -46,7 +47,9 @@ class UserDetailActivityTest {
             userRepository = userRepository,
             adminRepository = adminRepository,
             GetCurrentUserTypeUseCase(userRepository)
-        )
+        ),
+        GetCurrentUserTypeUseCase(userRepository),
+        KickUserUseCase(adminRepository)
     )
 
     private lateinit var context: Context

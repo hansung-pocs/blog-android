@@ -3,7 +3,14 @@ package com.pocs.presentation.model.user
 import com.pocs.presentation.model.user.item.UserDetailItemUiState
 
 sealed class UserDetailUiState {
-    class Success(val userDetail: UserDetailItemUiState) : UserDetailUiState()
+    data class Success(
+        val userDetail: UserDetailItemUiState,
+        val isCurrentUserAdmin: Boolean,
+        val errorMessage: String? = null,
+        val shownErrorMessage: () -> Unit,
+        val onKickClick: () -> Unit,
+    ) : UserDetailUiState()
+
     class Failure(val e: Throwable, val onRetryClick: () -> Unit) : UserDetailUiState()
     object Loading : UserDetailUiState()
 }

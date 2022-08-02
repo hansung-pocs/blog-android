@@ -30,7 +30,12 @@ class UserDetailScreenTest {
 
     @Test
     fun showUserDetailContent_WhenUiStateIsSuccess() {
-        val uiState = UserDetailUiState.Success(userDetail)
+        val uiState = UserDetailUiState.Success(
+            userDetail,
+            isCurrentUserAdmin = false,
+            shownErrorMessage = {},
+            onKickClick = {}
+        )
         composeTestRule.setContent { UserDetailScreen(uiState = uiState) }
 
         composeTestRule.onNodeWithText(userDetail.email).assertIsDisplayed()
