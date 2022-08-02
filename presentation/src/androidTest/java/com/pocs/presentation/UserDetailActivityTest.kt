@@ -2,6 +2,11 @@ package com.pocs.presentation
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.junit4.createEmptyComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
@@ -10,6 +15,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserType
+import com.pocs.domain.usecase.admin.KickUserUseCase
 import com.pocs.domain.usecase.user.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.user.GetUserDetailUseCase
 import com.pocs.presentation.model.user.UserDetailUiState
@@ -18,6 +24,7 @@ import com.pocs.presentation.view.user.detail.UserDetailViewModel
 import com.pocs.test_library.fake.FakeAdminRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
 import com.pocs.test_library.mock.HiltTestActivity
+import com.pocs.test_library.mock.mockNormalUserDetail
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -34,6 +41,9 @@ class UserDetailActivityTest {
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
 
+    @get:Rule(order = 1)
+    val composeRule = createEmptyComposeRule()
+
     @BindValue
     val userRepository = FakeUserRepositoryImpl()
 
@@ -46,7 +56,9 @@ class UserDetailActivityTest {
             userRepository = userRepository,
             adminRepository = adminRepository,
             GetCurrentUserTypeUseCase(userRepository)
-        )
+        ),
+        GetCurrentUserTypeUseCase(userRepository),
+        KickUserUseCase(adminRepository)
     )
 
     private lateinit var context: Context
@@ -90,5 +102,59 @@ class UserDetailActivityTest {
         onView(isRoot()).perform(ViewActions.pressBack())
 
         assertEquals(exception, (viewModel.uiState as UserDetailUiState.Failure).e)
+    }
+
+    @Test
+    fun shouldShowErrorSnackBar_WhenFailedToKickUser() {
+        val errorMessage = "ERROR!!@!"
+        userRepository.currentUser = mockNormalUserDetail.copy(type = UserType.ADMIN)
+        adminRepository.userDetailResult = Result.success(userDetail)
+        adminRepository.kickUserResult = Result.failure(Exception(errorMessage))
+        val intent = UserDetailActivity.getIntent(context, userDetail.id)
+        launchActivity<UserDetailActivity>(intent)
+
+        composeRule.onNodeWithContentDescription("더보기 버튼").performClick()
+        composeRule.onNodeWithText("강퇴하기").performClick()
+        composeRule.onNodeWithText("강퇴하기").performClick()
+
+        composeRule.onNodeWithText(errorMessage).assertIsDisplayed()
+    }
+
+    @Test
+    fun shouldFetchUserDetail_WhenSuccessToKickUser() {
+        userRepository.currentUser = mockNormalUserDetail.copy(type = UserType.ADMIN)
+        adminRepository.userDetailResult = Result.success(userDetail.copy(canceledAt = ""))
+        adminRepository.kickUserResult = Result.success(Unit)
+        val intent = UserDetailActivity.getIntent(context, userDetail.id)
+        launchActivity<UserDetailActivity>(intent)
+        composeRule.onNodeWithText("탈퇴됨").assertDoesNotExist()
+
+        adminRepository.userDetailResult = Result.success(userDetail.copy(
+            canceledAt = "2022-08-09"
+        ))
+        composeRule.onNodeWithContentDescription("더보기 버튼").performClick()
+        composeRule.onNodeWithText("강퇴하기").performClick()
+        composeRule.onNodeWithText("강퇴하기").performClick()
+
+        composeRule.onNodeWithText("탈퇴됨").assertIsDisplayed()
+    }
+
+    @Test
+    fun shouldNotShowKickButton_WhenUserHasBeenKicked() {
+        userRepository.currentUser = mockNormalUserDetail.copy(type = UserType.ADMIN)
+        adminRepository.userDetailResult = Result.success(userDetail.copy(canceledAt = ""))
+        adminRepository.kickUserResult = Result.success(Unit)
+        val intent = UserDetailActivity.getIntent(context, userDetail.id)
+        launchActivity<UserDetailActivity>(intent)
+
+        adminRepository.userDetailResult = Result.success(userDetail.copy(
+            canceledAt = "2022-08-09"
+        ))
+        composeRule.onNodeWithContentDescription("더보기 버튼").performClick()
+        composeRule.onNodeWithText("강퇴하기").performClick()
+        composeRule.onNodeWithText("강퇴하기").performClick()
+        composeRule.onNodeWithContentDescription("더보기 버튼").performClick()
+
+        composeRule.onNodeWithText("강퇴하기").assertDoesNotExist()
     }
 }

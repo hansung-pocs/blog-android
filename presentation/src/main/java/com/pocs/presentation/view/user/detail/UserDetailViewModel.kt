@@ -5,6 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pocs.domain.model.user.UserType
+import com.pocs.domain.usecase.admin.KickUserUseCase
+import com.pocs.domain.usecase.user.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.user.GetUserDetailUseCase
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.user.UserDetailUiState
@@ -15,7 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserDetailViewModel @Inject constructor(
-    private val getUserDetailUseCase: GetUserDetailUseCase
+    private val getUserDetailUseCase: GetUserDetailUseCase,
+    private val getCurrentUserTypeUseCase: GetCurrentUserTypeUseCase,
+    private val kickUserUseCase: KickUserUseCase
 ) : ViewModel() {
 
     var uiState by mutableStateOf<UserDetailUiState>(UserDetailUiState.Loading)
@@ -23,19 +28,46 @@ class UserDetailViewModel @Inject constructor(
 
     private var job: Job? = null
 
-    fun loadUserInfo(id: Int) {
+    fun fetchUserInfo(id: Int) {
         job?.cancel()
         job = viewModelScope.launch {
             val result = getUserDetailUseCase(id)
             uiState = if (result.isSuccess) {
                 val user = result.getOrNull()!!
-                UserDetailUiState.Success(user.toUiState())
+                UserDetailUiState.Success(
+                    userDetail = user.toUiState(),
+                    isCurrentUserAdmin = getCurrentUserTypeUseCase() == UserType.ADMIN,
+                    shownErrorMessage = ::shownErrorMessage,
+                    onKickClick = ::kickUser
+                )
             } else {
                 UserDetailUiState.Failure(
                     e = result.exceptionOrNull()!!,
-                    onRetryClick = { loadUserInfo(id) }
+                    onRetryClick = { fetchUserInfo(id) }
                 )
             }
         }
+    }
+
+    private fun kickUser() {
+        val uiState = this.uiState
+        if (uiState is UserDetailUiState.Success) {
+            assert(uiState.isCurrentUserAdmin)
+            viewModelScope.launch {
+                val result = kickUserUseCase(uiState.userDetail.id)
+                if (result.isSuccess) {
+                    fetchUserInfo(uiState.userDetail.id)
+                } else {
+                    val errorMessage = result.exceptionOrNull()?.message ?: "강퇴에 실패했습니다."
+                    this@UserDetailViewModel.uiState = uiState.copy(errorMessage = errorMessage)
+                }
+            }
+        }
+    }
+
+    private fun shownErrorMessage() {
+        val uiState = uiState
+        if (uiState !is UserDetailUiState.Success) return
+        this.uiState = uiState.copy(errorMessage = null)
     }
 }

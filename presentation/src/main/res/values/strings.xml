@@ -30,8 +30,8 @@
     <string name="github">깃허브</string>
     <string name="email">이메일</string>
     <string name="mailto_scheme">mailto:%s</string>
-    <string name="secession">탈퇴하기</string>
-    <string name="written">작성글 보기</string>
+    <string name="kick">강퇴하기</string>
+    <string name="see_user_post">작성글 보기</string>
     <string name="edit_my_info">내 정보 수정</string>
     <string name="cancel">취소</string>
     <string name="ok">확인</string>
@@ -56,6 +56,8 @@
     <string name="type">타입</string>
     <string name="are_you_sure_you_want_to_delete">정말로 삭제하시겠습니까?</string>
     <string name="post_deleted">글이 삭제됨</string>
+    <string name="kick_user_recheck_dialog_title">정말로 강퇴하시겠습니까?</string>
+    <string name="kick_user_recheck_dialog_text">%s님은 동아리에서 강퇴됩니다.</string>
     <string-array name="admin_tab">
         <item>공지사항</item>
         <item>회원목록</item>

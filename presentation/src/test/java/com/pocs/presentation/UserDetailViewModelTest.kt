@@ -2,6 +2,7 @@ package com.pocs.presentation
 
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserType
+import com.pocs.domain.usecase.admin.KickUserUseCase
 import com.pocs.domain.usecase.user.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.user.GetUserDetailUseCase
 import com.pocs.presentation.model.user.UserDetailUiState
@@ -50,6 +51,8 @@ class UserDetailViewModelTest {
                 adminRepository = adminRepository,
                 getCurrentUserTypeUseCase = GetCurrentUserTypeUseCase(userRepository)
             ),
+            GetCurrentUserTypeUseCase(userRepository),
+            KickUserUseCase(adminRepository)
         )
         userRepository.currentUser = mockUserDetail
     }
@@ -63,7 +66,7 @@ class UserDetailViewModelTest {
     fun shouldUiStateIsSuccess_WhenSuccessToGetUserDetail() {
         userRepository.userDetailResult = Result.success(mockUserDetail)
 
-        viewModel.loadUserInfo(mockUserDetail.id)
+        viewModel.fetchUserInfo(mockUserDetail.id)
 
         assertTrue(viewModel.uiState is UserDetailUiState.Success)
     }
@@ -72,7 +75,7 @@ class UserDetailViewModelTest {
     fun shouldUiStateIsFailure_WhenFailToGetUserDetail() {
         userRepository.userDetailResult = Result.failure(Exception())
 
-        viewModel.loadUserInfo(mockUserDetail.id)
+        viewModel.fetchUserInfo(mockUserDetail.id)
 
         assertTrue(viewModel.uiState is UserDetailUiState.Failure)
     }

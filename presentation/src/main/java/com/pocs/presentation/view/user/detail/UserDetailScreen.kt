@@ -4,10 +4,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -27,6 +26,7 @@ import com.pocs.presentation.model.user.UserDetailUiState
 import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.component.FailureContent
 import com.pocs.presentation.view.component.LoadingContent
+import com.pocs.presentation.view.component.RecheckDialog
 import com.pocs.presentation.view.user.edit.UserEditActivity
 
 private const val URL_TAG = "url"
@@ -38,7 +38,21 @@ fun UserDetailScreen(uiState: UserDetailUiState) {
             LoadingContent()
         }
         is UserDetailUiState.Success -> {
-            UserDetailContent(uiState.userDetail)
+            val snackBarHostState = remember { SnackbarHostState() }
+
+            if (uiState.errorMessage != null) {
+                LaunchedEffect(uiState.errorMessage) {
+                    snackBarHostState.showSnackbar(uiState.errorMessage)
+                    uiState.shownErrorMessage()
+                }
+            }
+
+            UserDetailContent(
+                userDetail = uiState.userDetail,
+                snackBarHostState = snackBarHostState,
+                isCurrentUserAdmin = uiState.isCurrentUserAdmin,
+                onConfirmToKick = uiState.onKickClick
+            )
         }
         is UserDetailUiState.Failure -> {
             UserDetailFailureContent(
@@ -51,9 +65,43 @@ fun UserDetailScreen(uiState: UserDetailUiState) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserDetailContent(userDetail: UserDetailItemUiState) {
+fun UserDetailContent(
+    userDetail: UserDetailItemUiState,
+    snackBarHostState: SnackbarHostState,
+    onConfirmToKick: () -> Unit,
+    isCurrentUserAdmin: Boolean
+) {
+    var showKickRecheckDialog by remember { mutableStateOf(false) }
+
+    if (showKickRecheckDialog) {
+        RecheckDialog(
+            title = stringResource(R.string.kick_user_recheck_dialog_title),
+            text = stringResource(R.string.kick_user_recheck_dialog_text, userDetail.name),
+            confirmText = stringResource(id = R.string.kick),
+            onOkClick = {
+                onConfirmToKick()
+                showKickRecheckDialog = false
+            },
+            onDismissRequest = { showKickRecheckDialog = false }
+        )
+    }
+
     Scaffold(
-        topBar = { UserDetailTopBar(userDetail.name) },
+        snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
+        topBar = {
+            val context = LocalContext.current
+
+            UserDetailTopBar(
+                name = userDetail.name,
+                isUserKicked = userDetail.isKicked,
+                displayActions = isCurrentUserAdmin,
+                onKickClick = { showKickRecheckDialog = true },
+                onSeeUsersPostClick = {
+                    val intent = UserPostListActivity.getIntent(context)
+                    context.startActivity(intent)
+                }
+            )
+        },
         floatingActionButton = {
             val context = LocalContext.current
             // TODO: 본인 정보인 경우에만 내 정보 수정 버튼 보이기
@@ -124,10 +172,64 @@ fun UserDetailContent(userDetail: UserDetailItemUiState) {
 }
 
 @Composable
-fun UserDetailTopBar(name: String) {
+fun UserDetailTopBar(
+    name: String,
+    displayActions: Boolean,
+    isUserKicked: Boolean,
+    onKickClick: () -> Unit,
+    onSeeUsersPostClick: () -> Unit
+) {
     SmallTopAppBar(
         title = { Text(text = stringResource(R.string.user_info_title, name)) },
         navigationIcon = { AppBarBackButton() },
+        actions = {
+            if (displayActions) {
+                var showDropdownMenu by remember { mutableStateOf(false) }
+                val options = remember(isUserKicked) {
+                    if (isUserKicked) {
+                        listOf(R.string.see_user_post)
+                    } else {
+                        listOf(R.string.see_user_post, R.string.kick)
+                    }
+                }
+
+                IconButton(onClick = { showDropdownMenu = !showDropdownMenu }) {
+                    Icon(
+                        imageVector = Icons.Filled.MoreVert,
+                        contentDescription = stringResource(id = R.string.more_info_button)
+                    )
+                }
+                DropdownMenu(
+                    expanded = showDropdownMenu,
+                    onDismissRequest = { showDropdownMenu = false },
+                ) {
+                    options.forEach { stringResourceId ->
+                        DropdownMenuItem(
+                            onClick = {
+                                when (stringResourceId) {
+                                    R.string.kick -> onKickClick()
+                                    R.string.see_user_post -> onSeeUsersPostClick()
+                                    else -> throw IllegalArgumentException()
+                                }
+                                showDropdownMenu = false
+                            },
+                            text = {
+                                Text(
+                                    text = stringResource(stringResourceId),
+                                    style = MaterialTheme.typography.bodyLarge.copy(
+                                        color = if (stringResourceId == R.string.kick) {
+                                            MaterialTheme.colorScheme.error
+                                        } else {
+                                            MaterialTheme.colorScheme.onSurface
+                                        }
+                                    )
+                                )
+                            }
+                        )
+                    }
+                }
+            }
+        }
     )
 }
 
@@ -216,7 +318,7 @@ fun UserInfoContainer(label: String, annotatedString: AnnotatedString) {
 @Composable
 fun UserDetailFailureContent(message: String, onRetryClick: () -> Unit) {
     Scaffold(
-        topBar = { UserDetailTopBar("") }
+        topBar = { UserDetailTopBar("", displayActions = false, isUserKicked = false, {}, {}) }
     ) {
         FailureContent(
             modifier = Modifier.padding(it),
@@ -241,7 +343,10 @@ fun UserDetailContentPreview() {
             "https://github/jja08111",
             "2022-04-04",
             "-"
-        )
+        ),
+        snackBarHostState = SnackbarHostState(),
+        onConfirmToKick = {},
+        isCurrentUserAdmin = true,
     )
 }
 
@@ -259,7 +364,10 @@ fun KickedUserDetailContentPreview() {
             30,
             "https://github/jja08111",
             "2022-04-04",
-            "2022-04-04"
-        )
+            "2022-04-04",
+        ),
+        snackBarHostState = SnackbarHostState(),
+        onConfirmToKick = {},
+        isCurrentUserAdmin = true
     )
 }

@@ -35,6 +35,6 @@ class UserDetailActivity : AppCompatActivity() {
         super.onResume()
         val userId = intent.getIntExtra("userId", -1)
         assert(userId != -1)
-        viewModel.loadUserInfo(userId)
+        viewModel.fetchUserInfo(userId)
     }
 }
