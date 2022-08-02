@@ -15,6 +15,7 @@ import com.pocs.presentation.databinding.FragmentAdminUserBinding
 import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.admin.AdminUserUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
+import com.pocs.presentation.view.admin.user.create.AdminUserCreateActivity
 import com.pocs.presentation.view.user.UserAdapter
 import kotlinx.coroutines.launch
 
@@ -49,6 +50,8 @@ class AdminUserFragment : Fragment(R.layout.fragment_admin_user) {
 
             loadState.setListeners(adapter)
 
+            fab.setOnClickListener { startAdminUserCreateActivity() }
+
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.uiState.collect(::updateUi)
@@ -70,5 +73,10 @@ class AdminUserFragment : Fragment(R.layout.fragment_admin_user) {
 
     private fun updateUi(uiState: AdminUserUiState) {
         adapter.submitData(viewLifecycleOwner.lifecycle, uiState.userPagingData)
+    }
+
+    private fun startAdminUserCreateActivity() {
+        val intent = AdminUserCreateActivity.getIntent(requireContext())
+        startActivity(intent)
     }
 }
