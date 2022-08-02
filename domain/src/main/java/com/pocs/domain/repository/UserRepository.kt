@@ -22,5 +22,5 @@ interface UserRepository {
         github: String
     ): Result<Unit>
 
-    fun getCurrentUserType(): UserType
+    fun getCurrentUserDetail(): UserDetail
 }

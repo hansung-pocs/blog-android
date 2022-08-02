@@ -6,6 +6,7 @@ import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserListSortingMethod
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.repository.UserRepository
+import com.pocs.test_library.mock.mockNormalUserDetail
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -14,7 +15,11 @@ class FakeUserRepositoryImpl @Inject constructor() : UserRepository {
 
     var userDetailResult: Result<UserDetail> = Result.failure(Exception("Empty"))
 
-    var userType: UserType = UserType.MEMBER
+    var currentUser: UserDetail = mockNormalUserDetail
+
+    fun changeCurrentUserType(userType: UserType) {
+        currentUser = currentUser.copy(type = userType)
+    }
 
     override fun getAll(sortingMethod: UserListSortingMethod): Flow<PagingData<User>> {
         return flow {
@@ -35,5 +40,5 @@ class FakeUserRepositoryImpl @Inject constructor() : UserRepository {
         TODO("Not yet implemented")
     }
 
-    override fun getCurrentUserType() = userType
+    override fun getCurrentUserDetail() = currentUser
 }

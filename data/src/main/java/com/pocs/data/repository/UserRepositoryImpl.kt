@@ -20,6 +20,20 @@ class UserRepositoryImpl @Inject constructor(
     private val dataSource: UserRemoteDataSource
 ) : UserRepository {
 
+    // TODO: 로그인 기능이 구현되면 실제 로그인한 사용자의 정보로 초기화하기
+    private val currentUser = UserDetail(
+        2,
+        "권김정",
+        "abc@google.com",
+        1971034,
+        UserType.ADMIN,
+        "-",
+        30,
+        "https://github.com/",
+        "2021-02-12",
+        "-",
+    )
+
     override fun getAll(sortingMethod: UserListSortingMethod): Flow<PagingData<User>> {
         return Pager(
             // TODO: API 페이지네이션 구현되면 페이지 사이즈 수정하기
@@ -68,8 +82,8 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getCurrentUserType(): UserType {
-        // TODO: 로그인 기능 API 구현되면 현재 로그인한 유저의 타입을 반환하도록 수정하기
-        return UserType.ADMIN
+    override fun getCurrentUserDetail(): UserDetail {
+        // TODO: 로그인 기능 API 구현되면 현재 로그인한 유저를 반환하도록 수정하기
+        return currentUser
     }
 }
