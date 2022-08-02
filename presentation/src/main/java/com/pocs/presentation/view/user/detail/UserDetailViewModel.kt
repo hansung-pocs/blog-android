@@ -66,6 +66,8 @@ class UserDetailViewModel @Inject constructor(
     }
 
     private fun shownErrorMessage() {
-
+        val uiState = uiState
+        if (uiState !is UserDetailUiState.Success) return
+        this.uiState = uiState.copy(errorMessage = null)
     }
 }
