@@ -52,6 +52,8 @@
     <string name="failed_to_update">수정에 실패했습니다.</string>
     <string name="more_info_button">더보기 버튼</string>
     <string name="is_kicked">탈퇴됨</string>
+    <string name="create_user">회원 생성</string>
+    <string name="type">타입</string>
     <string-array name="admin_tab">
         <item>공지사항</item>
         <item>회원목록</item>

@@ -4,9 +4,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.pocs.data.api.AdminApi
+import com.pocs.data.mapper.toDto
 import com.pocs.data.mapper.toDetailEntity
 import com.pocs.data.paging.AdminPagingSource
 import com.pocs.data.source.AdminRemoteDataSource
+import com.pocs.domain.model.admin.UserCreateInfo
 import com.pocs.domain.model.user.User
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.repository.AdminRepository
@@ -16,7 +18,7 @@ import javax.inject.Inject
 class AdminRepositoryImpl @Inject constructor(
     private val api: AdminApi,
     private val dataSource: AdminRemoteDataSource
-): AdminRepository {
+) : AdminRepository {
 
     override fun getAllUsers(): Flow<PagingData<User>> {
         return Pager(
@@ -39,8 +41,17 @@ class AdminRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun createUser(userDetail: UserDetail, password: String): Result<Unit> {
-        TODO("Not yet implemented")
+    override suspend fun createUser(userCreateInfo: UserCreateInfo): Result<Unit> {
+        return try {
+            val response = dataSource.createUser(userCreateInfo.toDto())
+            if (response.isSuccess) {
+                Result.success(Unit)
+            } else {
+                throw Exception(response.message)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     override suspend fun kickUser(id: Int): Result<Unit> {
