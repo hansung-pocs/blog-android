@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
-import com.pocs.presentation.databinding.FragmentArticleBinding
+import com.pocs.presentation.databinding.FragmentPostBinding
 import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.ArticleUiState
 import com.pocs.presentation.model.post.item.PostItemUiState
@@ -27,9 +27,9 @@ import com.pocs.presentation.view.post.create.PostCreateActivity
 import com.pocs.presentation.view.post.detail.PostDetailActivity
 import kotlinx.coroutines.launch
 
-class ArticleFragment : Fragment(R.layout.fragment_article) {
+class ArticleFragment : Fragment(R.layout.fragment_post) {
 
-    private var _binding: FragmentArticleBinding? = null
+    private var _binding: FragmentPostBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: ArticleViewModel by activityViewModels()
@@ -40,7 +40,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentArticleBinding.inflate(inflater, container, false)
+        _binding = FragmentPostBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -56,6 +56,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
 
             loadState.setListeners(adapter)
 
+            fab.text = getString(R.string.write_post)
             fab.setOnClickListener { startPostCreateActivity() }
 
             viewLifecycleOwner.lifecycleScope.launch {
