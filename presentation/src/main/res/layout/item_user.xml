@@ -22,10 +22,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingStart="16dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="16dp">
+            android:padding="16dp">
 
             <ImageView
                 android:id="@+id/imageView"
@@ -45,7 +42,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/moreInfoButton"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -77,19 +74,6 @@
                     tools:textColor="@color/black" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <ImageButton
-                android:id="@+id/moreInfoButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/more_info_button"
-                android:src="@drawable/more_vert_ripple"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
