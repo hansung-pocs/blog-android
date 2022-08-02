@@ -121,6 +121,4 @@ class UserDetailScreenTest {
             onNodeWithText(errorMessage).assertIsDisplayed()
         }
     }
-
-
 }

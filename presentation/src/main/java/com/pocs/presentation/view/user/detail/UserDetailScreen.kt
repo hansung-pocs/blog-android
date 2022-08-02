@@ -93,6 +93,7 @@ fun UserDetailContent(
 
             UserDetailTopBar(
                 name = userDetail.name,
+                isUserKicked = userDetail.isKicked,
                 displayActions = isCurrentUserAdmin,
                 onKickClick = { showKickRecheckDialog = true },
                 onSeeUsersPostClick = {
@@ -174,6 +175,7 @@ fun UserDetailContent(
 fun UserDetailTopBar(
     name: String,
     displayActions: Boolean,
+    isUserKicked: Boolean,
     onKickClick: () -> Unit,
     onSeeUsersPostClick: () -> Unit
 ) {
@@ -183,8 +185,13 @@ fun UserDetailTopBar(
         actions = {
             if (displayActions) {
                 var showDropdownMenu by remember { mutableStateOf(false) }
-                // TODO: 이미 탈퇴된 유저인 경우 강퇴하기 버튼 숨기기
-                val options = remember { listOf(R.string.see_user_post, R.string.kick) }
+                val options = remember(isUserKicked) {
+                    if (isUserKicked) {
+                        listOf(R.string.see_user_post)
+                    } else {
+                        listOf(R.string.see_user_post, R.string.kick)
+                    }
+                }
 
                 IconButton(onClick = { showDropdownMenu = !showDropdownMenu }) {
                     Icon(
@@ -311,7 +318,7 @@ fun UserInfoContainer(label: String, annotatedString: AnnotatedString) {
 @Composable
 fun UserDetailFailureContent(message: String, onRetryClick: () -> Unit) {
     Scaffold(
-        topBar = { UserDetailTopBar("", displayActions = false, {}, {}) }
+        topBar = { UserDetailTopBar("", displayActions = false, isUserKicked = false, {}, {}) }
     ) {
         FailureContent(
             modifier = Modifier.padding(it),

@@ -138,4 +138,23 @@ class UserDetailActivityTest {
 
         composeRule.onNodeWithText("탈퇴됨").assertIsDisplayed()
     }
+
+    @Test
+    fun shouldNotShowKickButton_WhenUserHasBeenKicked() {
+        userRepository.currentUser = mockNormalUserDetail.copy(type = UserType.ADMIN)
+        adminRepository.userDetailResult = Result.success(userDetail.copy(canceledAt = ""))
+        adminRepository.kickUserResult = Result.success(Unit)
+        val intent = UserDetailActivity.getIntent(context, userDetail.id)
+        launchActivity<UserDetailActivity>(intent)
+
+        adminRepository.userDetailResult = Result.success(userDetail.copy(
+            canceledAt = "2022-08-09"
+        ))
+        composeRule.onNodeWithContentDescription("더보기 버튼").performClick()
+        composeRule.onNodeWithText("강퇴하기").performClick()
+        composeRule.onNodeWithText("강퇴하기").performClick()
+        composeRule.onNodeWithContentDescription("더보기 버튼").performClick()
+
+        composeRule.onNodeWithText("강퇴하기").assertDoesNotExist()
+    }
 }
