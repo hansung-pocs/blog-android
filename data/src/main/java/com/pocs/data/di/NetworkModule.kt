@@ -4,6 +4,7 @@ import com.pocs.data.BuildConfig
 import com.pocs.data.api.AdminApi
 import com.pocs.data.api.PostApi
 import com.pocs.data.api.UserApi
+import com.pocs.data.mapper.EnumConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,7 +13,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -45,6 +45,7 @@ class NetworkModule {
             .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(EnumConverterFactory())
             .build()
     }
 
