@@ -1,9 +1,13 @@
 package com.pocs.presentation
 
+import com.pocs.domain.usecase.post.CanDeletePostUseCase
+import com.pocs.domain.usecase.post.CanEditPostUseCase
+import com.pocs.domain.usecase.post.DeletePostUseCase
 import com.pocs.domain.usecase.post.GetPostDetailUseCase
 import com.pocs.presentation.model.post.PostDetailUiState
 import com.pocs.presentation.view.post.detail.PostDetailViewModel
 import com.pocs.test_library.fake.FakePostRepositoryImpl
+import com.pocs.test_library.fake.FakeUserRepositoryImpl
 import com.pocs.test_library.mock.mockPostDetail1
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,13 +23,22 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
+// test2 -> 성공후 setresult 인테트 메세지까지 전달 받는다.
+
 @OptIn(ExperimentalCoroutinesApi::class)
 class PostDetailViewModelTest {
 
     private val dispatcher = UnconfinedTestDispatcher()
 
-    private val repository = FakePostRepositoryImpl()
-    private val viewModel = PostDetailViewModel(GetPostDetailUseCase(repository))
+    private val userRepository = FakeUserRepositoryImpl()
+    private val postRepository = FakePostRepositoryImpl()
+
+    private val viewModel = PostDetailViewModel(
+        GetPostDetailUseCase(postRepository),
+        DeletePostUseCase(postRepository, userRepository),
+        CanEditPostUseCase(userRepository),
+        CanDeletePostUseCase(userRepository)
+    )
 
     @Before
     fun setUp() {
@@ -39,7 +52,7 @@ class PostDetailViewModelTest {
 
     @Test
     fun uiStateIsSuccess_WhenLoadingResultIsSuccess() = runTest {
-        repository.postDetailResult = Result.success(mockPostDetail1)
+        postRepository.postDetailResult = Result.success(mockPostDetail1)
 
         val collectJob = launch(UnconfinedTestDispatcher()) {
             viewModel.uiState.collect()
@@ -55,7 +68,7 @@ class PostDetailViewModelTest {
     @Test
     fun uiStateIsFailure_WhenLoadingResultIsFailure() = runTest {
         val exception = Exception("실패 메시지")
-        repository.postDetailResult = Result.failure(exception)
+        postRepository.postDetailResult = Result.failure(exception)
 
         val collectJob = launch(UnconfinedTestDispatcher()) {
             viewModel.uiState.collect()
@@ -70,5 +83,31 @@ class PostDetailViewModelTest {
         )
 
         collectJob.cancel()
+    }
+
+    @Test
+    fun shouldSetErrorMessage_WhenFailedToDeletePost() {
+        val exception = Exception("ERROR")
+        postRepository.postDetailResult = Result.success(mockPostDetail1)
+        postRepository.deletePostResult = Result.failure(exception)
+        viewModel.fetchPost(mockPostDetail1.id)
+
+        viewModel.requestPostDeleting(1)
+
+        assertEquals(
+            exception.message,
+            (viewModel.uiState.value as PostDetailUiState.Success).errorMessage
+        )
+    }
+
+    @Test
+    fun shouldIsSuccessToDeleteValueIsTrue_WhenSuccessToDeletePost() {
+        postRepository.postDetailResult = Result.success(mockPostDetail1)
+        postRepository.deletePostResult = Result.success(Unit)
+        viewModel.fetchPost(mockPostDetail1.id)
+
+        viewModel.requestPostDeleting(1)
+
+        assertEquals(true, (viewModel.uiState.value as PostDetailUiState.Success).isSuccessToDelete)
     }
 }
