@@ -2,6 +2,7 @@ package com.pocs.test_library.fake
 
 import androidx.paging.PagingData
 import com.pocs.domain.model.admin.UserCreateInfo
+import com.pocs.domain.model.post.Post
 import com.pocs.domain.model.user.User
 import com.pocs.domain.repository.AdminRepository
 import com.pocs.test_library.mock.mockKickedUserDetail
@@ -26,4 +27,8 @@ class FakeAdminRepositoryImpl @Inject constructor() : AdminRepository {
     }
 
     override suspend fun kickUser(id: Int) = kickUserResult
+
+    override fun getAllPosts(): Flow<PagingData<Post>> {
+        TODO("Not yet implemented")
+    }
 }
