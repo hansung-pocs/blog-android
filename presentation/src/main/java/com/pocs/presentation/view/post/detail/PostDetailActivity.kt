@@ -76,9 +76,17 @@ class PostDetailActivity : AppCompatActivity() {
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         val uiState = viewModel.uiState.value
-        val isSuccess = uiState is PostDetailUiState.Success
-        // TODO: 작성자인 경우에만 보이도록 하기
-        menu.children.forEach { it.isVisible = isSuccess }
+
+        menu.children.forEach {
+            when (it.itemId) {
+                R.id.action_edit_post -> {
+                    it.isVisible = (uiState as? PostDetailUiState.Success)?.canEditPost ?: false
+                }
+                R.id.action_delete_post -> {
+                    it.isVisible = (uiState as? PostDetailUiState.Success)?.canDeletePost ?: false
+                }
+            }
+        }
         return true
     }
 
@@ -114,8 +122,11 @@ class PostDetailActivity : AppCompatActivity() {
                 val postDetail = uiState.postDetail
 
                 title.text = postDetail.title
-                subtitle.text =
-                    getString(R.string.article_subtitle, postDetail.date, postDetail.writer)
+                subtitle.text = getString(
+                    R.string.article_subtitle,
+                    postDetail.date,
+                    postDetail.writer.name
+                )
                 content.text = postDetail.content
             }
             is PostDetailUiState.Failure -> {

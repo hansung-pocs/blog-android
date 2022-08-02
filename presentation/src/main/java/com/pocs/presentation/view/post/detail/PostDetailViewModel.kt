@@ -2,6 +2,8 @@ package com.pocs.presentation.view.post.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pocs.domain.usecase.post.CanDeletePostUseCase
+import com.pocs.domain.usecase.post.CanEditPostUseCase
 import com.pocs.domain.usecase.post.DeletePostUseCase
 import com.pocs.domain.usecase.post.GetPostDetailUseCase
 import com.pocs.presentation.mapper.toUiState
@@ -17,7 +19,9 @@ import javax.inject.Inject
 @HiltViewModel
 class PostDetailViewModel @Inject constructor(
     private val getPostDetailUseCase: GetPostDetailUseCase,
-    private val deletePostUseCase: DeletePostUseCase
+    private val deletePostUseCase: DeletePostUseCase,
+    private val canEditPostUseCase: CanEditPostUseCase,
+    private val canDeletePostUseCase: CanDeletePostUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<PostDetailUiState>(PostDetailUiState.Loading)
@@ -30,8 +34,14 @@ class PostDetailViewModel @Inject constructor(
         fetchJob = viewModelScope.launch {
             val result = getPostDetailUseCase(id)
             if (result.isSuccess) {
-                val data = result.getOrNull()!!
-                _uiState.update { PostDetailUiState.Success(data.toUiState()) }
+                val postDetail = result.getOrNull()!!
+                _uiState.update {
+                    PostDetailUiState.Success(
+                        postDetail = postDetail.toUiState(),
+                        canEditPost = canEditPostUseCase(postDetail),
+                        canDeletePost = canDeletePostUseCase(postDetail)
+                    )
+                }
             } else {
                 val errorMessage = result.exceptionOrNull()!!.message
                 _uiState.update { PostDetailUiState.Failure(message = errorMessage) }
