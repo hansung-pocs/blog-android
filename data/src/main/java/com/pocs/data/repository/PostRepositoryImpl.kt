@@ -7,6 +7,7 @@ import com.pocs.data.api.PostApi
 import com.pocs.data.mapper.toDto
 import com.pocs.data.mapper.toEntity
 import com.pocs.data.model.post.PostAddBody
+import com.pocs.data.model.post.PostDeleteBody
 import com.pocs.data.paging.PostPagingSource
 import com.pocs.data.source.PostRemoteDataSource
 import com.pocs.domain.model.post.Post
@@ -77,7 +78,22 @@ class PostRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun deletePost(postId: Int, userId: Int): Result<Unit> {
-        TODO("Not yet implemented")
+    override suspend fun deletePost(
+        postId: Int,
+        userId: Int
+    ): Result<Unit> {
+        return try {
+            val result = dataSource.deletePost(
+                postId = postId,
+                postDeleteBody = PostDeleteBody(userId = userId)
+            )
+            if (result.isSuccess) {
+                Result.success(Unit)
+            } else {
+                throw Exception(result.message)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }

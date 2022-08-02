@@ -34,7 +34,7 @@ class GetUserDetailUseCaseTest {
 
     @Test
     fun returnsUserDetailFromAdmin_WhenCurrentUserTypeIsAdmin() {
-        userRepository.userType = UserType.ADMIN
+        userRepository.changeCurrentUserType(UserType.ADMIN)
 
         runBlocking {
             val result = getUserDetailUseCase(userDetailFromAdmin.id)
@@ -44,7 +44,7 @@ class GetUserDetailUseCaseTest {
 
     @Test
     fun returnsUserDetailFromMember_WhenCurrentUserTypeIsMember() {
-        userRepository.userType = UserType.MEMBER
+        userRepository.changeCurrentUserType(UserType.MEMBER)
 
         runBlocking {
             val result = getUserDetailUseCase(userDetailFromMember.id)
@@ -54,7 +54,7 @@ class GetUserDetailUseCaseTest {
 
     @Test
     fun returnsFailureResult_WhenCurrentUserTypeIsUnknown() {
-        userRepository.userType = UserType.UNKNOWN
+        userRepository.changeCurrentUserType(UserType.UNKNOWN)
 
         runBlocking {
             val result = getUserDetailUseCase(userDetailFromMember.id)

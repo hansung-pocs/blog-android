@@ -7,7 +7,7 @@ fun PostDetail.toUiState() = PostDetailItemUiState(
     id = id,
     title = title,
     content = content,
-    writer = writer.name,
+    writer = writer.toUiState(),
     date = createdAt,
     category = category
 )

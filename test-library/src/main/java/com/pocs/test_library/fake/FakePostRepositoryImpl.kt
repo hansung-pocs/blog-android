@@ -13,6 +13,8 @@ class FakePostRepositoryImpl @Inject constructor() : PostRepository {
     private val postFlow = MutableSharedFlow<PagingData<Post>>()
     var postDetailResult: Result<PostDetail> = Result.failure(Exception())
 
+    var deletePostResult = Result.success(Unit)
+
 //    suspend fun emit(pagingData: PagingData<Post>) {
 //        postFlow.emit(pagingData)
 //    }
@@ -42,7 +44,5 @@ class FakePostRepositoryImpl @Inject constructor() : PostRepository {
         TODO("Not yet implemented")
     }
 
-    override suspend fun deletePost(postId: Int, userId: Int): Result<Unit> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun deletePost(postId: Int, userId: Int) = deletePostResult
 }

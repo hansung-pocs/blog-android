@@ -15,6 +15,8 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityPostDetailBinding
 import com.pocs.presentation.model.post.PostDetailUiState
@@ -74,9 +76,17 @@ class PostDetailActivity : AppCompatActivity() {
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         val uiState = viewModel.uiState.value
-        val isSuccess = uiState is PostDetailUiState.Success
-        // TODO: 작성자인 경우에만 보이도록 하기
-        menu.children.forEach { it.isVisible = isSuccess }
+
+        menu.children.forEach {
+            when (it.itemId) {
+                R.id.action_edit_post -> {
+                    it.isVisible = (uiState as? PostDetailUiState.Success)?.canEditPost ?: false
+                }
+                R.id.action_delete_post -> {
+                    it.isVisible = (uiState as? PostDetailUiState.Success)?.canDeletePost ?: false
+                }
+            }
+        }
         return true
     }
 
@@ -87,11 +97,17 @@ class PostDetailActivity : AppCompatActivity() {
                 true
             }
             R.id.action_delete_post -> {
-                // TODO: 삭제 API 연동 후 구현하기
+                showRecheckDialog()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun onDeleteSuccess() {
+        val intent = Intent().putExtra("message", getString(R.string.post_deleted))
+        setResult(RESULT_OK, intent)
+        finish()
     }
 
     private fun fetchPost() {
@@ -113,8 +129,20 @@ class PostDetailActivity : AppCompatActivity() {
                 val postDetail = uiState.postDetail
 
                 title.text = postDetail.title
-                subtitle.text = getString(R.string.article_subtitle, postDetail.date, postDetail.writer)
+                subtitle.text = getString(
+                    R.string.article_subtitle,
+                    postDetail.date,
+                    postDetail.writer.name
+                )
                 content.text = postDetail.content
+
+                if (uiState.isSuccessToDelete) {
+                    onDeleteSuccess()
+                }
+                if (uiState.errorMessage != null) {
+                    showSnackBar(uiState.errorMessage)
+                    viewModel.shownErrorMessage()
+                }
             }
             is PostDetailUiState.Failure -> {
                 title.text = getString(R.string.failed_to_load)
@@ -122,6 +150,25 @@ class PostDetailActivity : AppCompatActivity() {
             }
             else -> {}
         }
+    }
+
+    private fun showRecheckDialog() {
+       MaterialAlertDialogBuilder(this).apply {
+            setTitle(getString(R.string.are_you_sure_you_want_to_delete))
+            setPositiveButton(getString(R.string.delete)) { _, _ ->
+                requestPostDeleting()
+            }
+            setNegativeButton(getString(R.string.cancel)) { _, _ -> }
+        }.show()
+    }
+
+    private fun showSnackBar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun requestPostDeleting() {
+        val postId = intent.getIntExtra("id", -1)
+        viewModel.requestPostDeleting(postId)
     }
 
     private fun startPostEditActivity() {
