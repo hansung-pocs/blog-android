@@ -4,6 +4,7 @@ import com.pocs.data.api.PostApi
 import com.pocs.data.model.ResponseBody
 import com.pocs.data.model.post.PostAddBody
 import com.pocs.data.model.post.PostDeleteBody
+import com.pocs.data.model.post.PostUpdateBody
 import javax.inject.Inject
 
 class PostRemoteDataSourceImpl @Inject constructor(
@@ -21,5 +22,12 @@ class PostRemoteDataSourceImpl @Inject constructor(
         postDeleteBody: PostDeleteBody
     ): ResponseBody<Unit> {
         return api.deletePost(postId, postDeleteBody)
+    }
+
+    override suspend fun updatePost(
+        postId: Int,
+        postUpdateBody: PostUpdateBody
+    ): ResponseBody<Unit> {
+        return api.updatePost(postId, postUpdateBody)
     }
 }

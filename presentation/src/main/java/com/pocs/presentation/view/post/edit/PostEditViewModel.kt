@@ -3,6 +3,8 @@ package com.pocs.presentation.view.post.edit
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import com.pocs.domain.model.post.PostCategory
+import com.pocs.domain.usecase.post.AddPostUseCase
+import com.pocs.domain.usecase.post.UpdatePostUseCase
 import com.pocs.presentation.model.post.PostEditUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +13,9 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class PostEditViewModel @Inject constructor() : ViewModel() {
+class PostEditViewModel @Inject constructor(
+    private val updatePostUseCase : UpdatePostUseCase
+) : ViewModel() {
 
     private lateinit var _uiState: MutableState<PostEditUiState>
     val uiState: State<PostEditUiState> get() = _uiState
@@ -41,11 +45,17 @@ class PostEditViewModel @Inject constructor() : ViewModel() {
 
     private suspend fun savePost(): Result<Unit> {
         _uiState.value = uiState.value.copy(isInSaving = true)
-        // TODO: API 연결하여야 함
+        val result = updatePostUseCase(
+            id = uiState.value.id,
+            title = uiState.value.title,
+            content = uiState.value.content,
+            // TODO: 현재 접속중인 유저의 ID로 변경하기
+            userId = 1,
+            category = uiState.value.category
+        )
         withContext(Dispatchers.IO) {
             delay(500)
         }
-        val result = Result.success(Unit)
         if (result.isFailure) {
             _uiState.value = uiState.value.copy(isInSaving = false)
         }
