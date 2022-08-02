@@ -2,7 +2,9 @@ package com.pocs.presentation
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.model.user.UserDetailUiState
 import com.pocs.presentation.model.user.item.UserDetailItemUiState
@@ -50,4 +52,75 @@ class UserDetailScreenTest {
         composeTestRule.onNodeWithText(userDetail.email).assertDoesNotExist()
         composeTestRule.onNodeWithText(exception.message!!).assertIsDisplayed()
     }
+
+    @Test
+    fun showMoreInfoButton_WhenCurrentUserIsAdmin() {
+        val uiState = UserDetailUiState.Success(
+            userDetail,
+            isCurrentUserAdmin = true,
+            shownErrorMessage = {},
+            onKickClick = {}
+        )
+
+        composeTestRule.run {
+            setContent { UserDetailScreen(uiState = uiState) }
+
+            onNodeWithContentDescription("더보기 버튼").assertIsDisplayed()
+        }
+    }
+
+    @Test
+    fun shouldNotShowMoreInfoButton_WhenCurrentUserIsNotAdmin() {
+        val uiState = UserDetailUiState.Success(
+            userDetail,
+            isCurrentUserAdmin = false,
+            shownErrorMessage = {},
+            onKickClick = {}
+        )
+
+        composeTestRule.run {
+            setContent { UserDetailScreen(uiState = uiState) }
+
+            onNodeWithContentDescription("더보기 버튼").assertDoesNotExist()
+        }
+    }
+
+    @Test
+    fun showRecheckDialog_WhenClickKickUserButton() {
+        val uiState = UserDetailUiState.Success(
+            userDetail,
+            isCurrentUserAdmin = true,
+            shownErrorMessage = {},
+            onKickClick = {}
+        )
+
+        composeTestRule.run {
+            setContent { UserDetailScreen(uiState = uiState) }
+
+            onNodeWithContentDescription("더보기 버튼").performClick()
+            onNodeWithText("강퇴하기").performClick()
+
+            onNodeWithText("정말로 강퇴하시겠습니까?").assertIsDisplayed()
+        }
+    }
+
+    @Test
+    fun showErrorSnackBar_WhenErrorMessageIsNotNull() {
+        val errorMessage = "ERROR"
+        val uiState = UserDetailUiState.Success(
+            userDetail,
+            isCurrentUserAdmin = true,
+            errorMessage = errorMessage,
+            shownErrorMessage = {},
+            onKickClick = {}
+        )
+
+        composeTestRule.run {
+            setContent { UserDetailScreen(uiState = uiState) }
+
+            onNodeWithText(errorMessage).assertIsDisplayed()
+        }
+    }
+
+
 }

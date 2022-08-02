@@ -183,6 +183,7 @@ fun UserDetailTopBar(
         actions = {
             if (displayActions) {
                 var showDropdownMenu by remember { mutableStateOf(false) }
+                // TODO: 이미 탈퇴된 유저인 경우 강퇴하기 버튼 숨기기
                 val options = remember { listOf(R.string.see_user_post, R.string.kick) }
 
                 IconButton(onClick = { showDropdownMenu = !showDropdownMenu }) {

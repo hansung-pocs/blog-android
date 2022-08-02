@@ -15,6 +15,8 @@ class FakeAdminRepositoryImpl @Inject constructor() : AdminRepository {
 
     var userDetailResult = Result.success(mockKickedUserDetail)
 
+    var kickUserResult = Result.success(Unit)
+
     override fun getAllUsers(): Flow<PagingData<User>> = flowOf(PagingData.from(userList))
 
     override suspend fun getUserDetail(id: Int) = userDetailResult
@@ -23,7 +25,5 @@ class FakeAdminRepositoryImpl @Inject constructor() : AdminRepository {
         TODO("Not yet implemented")
     }
 
-    override suspend fun kickUser(id: Int): Result<Unit> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun kickUser(id: Int) = kickUserResult
 }
