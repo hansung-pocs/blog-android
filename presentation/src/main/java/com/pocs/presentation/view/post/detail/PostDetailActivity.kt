@@ -104,6 +104,12 @@ class PostDetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun onDeleteSuccess() {
+        val intent = Intent().putExtra("message", getString(R.string.post_deleted))
+        setResult(RESULT_OK, intent)
+        finish()
+    }
+
     private fun fetchPost() {
         val id = intent.getIntExtra("id", -1)
         viewModel.fetchPost(id)
@@ -131,8 +137,7 @@ class PostDetailActivity : AppCompatActivity() {
                 content.text = postDetail.content
 
                 if (uiState.isSuccessToDelete) {
-                    finish()
-                    // TODO: 이전 엑티비티에서 "삭제됨" 스낵바 띄우기
+                    onDeleteSuccess()
                 }
                 if (uiState.errorMessage != null) {
                     showSnackBar(uiState.errorMessage)

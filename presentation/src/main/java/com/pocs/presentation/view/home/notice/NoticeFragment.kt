@@ -14,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentNoticeBinding
@@ -70,6 +71,11 @@ class NoticeFragment : Fragment(R.layout.fragment_notice) {
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 adapter.refresh()
+
+                val message = it.data?.getStringExtra("message")
+                if (message != null) {
+                    showSnackBar(message)
+                }
             }
         }
     }
@@ -86,6 +92,12 @@ class NoticeFragment : Fragment(R.layout.fragment_notice) {
     private fun onClickArticle(postItemUiState: PostItemUiState) {
         val intent = PostDetailActivity.getIntent(requireContext(), postItemUiState.id)
         startActivity(intent)
+    }
+
+    private fun showSnackBar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
+            anchorView = binding.fab
+        }.show()
     }
 
     private fun startPostCreateActivity() {
