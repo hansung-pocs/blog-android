@@ -68,6 +68,7 @@ class UserDetailActivityTest {
     fun setUp() {
         hiltRule.inject()
         context = InstrumentationRegistry.getInstrumentation().targetContext
+        userRepository.currentUser = userDetail.copy(type = UserType.MEMBER)
     }
 
     @Test
