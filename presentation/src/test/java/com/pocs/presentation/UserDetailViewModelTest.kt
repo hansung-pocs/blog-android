@@ -51,6 +51,7 @@ class UserDetailViewModelTest {
                 getCurrentUserTypeUseCase = GetCurrentUserTypeUseCase(userRepository)
             ),
         )
+        userRepository.currentUser = mockUserDetail
     }
 
     @After
