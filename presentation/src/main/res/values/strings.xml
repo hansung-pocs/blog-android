@@ -4,7 +4,8 @@
     <string name="notice">공지사항</string>
     <string name="article">게시글</string>
     <string name="user_list">회원 목록</string>
-    <string name="article_subtitle">%s · %s</string>
+    <string name="post_subtitle">%s · %s</string>
+    <string name="deleted_post_subtitle">삭제됨 · %s · %s</string>
     <string name="user_item_subtitle">%s · %s기</string>
     <string name="kicked_user_item_subtitle">탈퇴됨 · %s · %s기</string>
     <string name="fail_to_connect">연결에 실패하였습니다.</string>
@@ -19,7 +20,6 @@
     <string name="save">저장하기</string>
     <string name="admin_page">관리자 페이지</string>
     <string name="write_notice">공지 쓰기</string>
-    <string name="write_article">글 쓰기</string>
     <string name="write_post">게시글 쓰기</string>
     <string name="user_info_title">%s님의 정보</string>
     <string name="failed_to_load">불러오기에 실패했습니다.</string>

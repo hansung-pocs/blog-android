@@ -42,7 +42,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="?attr/colorOnBackground"
-            tools:text="2022.07.19 · 관리자"
+            tools:text="삭제됨 · 2022.07.19 · 관리자"
             tools:textColor="@color/black" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

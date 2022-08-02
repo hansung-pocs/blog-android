@@ -130,7 +130,7 @@ class PostDetailActivity : AppCompatActivity() {
 
                 title.text = postDetail.title
                 subtitle.text = getString(
-                    R.string.article_subtitle,
+                    R.string.post_subtitle,
                     postDetail.date,
                     postDetail.writer.name
                 )

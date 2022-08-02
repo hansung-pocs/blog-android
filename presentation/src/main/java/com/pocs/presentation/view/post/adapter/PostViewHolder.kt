@@ -13,8 +13,8 @@ class PostViewHolder(
     fun bind(uiState: PostItemUiState) = with(binding) {
         title.text = uiState.title
         subtitle.text = root.context.getString(
-            R.string.article_subtitle,
-            uiState.date,
+            if (uiState.isDeleted) R.string.deleted_post_subtitle else R.string.post_subtitle,
+            uiState.createdAt,
             uiState.writer
         )
 
