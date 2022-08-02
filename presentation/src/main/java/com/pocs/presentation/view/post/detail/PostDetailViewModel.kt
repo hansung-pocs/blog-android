@@ -49,13 +49,29 @@ class PostDetailViewModel @Inject constructor(
         }
     }
 
-    fun deletePost(id: Int) {
+    fun requestPostDeleting(id: Int) {
+        assert(_uiState.value is PostDetailUiState.Success)
         viewModelScope.launch {
-            deletePostUseCase(
-                postId = id,
-                // TODO: 현재 접속중인 유저의 ID로 변경하기
-                userId = 1
-            )
+            val result = deletePostUseCase(postId = id)
+
+            if (result.isSuccess) {
+                _uiState.update {
+                    (it as PostDetailUiState.Success).copy(isSuccessToDelete = true)
+                }
+            } else {
+                _uiState.update {
+                    val errorMessage = result.exceptionOrNull()!!.message ?: "삭제에 실패했습니다."
+                    (it as PostDetailUiState.Success).copy(errorMessage = errorMessage)
+                }
+            }
+        }
+    }
+
+    fun shownErrorMessage() {
+        val uiStateValue = _uiState.value
+        if(uiStateValue !is PostDetailUiState.Success) return
+        _uiState.update {
+            uiStateValue.copy(errorMessage = null)
         }
     }
 }

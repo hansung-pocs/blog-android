@@ -16,6 +16,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityPostDetailBinding
 import com.pocs.presentation.model.post.PostDetailUiState
@@ -128,6 +129,15 @@ class PostDetailActivity : AppCompatActivity() {
                     postDetail.writer.name
                 )
                 content.text = postDetail.content
+
+                if (uiState.isSuccessToDelete) {
+                    finish()
+                    // TODO: 이전 엑티비티에서 "삭제됨" 스낵바 띄우기
+                }
+                if (uiState.errorMessage != null) {
+                    showSnackBar(uiState.errorMessage)
+                    viewModel.shownErrorMessage()
+                }
             }
             is PostDetailUiState.Failure -> {
                 title.text = getString(R.string.failed_to_load)
@@ -141,16 +151,19 @@ class PostDetailActivity : AppCompatActivity() {
        MaterialAlertDialogBuilder(this).apply {
             setTitle(getString(R.string.are_you_sure_you_want_to_delete))
             setPositiveButton(getString(R.string.delete)) { _, _ ->
-                deletePost()
+                requestPostDeleting()
             }
             setNegativeButton(getString(R.string.cancel)) { _, _ -> }
         }.show()
     }
 
-    private fun deletePost() {
+    private fun showSnackBar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun requestPostDeleting() {
         val postId = intent.getIntExtra("id", -1)
-        viewModel.deletePost(postId)
-        this.finish()
+        viewModel.requestPostDeleting(postId)
     }
 
     private fun startPostEditActivity() {
