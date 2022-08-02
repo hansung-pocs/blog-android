@@ -4,10 +4,8 @@ import com.pocs.data.model.ResponseBody
 import com.pocs.data.model.admin.UserCreateInfoBody
 import com.pocs.data.model.admin.AdminUserDto
 import com.pocs.data.model.admin.AdminUserListDto
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import com.pocs.data.model.admin.UserKickInfoBody
+import retrofit2.http.*
 
 interface AdminApi {
     @GET("admin/users")
@@ -21,5 +19,11 @@ interface AdminApi {
     @POST("admin/users")
     suspend fun createUser(
         @Body userCreateInfoBody: UserCreateInfoBody
+    ): ResponseBody<Unit>
+
+    @PATCH("admin/users/{userId}/kick")
+    suspend fun kickUser(
+        @Path("userId") userId: Int,
+        @Body userKickInfoBody: UserKickInfoBody
     ): ResponseBody<Unit>
 }

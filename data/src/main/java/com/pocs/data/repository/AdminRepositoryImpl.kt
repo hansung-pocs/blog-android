@@ -4,8 +4,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.pocs.data.api.AdminApi
-import com.pocs.data.mapper.toDto
 import com.pocs.data.mapper.toDetailEntity
+import com.pocs.data.mapper.toDto
+import com.pocs.data.model.admin.UserKickInfoBody
 import com.pocs.data.paging.AdminPagingSource
 import com.pocs.data.source.AdminRemoteDataSource
 import com.pocs.domain.model.admin.UserCreateInfo
@@ -13,6 +14,8 @@ import com.pocs.domain.model.user.User
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.repository.AdminRepository
 import kotlinx.coroutines.flow.Flow
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class AdminRepositoryImpl @Inject constructor(
@@ -55,6 +58,23 @@ class AdminRepositoryImpl @Inject constructor(
     }
 
     override suspend fun kickUser(id: Int): Result<Unit> {
-        TODO("Not yet implemented")
+        return try {
+            val response = dataSource.kickUser(
+                id = id,
+                userKickInfoBody = UserKickInfoBody(canceledAt = getCurrentDateTime())
+            )
+            if (response.isSuccess) {
+                Result.success(Unit)
+            } else {
+                throw Exception(response.message)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    private fun getCurrentDateTime(): String {
+        val formatter = SimpleDateFormat("yyyy-MM-DD HH:MM:ss", Locale.getDefault())
+        return formatter.format(Date())
     }
 }
