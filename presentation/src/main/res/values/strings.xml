@@ -54,6 +54,7 @@
     <string name="is_kicked">탈퇴됨</string>
     <string name="create_user">회원 생성</string>
     <string name="type">타입</string>
+    <string name="are_you_sure_you_want_to_delete">정말로 삭제하시겠습니까?</string>
     <string-array name="admin_tab">
         <item>공지사항</item>
         <item>회원목록</item>

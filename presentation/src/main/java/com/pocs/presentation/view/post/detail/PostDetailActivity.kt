@@ -15,6 +15,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityPostDetailBinding
 import com.pocs.presentation.model.post.PostDetailUiState
@@ -31,8 +32,6 @@ class PostDetailActivity : AppCompatActivity() {
     private val viewModel: PostDetailViewModel by viewModels()
 
     private var launcher: ActivityResultLauncher<Intent>? = null
-
-    private val id = intent.getIntExtra("id", -1)
 
     companion object {
         fun getIntent(context: Context, id: Int): Intent {
@@ -97,7 +96,7 @@ class PostDetailActivity : AppCompatActivity() {
                 true
             }
             R.id.action_delete_post -> {
-                deletePost()
+                showRecheckDialog()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -105,6 +104,7 @@ class PostDetailActivity : AppCompatActivity() {
     }
 
     private fun fetchPost() {
+        val id = intent.getIntExtra("id", -1)
         viewModel.fetchPost(id)
     }
 
@@ -137,6 +137,22 @@ class PostDetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun showRecheckDialog() {
+       MaterialAlertDialogBuilder(this).apply {
+            setTitle(getString(R.string.are_you_sure_you_want_to_delete))
+            setPositiveButton(getString(R.string.delete)) { _, _ ->
+                deletePost()
+            }
+            setNegativeButton(getString(R.string.cancel)) { _, _ -> }
+        }.show()
+    }
+
+    private fun deletePost() {
+        val postId = intent.getIntExtra("id", -1)
+        viewModel.deletePost(postId)
+        this.finish()
+    }
+
     private fun startPostEditActivity() {
         val uiState = viewModel.uiState.value
         if (uiState !is PostDetailUiState.Success) return
@@ -150,10 +166,5 @@ class PostDetailActivity : AppCompatActivity() {
             postDetail.category
         )
         launcher?.launch(intent)
-    }
-
-    private fun deletePost() {
-        viewModel.deletePost(id)
-        this.finish()
     }
 }
