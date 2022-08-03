@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
@@ -14,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityPostByUserBinding
-import com.pocs.presentation.extension.getSnackBarMessage
+import com.pocs.presentation.extension.RefreshStateContract
 import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.post.PostByUserUiState
 import com.pocs.presentation.model.post.item.PostItemUiState
@@ -68,13 +67,10 @@ class PostByUserActivity : AppCompatActivity() {
             }
         }
 
-        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == RESULT_OK) {
+        launcher = registerForActivityResult(RefreshStateContract()) {
+            if (it != null) {
                 adapter.refresh()
-
-                it.getSnackBarMessage()?.let { message ->
-                    showSnackBar(message)
-                }
+                it.message?.let { message -> showSnackBar(message) }
             }
         }
     }

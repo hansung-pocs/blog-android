@@ -1,13 +1,11 @@
 package com.pocs.presentation.view.admin.user
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -17,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentAdminUserBinding
-import com.pocs.presentation.extension.getSnackBarMessage
+import com.pocs.presentation.extension.RefreshStateContract
 import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.admin.AdminUserUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
@@ -68,13 +66,10 @@ class AdminUserFragment : Fragment(R.layout.fragment_admin_user) {
             }
         }
 
-        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
+        launcher = registerForActivityResult(RefreshStateContract()) {
+            if (it != null) {
                 adapter.refresh()
-
-                it.getSnackBarMessage()?.let { message ->
-                    showSnackBar(message)
-                }
+                it.message?.let { message -> showSnackBar(message) }
             }
         }
     }

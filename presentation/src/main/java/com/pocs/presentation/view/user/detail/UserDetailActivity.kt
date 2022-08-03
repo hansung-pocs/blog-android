@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.composethemeadapter3.Mdc3Theme
+import com.pocs.presentation.extension.setResultRefresh
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,7 +34,7 @@ class UserDetailActivity : AppCompatActivity() {
                     viewModel.uiState,
                     onEdited = {
                         fetchUserDetail()
-                        setResult(RESULT_OK)
+                        setResultRefresh()
                     }
                 )
             }

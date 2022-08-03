@@ -1,13 +1,11 @@
 package com.pocs.presentation.view.user
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -19,7 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.pocs.domain.model.user.UserListSortingMethod
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentUserBinding
-import com.pocs.presentation.extension.getSnackBarMessage
+import com.pocs.presentation.extension.RefreshStateContract
 import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.user.UserUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
@@ -68,13 +66,10 @@ class UserFragment : Fragment(R.layout.fragment_user) {
             }
         }
 
-        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
+        launcher = registerForActivityResult(RefreshStateContract()) {
+            if (it != null) {
                 adapter.refresh()
-
-                it.getSnackBarMessage()?.let { message ->
-                    showSnackBar(message)
-                }
+                it.message?.let { message -> showSnackBar(message) }
             }
         }
     }

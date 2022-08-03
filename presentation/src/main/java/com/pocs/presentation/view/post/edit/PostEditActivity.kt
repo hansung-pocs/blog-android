@@ -10,7 +10,7 @@ import androidx.core.view.WindowCompat
 import com.google.android.material.composethemeadapter3.Mdc3Theme
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
-import com.pocs.presentation.extension.setResultOkWithSnackBarMessage
+import com.pocs.presentation.extension.setResultRefresh
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -55,7 +55,7 @@ class PostEditActivity : AppCompatActivity() {
                     uiState = viewModel.uiState.value,
                     navigateUp = ::finish,
                     onSuccessSave = {
-                        setResultOkWithSnackBarMessage(R.string.post_edited)
+                        setResultRefresh(R.string.post_edited)
                     }
                 )
             }

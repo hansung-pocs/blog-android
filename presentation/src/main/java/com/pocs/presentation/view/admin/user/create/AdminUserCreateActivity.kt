@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import com.google.android.material.composethemeadapter3.Mdc3Theme
 import com.pocs.presentation.R
-import com.pocs.presentation.extension.setResultOkWithSnackBarMessage
+import com.pocs.presentation.extension.setResultRefresh
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,7 +34,7 @@ class AdminUserCreateActivity : AppCompatActivity() {
                     viewModel.uiState,
                     navigateUp = ::finish,
                     onSuccessToCreate = {
-                        setResultOkWithSnackBarMessage(R.string.user_created)
+                        setResultRefresh(R.string.user_created)
                     }
                 )
             }

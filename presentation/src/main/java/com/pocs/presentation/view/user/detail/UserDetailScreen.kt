@@ -1,7 +1,6 @@
 package com.pocs.presentation.view.user.detail
 
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.ClickableText
@@ -23,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.R
-import com.pocs.presentation.extension.getSnackBarMessage
+import com.pocs.presentation.extension.RefreshStateContract
 import com.pocs.presentation.model.user.item.UserDetailItemUiState
 import com.pocs.presentation.model.user.UserDetailUiState
 import com.pocs.presentation.view.component.button.AppBarBackButton
@@ -81,12 +80,14 @@ fun UserDetailContent(
     var showKickRecheckDialog by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     val userEditActivityResult = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
+        contract = RefreshStateContract(),
         onResult = {
-            coroutineScope.launch {
-                it.getSnackBarMessage()?.let { message ->
-                    onEdited()
-                    snackBarHostState.showSnackbar(message)
+            if (it != null) {
+                onEdited()
+                it.message?.let { message ->
+                    coroutineScope.launch {
+                        snackBarHostState.showSnackbar(message)
+                    }
                 }
             }
         }
