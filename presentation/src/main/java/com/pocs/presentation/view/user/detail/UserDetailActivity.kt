@@ -24,15 +24,23 @@ class UserDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        fetchUserDetail()
+
         setContent {
             Mdc3Theme(this) {
-                UserDetailScreen(viewModel.uiState)
+                UserDetailScreen(
+                    viewModel.uiState,
+                    onEdited = {
+                        fetchUserDetail()
+                        setResult(RESULT_OK)
+                    }
+                )
             }
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun fetchUserDetail() {
         val userId = intent.getIntExtra("userId", -1)
         assert(userId != -1)
         viewModel.fetchUserInfo(userId)

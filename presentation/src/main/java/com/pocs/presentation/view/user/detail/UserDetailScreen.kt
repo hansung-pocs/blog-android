@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 private const val URL_TAG = "url"
 
 @Composable
-fun UserDetailScreen(uiState: UserDetailUiState) {
+fun UserDetailScreen(uiState: UserDetailUiState, onEdited: () -> Unit) {
     when (uiState) {
         is UserDetailUiState.Loading -> {
             LoadingContent()
@@ -56,7 +56,8 @@ fun UserDetailScreen(uiState: UserDetailUiState) {
                 userDetail = uiState.userDetail,
                 snackBarHostState = snackBarHostState,
                 isCurrentUserAdmin = uiState.isCurrentUserAdmin,
-                onConfirmToKick = uiState.onKickClick
+                onConfirmToKick = uiState.onKickClick,
+                onEdited = onEdited
             )
         }
         is UserDetailUiState.Failure -> {
@@ -74,15 +75,17 @@ fun UserDetailContent(
     userDetail: UserDetailItemUiState,
     snackBarHostState: SnackbarHostState,
     onConfirmToKick: () -> Unit,
+    onEdited: () -> Unit,
     isCurrentUserAdmin: Boolean
 ) {
     var showKickRecheckDialog by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
-    val activityResult = rememberLauncherForActivityResult(
+    val userEditActivityResult = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
         onResult = {
             coroutineScope.launch {
                 it.getSnackBarMessage()?.let { message ->
+                    onEdited()
                     snackBarHostState.showSnackbar(message)
                 }
             }
@@ -128,7 +131,7 @@ fun UserDetailContent(
             ExtendedFloatingActionButton(
                 onClick = {
                     val intent = UserEditActivity.getIntent(context, userDetail)
-                    activityResult.launch(intent)
+                    userEditActivityResult.launch(intent)
                 }
             ) {
                 Icon(Icons.Filled.Edit, contentDescription = stringResource(id = R.string.edit))
@@ -366,6 +369,7 @@ fun UserDetailContentPreview() {
         snackBarHostState = SnackbarHostState(),
         onConfirmToKick = {},
         isCurrentUserAdmin = true,
+        onEdited = {}
     )
 }
 
@@ -387,6 +391,7 @@ fun KickedUserDetailContentPreview() {
         ),
         snackBarHostState = SnackbarHostState(),
         onConfirmToKick = {},
-        isCurrentUserAdmin = true
+        isCurrentUserAdmin = true,
+        onEdited = {}
     )
 }

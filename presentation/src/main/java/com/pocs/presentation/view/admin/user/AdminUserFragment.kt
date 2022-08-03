@@ -23,6 +23,7 @@ import com.pocs.presentation.model.admin.AdminUserUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
 import com.pocs.presentation.view.admin.user.create.AdminUserCreateActivity
 import com.pocs.presentation.view.user.UserAdapter
+import com.pocs.presentation.view.user.detail.UserDetailActivity
 import kotlinx.coroutines.launch
 
 class AdminUserFragment : Fragment(R.layout.fragment_admin_user) {
@@ -48,7 +49,7 @@ class AdminUserFragment : Fragment(R.layout.fragment_admin_user) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _adapter = UserAdapter(viewModel.uiState.value.currentUserType)
+        _adapter = UserAdapter(viewModel.uiState.value.currentUserType, onClickCard = ::onClickCard)
 
         binding.apply {
             recyclerView.adapter = adapter.withLoadStateFooter(
@@ -82,6 +83,11 @@ class AdminUserFragment : Fragment(R.layout.fragment_admin_user) {
         super.onDestroyView()
         _binding = null
         _adapter = null
+    }
+
+    private fun onClickCard(userId: Int) {
+        val intent = UserDetailActivity.getIntent(requireContext(), userId)
+        launcher?.launch(intent)
     }
 
     private fun updateUi(uiState: AdminUserUiState) {

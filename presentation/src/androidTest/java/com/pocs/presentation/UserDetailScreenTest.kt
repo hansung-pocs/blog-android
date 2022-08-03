@@ -38,7 +38,7 @@ class UserDetailScreenTest {
             shownErrorMessage = {},
             onKickClick = {}
         )
-        composeTestRule.setContent { UserDetailScreen(uiState = uiState) }
+        composeTestRule.setContent { UserDetailScreen(uiState = uiState, onEdited = {}) }
 
         composeTestRule.onNodeWithText(userDetail.email).assertIsDisplayed()
     }
@@ -46,8 +46,8 @@ class UserDetailScreenTest {
     @Test
     fun showFailureContent_WhenUiStateIsFailure() {
         val exception = Exception("에러")
-        val uiState = UserDetailUiState.Failure(exception) {}
-        composeTestRule.setContent { UserDetailScreen(uiState = uiState) }
+        val uiState = UserDetailUiState.Failure(exception, onRetryClick = {})
+        composeTestRule.setContent { UserDetailScreen(uiState = uiState, onEdited = {}) }
 
         composeTestRule.onNodeWithText(userDetail.email).assertDoesNotExist()
         composeTestRule.onNodeWithText(exception.message!!).assertIsDisplayed()
@@ -63,7 +63,7 @@ class UserDetailScreenTest {
         )
 
         composeTestRule.run {
-            setContent { UserDetailScreen(uiState = uiState) }
+            setContent { UserDetailScreen(uiState = uiState, onEdited = {}) }
 
             onNodeWithContentDescription("더보기 버튼").assertIsDisplayed()
         }
@@ -79,7 +79,7 @@ class UserDetailScreenTest {
         )
 
         composeTestRule.run {
-            setContent { UserDetailScreen(uiState = uiState) }
+            setContent { UserDetailScreen(uiState = uiState, onEdited = {}) }
 
             onNodeWithContentDescription("더보기 버튼").assertDoesNotExist()
         }
@@ -95,7 +95,7 @@ class UserDetailScreenTest {
         )
 
         composeTestRule.run {
-            setContent { UserDetailScreen(uiState = uiState) }
+            setContent { UserDetailScreen(uiState = uiState, onEdited = {}) }
 
             onNodeWithContentDescription("더보기 버튼").performClick()
             onNodeWithText("강퇴하기").performClick()
@@ -116,7 +116,7 @@ class UserDetailScreenTest {
         )
 
         composeTestRule.run {
-            setContent { UserDetailScreen(uiState = uiState) }
+            setContent { UserDetailScreen(uiState = uiState, onEdited = {}) }
 
             onNodeWithText(errorMessage).assertIsDisplayed()
         }
