@@ -27,6 +27,7 @@ import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.component.FailureContent
 import com.pocs.presentation.view.component.LoadingContent
 import com.pocs.presentation.view.component.RecheckDialog
+import com.pocs.presentation.view.post.by.user.PostByUserActivity
 import com.pocs.presentation.view.user.edit.UserEditActivity
 
 private const val URL_TAG = "url"
@@ -97,7 +98,11 @@ fun UserDetailContent(
                 displayActions = isCurrentUserAdmin,
                 onKickClick = { showKickRecheckDialog = true },
                 onSeeUsersPostClick = {
-                    val intent = UserPostListActivity.getIntent(context)
+                    val intent = PostByUserActivity.getIntent(
+                        context,
+                        userId = userDetail.id,
+                        userName = userDetail.name
+                    )
                     context.startActivity(intent)
                 }
             )

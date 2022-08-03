@@ -5,7 +5,8 @@
     <string name="article">게시글</string>
     <string name="user_list">회원 목록</string>
     <string name="post_subtitle">%s · %s</string>
-    <string name="deleted_post_subtitle">삭제됨 · %s · %s</string>
+    <string name="middle_dot">\u0020·\u0020</string>
+    <string name="deleted_post_subtitle_prefix">삭제됨 ·\u0020</string>
     <string name="user_item_subtitle">%s · %s기</string>
     <string name="kicked_user_item_subtitle">탈퇴됨 · %s · %s기</string>
     <string name="fail_to_connect">연결에 실패하였습니다.</string>
@@ -59,6 +60,8 @@
     <string name="kick_user_recheck_dialog_title">정말로 강퇴하시겠습니까?</string>
     <string name="kick_user_recheck_dialog_text">%s님은 동아리에서 강퇴됩니다.</string>
     <string name="deleted">삭제됨</string>
+    <string name="post_by_user_title">%s님의 글 목록입니다.</string>
+    <string name="unknown">알수없음</string>
     <string-array name="admin_tab">
         <item>공지사항</item>
         <item>회원목록</item>

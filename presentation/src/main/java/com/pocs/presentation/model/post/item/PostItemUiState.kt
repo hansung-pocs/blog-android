@@ -6,7 +6,7 @@ import com.pocs.presentation.extension.isDateFormat
 data class PostItemUiState(
     val id: Int,
     val title: String,
-    val writer: String,
+    val writer: String? = null,
     val createdAt: String,
     val canceledAt: String? = null
 ) {

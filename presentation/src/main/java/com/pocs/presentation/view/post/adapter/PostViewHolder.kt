@@ -12,11 +12,17 @@ class PostViewHolder(
 
     fun bind(uiState: PostItemUiState) = with(binding) {
         title.text = uiState.title
-        subtitle.text = root.context.getString(
-            if (uiState.isDeleted) R.string.deleted_post_subtitle else R.string.post_subtitle,
-            uiState.createdAt,
-            uiState.writer
-        )
+
+        var subtitleText = uiState.createdAt
+        if (uiState.isDeleted) {
+            val deletedPostPrefix = root.context.getString(R.string.deleted_post_subtitle_prefix)
+            subtitleText = deletedPostPrefix + subtitleText
+        }
+        if (uiState.writer != null) {
+            val middleDot = root.context.getString(R.string.middle_dot)
+            subtitleText = subtitleText + middleDot + uiState.writer
+        }
+        subtitle.text = subtitleText
 
         root.setOnClickListener { onClickItem(uiState) }
     }

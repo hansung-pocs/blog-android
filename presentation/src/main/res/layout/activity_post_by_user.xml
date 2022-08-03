@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.user.detail.UserPostListActivity">
+    tools:context=".view.post.by.user.PostByUserActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -29,20 +29,28 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/load_state_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <include
+            android:id="@+id/load_state"
+            layout="@layout/content_load_state"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="?attr/actionBarSize"
-            android:animateLayoutChanges="true">
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+            android:layout_height="wrap_content" />
     </androidx.core.widget.NestedScrollView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/appBarLayout"
+        android:clipToPadding="false"
+        android:paddingTop="40dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/item_post" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
