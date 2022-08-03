@@ -18,4 +18,6 @@ interface AdminRepository {
     suspend fun kickUser(id: Int): Result<Unit>
 
     fun getAllPosts(): Flow<PagingData<Post>>
+
+    fun getAllPostsByUser(userId: Int): Flow<PagingData<Post>>
 }

@@ -22,8 +22,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.user.detail.UserPostListActivity"
-            android:exported="false" />
+            android:name=".view.post.by.user.PostByUserActivity"
+            android:exported="false"
+            android:theme="@style/Theme.PocsBlog" />
         <activity
             android:name=".view.user.UserActivity"
             android:exported="false" />

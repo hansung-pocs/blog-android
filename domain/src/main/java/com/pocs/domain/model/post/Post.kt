@@ -4,7 +4,7 @@ data class Post(
     val id: Int,
     val title: String,
     val content: String,
-    val writer: String,
+    val writer: String? = null,
     val createdAt: String,
     val updatedAt: String,
     val canceledAt: String? = null,
