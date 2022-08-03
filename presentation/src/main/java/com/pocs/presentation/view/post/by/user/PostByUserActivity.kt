@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityPostByUserBinding
+import com.pocs.presentation.extension.getSnackBarMessage
 import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.post.PostByUserUiState
 import com.pocs.presentation.model.post.item.PostItemUiState
@@ -71,8 +72,7 @@ class PostByUserActivity : AppCompatActivity() {
             if (it.resultCode == RESULT_OK) {
                 adapter.refresh()
 
-                val message = it.data?.getStringExtra("message")
-                if (message != null) {
+                it.getSnackBarMessage()?.let { message ->
                     showSnackBar(message)
                 }
             }

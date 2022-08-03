@@ -18,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentPostBinding
+import com.pocs.presentation.extension.getSnackBarMessage
 import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.admin.AdminPostUiState
 import com.pocs.presentation.model.post.item.PostItemUiState
@@ -72,8 +73,7 @@ class AdminPostFragment : Fragment(R.layout.fragment_post) {
             if (it.resultCode == RESULT_OK) {
                 adapter.refresh()
 
-                val message = it.data?.getStringExtra("message")
-                if (message != null) {
+                it.getSnackBarMessage()?.let { message ->
                     showSnackBar(message)
                 }
             }

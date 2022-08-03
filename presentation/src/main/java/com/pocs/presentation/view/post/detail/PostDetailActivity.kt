@@ -19,6 +19,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityPostDetailBinding
+import com.pocs.presentation.extension.getSnackBarMessage
+import com.pocs.presentation.extension.putSnackBarMessage
 import com.pocs.presentation.model.post.PostDetailUiState
 import com.pocs.presentation.view.post.edit.PostEditActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,6 +63,10 @@ class PostDetailActivity : AppCompatActivity() {
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 fetchPost()
+            }
+
+            it.getSnackBarMessage()?.let { message ->
+                showSnackBar(message)
             }
         }
     }
@@ -106,7 +112,7 @@ class PostDetailActivity : AppCompatActivity() {
     }
 
     private fun onDeleteSuccess() {
-        val intent = Intent().putExtra("message", getString(R.string.post_deleted))
+        val intent = Intent().putSnackBarMessage(getString(R.string.post_deleted))
         setResult(RESULT_OK, intent)
         finish()
     }

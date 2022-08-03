@@ -18,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentPostBinding
+import com.pocs.presentation.extension.getSnackBarMessage
 import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.NoticeUiState
 import com.pocs.presentation.model.post.item.PostItemUiState
@@ -73,8 +74,7 @@ class NoticeFragment : Fragment(R.layout.fragment_post) {
             if (it.resultCode == Activity.RESULT_OK) {
                 adapter.refresh()
 
-                val message = it.data?.getStringExtra("message")
-                if (message != null) {
+                it.getSnackBarMessage()?.let { message ->
                     showSnackBar(message)
                 }
             }
@@ -106,7 +106,6 @@ class NoticeFragment : Fragment(R.layout.fragment_post) {
     }
 
     private fun startPostCreateActivity() {
-        // TODO: 글 작성 후 성공했다면 adapter refresh 하기
         val intent = PostCreateActivity.getIntent(requireContext(), PostCategory.NOTICE)
         launcher?.launch(intent)
     }
