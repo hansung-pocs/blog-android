@@ -62,6 +62,7 @@
     <string name="deleted">삭제됨</string>
     <string name="post_by_user_title">%s님의 글 목록입니다.</string>
     <string name="unknown">알수없음</string>
+    <string name="empty">텅</string>
     <string-array name="admin_tab">
         <item>공지사항</item>
         <item>회원목록</item>

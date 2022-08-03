@@ -6,6 +6,7 @@ import com.pocs.data.model.admin.AdminUserDto
 import com.pocs.data.model.admin.AdminUserListDto
 import com.pocs.data.model.admin.UserKickInfoBody
 import com.pocs.data.model.post.PostListDto
+import retrofit2.Response
 import retrofit2.http.*
 
 interface AdminApi {
@@ -34,5 +35,5 @@ interface AdminApi {
     @GET("admin/posts/{userId}")
     suspend fun getAllPostsByUser(
         @Path("userId") userId: Int
-    ): ResponseBody<PostListDto>
+    ): Response<ResponseBody<PostListDto>>
 }

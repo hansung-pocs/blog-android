@@ -21,8 +21,8 @@ class AdminPostByUserPagingSource @Inject constructor(
         val page = params.key ?: START_PAGE
         return try {
             val response = api.getAllPostsByUser(userId)
-            if (response.isSuccess) {
-                val users = response.data.posts.map { it.toEntity() }
+            if (response.isSuccessful) {
+                val users = response.body()!!.data.posts.map { it.toEntity() }
                 // TODO: API에서 페이지네이션 구현되면 수정하기
                 val isEnd = true
 
@@ -33,7 +33,15 @@ class AdminPostByUserPagingSource @Inject constructor(
                     nextKey = if (isEnd) null else page + 1
                 )
             } else {
-                throw Exception(response.message)
+                // 찾을 수 없는 경우 빈 리스트를 반환한다.
+                if (response.code() == 404) {
+                    return LoadResult.Page(
+                        data = emptyList(),
+                        prevKey = null,
+                        nextKey = null
+                    )
+                }
+                throw Exception(response.message())
             }
         } catch (e: Exception) {
             LoadResult.Error(e)

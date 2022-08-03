@@ -15,10 +15,12 @@ fun <PA : PagingDataAdapter<T, VH>, T, VH> ContentLoadStateBinding.setListeners(
     adapter.addLoadStateListener { loadStates ->
         val refreshLoadState = loadStates.refresh
         val isError = loadStates.refresh is LoadState.Error
+        val shouldShowEmptyText = loadStates.refresh is LoadState.NotLoading && adapter.getItemCount() < 1
 
-        this.progressBar.isVisible = loadStates.refresh is LoadState.Loading
-        this.retryButton.isVisible = isError
-        this.errorMsg.isVisible = isError
+        emptyText.isVisible = shouldShowEmptyText
+        progressBar.isVisible = loadStates.refresh is LoadState.Loading
+        retryButton.isVisible = isError
+        errorMsg.isVisible = isError
         if (refreshLoadState is LoadState.Error) {
             errorMsg.text = when (val exception = refreshLoadState.error) {
                 is ConnectException -> root.context.getString(R.string.fail_to_connect)
