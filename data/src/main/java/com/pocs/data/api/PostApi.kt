@@ -27,7 +27,7 @@ interface PostApi {
 
     @PATCH("posts/{postId}")
     suspend fun updatePost(
-        @Path("postId") PostId: Int,
+        @Path("postId") postId: Int,
         @Body postUpdateBody: PostUpdateBody
     ): Response<Unit>
 }

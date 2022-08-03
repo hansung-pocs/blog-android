@@ -49,8 +49,6 @@ class PostEditViewModel @Inject constructor(
             id = uiState.value.id,
             title = uiState.value.title,
             content = uiState.value.content,
-            // TODO: 현재 접속중인 유저의 ID로 변경하기
-            userId = 1,
             category = uiState.value.category
         )
         withContext(Dispatchers.IO) {
