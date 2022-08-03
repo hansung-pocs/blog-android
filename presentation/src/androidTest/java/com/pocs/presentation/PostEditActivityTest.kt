@@ -8,8 +8,10 @@ import androidx.compose.ui.test.performClick
 import androidx.test.core.app.launchActivity
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.pocs.domain.usecase.post.UpdatePostUseCase
 import com.pocs.presentation.view.post.edit.PostEditActivity
 import com.pocs.presentation.view.post.edit.PostEditViewModel
+import com.pocs.test_library.fake.FakePostRepositoryImpl
 import com.pocs.test_library.mock.mockPostDetail2
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -31,7 +33,10 @@ class PostEditActivityTest {
     val composeRule = createEmptyComposeRule()
 
     @BindValue
-    val viewModel = PostEditViewModel()
+    val postRepository = FakePostRepositoryImpl()
+
+    @BindValue
+    val viewModel = PostEditViewModel(UpdatePostUseCase(postRepository))
 
     private lateinit var context: Context
 

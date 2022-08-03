@@ -41,7 +41,7 @@ class FakePostRepositoryImpl @Inject constructor() : PostRepository {
         userId: Int,
         category: PostCategory
     ): Result<Unit> {
-        TODO("Not yet implemented")
+        return Result.success(Unit)
     }
 
     override suspend fun deletePost(postId: Int, userId: Int) = deletePostResult
