@@ -58,6 +58,7 @@
     <string name="post_deleted">글이 삭제됨</string>
     <string name="kick_user_recheck_dialog_title">정말로 강퇴하시겠습니까?</string>
     <string name="kick_user_recheck_dialog_text">%s님은 동아리에서 강퇴됩니다.</string>
+    <string name="deleted">삭제됨</string>
     <string-array name="admin_tab">
         <item>공지사항</item>
         <item>회원목록</item>

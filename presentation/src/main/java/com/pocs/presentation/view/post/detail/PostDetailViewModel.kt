@@ -29,7 +29,7 @@ class PostDetailViewModel @Inject constructor(
 
     private var fetchJob: Job? = null
 
-    fun fetchPost(id: Int) {
+    fun fetchPost(id: Int, isDeleted: Boolean) {
         fetchJob?.cancel()
         fetchJob = viewModelScope.launch {
             val result = getPostDetailUseCase(id)
@@ -38,8 +38,9 @@ class PostDetailViewModel @Inject constructor(
                 _uiState.update {
                     PostDetailUiState.Success(
                         postDetail = postDetail.toUiState(),
-                        canEditPost = canEditPostUseCase(postDetail),
-                        canDeletePost = canDeletePostUseCase(postDetail)
+                        canEditPost = if (isDeleted) false else canEditPostUseCase(postDetail),
+                        canDeletePost = if (isDeleted) false else canDeletePostUseCase(postDetail),
+                        isDeleted = isDeleted
                     )
                 }
             } else {
@@ -50,7 +51,7 @@ class PostDetailViewModel @Inject constructor(
     }
 
     fun requestPostDeleting(id: Int) {
-        assert(_uiState.value is PostDetailUiState.Success)
+        assert(!(uiState.value as PostDetailUiState.Success).isDeleted)
         viewModelScope.launch {
             val result = deletePostUseCase(postId = id)
 

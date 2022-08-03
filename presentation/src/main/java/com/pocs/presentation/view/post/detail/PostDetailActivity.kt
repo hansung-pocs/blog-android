@@ -35,9 +35,10 @@ class PostDetailActivity : AppCompatActivity() {
     private var launcher: ActivityResultLauncher<Intent>? = null
 
     companion object {
-        fun getIntent(context: Context, id: Int): Intent {
+        fun getIntent(context: Context, id: Int, isDeleted: Boolean): Intent {
             return Intent(context, PostDetailActivity::class.java).apply {
                 putExtra("id", id)
+                putExtra("isDeleted", isDeleted)
             }
         }
     }
@@ -112,7 +113,9 @@ class PostDetailActivity : AppCompatActivity() {
 
     private fun fetchPost() {
         val id = intent.getIntExtra("id", -1)
-        viewModel.fetchPost(id)
+        val isDeleted = intent.getBooleanExtra("isDeleted", false)
+
+        viewModel.fetchPost(id, isDeleted)
     }
 
     private fun initToolBar() {
@@ -135,6 +138,7 @@ class PostDetailActivity : AppCompatActivity() {
                     postDetail.writer.name
                 )
                 content.text = postDetail.content
+                deleted.isVisible = uiState.isDeleted
 
                 if (uiState.isSuccessToDelete) {
                     onDeleteSuccess()
@@ -153,7 +157,7 @@ class PostDetailActivity : AppCompatActivity() {
     }
 
     private fun showRecheckDialog() {
-       MaterialAlertDialogBuilder(this).apply {
+        MaterialAlertDialogBuilder(this).apply {
             setTitle(getString(R.string.are_you_sure_you_want_to_delete))
             setPositiveButton(getString(R.string.delete)) { _, _ ->
                 requestPostDeleting()

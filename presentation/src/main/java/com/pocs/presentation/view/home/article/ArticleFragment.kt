@@ -90,7 +90,11 @@ class ArticleFragment : Fragment(R.layout.fragment_post) {
     }
 
     private fun onClickArticle(postItemUiState: PostItemUiState) {
-        val intent = PostDetailActivity.getIntent(requireContext(), postItemUiState.id)
+        val intent = PostDetailActivity.getIntent(
+            requireContext(),
+            id = postItemUiState.id,
+            isDeleted = postItemUiState.isDeleted
+        )
         launcher?.launch(intent)
     }
 
