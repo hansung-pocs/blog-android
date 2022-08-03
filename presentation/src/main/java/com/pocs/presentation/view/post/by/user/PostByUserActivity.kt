@@ -3,12 +3,15 @@ package com.pocs.presentation.view.post.by.user
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityPostByUserBinding
 import com.pocs.presentation.extension.setListeners
@@ -18,7 +21,6 @@ import com.pocs.presentation.paging.PagingLoadStateAdapter
 import com.pocs.presentation.view.post.adapter.PostAdapter
 import com.pocs.presentation.view.post.detail.PostDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -26,6 +28,8 @@ class PostByUserActivity : AppCompatActivity() {
 
     private var _binding: ActivityPostByUserBinding? = null
     private val binding: ActivityPostByUserBinding get() = requireNotNull(_binding)
+
+    private var launcher: ActivityResultLauncher<Intent>? = null
 
     private val viewModel: PostByUserViewModel by viewModels()
 
@@ -62,6 +66,22 @@ class PostByUserActivity : AppCompatActivity() {
                 viewModel.uiState.collect { updateUi(it, adapter) }
             }
         }
+
+        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                adapter.refresh()
+
+                val message = it.data?.getStringExtra("message")
+                if (message != null) {
+                    showSnackBar(message)
+                }
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        launcher = null
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -92,6 +112,12 @@ class PostByUserActivity : AppCompatActivity() {
             id = postItemUiState.id,
             isDeleted = postItemUiState.isDeleted
         )
-        startActivity(intent)
+        launcher?.launch(intent)
+    }
+
+    private fun showSnackBar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
+            anchorView = binding.root
+        }.show()
     }
 }
