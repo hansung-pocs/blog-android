@@ -1,17 +1,23 @@
 package com.pocs.presentation.view.admin.user
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentAdminUserBinding
+import com.pocs.presentation.extension.getSnackBarMessage
 import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.admin.AdminUserUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
@@ -28,6 +34,8 @@ class AdminUserFragment : Fragment(R.layout.fragment_admin_user) {
     private val adapter get() = _adapter!!
 
     private val viewModel: AdminUserViewModel by activityViewModels()
+
+    private var launcher: ActivityResultLauncher<Intent>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,11 +66,16 @@ class AdminUserFragment : Fragment(R.layout.fragment_admin_user) {
                 }
             }
         }
-    }
 
-    override fun onResume() {
-        super.onResume()
-        adapter.refresh()
+        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                adapter.refresh()
+
+                it.getSnackBarMessage()?.let { message ->
+                    showSnackBar(message)
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -77,6 +90,12 @@ class AdminUserFragment : Fragment(R.layout.fragment_admin_user) {
 
     private fun startAdminUserCreateActivity() {
         val intent = AdminUserCreateActivity.getIntent(requireContext())
-        startActivity(intent)
+        launcher?.launch(intent)
+    }
+
+    private fun showSnackBar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
+            anchorView = binding.fab
+        }.show()
     }
 }

@@ -65,6 +65,7 @@
     <string name="empty">텅</string>
     <string name="post_added">글 추가됨</string>
     <string name="post_edited">글 편집됨</string>
+    <string name="user_created">회원 생성됨</string>
     <string-array name="admin_tab">
         <item>공지사항</item>
         <item>회원목록</item>

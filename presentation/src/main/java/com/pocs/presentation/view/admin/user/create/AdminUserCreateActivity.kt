@@ -8,6 +8,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import com.google.android.material.composethemeadapter3.Mdc3Theme
+import com.pocs.presentation.R
+import com.pocs.presentation.extension.setResultOkWithSnackBarMessage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,7 +30,13 @@ class AdminUserCreateActivity : AppCompatActivity() {
 
         setContent {
             Mdc3Theme(this) {
-                AdminUserCreateScreen(viewModel.uiState, ::finish)
+                AdminUserCreateScreen(
+                    viewModel.uiState,
+                    navigateUp = ::finish,
+                    onSuccessToCreate = {
+                        setResultOkWithSnackBarMessage(R.string.user_created)
+                    }
+                )
             }
         }
     }

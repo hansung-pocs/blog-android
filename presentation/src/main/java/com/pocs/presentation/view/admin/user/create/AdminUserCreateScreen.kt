@@ -22,11 +22,16 @@ import com.pocs.presentation.view.component.textfield.PocsOutlineTextField
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AdminUserCreateScreen(uiState: AdminUserCreateUiState, navigateUp: () -> Unit) {
+fun AdminUserCreateScreen(
+    uiState: AdminUserCreateUiState,
+    navigateUp: () -> Unit,
+    onSuccessToCreate: () -> Unit
+) {
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     val snackBarHostState = remember { SnackbarHostState() }
 
     if (uiState.isSuccessToSave) {
+        onSuccessToCreate()
         navigateUp()
     }
     if (uiState.errorMessage != null) {
