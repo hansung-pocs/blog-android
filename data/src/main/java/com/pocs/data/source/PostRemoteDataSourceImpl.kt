@@ -5,6 +5,7 @@ import com.pocs.data.model.ResponseBody
 import com.pocs.data.model.post.PostAddBody
 import com.pocs.data.model.post.PostDeleteBody
 import com.pocs.data.model.post.PostUpdateBody
+import retrofit2.Response
 import javax.inject.Inject
 
 class PostRemoteDataSourceImpl @Inject constructor(
@@ -27,7 +28,7 @@ class PostRemoteDataSourceImpl @Inject constructor(
     override suspend fun updatePost(
         postId: Int,
         postUpdateBody: PostUpdateBody
-    ): ResponseBody<Unit> {
+    ): Response<Unit> {
         return api.updatePost(postId, postUpdateBody)
     }
 }

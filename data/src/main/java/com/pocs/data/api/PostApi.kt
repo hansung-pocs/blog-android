@@ -2,6 +2,7 @@ package com.pocs.data.api
 
 import com.pocs.data.model.ResponseBody
 import com.pocs.data.model.post.*
+import retrofit2.Response
 import retrofit2.http.*
 
 interface PostApi {
@@ -28,5 +29,5 @@ interface PostApi {
     suspend fun updatePost(
         @Path("postId") PostId: Int,
         @Body postUpdateBody: PostUpdateBody
-    ): ResponseBody<Unit>
+    ): Response<Unit>
 }
