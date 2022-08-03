@@ -10,7 +10,7 @@ import androidx.core.view.WindowCompat
 import com.google.android.material.composethemeadapter3.Mdc3Theme
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
-import com.pocs.presentation.extension.putSnackBarMessage
+import com.pocs.presentation.extension.setResultOkWithSnackBarMessage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,8 +40,7 @@ class PostCreateActivity : AppCompatActivity() {
                     uiState = viewModel.uiState.value,
                     navigateUp = ::finish,
                     onSuccessSave = {
-                        val intent = Intent().putSnackBarMessage(getString(R.string.post_added))
-                        setResult(RESULT_OK, intent)
+                        setResultOkWithSnackBarMessage(R.string.post_added)
                     }
                 )
             }

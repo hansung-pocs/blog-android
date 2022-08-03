@@ -20,7 +20,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityPostDetailBinding
 import com.pocs.presentation.extension.getSnackBarMessage
-import com.pocs.presentation.extension.putSnackBarMessage
+import com.pocs.presentation.extension.setResultOkWithSnackBarMessage
 import com.pocs.presentation.model.post.PostDetailUiState
 import com.pocs.presentation.view.post.edit.PostEditActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -112,8 +112,7 @@ class PostDetailActivity : AppCompatActivity() {
     }
 
     private fun onDeleteSuccess() {
-        val intent = Intent().putSnackBarMessage(getString(R.string.post_deleted))
-        setResult(RESULT_OK, intent)
+        setResultOkWithSnackBarMessage(R.string.post_deleted)
         finish()
     }
 
