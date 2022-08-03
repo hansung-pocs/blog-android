@@ -22,7 +22,7 @@ class UserRepositoryImpl @Inject constructor(
 
     // TODO: 로그인 기능이 구현되면 실제 로그인한 사용자의 정보로 초기화하기
     private val currentUser = UserDetail(
-        2,
+        1,
         "권김정",
         "abc@google.com",
         1971034,
