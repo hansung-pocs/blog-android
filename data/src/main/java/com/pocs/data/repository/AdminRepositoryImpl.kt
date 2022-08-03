@@ -8,6 +8,7 @@ import com.pocs.data.mapper.toDetailEntity
 import com.pocs.data.mapper.toDto
 import com.pocs.data.model.admin.UserKickInfoBody
 import com.pocs.data.paging.AdminPostPagingSource
+import com.pocs.data.paging.AdminPostByUserPagingSource
 import com.pocs.data.paging.AdminUserPagingSource
 import com.pocs.data.source.AdminRemoteDataSource
 import com.pocs.domain.model.admin.UserCreateInfo
@@ -80,6 +81,14 @@ class AdminRepositoryImpl @Inject constructor(
             // TODO: API 페이지네이션 구현되면 페이지 사이즈 수정하기
             config = PagingConfig(pageSize = 30),
             pagingSourceFactory = { AdminPostPagingSource(api) }
+        ).flow
+    }
+
+    override fun getAllPostsByUser(userId: Int): Flow<PagingData<Post>> {
+        return Pager(
+            // TODO: API 페이지네이션 구현되면 페이지 사이즈 수정하기
+            config = PagingConfig(pageSize = 30),
+            pagingSourceFactory = { AdminPostByUserPagingSource(api, userId = userId) }
         ).flow
     }
 

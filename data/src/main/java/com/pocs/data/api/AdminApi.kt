@@ -30,4 +30,9 @@ interface AdminApi {
 
     @GET("admin/posts")
     suspend fun getAllPosts(): ResponseBody<PostListDto>
+
+    @GET("admin/posts/{userId}")
+    suspend fun getAllPostsByUser(
+        @Path("userId") userId: Int
+    ): ResponseBody<PostListDto>
 }

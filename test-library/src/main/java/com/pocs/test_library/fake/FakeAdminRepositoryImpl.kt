@@ -31,4 +31,8 @@ class FakeAdminRepositoryImpl @Inject constructor() : AdminRepository {
     override suspend fun kickUser(id: Int) = kickUserResult
 
     override fun getAllPosts(): Flow<PagingData<Post>> = flowOf(PagingData.from(postList))
+
+    override fun getAllPostsByUser(userId: Int): Flow<PagingData<Post>> {
+        TODO("Not yet implemented")
+    }
 }
