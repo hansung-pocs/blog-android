@@ -116,8 +116,6 @@ class PostByUserActivity : AppCompatActivity() {
     }
 
     private fun showSnackBar(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
-            anchorView = binding.root
-        }.show()
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 }
