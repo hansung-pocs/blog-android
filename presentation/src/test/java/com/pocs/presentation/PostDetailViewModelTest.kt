@@ -58,7 +58,7 @@ class PostDetailViewModelTest {
             viewModel.uiState.collect()
         }
 
-        viewModel.fetchPost(mockPostDetail1.id)
+        viewModel.fetchPost(mockPostDetail1.id, isDeleted = false)
 
         assertTrue(viewModel.uiState.value is PostDetailUiState.Success)
 
@@ -74,7 +74,7 @@ class PostDetailViewModelTest {
             viewModel.uiState.collect()
         }
 
-        viewModel.fetchPost(mockPostDetail1.id)
+        viewModel.fetchPost(mockPostDetail1.id, isDeleted = false)
 
         assertTrue(viewModel.uiState.value is PostDetailUiState.Failure)
         assertEquals(
@@ -90,7 +90,7 @@ class PostDetailViewModelTest {
         val exception = Exception("ERROR")
         postRepository.postDetailResult = Result.success(mockPostDetail1)
         postRepository.deletePostResult = Result.failure(exception)
-        viewModel.fetchPost(mockPostDetail1.id)
+        viewModel.fetchPost(mockPostDetail1.id, isDeleted = false)
 
         viewModel.requestPostDeleting(1)
 
@@ -104,7 +104,7 @@ class PostDetailViewModelTest {
     fun shouldIsSuccessToDeleteValueIsTrue_WhenSuccessToDeletePost() {
         postRepository.postDetailResult = Result.success(mockPostDetail1)
         postRepository.deletePostResult = Result.success(Unit)
-        viewModel.fetchPost(mockPostDetail1.id)
+        viewModel.fetchPost(mockPostDetail1.id, isDeleted = false)
 
         viewModel.requestPostDeleting(1)
 

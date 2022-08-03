@@ -2,6 +2,7 @@ package com.pocs.domain.repository
 
 import androidx.paging.PagingData
 import com.pocs.domain.model.admin.UserCreateInfo
+import com.pocs.domain.model.post.Post
 import com.pocs.domain.model.user.User
 import com.pocs.domain.model.user.UserDetail
 import kotlinx.coroutines.flow.Flow
@@ -15,4 +16,6 @@ interface AdminRepository {
     suspend fun createUser(userCreateInfo: UserCreateInfo): Result<Unit>
 
     suspend fun kickUser(id: Int): Result<Unit>
+
+    fun getAllPosts(): Flow<PagingData<Post>>
 }

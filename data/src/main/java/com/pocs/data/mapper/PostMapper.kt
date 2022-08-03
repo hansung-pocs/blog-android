@@ -10,5 +10,6 @@ fun PostDto.toEntity() = Post(
     content = content,
     createdAt = createdAt,
     updatedAt = updatedAt,
+    canceledAt = canceledAt,
     category = category.toPostCategory()
 )

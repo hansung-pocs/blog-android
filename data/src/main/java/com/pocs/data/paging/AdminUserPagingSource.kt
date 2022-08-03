@@ -8,7 +8,7 @@ import com.pocs.domain.model.user.User
 import java.lang.Exception
 import javax.inject.Inject
 
-class AdminPagingSource @Inject constructor(
+class AdminUserPagingSource @Inject constructor(
     private val api: AdminApi
 ) : PagingSource<Int, User>() {
 

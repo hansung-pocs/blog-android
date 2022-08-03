@@ -35,6 +35,18 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/deleted"
+                style="?attr/textAppearanceBodyMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/deleted"
+                android:textColor="?attr/colorError"
+                android:visibility="visible"
+                tools:textColor="#ff0000" />
+
+            <TextView
                 android:id="@+id/title"
                 style="?attr/textAppearanceHeadlineMedium"
                 android:layout_width="match_parent"
@@ -61,9 +73,9 @@
                 tools:textSize="14sp" />
 
             <com.google.android.material.divider.MaterialDivider
-                android:layout_marginStart="24dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
                 android:alpha="0.5" />
 
             <TextView

@@ -7,5 +7,6 @@ data class Post(
     val writer: String,
     val createdAt: String,
     val updatedAt: String,
+    val canceledAt: String? = null,
     val category: PostCategory,
 )

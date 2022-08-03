@@ -7,5 +7,6 @@ fun Post.toUiState() = PostItemUiState(
     id = id,
     title = title,
     writer = writer,
-    date = createdAt
+    createdAt = createdAt,
+    canceledAt = canceledAt
 )

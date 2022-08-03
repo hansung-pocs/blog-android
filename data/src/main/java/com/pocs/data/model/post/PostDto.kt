@@ -9,5 +9,6 @@ data class PostDto(
     val content: String,
     val createdAt: String,
     val updatedAt: String,
+    val canceledAt: String? = null,
     val category: String
 )

@@ -7,9 +7,11 @@ import com.pocs.data.api.AdminApi
 import com.pocs.data.mapper.toDetailEntity
 import com.pocs.data.mapper.toDto
 import com.pocs.data.model.admin.UserKickInfoBody
-import com.pocs.data.paging.AdminPagingSource
+import com.pocs.data.paging.AdminPostPagingSource
+import com.pocs.data.paging.AdminUserPagingSource
 import com.pocs.data.source.AdminRemoteDataSource
 import com.pocs.domain.model.admin.UserCreateInfo
+import com.pocs.domain.model.post.Post
 import com.pocs.domain.model.user.User
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.repository.AdminRepository
@@ -27,7 +29,7 @@ class AdminRepositoryImpl @Inject constructor(
         return Pager(
             // TODO: API 페이지네이션 구현되면 페이지 사이즈 수정하기
             config = PagingConfig(pageSize = 30),
-            pagingSourceFactory = { AdminPagingSource(api) }
+            pagingSourceFactory = { AdminUserPagingSource(api) }
         ).flow
     }
 
@@ -71,6 +73,14 @@ class AdminRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    override fun getAllPosts(): Flow<PagingData<Post>> {
+        return Pager(
+            // TODO: API 페이지네이션 구현되면 페이지 사이즈 수정하기
+            config = PagingConfig(pageSize = 30),
+            pagingSourceFactory = { AdminPostPagingSource(api) }
+        ).flow
     }
 
     private fun getCurrentDateTime(): String {

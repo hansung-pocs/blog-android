@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.home.notice.NoticeFragment">
+    tools:context=".view.home.article.ArticleFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/fab_height"
         tools:listitem="@layout/item_post" />
 
     <include
@@ -25,7 +27,7 @@
         android:layout_gravity="top"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
-        android:text="@string/write_notice"
+        android:text="@string/write_post"
         app:icon="@drawable/ic_baseline_create_24"
         app:layout_anchorGravity="top|end"
         app:layout_constraintBottom_toBottomOf="parent"
