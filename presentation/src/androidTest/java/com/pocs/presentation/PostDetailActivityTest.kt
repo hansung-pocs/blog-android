@@ -1,8 +1,12 @@
 package com.pocs.presentation
 
 import android.content.Context
+import androidx.compose.ui.test.junit4.createEmptyComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.performClick
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
@@ -17,9 +21,12 @@ import com.pocs.test_library.fake.FakePostRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
 import com.pocs.test_library.mock.mockNormalUserDetail
 import com.pocs.test_library.mock.mockPostDetail1
+import com.pocs.test_library.mock.mockPostDetail2
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.Matchers.not
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -31,6 +38,9 @@ class PostDetailActivityTest {
 
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 1)
+    val composeRule = createEmptyComposeRule()
 
     @BindValue
     val postRepository = FakePostRepositoryImpl()
@@ -161,5 +171,27 @@ class PostDetailActivityTest {
         }
 
         onView(withText(R.string.edit)).check(matches(isDisplayed()))
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun shouldShowSnackBar_WhenPostHasBeenEdited() = runTest {
+        val postDetail = mockPostDetail2
+        postRepository.postDetailResult = Result.success(postDetail)
+        postRepository.updatePostResult = Result.success(Unit)
+        userRepository.currentUser = mockNormalUserDetail.copy(
+            id = postDetail.writer.id,
+            type = UserType.MEMBER
+        )
+
+        val intent = PostDetailActivity.getIntent(context, postDetail.id, isDeleted = false)
+        launchActivity<PostDetailActivity>(intent).onActivity {
+            it.openOptionsMenu()
+        }
+        onView(withText(R.string.edit)).perform(click())
+
+        composeRule.onNodeWithContentDescription(context.getString(R.string.save)).performClick()
+
+        onView(withText(R.string.post_edited)).check(matches(isDisplayed()))
     }
 }
