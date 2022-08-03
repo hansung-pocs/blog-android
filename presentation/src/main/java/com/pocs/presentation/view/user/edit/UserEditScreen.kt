@@ -25,13 +25,21 @@ import com.pocs.presentation.view.component.textfield.PocsOutlineTextField
 import kotlinx.coroutines.launch
 
 @Composable
-fun UserEditScreen(viewModel: UserEditViewModel, navigateUp: () -> Unit) {
-    UserEditContent(uiState = viewModel.uiState.value, navigateUp = navigateUp)
+fun UserEditScreen(
+    viewModel: UserEditViewModel,
+    navigateUp: () -> Unit,
+    onSuccessToSave: () -> Unit
+) {
+    UserEditContent(
+        uiState = viewModel.uiState.value,
+        navigateUp = navigateUp,
+        onSuccessToSave = onSuccessToSave
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit) {
+fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessToSave: () -> Unit) {
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     val coroutineScope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
@@ -49,6 +57,7 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit) {
                     coroutineScope.launch {
                         val result = uiState.onSave(password)
                         if (result.isSuccess) {
+                            onSuccessToSave()
                             navigateUp()
                         } else {
                             val exception = result.exceptionOrNull()!!
@@ -165,6 +174,7 @@ fun UserEditContentPreview() {
             "https://github.com/",
             isInSaving = false,
             {}
-        ) { Result.success(Unit) }
+        ) { Result.success(Unit) },
+        {}
     ) {}
 }
