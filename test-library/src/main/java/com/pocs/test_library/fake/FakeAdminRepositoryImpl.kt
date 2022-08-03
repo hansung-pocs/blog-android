@@ -20,6 +20,8 @@ class FakeAdminRepositoryImpl @Inject constructor() : AdminRepository {
 
     var postList: List<Post> = emptyList()
 
+    var postListByUser: List<Post> = emptyList()
+
     override fun getAllUsers(): Flow<PagingData<User>> = flowOf(PagingData.from(userList))
 
     override suspend fun getUserDetail(id: Int) = userDetailResult
@@ -33,6 +35,6 @@ class FakeAdminRepositoryImpl @Inject constructor() : AdminRepository {
     override fun getAllPosts(): Flow<PagingData<Post>> = flowOf(PagingData.from(postList))
 
     override fun getAllPostsByUser(userId: Int): Flow<PagingData<Post>> {
-        TODO("Not yet implemented")
+        return flowOf(PagingData.from(postListByUser))
     }
 }
