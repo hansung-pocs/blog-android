@@ -64,6 +64,7 @@
     <string name="unknown">알수없음</string>
     <string name="empty">텅</string>
     <string name="post_added">글 추가됨</string>
+    <string name="post_edited">글 편집됨</string>
     <string-array name="admin_tab">
         <item>공지사항</item>
         <item>회원목록</item>
