@@ -25,8 +25,6 @@ import com.pocs.test_library.mock.mockPostDetail2
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
 import org.hamcrest.Matchers.not
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -173,9 +171,8 @@ class PostDetailActivityTest {
         onView(withText(R.string.edit)).check(matches(isDisplayed()))
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun shouldShowSnackBar_WhenPostHasBeenEdited() = runTest {
+    fun shouldShowSnackBar_WhenPostHasBeenEdited() {
         val postDetail = mockPostDetail2
         postRepository.postDetailResult = Result.success(postDetail)
         postRepository.updatePostResult = Result.success(Unit)
