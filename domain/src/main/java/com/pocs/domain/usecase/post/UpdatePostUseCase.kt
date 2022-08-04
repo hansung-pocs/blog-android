@@ -15,7 +15,7 @@ class UpdatePostUseCase @Inject constructor(
         content: String,
         category: PostCategory
     ) = repository.updatePost(
-        id = id,
+        postId = id,
         title = title,
         content = content,
         userId = userRepository.getCurrentUserDetail().id,
