@@ -63,7 +63,7 @@ class PostEditActivityTest {
     }
 
     @Test
-    fun shouldShownErrorMessage_AfterFailedToEditedPost() {
+    fun shouldShowErrorMessage_AfterFailedToEditedPost() {
         val post = mockPostDetail2
         val errorMessage = "ERROR"
         postRepository.updatePostResult = Result.failure(Exception(errorMessage))
