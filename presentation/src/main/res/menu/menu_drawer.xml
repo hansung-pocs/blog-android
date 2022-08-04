@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_Edit_MyUser"
+        android:icon="@drawable/ic_baseline_edit_24"
+        android:title="@string/edit_my_info"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_Admin"
         android:icon="@drawable/ic_baseline_settings_24"
         android:title="@string/admin_page"
