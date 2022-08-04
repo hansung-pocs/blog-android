@@ -91,7 +91,7 @@ class NoticeFragment : Fragment(R.layout.fragment_post) {
             id = postItemUiState.id,
             isDeleted = postItemUiState.isDeleted
         )
-        startActivity(intent)
+        launcher?.launch(intent)
     }
 
     private fun showSnackBar(message: String) {
