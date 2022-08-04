@@ -3,18 +3,14 @@ package com.pocs.presentation.view.post.edit
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import com.pocs.domain.model.post.PostCategory
-import com.pocs.domain.usecase.post.AddPostUseCase
 import com.pocs.domain.usecase.post.UpdatePostUseCase
 import com.pocs.presentation.model.post.PostEditUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class PostEditViewModel @Inject constructor(
-    private val updatePostUseCase : UpdatePostUseCase
+    private val updatePostUseCase: UpdatePostUseCase
 ) : ViewModel() {
 
     private lateinit var _uiState: MutableState<PostEditUiState>
@@ -51,9 +47,6 @@ class PostEditViewModel @Inject constructor(
             content = uiState.value.content,
             category = uiState.value.category
         )
-        withContext(Dispatchers.IO) {
-            delay(500)
-        }
         if (result.isFailure) {
             _uiState.value = uiState.value.copy(isInSaving = false)
         }
