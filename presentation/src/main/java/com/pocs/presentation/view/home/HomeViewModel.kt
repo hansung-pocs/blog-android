@@ -3,10 +3,7 @@ package com.pocs.presentation.view.home
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import com.pocs.domain.model.user.UserDetail
-import com.pocs.domain.model.user.UserType
-import com.pocs.domain.usecase.user.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.user.GetMyUserInfoUseCase
-import com.pocs.presentation.model.user.UserDetailUiState
 import com.pocs.presentation.model.user.item.UserDetailItemUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
