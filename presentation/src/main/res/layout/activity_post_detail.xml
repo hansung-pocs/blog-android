@@ -43,7 +43,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/deleted"
                 android:textColor="?attr/colorError"
-                android:visibility="visible"
+                android:visibility="gone"
                 tools:textColor="#ff0000" />
 
             <TextView
