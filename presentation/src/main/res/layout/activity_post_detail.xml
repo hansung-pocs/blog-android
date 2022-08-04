@@ -39,7 +39,7 @@
                 style="?attr/textAppearanceBodyMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="24dp"
+                android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/deleted"
                 android:textColor="?attr/colorError"
@@ -51,7 +51,7 @@
                 style="?attr/textAppearanceHeadlineMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="24dp"
+                android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="8dp"
                 android:textColor="?attr/colorOnBackground"
                 tools:text="이번주 공지 알립니다."
@@ -63,7 +63,7 @@
                 style="?attr/textAppearanceBodyMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="24dp"
+                android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="24dp"
                 android:alpha="0.6"
@@ -75,15 +75,16 @@
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:alpha="0.5" />
+                android:layout_marginStart="20dp"
+                android:alpha="0.3" />
 
             <TextView
                 android:id="@+id/content"
                 style="?attr/textAppearanceBodyMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="24dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="24dp"
                 android:textColor="?attr/colorOnBackground"
                 tools:text="Material Design은 사용자 인터페이스 설계의 모범 사례를 지원하는 지침, 구성 요소 및 도구의 적응 가능한 시스템입니다. 오픈 소스 코드를 기반으로 하는 Material Design은 디자이너와 개발자 간의 협업을 간소화하고 팀이 아름다운 제품을 신속하게 제작할 수 있도록 지원합니다."
                 tools:textColor="@color/black"
@@ -91,8 +92,8 @@
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
-                android:layout_height="8dp"
-                android:alpha="0.5" />
+                android:layout_height="12dp"
+                android:alpha="0.2" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

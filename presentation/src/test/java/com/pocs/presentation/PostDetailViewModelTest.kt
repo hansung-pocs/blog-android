@@ -9,6 +9,7 @@ import com.pocs.presentation.view.post.detail.PostDetailViewModel
 import com.pocs.test_library.fake.FakePostRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
 import com.pocs.test_library.mock.mockPostDetail1
+import com.pocs.test_library.rule.JodaRule
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -21,12 +22,14 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
-
-// test2 -> 성공후 setresult 인테트 메세지까지 전달 받는다.
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PostDetailViewModelTest {
+
+    @get:Rule
+    val jodaRule = JodaRule()
 
     private val dispatcher = UnconfinedTestDispatcher()
 

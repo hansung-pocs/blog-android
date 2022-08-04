@@ -16,6 +16,7 @@ buildscript {
         paging = "3.1.1"
         compose_version = "1.1.1"
         coroutines_version = "1.6.4"
+        joda = "2.10.13"
     }
     dependencies {
         // hilt

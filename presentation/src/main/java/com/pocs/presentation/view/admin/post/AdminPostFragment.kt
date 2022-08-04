@@ -17,6 +17,7 @@ import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentPostBinding
 import com.pocs.presentation.extension.RefreshStateContract
+import com.pocs.presentation.extension.addDividerDecoration
 import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.admin.AdminPostUiState
 import com.pocs.presentation.model.post.item.PostItemUiState
@@ -52,6 +53,7 @@ class AdminPostFragment : Fragment(R.layout.fragment_post) {
                 PagingLoadStateAdapter { adapter.retry() }
             )
             recyclerView.layoutManager = LinearLayoutManager(view.context)
+            recyclerView.addDividerDecoration()
 
             loadState.setListeners(adapter, refresh)
 

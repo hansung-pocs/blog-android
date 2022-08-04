@@ -7,45 +7,53 @@
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="24dp">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <TextView
+        android:id="@+id/title"
+        style="?attr/textAppearanceHeadlineSmall"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="16dp"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="?attr/colorOnBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="이번주 공지사항입니다."
+        tools:textColor="@color/black"
+        tools:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/content"
+        style="?attr/textAppearanceBodyMedium"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:alpha="0.6"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="?attr/colorOnBackground"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        tools:text="이번주 공지사항입니다. 안녕하세요 저는 아무개입니다. 거친바람속에도 젖은 지붕 밑에도 홀로 내팽개쳐져 있지 않다는게 지친하루"
+        tools:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/subtitle"
+        style="?attr/textAppearanceBodyMedium"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:alpha="0.6"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="?attr/colorOnBackground"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/title"
-            style="?attr/textAppearanceTitleMedium"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:textColor="?attr/colorOnBackground"
-            tools:text="이번주 공지사항입니다."
-            tools:textColor="@color/black" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="6dp" />
-
-        <TextView
-            android:id="@+id/subtitle"
-            style="?attr/textAppearanceBodySmall"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0.6"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="?attr/colorOnBackground"
-            tools:text="삭제됨 · 2022.07.19 · 관리자"
-            tools:textColor="@color/black" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
+        app:layout_constraintTop_toBottomOf="@+id/content"
+        tools:layout_editor_absoluteX="24dp"
+        tools:text="삭제됨 · 어제 · 관리자"
+        tools:textColor="@color/black" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

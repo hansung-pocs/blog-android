@@ -14,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityPostByUserBinding
 import com.pocs.presentation.extension.RefreshStateContract
+import com.pocs.presentation.extension.addDividerDecoration
 import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.post.PostByUserUiState
 import com.pocs.presentation.model.post.item.PostItemUiState
@@ -57,6 +58,7 @@ class PostByUserActivity : AppCompatActivity() {
                 PagingLoadStateAdapter { adapter.retry() }
             )
             recyclerView.layoutManager = LinearLayoutManager(this@PostByUserActivity)
+            recyclerView.addDividerDecoration()
 
             loadState.setListeners(adapter, refresh)
         }
@@ -92,7 +94,7 @@ class PostByUserActivity : AppCompatActivity() {
     }
 
     private fun initToolBar() {
-        val name = intent.getStringExtra("userName") ?: getString(R.string.unknown)
+        val name = intent.getStringExtra("userName") ?: throw Exception("유저 이름이 전달되지 않음")
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.post_by_user_title, name)

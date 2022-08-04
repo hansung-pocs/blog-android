@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="8dp">
+    android:layout_marginVertical="@dimen/user_card_padding_vertical">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
@@ -14,7 +14,7 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        app:cardBackgroundColor="?attr/colorPrimaryContainer"
+        app:cardBackgroundColor="?attr/colorSurfaceVariant"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
         tools:cardBackgroundColor="#dddddd">
@@ -51,7 +51,7 @@
                     style="?attr/textAppearanceTitleMedium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="?attr/colorOnPrimaryContainer"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     app:layout_constraintStart_toEndOf="@+id/imageView"
                     tools:layout_editor_absoluteY="16dp"
                     tools:text="홍길동"
@@ -67,7 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:alpha="0.6"
-                    android:textColor="?attr/colorOnPrimaryContainer"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     app:layout_constraintStart_toEndOf="@+id/imageView"
                     tools:layout_editor_absoluteY="61dp"
                     tools:text="183945 · 9"

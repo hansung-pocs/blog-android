@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
+            android:paddingTop="@dimen/user_card_padding_vertical"
             android:paddingBottom="@dimen/fab_height"
             tools:listitem="@layout/item_user" />
 
