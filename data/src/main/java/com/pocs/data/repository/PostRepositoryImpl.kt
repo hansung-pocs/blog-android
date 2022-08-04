@@ -8,6 +8,7 @@ import com.pocs.data.mapper.toDto
 import com.pocs.data.mapper.toEntity
 import com.pocs.data.model.post.PostAddBody
 import com.pocs.data.model.post.PostDeleteBody
+import com.pocs.data.model.post.PostUpdateBody
 import com.pocs.data.paging.PostPagingSource
 import com.pocs.data.source.PostRemoteDataSource
 import com.pocs.domain.model.post.Post
@@ -69,13 +70,30 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updatePost(
-        id: Int,
+        postId: Int,
         title: String,
         content: String,
         userId: Int,
         category: PostCategory
     ): Result<Unit> {
-        TODO("Not yet implemented")
+        return try {
+            val responce = dataSource.updatePost(
+                postId = postId,
+                postUpdateBody = PostUpdateBody(
+                    title = title,
+                    content = content,
+                    userId = userId,
+                    category = category.toDto()
+                )
+            )
+            if (responce.code() == 302) {
+                Result.success(Unit)
+            } else {
+                throw Exception(responce.message())
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     override suspend fun deletePost(

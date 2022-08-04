@@ -15,6 +15,8 @@ class FakePostRepositoryImpl @Inject constructor() : PostRepository {
 
     var deletePostResult = Result.success(Unit)
 
+    var updatePostResult = Result.success(Unit)
+
 //    suspend fun emit(pagingData: PagingData<Post>) {
 //        postFlow.emit(pagingData)
 //    }
@@ -41,7 +43,7 @@ class FakePostRepositoryImpl @Inject constructor() : PostRepository {
         userId: Int,
         category: PostCategory
     ): Result<Unit> {
-        TODO("Not yet implemented")
+        return updatePostResult
     }
 
     override suspend fun deletePost(postId: Int, userId: Int) = deletePostResult
