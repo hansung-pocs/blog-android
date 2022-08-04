@@ -60,6 +60,7 @@ class PostDetailActivity : AppCompatActivity() {
 
         launcher = registerForActivityResult(RefreshStateContract()) {
             if (it != null) {
+                setResultRefresh()
                 fetchPost()
                 it.message?.let { message -> showSnackBar(message) }
             }
