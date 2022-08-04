@@ -12,6 +12,7 @@ class PostViewHolder(
 
     fun bind(uiState: PostItemUiState) = with(binding) {
         title.text = uiState.title
+        content.text = uiState.content
 
         var subtitleText = uiState.createdAt
         if (uiState.isDeleted) {
