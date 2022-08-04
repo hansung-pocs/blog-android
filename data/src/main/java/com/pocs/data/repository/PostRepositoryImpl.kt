@@ -77,7 +77,7 @@ class PostRepositoryImpl @Inject constructor(
         category: PostCategory
     ): Result<Unit> {
         return try {
-            val responce = dataSource.updatePost(
+            val response = dataSource.updatePost(
                 postId = postId,
                 postUpdateBody = PostUpdateBody(
                     title = title,
@@ -86,10 +86,10 @@ class PostRepositoryImpl @Inject constructor(
                     category = category.toDto()
                 )
             )
-            if (responce.code() == 302) {
+            if (response.code() == 302) {
                 Result.success(Unit)
             } else {
-                throw Exception(responce.message())
+                throw Exception(response.message())
             }
         } catch (e: Exception) {
             Result.failure(e)
