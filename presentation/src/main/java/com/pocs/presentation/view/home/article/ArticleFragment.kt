@@ -53,7 +53,7 @@ class ArticleFragment : Fragment(R.layout.fragment_post) {
             )
             recyclerView.layoutManager = LinearLayoutManager(view.context)
 
-            loadState.setListeners(adapter)
+            loadState.setListeners(adapter, refresh)
 
             fab.text = getString(R.string.write_post)
             fab.setOnClickListener { startPostCreateActivity() }

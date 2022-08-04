@@ -55,7 +55,7 @@ class UserFragment : Fragment(R.layout.fragment_user) {
             )
             recyclerView.layoutManager = LinearLayoutManager(view.context)
 
-            loadState.setListeners(adapter)
+            loadState.setListeners(adapter, refresh)
 
             sortBox.setOnClickListener { showSortingMethodPopUpMenu() }
 
