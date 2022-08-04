@@ -55,7 +55,7 @@ class AdminUserFragment : Fragment(R.layout.fragment_admin_user) {
             )
             recyclerView.layoutManager = LinearLayoutManager(view.context)
 
-            loadState.setListeners(adapter)
+            loadState.setListeners(adapter, refresh)
 
             fab.setOnClickListener { startAdminUserCreateActivity() }
 

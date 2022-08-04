@@ -58,7 +58,7 @@ class PostByUserActivity : AppCompatActivity() {
             )
             recyclerView.layoutManager = LinearLayoutManager(this@PostByUserActivity)
 
-            loadState.setListeners(adapter)
+            loadState.setListeners(adapter, refresh)
         }
 
         lifecycleScope.launch {
