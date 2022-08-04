@@ -68,7 +68,7 @@
     <string name="user_created">회원 생성됨</string>
     <string name="my_info_edited">내 정보 편집됨</string>
     <string-array name="admin_tab">
-        <item>공지사항</item>
+        <item>전체 게시글</item>
         <item>회원목록</item>
     </string-array>
 </resources>
