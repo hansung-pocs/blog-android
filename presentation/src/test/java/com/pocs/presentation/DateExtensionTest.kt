@@ -3,22 +3,17 @@ package com.pocs.presentation
 import com.pocs.presentation.extension.DatePattern
 import com.pocs.presentation.extension.isDateFormat
 import com.pocs.presentation.extension.toFormattedDateString
+import com.pocs.test_library.rule.JodaRule
 import org.joda.time.DateTime
 import org.joda.time.DateTimeUtils
-import org.joda.time.DateTimeZone
-import org.joda.time.tz.Provider
-import org.joda.time.tz.UTCProvider
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TestRule
-import org.junit.runner.Description
-import org.junit.runners.model.Statement
 
 class DateExtensionTest {
 
     @get:Rule
-    val jodaRule = JodaAndroidFixRule()
+    val jodaRule = JodaRule()
 
     @Test
     fun shouldBeTrue_WhenStringMatchesDateFormat() {
@@ -138,24 +133,5 @@ class DateExtensionTest {
 
         val result = "2021-12-31 01:23:45".toFormattedDateString()
         assertEquals("2021년 12월 31일 01:23", result)
-    }
-}
-
-class JodaAndroidFixRule @JvmOverloads constructor(provider: Provider = UTCProvider()) : TestRule {
-
-    private val provider: Provider
-
-    override fun apply(base: Statement, description: Description): Statement {
-        return object : Statement() {
-            @Throws(Throwable::class)
-            override fun evaluate() {
-                DateTimeZone.setProvider(provider)
-                base.evaluate()
-            }
-        }
-    }
-
-    init {
-        this.provider = provider
     }
 }

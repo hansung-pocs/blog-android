@@ -1,7 +1,6 @@
 package com.pocs.presentation.extension
 
 import org.joda.time.DateTime
-import org.joda.time.DateTimeZone
 import org.joda.time.Days.daysBetween
 import org.joda.time.format.DateTimeFormat
 import java.text.ParseException
@@ -27,7 +26,7 @@ fun String.toFormattedDateString(): String {
     for (pattern in patterns) {
         val formatter = DateTimeFormat.forPattern(pattern.value)
         try {
-            val date = formatter.parseDateTime(this).withZone(DateTimeZone.getDefault()) ?: continue
+            val date = formatter.parseDateTime(this) ?: continue
             val nowTimeAtStartOfDay = DateTime.now().withTimeAtStartOfDay()
 
             return when (daysBetween(date.withTimeAtStartOfDay(), nowTimeAtStartOfDay).days) {
