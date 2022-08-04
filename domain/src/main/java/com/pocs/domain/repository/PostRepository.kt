@@ -20,7 +20,7 @@ interface PostRepository {
     ): Result<Unit>
 
     suspend fun updatePost(
-        id: Int,
+        postId: Int,
         title: String,
         content: String,
         userId: Int,

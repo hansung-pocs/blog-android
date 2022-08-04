@@ -1,16 +1,12 @@
 package com.pocs.presentation
 
 import android.content.Context
-import android.content.Intent
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.launchActivity
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.pocs.domain.model.user.UserDetail
@@ -23,7 +19,6 @@ import com.pocs.presentation.view.user.detail.UserDetailActivity
 import com.pocs.presentation.view.user.detail.UserDetailViewModel
 import com.pocs.test_library.fake.FakeAdminRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
-import com.pocs.test_library.mock.HiltTestActivity
 import com.pocs.test_library.mock.mockNormalUserDetail
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -84,24 +79,13 @@ class UserDetailActivityTest {
     }
 
     @Test
-    fun shouldLoadUserDetail_WhenLifecycleReachedOnResume() {
+    fun shouldLoadUserDetail_WhenLaunchActivity() {
         userRepository.userDetailResult = Result.success(userDetail)
 
         val intent = UserDetailActivity.getIntent(context, userDetail.id)
-        val scenario = launchActivity<UserDetailActivity>(intent)
+        launchActivity<UserDetailActivity>(intent)
 
         assertEquals(userDetail.id, (viewModel.uiState as UserDetailUiState.Success).userDetail.id)
-
-        val exception = Exception("error")
-        userRepository.userDetailResult = Result.failure(exception)
-
-        scenario.onActivity {
-            it.startActivity(Intent(context, HiltTestActivity::class.java))
-        }
-
-        onView(isRoot()).perform(ViewActions.pressBack())
-
-        assertEquals(exception, (viewModel.uiState as UserDetailUiState.Failure).e)
     }
 
     @Test

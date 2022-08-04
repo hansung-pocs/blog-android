@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.composethemeadapter3.Mdc3Theme
+import com.pocs.presentation.extension.setResultRefresh
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,15 +25,23 @@ class UserDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        fetchUserDetail()
+
         setContent {
             Mdc3Theme(this) {
-                UserDetailScreen(viewModel.uiState)
+                UserDetailScreen(
+                    viewModel.uiState,
+                    onEdited = {
+                        fetchUserDetail()
+                        setResultRefresh()
+                    }
+                )
             }
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun fetchUserDetail() {
         val userId = intent.getIntExtra("userId", -1)
         assert(userId != -1)
         viewModel.fetchUserInfo(userId)

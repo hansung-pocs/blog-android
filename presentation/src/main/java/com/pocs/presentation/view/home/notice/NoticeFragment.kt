@@ -1,6 +1,5 @@
 package com.pocs.presentation.view.home.notice
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentPostBinding
+import com.pocs.presentation.extension.RefreshStateContract
 import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.NoticeUiState
 import com.pocs.presentation.model.post.item.PostItemUiState
@@ -69,14 +68,10 @@ class NoticeFragment : Fragment(R.layout.fragment_post) {
             }
         }
 
-        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
+        launcher = registerForActivityResult(RefreshStateContract()) {
+            if (it != null) {
                 adapter.refresh()
-
-                val message = it.data?.getStringExtra("message")
-                if (message != null) {
-                    showSnackBar(message)
-                }
+                it.message?.let { message -> showSnackBar(message) }
             }
         }
     }
@@ -96,7 +91,7 @@ class NoticeFragment : Fragment(R.layout.fragment_post) {
             id = postItemUiState.id,
             isDeleted = postItemUiState.isDeleted
         )
-        startActivity(intent)
+        launcher?.launch(intent)
     }
 
     private fun showSnackBar(message: String) {
@@ -106,7 +101,6 @@ class NoticeFragment : Fragment(R.layout.fragment_post) {
     }
 
     private fun startPostCreateActivity() {
-        // TODO: 글 작성 후 성공했다면 adapter refresh 하기
         val intent = PostCreateActivity.getIntent(requireContext(), PostCategory.NOTICE)
         launcher?.launch(intent)
     }

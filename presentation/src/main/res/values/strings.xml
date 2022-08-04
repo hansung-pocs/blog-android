@@ -63,6 +63,10 @@
     <string name="post_by_user_title">%s님의 글 목록입니다.</string>
     <string name="unknown">알수없음</string>
     <string name="empty">텅</string>
+    <string name="post_added">글 추가됨</string>
+    <string name="post_edited">글 편집됨</string>
+    <string name="user_created">회원 생성됨</string>
+    <string name="my_info_edited">내 정보 편집됨</string>
     <string-array name="admin_tab">
         <item>공지사항</item>
         <item>회원목록</item>

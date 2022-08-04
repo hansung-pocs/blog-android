@@ -34,7 +34,13 @@ class UserEditScreenTest {
     @Test
     fun showRecheckDialog_WhenUserClickBackButton() {
         composeTestRule.run {
-            setContent { UserEditContent(uiState = mockUiState) {} }
+            setContent { 
+                UserEditContent(
+                    uiState = mockUiState,
+                    navigateUp = {},
+                    onSuccessToSave = {}
+                )
+            }
 
             onNodeWithContentDescription("뒤로가기").performClick()
 
@@ -45,7 +51,13 @@ class UserEditScreenTest {
     @Test
     fun removeTextFieldValues_WhenClickClearButton() {
         composeTestRule.run {
-            setContent { UserEditContent(uiState = mockUiState) {} }
+            setContent { 
+                UserEditContent(
+                    uiState = mockUiState,
+                    navigateUp = {},
+                    onSuccessToSave = {}
+                )
+            }
 
             val name = mockUiState.name
             onNodeWithText(name).assertIsDisplayed()
@@ -59,7 +71,13 @@ class UserEditScreenTest {
     @Test
     fun showPasswordDialog_WhenClickSendButton() {
         composeTestRule.run {
-            setContent { UserEditContent(uiState = mockUiState) {} }
+            setContent { 
+                UserEditContent(
+                    uiState = mockUiState,
+                    navigateUp = {},
+                    onSuccessToSave = {}
+                )
+            }
 
             onNodeWithContentDescription("저장하기").performClick()
 

@@ -9,13 +9,14 @@ import com.pocs.presentation.databinding.ItemUserBinding
 import com.pocs.presentation.model.user.item.UserItemUiState
 
 class UserAdapter(
-    private val currentUserType: UserType
+    private val currentUserType: UserType,
+    private val onClickCard: (id: Int) -> Unit
 ) : PagingDataAdapter<UserItemUiState, UserViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemUserBinding.inflate(layoutInflater, parent, false)
-        return UserViewHolder(binding, currentUserType = currentUserType)
+        return UserViewHolder(binding, currentUserType = currentUserType, onClickCard = onClickCard)
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {

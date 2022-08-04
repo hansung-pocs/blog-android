@@ -13,13 +13,9 @@ class FakePostRepositoryImpl @Inject constructor() : PostRepository {
     private val postFlow = MutableSharedFlow<PagingData<Post>>()
     var postDetailResult: Result<PostDetail> = Result.failure(Exception())
 
-    var deletePostResult = Result.success(Unit)
-
     var updatePostResult = Result.success(Unit)
 
-//    suspend fun emit(pagingData: PagingData<Post>) {
-//        postFlow.emit(pagingData)
-//    }
+    var deletePostResult = Result.success(Unit)
 
     override fun getAll(category: PostCategory) = postFlow
 

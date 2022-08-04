@@ -1,5 +1,6 @@
 package com.pocs.presentation.view.user.detail
 
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.ClickableText
@@ -21,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.R
+import com.pocs.presentation.extension.RefreshStateContract
 import com.pocs.presentation.model.user.item.UserDetailItemUiState
 import com.pocs.presentation.model.user.UserDetailUiState
 import com.pocs.presentation.view.component.button.AppBarBackButton
@@ -29,11 +31,12 @@ import com.pocs.presentation.view.component.LoadingContent
 import com.pocs.presentation.view.component.RecheckDialog
 import com.pocs.presentation.view.post.by.user.PostByUserActivity
 import com.pocs.presentation.view.user.edit.UserEditActivity
+import kotlinx.coroutines.launch
 
 private const val URL_TAG = "url"
 
 @Composable
-fun UserDetailScreen(uiState: UserDetailUiState) {
+fun UserDetailScreen(uiState: UserDetailUiState, onEdited: () -> Unit) {
     when (uiState) {
         is UserDetailUiState.Loading -> {
             LoadingContent()
@@ -52,7 +55,8 @@ fun UserDetailScreen(uiState: UserDetailUiState) {
                 userDetail = uiState.userDetail,
                 snackBarHostState = snackBarHostState,
                 isCurrentUserAdmin = uiState.isCurrentUserAdmin,
-                onConfirmToKick = uiState.onKickClick
+                onConfirmToKick = uiState.onKickClick,
+                onEdited = onEdited
             )
         }
         is UserDetailUiState.Failure -> {
@@ -70,9 +74,24 @@ fun UserDetailContent(
     userDetail: UserDetailItemUiState,
     snackBarHostState: SnackbarHostState,
     onConfirmToKick: () -> Unit,
+    onEdited: () -> Unit,
     isCurrentUserAdmin: Boolean
 ) {
     var showKickRecheckDialog by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+    val userEditActivityResult = rememberLauncherForActivityResult(
+        contract = RefreshStateContract(),
+        onResult = {
+            if (it != null) {
+                onEdited()
+                it.message?.let { message ->
+                    coroutineScope.launch {
+                        snackBarHostState.showSnackbar(message)
+                    }
+                }
+            }
+        }
+    )
 
     if (showKickRecheckDialog) {
         RecheckDialog(
@@ -112,9 +131,8 @@ fun UserDetailContent(
             // TODO: 본인 정보인 경우에만 내 정보 수정 버튼 보이기
             ExtendedFloatingActionButton(
                 onClick = {
-                    // TODO: 수정 완료하면 화면 갱신하고 스낵바 띄우기
                     val intent = UserEditActivity.getIntent(context, userDetail)
-                    context.startActivity(intent)
+                    userEditActivityResult.launch(intent)
                 }
             ) {
                 Icon(Icons.Filled.Edit, contentDescription = stringResource(id = R.string.edit))
@@ -352,6 +370,7 @@ fun UserDetailContentPreview() {
         snackBarHostState = SnackbarHostState(),
         onConfirmToKick = {},
         isCurrentUserAdmin = true,
+        onEdited = {}
     )
 }
 
@@ -373,6 +392,7 @@ fun KickedUserDetailContentPreview() {
         ),
         snackBarHostState = SnackbarHostState(),
         onConfirmToKick = {},
-        isCurrentUserAdmin = true
+        isCurrentUserAdmin = true,
+        onEdited = {}
     )
 }

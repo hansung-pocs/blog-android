@@ -8,6 +8,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import com.google.android.material.composethemeadapter3.Mdc3Theme
+import com.pocs.presentation.R
+import com.pocs.presentation.extension.setResultRefresh
 import com.pocs.presentation.model.user.item.UserDetailItemUiState
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,7 +39,13 @@ class UserEditActivity : AppCompatActivity() {
 
         setContent {
             Mdc3Theme {
-                UserEditScreen(viewModel = viewModel, navigateUp = ::finish)
+                UserEditScreen(
+                    viewModel = viewModel,
+                    navigateUp = ::finish,
+                    onSuccessToSave = {
+                        setResultRefresh(R.string.my_info_edited)
+                    }
+                )
             }
         }
     }

@@ -1,13 +1,11 @@
 package com.pocs.presentation.view.post.detail
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
@@ -19,6 +17,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityPostDetailBinding
+import com.pocs.presentation.extension.RefreshStateContract
+import com.pocs.presentation.extension.setResultRefresh
 import com.pocs.presentation.model.post.PostDetailUiState
 import com.pocs.presentation.view.post.edit.PostEditActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,9 +58,10 @@ class PostDetailActivity : AppCompatActivity() {
             }
         }
 
-        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
+        launcher = registerForActivityResult(RefreshStateContract()) {
+            if (it != null) {
                 fetchPost()
+                it.message?.let { message -> showSnackBar(message) }
             }
         }
     }
@@ -106,8 +107,7 @@ class PostDetailActivity : AppCompatActivity() {
     }
 
     private fun onDeleteSuccess() {
-        val intent = Intent().putExtra("message", getString(R.string.post_deleted))
-        setResult(RESULT_OK, intent)
+        setResultRefresh(R.string.post_deleted)
         finish()
     }
 

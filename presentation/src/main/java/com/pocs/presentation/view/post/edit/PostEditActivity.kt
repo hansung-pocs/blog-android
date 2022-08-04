@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import com.google.android.material.composethemeadapter3.Mdc3Theme
 import com.pocs.domain.model.post.PostCategory
+import com.pocs.presentation.R
+import com.pocs.presentation.extension.setResultRefresh
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -52,7 +54,9 @@ class PostEditActivity : AppCompatActivity() {
                 PostEditScreen(
                     uiState = viewModel.uiState.value,
                     navigateUp = ::finish,
-                    onSuccessSave = { setResult(RESULT_OK) }
+                    onSuccessSave = {
+                        setResultRefresh(R.string.post_edited)
+                    }
                 )
             }
         }

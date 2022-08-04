@@ -1,6 +1,5 @@
 package com.pocs.presentation
 
-import android.app.Activity.RESULT_OK
 import android.content.Context
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -9,6 +8,7 @@ import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.launchActivity
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.pocs.presentation.extension.RESULT_REFRESH
 import com.pocs.presentation.view.post.create.PostCreateActivity
 import com.pocs.test_library.mock.mockPostDetail2
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -38,7 +38,7 @@ class PostCreateActivityTest {
     }
 
     @Test
-    fun shouldReturnResultOk_AfterSuccessAddingNewPost() {
+    fun shouldSetResultRefresh_AfterSuccessAddingNewPost() {
         val post = mockPostDetail2
         val intent = PostCreateActivity.getIntent(context, post.category)
         val scenario = launchActivity<PostCreateActivity>(intent)
@@ -48,6 +48,6 @@ class PostCreateActivityTest {
 
         composeRule.onNodeWithContentDescription("저장하기").performClick()
 
-        assertEquals(RESULT_OK, scenario.result.resultCode)
+        assertEquals(RESULT_REFRESH, scenario.result.resultCode)
     }
 }

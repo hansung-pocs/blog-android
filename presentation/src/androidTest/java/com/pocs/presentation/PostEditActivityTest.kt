@@ -1,6 +1,5 @@
 package com.pocs.presentation
 
-import android.app.Activity.RESULT_OK
 import android.content.Context
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
@@ -8,6 +7,7 @@ import androidx.test.core.app.launchActivity
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.pocs.domain.usecase.post.UpdatePostUseCase
+import com.pocs.presentation.extension.RESULT_REFRESH
 import com.pocs.presentation.view.post.edit.PostEditActivity
 import com.pocs.presentation.view.post.edit.PostEditViewModel
 import com.pocs.test_library.fake.FakePostRepositoryImpl
@@ -59,7 +59,7 @@ class PostEditActivityTest {
 
         composeRule.onNodeWithContentDescription("저장하기").performClick()
 
-        assertEquals(RESULT_OK, scenario.result.resultCode)
+        assertEquals(RESULT_REFRESH, scenario.result.resultCode)
     }
 
     @Test

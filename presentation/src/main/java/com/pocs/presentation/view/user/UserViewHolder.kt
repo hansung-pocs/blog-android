@@ -9,7 +9,8 @@ import com.pocs.presentation.view.user.detail.UserDetailActivity
 
 class UserViewHolder(
     private val binding: ItemUserBinding,
-    private val currentUserType: UserType
+    private val currentUserType: UserType,
+    private val onClickCard: (userId: Int) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(uiState: UserItemUiState) = with(binding) {
@@ -30,8 +31,7 @@ class UserViewHolder(
         cardView.isClickable = !isUnknownUser
         if (!isUnknownUser) {
             cardView.setOnClickListener {
-                val intent = UserDetailActivity.getIntent(context, uiState.id)
-                context.startActivity(intent)
+                onClickCard(uiState.id)
             }
         }
     }

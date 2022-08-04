@@ -26,7 +26,13 @@ class AdminUserCreateScreenTest {
     @Test
     fun showSnackBar_WhenErrorMessageIsNotNull() {
         composeTestRule.run {
-            setContent { AdminUserCreateScreen(uiState = mockUiState, navigateUp = {}) }
+            setContent {
+                AdminUserCreateScreen(
+                    uiState = mockUiState,
+                    navigateUp = {},
+                    onSuccessToCreate = {}
+                )
+            }
 
             val errorMessage = "ERROR!!"
             onNodeWithText(errorMessage).assertDoesNotExist()
@@ -43,7 +49,8 @@ class AdminUserCreateScreenTest {
             setContent {
                 AdminUserCreateScreen(
                     uiState = mockUiState,
-                    navigateUp = { callCount++ }
+                    navigateUp = { callCount++ },
+                    onSuccessToCreate = {}
                 )
             }
 

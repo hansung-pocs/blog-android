@@ -1,13 +1,11 @@
 package com.pocs.presentation.view.home.article
 
-import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -18,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentPostBinding
+import com.pocs.presentation.extension.RefreshStateContract
 import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.ArticleUiState
 import com.pocs.presentation.model.post.item.PostItemUiState
@@ -68,14 +67,10 @@ class ArticleFragment : Fragment(R.layout.fragment_post) {
             }
         }
 
-        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == RESULT_OK) {
+        launcher = registerForActivityResult(RefreshStateContract()) {
+            if (it != null) {
                 adapter.refresh()
-
-                val message = it.data?.getStringExtra("message")
-                if (message != null) {
-                    showSnackBar(message)
-                }
+                it.message?.let { message -> showSnackBar(message) }
             }
         }
     }
