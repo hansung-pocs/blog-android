@@ -3,8 +3,6 @@ package com.pocs.presentation.extension
 import org.joda.time.DateTime
 import org.joda.time.Days.daysBetween
 import org.joda.time.format.DateTimeFormat
-import java.text.ParseException
-import java.text.SimpleDateFormat
 
 enum class DatePattern(val value: String) {
     COMPACT("yyyy-MM-dd"),
@@ -20,20 +18,35 @@ fun String.toFormattedDateString(): String {
             val nowTimeAtStartOfDay = DateTime.now().withTimeAtStartOfDay()
 
             return when (daysBetween(date.withTimeAtStartOfDay(), nowTimeAtStartOfDay).days) {
-                0 -> "오늘"
-                1 -> "어제"
-                2 -> "그저께"
+                0 -> {
+                    when (pattern) {
+                        DatePattern.COMPACT -> date.toLocalDate().toString("오늘")
+                        DatePattern.FULL -> date.toLocalDateTime().toString("오늘 H:mm")
+                    }
+                }
+                1 -> {
+                    when (pattern) {
+                        DatePattern.COMPACT -> date.toLocalDate().toString("어제")
+                        DatePattern.FULL -> date.toLocalDateTime().toString("어제 H:mm")
+                    }
+                }
+                2 -> {
+                    when (pattern) {
+                        DatePattern.COMPACT -> date.toLocalDate().toString("그저께")
+                        DatePattern.FULL -> date.toLocalDateTime().toString("그저께 H:mm")
+                    }
+                }
                 else -> {
                     if (date.year == nowTimeAtStartOfDay.year) {
                         when (pattern) {
                             DatePattern.COMPACT -> date.toLocalDate().toString("M월 d일")
-                            DatePattern.FULL -> date.toLocalDateTime().toString("M월 d일 HH:mm")
+                            DatePattern.FULL -> date.toLocalDateTime().toString("M월 d일 H:mm")
                         }
                     } else {
                         when (pattern) {
                             DatePattern.COMPACT -> date.toLocalDate().toString("yyyy년 M월 d일")
                             DatePattern.FULL -> date.toLocalDateTime()
-                                .toString("yyyy년 M월 d일 HH:mm")
+                                .toString("yyyy년 M월 d일 H:mm")
                         }
                     }
                 }

@@ -73,7 +73,7 @@ class DateExtensionTest {
         DateTimeUtils.setCurrentMillisFixed(date.millis)
 
         val result = "2022-08-04 16:23:45".toFormattedDateString()
-        assertEquals("오늘", result)
+        assertEquals("오늘 16:23", result)
     }
 
     @Test
@@ -81,8 +81,8 @@ class DateExtensionTest {
         val date = DateTime(2022, 8, 4, 10, 22)
         DateTimeUtils.setCurrentMillisFixed(date.millis)
 
-        val result = "2022-08-03 16:23:45".toFormattedDateString()
-        assertEquals("어제", result)
+        val result = "2022-08-03 06:23:45".toFormattedDateString()
+        assertEquals("어제 6:23", result)
     }
 
     @Test
@@ -91,7 +91,7 @@ class DateExtensionTest {
         DateTimeUtils.setCurrentMillisFixed(date.millis)
 
         val result = "2022-08-02 16:23:45".toFormattedDateString()
-        assertEquals("그저께", result)
+        assertEquals("그저께 16:23", result)
     }
 
     @Test
@@ -118,6 +118,6 @@ class DateExtensionTest {
         DateTimeUtils.setCurrentMillisFixed(date.millis)
 
         val result = "2021-12-31 01:23:45".toFormattedDateString()
-        assertEquals("2021년 12월 31일 01:23", result)
+        assertEquals("2021년 12월 31일 1:23", result)
     }
 }
