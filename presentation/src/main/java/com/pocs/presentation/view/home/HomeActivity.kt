@@ -30,8 +30,6 @@ class HomeActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
-        fetchMyInfo()
-
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -60,7 +58,7 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             R.id.action_Edit_MyUser -> {
-                val intent = UserEditActivity.getIntent(this, viewModel.uiState.value)
+                val intent = UserEditActivity.getIntent(this, viewModel.uiState.value.userDetail)
                 startActivity(intent)
             }
         }
@@ -84,9 +82,5 @@ class HomeActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_home)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
-    }
-
-    private fun fetchMyInfo() {
-        viewModel.init()
     }
 }

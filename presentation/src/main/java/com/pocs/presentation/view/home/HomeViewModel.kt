@@ -1,11 +1,12 @@
 package com.pocs.presentation.view.home
 
-import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
-import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.usecase.user.GetMyUserInfoUseCase
-import com.pocs.presentation.model.user.item.UserDetailItemUiState
+import com.pocs.presentation.mapper.toUiState
+import com.pocs.presentation.model.post.HomeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -13,24 +14,14 @@ class HomeViewModel @Inject constructor(
     getMyUserInfoUseCase: GetMyUserInfoUseCase,
 ) : ViewModel() {
 
-    private lateinit var _uiState: MutableState<UserDetailItemUiState>
-    val uiState: State<UserDetailItemUiState> get() = _uiState
+    private var _uiState: MutableStateFlow<HomeUiState>
+    val uiState: StateFlow<HomeUiState> get() = _uiState
 
-    val userDetail: UserDetail = getMyUserInfoUseCase()
-
-    fun init() {
-        _uiState = mutableStateOf(
-            UserDetailItemUiState(
-                id = userDetail.id,
-                name = userDetail.name,
-                email = userDetail.email,
-                studentId = userDetail.studentId,
-                type = userDetail.type,
-                company = userDetail.company,
-                generation = userDetail.generation,
-                github = userDetail.github,
-                createdAt = userDetail.createdAt,
-                canceledAt = userDetail.canceledAt,
+    init{
+        val userDetail = getMyUserInfoUseCase()
+        _uiState = MutableStateFlow(
+            HomeUiState(
+                userDetail = userDetail.toUiState()
             )
         )
     }
