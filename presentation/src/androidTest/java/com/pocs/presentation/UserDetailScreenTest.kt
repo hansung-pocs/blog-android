@@ -27,7 +27,7 @@ class UserDetailScreenTest {
         30,
         "https://github.com/jja08111",
         "2022-04-04",
-        "-"
+        null
     )
 
     @Test
@@ -88,7 +88,7 @@ class UserDetailScreenTest {
     @Test
     fun showRecheckDialog_WhenClickKickUserButton() {
         val uiState = UserDetailUiState.Success(
-            userDetail,
+            userDetail.copy(canceledAt = null),
             isCurrentUserAdmin = true,
             shownErrorMessage = {},
             onKickClick = {}

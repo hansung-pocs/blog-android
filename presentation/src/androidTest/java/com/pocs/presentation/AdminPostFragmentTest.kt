@@ -46,7 +46,7 @@ class AdminPostFragmentTest {
 
     @Test
     fun shouldNotShowDeletedKeyword_IfPostWasNotDeleted() {
-        repository.postList = listOf(mockPost.copy(canceledAt = "-"))
+        repository.postList = listOf(mockPost.copy(canceledAt = null))
         initViewModel()
 
         launchFragmentInHiltContainer<AdminPostFragment>(themeResId = R.style.Theme_PocsBlog)
