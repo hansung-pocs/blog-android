@@ -3,6 +3,7 @@ package com.pocs.presentation.extension
 import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ContentLoadStateBinding
@@ -10,8 +11,17 @@ import java.net.ConnectException
 
 fun <PA : PagingDataAdapter<T, VH>, T, VH> ContentLoadStateBinding.setListeners(
     adapter: PA,
-    swipeToRefresh: SwipeRefreshLayout
+    swipeToRefresh: SwipeRefreshLayout,
+    recyclerView: RecyclerView
 ) {
+    adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+            if (positionStart == 0) {
+                recyclerView.scrollToPosition(0)
+            }
+        }
+    })
+
     swipeToRefresh.setOnRefreshListener { adapter.refresh() }
 
     this.retryButton.setOnClickListener {
@@ -21,8 +31,7 @@ fun <PA : PagingDataAdapter<T, VH>, T, VH> ContentLoadStateBinding.setListeners(
     adapter.addLoadStateListener { loadStates ->
         val refreshLoadState = loadStates.refresh
         val isError = refreshLoadState is LoadState.Error
-        val shouldShowEmptyText =
-            refreshLoadState is LoadState.NotLoading && adapter.getItemCount() < 1
+        val shouldShowEmptyText = refreshLoadState is LoadState.NotLoading && adapter.getItemCount() < 1
 
         if (refreshLoadState is LoadState.NotLoading) {
             swipeToRefresh.isRefreshing = false
