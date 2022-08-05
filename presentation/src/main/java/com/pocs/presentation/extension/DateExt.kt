@@ -15,42 +15,25 @@ fun String.toFormattedDateString(): String {
         val formatter = DateTimeFormat.forPattern(pattern.value)
         try {
             val date = formatter.parseDateTime(this) ?: continue
+            val localDate = date.toLocalDate()
             val nowTimeAtStartOfDay = DateTime.now().withTimeAtStartOfDay()
 
-            return when (daysBetween(date.withTimeAtStartOfDay(), nowTimeAtStartOfDay).days) {
-                0 -> {
-                    when (pattern) {
-                        DatePattern.COMPACT -> date.toLocalDate().toString("오늘")
-                        DatePattern.FULL -> date.toLocalDateTime().toString("오늘 H:mm")
-                    }
-                }
-                1 -> {
-                    when (pattern) {
-                        DatePattern.COMPACT -> date.toLocalDate().toString("어제")
-                        DatePattern.FULL -> date.toLocalDateTime().toString("어제 H:mm")
-                    }
-                }
-                2 -> {
-                    when (pattern) {
-                        DatePattern.COMPACT -> date.toLocalDate().toString("그저께")
-                        DatePattern.FULL -> date.toLocalDateTime().toString("그저께 H:mm")
-                    }
-                }
+            var result = when (daysBetween(date.withTimeAtStartOfDay(), nowTimeAtStartOfDay).days) {
+                0 -> "오늘"
+                1 -> "어제"
+                2 -> "그저께"
                 else -> {
                     if (date.year == nowTimeAtStartOfDay.year) {
-                        when (pattern) {
-                            DatePattern.COMPACT -> date.toLocalDate().toString("M월 d일")
-                            DatePattern.FULL -> date.toLocalDateTime().toString("M월 d일 H:mm")
-                        }
+                        localDate.toString("M월 d일")
                     } else {
-                        when (pattern) {
-                            DatePattern.COMPACT -> date.toLocalDate().toString("yyyy년 M월 d일")
-                            DatePattern.FULL -> date.toLocalDateTime()
-                                .toString("yyyy년 M월 d일 H:mm")
-                        }
+                        localDate.toString("yyyy년 M월 d일")
                     }
                 }
             }
+            if (pattern == DatePattern.FULL) {
+                result += date.toLocalDateTime().toString(" H:mm")
+            }
+            return result
         } catch (e: Exception) {
             continue
         }
