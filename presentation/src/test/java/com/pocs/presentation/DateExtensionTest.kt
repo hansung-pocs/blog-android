@@ -1,7 +1,5 @@
 package com.pocs.presentation
 
-import com.pocs.presentation.extension.DatePattern
-import com.pocs.presentation.extension.isDateFormat
 import com.pocs.presentation.extension.toFormattedDateString
 import com.pocs.test_library.rule.JodaRule
 import org.joda.time.DateTime
@@ -14,18 +12,6 @@ class DateExtensionTest {
 
     @get:Rule
     val jodaRule = JodaRule()
-
-    @Test
-    fun shouldBeTrue_WhenStringMatchesDateFormat() {
-        val isDateFormat = "2022-01-01".isDateFormat(DatePattern.COMPACT)
-        assertTrue(isDateFormat)
-    }
-
-    @Test
-    fun shouldBeFalse_WhenStringDoesNotMatchDateFormat() {
-        val isDateFormat = "-".isDateFormat(DatePattern.COMPACT)
-        assertFalse(isDateFormat)
-    }
 
     @Test
     fun shouldReturnTodayKorean_WhenPatternIsCompact() {

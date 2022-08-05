@@ -3,6 +3,7 @@ package com.pocs.data.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.pocs.data.api.PostApi
+import com.pocs.data.extension.errorMessage
 import com.pocs.data.mapper.toEntity
 import com.pocs.domain.model.post.Post
 import java.lang.Exception
@@ -20,8 +21,8 @@ class PostPagingSource @Inject constructor(
         val page = params.key ?: START_PAGE
         return try {
             val response = api.getAll()
-            if (response.isSuccess) {
-                val posts = response.data.posts.map { it.toEntity() }
+            if (response.isSuccessful) {
+                val posts = response.body()!!.data.posts.map { it.toEntity() }
                 // TODO: API에서 페이지네이션 구현되면 수정하기
                 val isEnd = true
 
@@ -32,7 +33,7 @@ class PostPagingSource @Inject constructor(
                     nextKey = if (isEnd) null else page + 1
                 )
             } else {
-                throw Exception(response.message)
+                throw Exception(response.errorMessage)
             }
         } catch (e: Exception) {
             LoadResult.Error(e)

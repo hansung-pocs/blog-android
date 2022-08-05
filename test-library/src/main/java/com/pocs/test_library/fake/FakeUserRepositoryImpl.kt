@@ -34,8 +34,8 @@ class FakeUserRepositoryImpl @Inject constructor() : UserRepository {
         password: String,
         name: String,
         email: String,
-        company: String,
-        github: String
+        company: String?,
+        github: String?
     ): Result<Unit> {
         TODO("Not yet implemented")
     }

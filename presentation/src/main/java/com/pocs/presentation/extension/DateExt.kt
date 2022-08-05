@@ -11,16 +11,6 @@ enum class DatePattern(val value: String) {
     FULL("yyyy-MM-dd HH:mm:ss")
 }
 
-fun String.isDateFormat(pattern: DatePattern): Boolean {
-    val dateFormat = SimpleDateFormat(pattern.value)
-    return try {
-        dateFormat.parse(this)
-        true
-    } catch (e: ParseException) {
-        false
-    }
-}
-
 fun String.toFormattedDateString(): String {
     val patterns = DatePattern.values()
     for (pattern in patterns) {

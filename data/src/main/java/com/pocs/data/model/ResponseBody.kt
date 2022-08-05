@@ -7,6 +7,4 @@ data class ResponseBody<T>(
     val status: Int,
     @SerializedName("servertime") val serverTime: String,
     val data: T
-) {
-    val isSuccess get() = status in 200..299
-}
+)

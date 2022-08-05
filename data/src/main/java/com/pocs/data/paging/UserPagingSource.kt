@@ -3,6 +3,7 @@ package com.pocs.data.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.pocs.data.api.UserApi
+import com.pocs.data.extension.errorMessage
 import com.pocs.data.mapper.toDto
 import com.pocs.data.mapper.toEntity
 import com.pocs.domain.model.user.User
@@ -23,8 +24,8 @@ class UserPagingSource @Inject constructor(
         val page = params.key ?: START_PAGE
         return try {
             val response = api.getAll(sortingMethod.toDto())
-            if (response.isSuccess) {
-                val users = response.data.users.map { it.toEntity() }
+            if (response.isSuccessful) {
+                val users = response.body()!!.data.users.map { it.toEntity() }
                 // TODO: API에서 페이지네이션 구현되면 수정하기
                 val isEnd = true
 
@@ -35,7 +36,7 @@ class UserPagingSource @Inject constructor(
                     nextKey = if (isEnd) null else page + 1
                 )
             } else {
-                throw Exception(response.message)
+                throw Exception(response.errorMessage)
             }
         } catch (e: Exception) {
             LoadResult.Error(e)

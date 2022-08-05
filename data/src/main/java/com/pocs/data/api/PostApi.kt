@@ -7,27 +7,27 @@ import retrofit2.http.*
 
 interface PostApi {
     @GET("posts")
-    suspend fun getAll(): ResponseBody<PostListDto>
+    suspend fun getAll(): Response<ResponseBody<PostListDto>>
 
     @GET("posts/{postId}")
     suspend fun getPostDetail(
         @Path("postId") postId: Int
-    ): ResponseBody<PostDetailDto>
+    ): Response<ResponseBody<PostDetailDto>>
 
     @POST("posts")
     suspend fun addPost(
         @Body postAddBody: PostAddBody,
-    ): ResponseBody<Unit>
+    ): Response<ResponseBody<Unit>>
 
     @PATCH("posts/{postId}/delete")
     suspend fun deletePost(
         @Path("postId") postId: Int,
         @Body postDeleteBody: PostDeleteBody
-    ): ResponseBody<Unit>
+    ): Response<ResponseBody<Unit>>
 
     @PATCH("posts/{postId}")
     suspend fun updatePost(
         @Path("postId") postId: Int,
         @Body postUpdateBody: PostUpdateBody
-    ): Response<Unit>
+    ): Response<ResponseBody<Unit>>
 }

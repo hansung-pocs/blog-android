@@ -6,14 +6,14 @@ import retrofit2.Response
 
 interface UserRemoteDataSource {
 
-    suspend fun getUserDetail(id: Int): ResponseBody<UserDto>
+    suspend fun getUserDetail(id: Int): Response<ResponseBody<UserDto>>
 
     suspend fun updateUser(
         id: Int,
         name: String,
         password: String,
         email: String,
-        company: String,
-        github: String
-    ): Response<Unit>
+        company: String?,
+        github: String?
+    ): Response<ResponseBody<Unit>>
 }
