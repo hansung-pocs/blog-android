@@ -57,7 +57,7 @@ class HomeActivity : AppCompatActivity() {
                 val intent = AdminActivity.getIntent(this)
                 startActivity(intent)
             }
-            R.id.action_Edit_MyUser -> {
+            R.id.action_edit_my_info -> {
                 val intent = UserEditActivity.getIntent(this, viewModel.uiState.value.userDetail)
                 startActivity(intent)
             }
