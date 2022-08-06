@@ -13,6 +13,7 @@ import com.pocs.presentation.constant.MAX_POST_TITLE_LEN
 import com.pocs.presentation.model.post.PostEditUiState
 import com.pocs.presentation.view.post.edit.PostEditScreen
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -201,15 +202,19 @@ class PostEditScreenTest {
     @Test
     fun shouldLimitLengthOfTitle_WhenTypeTitle() {
         composeTestRule.setContent {
-            PostEditScreen(uiState = emptyUiState.copy(
-                onTitleChange = {
-                    assertEquals(MAX_POST_TITLE_LEN, it.length)
-                }
-            ), {}) {}
+            PostEditScreen(uiState = emptyUiState.copy(onTitleChange = {
+                assertTrue(it.length <= MAX_POST_TITLE_LEN)
+            }), {}) {}
         }
 
-        composeTestRule.onNodeWithContentDescription("제목 입력창").performTextInput(
-            "아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주긴제목이것은50자에끊겨야함"
-        )
+        val stringBuilder = StringBuilder()
+        for (i in 1..(MAX_POST_TITLE_LEN - 2)) {
+            stringBuilder.append("가")
+        }
+
+        for (i in 1..4) {
+            stringBuilder.append("가")
+            composeTestRule.onNodeWithContentDescription("제목 입력창").performTextInput(stringBuilder.toString())
+        }
     }
 }
