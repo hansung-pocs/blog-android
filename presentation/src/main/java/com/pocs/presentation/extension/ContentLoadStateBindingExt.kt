@@ -14,6 +14,7 @@ fun <PA : PagingDataAdapter<T, VH>, T, VH> ContentLoadStateBinding.setListeners(
     swipeToRefresh: SwipeRefreshLayout,
     recyclerView: RecyclerView
 ) {
+    // 아이템이 추가되면 리스트 최상단으로 스크롤하는 옵저버를 등록한다.
     adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
         override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
             if (positionStart == 0) {
