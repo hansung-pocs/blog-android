@@ -5,9 +5,9 @@ import com.pocs.data.model.post.*
 import retrofit2.Response
 
 interface PostRemoteDataSource {
-    suspend fun getAll(): ResponseBody<PostListDto>
-    suspend fun getPostDetail(postId: Int): ResponseBody<PostDetailDto>
-    suspend fun addPost(postAddBody: PostAddBody): ResponseBody<Unit>
-    suspend fun deletePost(postId: Int, postDeleteBody: PostDeleteBody): ResponseBody<Unit>
-    suspend fun updatePost(postId: Int, postUpdateBody: PostUpdateBody): Response<Unit>
+    suspend fun getAll(): Response<ResponseBody<PostListDto>>
+    suspend fun getPostDetail(postId: Int): Response<ResponseBody<PostDetailDto>>
+    suspend fun addPost(postAddBody: PostAddBody): Response<ResponseBody<Unit>>
+    suspend fun deletePost(postId: Int, postDeleteBody: PostDeleteBody): Response<ResponseBody<Unit>>
+    suspend fun updatePost(postId: Int, postUpdateBody: PostUpdateBody): Response<ResponseBody<Unit>>
 }

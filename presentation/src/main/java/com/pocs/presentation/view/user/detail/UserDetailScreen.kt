@@ -165,19 +165,18 @@ fun UserDetailContent(
                     userDetail.studentId.toString()
                 )
             }
-            if (userDetail.company.isNotEmpty()) {
-                item {
-                    UserInfo(
-                        stringResource(R.string.company),
-                        userDetail.company
-                    )
-                }
-            }
             item {
                 UserInfo(
+                    stringResource(R.string.company),
+                    userDetail.company ?: stringResource(R.string.empty_label)
+                )
+            }
+            item {
+                val github = userDetail.github ?: stringResource(R.string.empty_label)
+                UserInfo(
                     label = stringResource(R.string.github),
-                    link = userDetail.github,
-                    annotation = userDetail.github
+                    link = github,
+                    annotation = github
                 )
             }
             item {
@@ -289,6 +288,7 @@ fun UserInfo(label: String, value: String) {
     UserInfoContainer(label, annotatedString)
 }
 
+// TODO: [annotation] nullable로 수정하기
 @Composable
 fun UserInfo(label: String, link: String, annotation: String) {
     val annotatedString = buildAnnotatedString {
@@ -330,7 +330,10 @@ fun UserInfoContainer(label: String, annotatedString: AnnotatedString) {
                     offset,
                     offset
                 ).firstOrNull()?.let {
-                    uriHandler.openUri(it.item)
+                    try {
+                        uriHandler.openUri(it.item)
+                    } catch (e: Exception) {
+                    }
                 }
             }
         )

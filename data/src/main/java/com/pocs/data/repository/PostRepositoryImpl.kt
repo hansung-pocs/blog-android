@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.pocs.data.api.PostApi
+import com.pocs.data.extension.errorMessage
 import com.pocs.data.mapper.toDto
 import com.pocs.data.mapper.toEntity
 import com.pocs.data.model.post.PostAddBody
@@ -34,10 +35,10 @@ class PostRepositoryImpl @Inject constructor(
     override suspend fun getPostDetail(id: Int): Result<PostDetail> {
         return try {
             val response = dataSource.getPostDetail(id)
-            if (response.isSuccess) {
-                Result.success(response.data.toEntity(id))
+            if (response.isSuccessful) {
+                Result.success(response.body()!!.data.toEntity(id))
             } else {
-                throw Exception(response.message)
+                throw Exception(response.errorMessage)
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -51,7 +52,7 @@ class PostRepositoryImpl @Inject constructor(
         category: PostCategory
     ): Result<Unit> {
         return try {
-            val result = dataSource.addPost(
+            val response = dataSource.addPost(
                 PostAddBody(
                     title = title,
                     content = content,
@@ -59,10 +60,10 @@ class PostRepositoryImpl @Inject constructor(
                     category = category.toDto()
                 )
             )
-            if (result.isSuccess) {
+            if (response.isSuccessful) {
                 Result.success(Unit)
             } else {
-                throw Exception(result.message)
+                throw Exception(response.errorMessage)
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -86,10 +87,10 @@ class PostRepositoryImpl @Inject constructor(
                     category = category.toDto()
                 )
             )
-            if (response.code() == 302) {
+            if (response.isSuccessful) {
                 Result.success(Unit)
             } else {
-                throw Exception(response.message())
+                throw Exception(response.errorMessage)
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -105,10 +106,10 @@ class PostRepositoryImpl @Inject constructor(
                 postId = postId,
                 postDeleteBody = PostDeleteBody(userId = userId)
             )
-            if (result.isSuccess) {
+            if (result.isSuccessful) {
                 Result.success(Unit)
             } else {
-                throw Exception(result.message)
+                throw Exception(result.errorMessage)
             }
         } catch (e: Exception) {
             Result.failure(e)

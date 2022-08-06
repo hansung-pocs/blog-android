@@ -79,7 +79,7 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
                 title = stringResource(id = R.string.edit_my_info),
                 onBackPressed = { onBackPressedDispatcher?.onBackPressed() },
                 isInSaving = uiState.isInSaving,
-                enableSendIcon = true,
+                enableSendIcon = uiState.canSave,
                 onClickSend = { showPasswordDialog = true }
             )
         }
@@ -117,7 +117,7 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
                 }
             )
             PocsOutlineTextField(
-                value = uiState.company,
+                value = uiState.company ?: "",
                 label = stringResource(R.string.company),
                 onValueChange = { company ->
                     uiState.update { it.copy(company = company) }
@@ -127,7 +127,7 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
                 }
             )
             PocsOutlineTextField(
-                value = uiState.github,
+                value = uiState.github ?: "",
                 label = stringResource(R.string.github),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
                 placeholder = stringResource(R.string.github_placeholder),

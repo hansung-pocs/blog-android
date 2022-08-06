@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.pocs.data.api.UserApi
+import com.pocs.data.extension.errorMessage
 import com.pocs.data.mapper.toDetailEntity
 import com.pocs.data.paging.UserPagingSource
 import com.pocs.data.source.UserRemoteDataSource
@@ -45,10 +46,10 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun getUserDetail(id: Int): Result<UserDetail> {
         return try {
             val response = dataSource.getUserDetail(id)
-            if (response.isSuccess) {
-                Result.success(response.data.toDetailEntity())
+            if (response.isSuccessful) {
+                Result.success(response.body()!!.data.toDetailEntity())
             } else {
-                throw Exception(response.message)
+                throw Exception(response.errorMessage)
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -60,8 +61,8 @@ class UserRepositoryImpl @Inject constructor(
         password: String,
         name: String,
         email: String,
-        company: String,
-        github: String
+        company: String?,
+        github: String?
     ): Result<Unit> {
         return try {
             val response = dataSource.updateUser(
@@ -75,7 +76,7 @@ class UserRepositoryImpl @Inject constructor(
             if (response.code() == 302) {
                 Result.success(Unit)
             } else {
-                throw Exception(response.message())
+                throw Exception(response.errorMessage)
             }
         } catch (e: Exception) {
             Result.failure(e)

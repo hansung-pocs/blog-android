@@ -11,8 +11,8 @@ class UpdateUserUseCase @Inject constructor(
         password: String,
         name: String,
         email: String,
-        company: String,
-        github: String
+        company: String?,
+        github: String?
     ) = repository.updateUser(
         id = id,
         password = password,

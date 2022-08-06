@@ -8,8 +8,9 @@ data class UserDto(
     val email: String,
     val studentId: Int,
     val type: String,
-    val company: String,
+    val company: String? = null,
     val generation: Int,
-    val github: String,
-    val createdAt: String
+    val github: String? = null,
+    val createdAt: String,
+    val canceledAt: String? = null
 )

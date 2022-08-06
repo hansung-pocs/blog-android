@@ -6,9 +6,9 @@ data class UserDetail(
     val email: String,
     val studentId: Int,
     val type: UserType,
-    val company: String,
+    val company: String? = null,
     val generation: Int,
-    val github: String,
+    val github: String? = null,
     val createdAt: String,
-    val canceledAt: String
+    val canceledAt: String? = null,
 )

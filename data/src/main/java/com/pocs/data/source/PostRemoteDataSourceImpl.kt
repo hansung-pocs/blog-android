@@ -21,14 +21,14 @@ class PostRemoteDataSourceImpl @Inject constructor(
     override suspend fun deletePost(
         postId: Int,
         postDeleteBody: PostDeleteBody
-    ): ResponseBody<Unit> {
+    ): Response<ResponseBody<Unit>> {
         return api.deletePost(postId, postDeleteBody)
     }
 
     override suspend fun updatePost(
         postId: Int,
         postUpdateBody: PostUpdateBody
-    ): Response<Unit> {
+    ): Response<ResponseBody<Unit>> {
         return api.updatePost(postId, postUpdateBody)
     }
 }

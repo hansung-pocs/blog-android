@@ -5,5 +5,5 @@ data class User(
     val name: String,
     val studentId: Int,
     val generation: Int,
-    val canceledAt: String
+    val canceledAt: String? = null
 )

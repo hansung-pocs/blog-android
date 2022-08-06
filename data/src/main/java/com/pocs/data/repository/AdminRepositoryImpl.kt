@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.pocs.data.api.AdminApi
+import com.pocs.data.extension.errorMessage
 import com.pocs.data.mapper.toDetailEntity
 import com.pocs.data.mapper.toDto
 import com.pocs.data.model.admin.UserKickInfoBody
@@ -37,10 +38,10 @@ class AdminRepositoryImpl @Inject constructor(
     override suspend fun getUserDetail(id: Int): Result<UserDetail> {
         return try {
             val response = dataSource.getUserDetail(id)
-            if (response.isSuccess) {
-                Result.success(response.data.toDetailEntity())
+            if (response.isSuccessful) {
+                Result.success(response.body()!!.data.toDetailEntity())
             } else {
-                throw Exception(response.message)
+                throw Exception(response.errorMessage)
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -50,10 +51,10 @@ class AdminRepositoryImpl @Inject constructor(
     override suspend fun createUser(userCreateInfo: UserCreateInfo): Result<Unit> {
         return try {
             val response = dataSource.createUser(userCreateInfo.toDto())
-            if (response.isSuccess) {
+            if (response.isSuccessful) {
                 Result.success(Unit)
             } else {
-                throw Exception(response.message)
+                throw Exception(response.errorMessage)
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -66,10 +67,10 @@ class AdminRepositoryImpl @Inject constructor(
                 id = id,
                 userKickInfoBody = UserKickInfoBody(canceledAt = getCurrentDateTime())
             )
-            if (response.isSuccess) {
+            if (response.isSuccessful) {
                 Result.success(Unit)
             } else {
-                throw Exception(response.message)
+                throw Exception(response.errorMessage)
             }
         } catch (e: Exception) {
             Result.failure(e)

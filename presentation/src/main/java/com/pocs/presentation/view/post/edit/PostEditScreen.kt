@@ -51,6 +51,8 @@ fun PostEditContent(
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
         topBar = {
+            val cannotEditPostString = stringResource(R.string.cannot_edit_post)
+
             EditContentAppBar(
                 title = title,
                 onBackPressed = { onBackPressedDispatcher?.onBackPressed() },
@@ -65,7 +67,9 @@ fun PostEditContent(
                                 navigateUp()
                             } else {
                                 val exception = result.exceptionOrNull()!!
-                                snackBarHostState.showSnackbar(exception.message!!)
+                                snackBarHostState.showSnackbar(
+                                    exception.message ?: cannotEditPostString
+                                )
                             }
                         }
                     }

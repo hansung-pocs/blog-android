@@ -3,6 +3,7 @@ package com.pocs.data.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.pocs.data.api.AdminApi
+import com.pocs.data.extension.errorMessage
 import com.pocs.data.mapper.toEntity
 import com.pocs.domain.model.post.Post
 import java.lang.Exception
@@ -41,7 +42,7 @@ class AdminPostByUserPagingSource @Inject constructor(
                         nextKey = null
                     )
                 }
-                throw Exception(response.message())
+                throw Exception(response.errorMessage)
             }
         } catch (e: Exception) {
             LoadResult.Error(e)

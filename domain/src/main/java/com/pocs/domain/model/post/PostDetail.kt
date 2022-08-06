@@ -6,6 +6,6 @@ data class PostDetail(
     val writer: PostWriter,
     val content: String,
     val createdAt: String,
-    val updatedAt: String,
+    val updatedAt: String? = null,
     val category: PostCategory
 )

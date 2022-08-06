@@ -68,7 +68,7 @@ class UserDetailActivityTest {
         generation = 10,
         github = "https://github.com/",
         createdAt = "",
-        canceledAt = ""
+        canceledAt = null
     )
 
     @Before
@@ -107,7 +107,7 @@ class UserDetailActivityTest {
     @Test
     fun shouldFetchUserDetail_WhenSuccessToKickUser() {
         userRepository.currentUser = mockNormalUserDetail.copy(type = UserType.ADMIN)
-        adminRepository.userDetailResult = Result.success(userDetail.copy(canceledAt = ""))
+        adminRepository.userDetailResult = Result.success(userDetail.copy(canceledAt = null))
         adminRepository.kickUserResult = Result.success(Unit)
         val intent = UserDetailActivity.getIntent(context, userDetail.id)
         launchActivity<UserDetailActivity>(intent)
@@ -126,7 +126,7 @@ class UserDetailActivityTest {
     @Test
     fun shouldNotShowKickButton_WhenUserHasBeenKicked() {
         userRepository.currentUser = mockNormalUserDetail.copy(type = UserType.ADMIN)
-        adminRepository.userDetailResult = Result.success(userDetail.copy(canceledAt = ""))
+        adminRepository.userDetailResult = Result.success(userDetail.copy(canceledAt = null))
         adminRepository.kickUserResult = Result.success(Unit)
         val intent = UserDetailActivity.getIntent(context, userDetail.id)
         launchActivity<UserDetailActivity>(intent)

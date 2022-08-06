@@ -6,7 +6,7 @@ data class Post(
     val content: String,
     val writer: String? = null,
     val createdAt: String,
-    val updatedAt: String,
+    val updatedAt: String? = null,
     val canceledAt: String? = null,
     val category: PostCategory,
 )

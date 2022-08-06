@@ -3,22 +3,10 @@ package com.pocs.presentation.extension
 import org.joda.time.DateTime
 import org.joda.time.Days.daysBetween
 import org.joda.time.format.DateTimeFormat
-import java.text.ParseException
-import java.text.SimpleDateFormat
 
 enum class DatePattern(val value: String) {
     COMPACT("yyyy-MM-dd"),
     FULL("yyyy-MM-dd HH:mm:ss")
-}
-
-fun String.isDateFormat(pattern: DatePattern): Boolean {
-    val dateFormat = SimpleDateFormat(pattern.value)
-    return try {
-        dateFormat.parse(this)
-        true
-    } catch (e: ParseException) {
-        false
-    }
 }
 
 fun String.toFormattedDateString(): String {
@@ -27,27 +15,25 @@ fun String.toFormattedDateString(): String {
         val formatter = DateTimeFormat.forPattern(pattern.value)
         try {
             val date = formatter.parseDateTime(this) ?: continue
+            val localDate = date.toLocalDate()
             val nowTimeAtStartOfDay = DateTime.now().withTimeAtStartOfDay()
 
-            return when (daysBetween(date.withTimeAtStartOfDay(), nowTimeAtStartOfDay).days) {
+            var result = when (daysBetween(date.withTimeAtStartOfDay(), nowTimeAtStartOfDay).days) {
                 0 -> "오늘"
                 1 -> "어제"
                 2 -> "그저께"
                 else -> {
                     if (date.year == nowTimeAtStartOfDay.year) {
-                        when (pattern) {
-                            DatePattern.COMPACT -> date.toLocalDate().toString("M월 d일")
-                            DatePattern.FULL -> date.toLocalDateTime().toString("M월 d일 HH:mm")
-                        }
+                        localDate.toString("M월 d일")
                     } else {
-                        when (pattern) {
-                            DatePattern.COMPACT -> date.toLocalDate().toString("yyyy년 M월 d일")
-                            DatePattern.FULL -> date.toLocalDateTime()
-                                .toString("yyyy년 M월 d일 HH:mm")
-                        }
+                        localDate.toString("yyyy년 M월 d일")
                     }
                 }
             }
+            if (pattern == DatePattern.FULL) {
+                result += date.toLocalDateTime().toString(" H:mm")
+            }
+            return result
         } catch (e: Exception) {
             continue
         }
