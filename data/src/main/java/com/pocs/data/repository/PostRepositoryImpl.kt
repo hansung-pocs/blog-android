@@ -87,7 +87,7 @@ class PostRepositoryImpl @Inject constructor(
                     category = category.toDto()
                 )
             )
-            if (response.isSuccessful) {
+            if (response.code() == 302) {
                 Result.success(Unit)
             } else {
                 throw Exception(response.errorMessage)
