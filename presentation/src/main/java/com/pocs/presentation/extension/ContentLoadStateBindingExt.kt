@@ -9,20 +9,13 @@ import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ContentLoadStateBinding
 import java.net.ConnectException
 
+/**
+ * [ContentLoadStateBinding]의 프로그래스바, 실패 텍스트, 텅 글자 등을 필요한 순간에 보이게하는 리스너를 설정한다.
+ */
 fun <PA : PagingDataAdapter<T, VH>, T, VH> ContentLoadStateBinding.setListeners(
     adapter: PA,
     swipeToRefresh: SwipeRefreshLayout,
-    recyclerView: RecyclerView
 ) {
-    // 아이템이 추가되면 리스트 최상단으로 스크롤하는 옵저버를 등록한다.
-    adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-            if (positionStart == 0) {
-                recyclerView.scrollToPosition(0)
-            }
-        }
-    })
-
     swipeToRefresh.setOnRefreshListener { adapter.refresh() }
 
     this.retryButton.setOnClickListener {
@@ -32,7 +25,8 @@ fun <PA : PagingDataAdapter<T, VH>, T, VH> ContentLoadStateBinding.setListeners(
     adapter.addLoadStateListener { loadStates ->
         val refreshLoadState = loadStates.refresh
         val isError = refreshLoadState is LoadState.Error
-        val shouldShowEmptyText = refreshLoadState is LoadState.NotLoading && adapter.getItemCount() < 1
+        val shouldShowEmptyText =
+            refreshLoadState is LoadState.NotLoading && adapter.getItemCount() < 1
 
         if (refreshLoadState is LoadState.NotLoading) {
             swipeToRefresh.isRefreshing = false
@@ -48,4 +42,29 @@ fun <PA : PagingDataAdapter<T, VH>, T, VH> ContentLoadStateBinding.setListeners(
             }
         }
     }
+}
+
+/**
+ * 아이템이 첫 번째 인덱스에 추가되면 리스트 최상단으로 스크롤하는 옵저버를 등록한다.
+ *
+ * 추가적으로 아이템 순서가 변한 경우에 최상단으로 스크롤 하려면 [whenItemRangeMoved]를 `true`로 전달하면 된다.
+ */
+fun <T : Any, VH : RecyclerView.ViewHolder> PagingDataAdapter<T, VH>.registerObserverForScrollToTop(
+    recyclerView: RecyclerView,
+    whenItemInsertedFirst: Boolean = true,
+    whenItemRangeMoved: Boolean = false
+) {
+    this.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+            if (whenItemInsertedFirst && positionStart == 0) {
+                recyclerView.scrollToPosition(0)
+            }
+        }
+
+        override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+            if (whenItemRangeMoved) {
+                recyclerView.scrollToPosition(0)
+            }
+        }
+    })
 }

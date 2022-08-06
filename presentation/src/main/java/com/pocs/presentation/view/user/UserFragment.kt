@@ -18,6 +18,7 @@ import com.pocs.domain.model.user.UserListSortingMethod
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentUserBinding
 import com.pocs.presentation.extension.RefreshStateContract
+import com.pocs.presentation.extension.registerObserverForScrollToTop
 import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.user.UserUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
@@ -55,7 +56,12 @@ class UserFragment : Fragment(R.layout.fragment_user) {
             )
             recyclerView.layoutManager = LinearLayoutManager(view.context)
 
-            loadState.setListeners(adapter, refresh, recyclerView)
+            loadState.setListeners(adapter, refresh)
+            adapter.registerObserverForScrollToTop(
+                recyclerView,
+                whenItemRangeMoved = true,
+                whenItemInsertedFirst = false
+            )
 
             sortBox.setOnClickListener { showSortingMethodPopUpMenu() }
 
