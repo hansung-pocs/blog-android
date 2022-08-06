@@ -128,6 +128,7 @@ fun AdminUserCreateScreen(
             PocsOutlineTextField(
                 value = createInfo.generation,
                 label = stringResource(id = R.string.generation),
+                maxLength = MAX_USER_GENERATION_LEN,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 onValueChange = { generation ->
                     uiState.updateCreateInfo { it.copy(generation = generation) }
