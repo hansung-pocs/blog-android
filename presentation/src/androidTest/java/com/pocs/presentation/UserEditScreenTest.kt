@@ -152,8 +152,23 @@ class UserEditScreenTest {
 
             for (i in 1..4) {
                 stringBuilder.append("가")
-                composeTestRule.onNodeWithText("이름").performTextInput(stringBuilder.toString())
+                onNodeWithText("이름").performTextInput(stringBuilder.toString())
             }
+        }
+    }
+
+    @Test
+    fun shouldDisableSaveButton_WhenEmailIsNotValid() {
+        composeTestRule.run {
+            setContent {
+                UserEditContent(
+                    uiState = mockUiState.copy(email = "abc@.com"),
+                    navigateUp = {},
+                    onSuccessToSave = {},
+                )
+            }
+
+            onNodeWithContentDescription("저장하기").assertIsNotEnabled()
         }
     }
 }

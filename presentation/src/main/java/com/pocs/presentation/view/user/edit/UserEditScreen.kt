@@ -111,7 +111,8 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
             )
             PocsOutlineTextField(
                 value = uiState.email,
-                label = stringResource(R.string.email),
+                label = stringResource(id = if (uiState.isEmailValid) R.string.email else R.string.email_is_not_valid),
+                isError = !uiState.isEmailValid,
                 maxLength = MAX_USER_EMAIL_LEN,
                 placeholder = stringResource(R.string.email_placeholder),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),

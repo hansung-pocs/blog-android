@@ -17,8 +17,9 @@ fun PocsOutlineTextField(
     value: String,
     label: String,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    isError: Boolean = false,
     placeholder: String? = null,
-    maxLength: Int = Int.MAX_VALUE,
+    maxLength: Int,
     onValueChange: (String) -> Unit,
     onClearClick: () -> Unit,
     preventToInputEnterKey: Boolean = true
@@ -29,6 +30,7 @@ fun PocsOutlineTextField(
             .fillMaxWidth()
             .padding(vertical = 8.dp),
         value = value,
+        isError = isError,
         onValueChange = {
             if (it.length <= maxLength) {
                 var newValue = it
