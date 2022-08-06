@@ -17,6 +17,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pocs.presentation.R
+import com.pocs.presentation.constant.MAX_USER_COMPANY_LEN
+import com.pocs.presentation.constant.MAX_USER_EMAIL_LEN
+import com.pocs.presentation.constant.MAX_USER_GITHUB_LEN
+import com.pocs.presentation.constant.MAX_USER_NAME_LEN
 import com.pocs.presentation.model.user.UserEditUiState
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
@@ -97,6 +101,7 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
             PocsOutlineTextField(
                 value = uiState.name,
                 label = stringResource(R.string.name),
+                maxLength = MAX_USER_NAME_LEN,
                 onValueChange = { name ->
                     uiState.update { it.copy(name = name) }
                 },
@@ -107,6 +112,7 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
             PocsOutlineTextField(
                 value = uiState.email,
                 label = stringResource(R.string.email),
+                maxLength = MAX_USER_EMAIL_LEN,
                 placeholder = stringResource(R.string.email_placeholder),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 onValueChange = { email ->
@@ -119,6 +125,7 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
             PocsOutlineTextField(
                 value = uiState.company ?: "",
                 label = stringResource(R.string.company),
+                maxLength = MAX_USER_COMPANY_LEN,
                 onValueChange = { company ->
                     uiState.update { it.copy(company = company) }
                 },
@@ -129,6 +136,7 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
             PocsOutlineTextField(
                 value = uiState.github ?: "",
                 label = stringResource(R.string.github),
+                maxLength = MAX_USER_GITHUB_LEN,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
                 placeholder = stringResource(R.string.github_placeholder),
                 onValueChange = { github ->

@@ -69,6 +69,8 @@
     <string name="my_info_edited">내 정보 편집됨</string>
     <string name="empty_label">-</string>
     <string name="cannot_edit_post">글을 편집할 수 없습니다.</string>
+    <string name="nickname">닉네임</string>
+    <string name="password">비밀번호</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>
         <item>회원목록</item>

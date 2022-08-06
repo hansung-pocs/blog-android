@@ -15,6 +15,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.R
+import com.pocs.presentation.constant.*
 import com.pocs.presentation.model.admin.AdminUserCreateUiState
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
@@ -67,7 +68,8 @@ fun AdminUserCreateScreen(
         ) {
             PocsOutlineTextField(
                 value = createInfo.nickname,
-                label = "닉네임",
+                label = stringResource(R.string.nickname),
+                maxLength = MAX_USER_NICKNAME_LEN,
                 onValueChange = { nickname ->
                     uiState.updateCreateInfo { it.copy(nickname = nickname) }
                 },
@@ -77,7 +79,8 @@ fun AdminUserCreateScreen(
             )
             PocsOutlineTextField(
                 value = createInfo.password,
-                label = "비밀번호",
+                label = stringResource(R.string.password),
+                maxLength = MAX_USER_PASSWORD_LEN,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 onValueChange = { password ->
                     uiState.updateCreateInfo { it.copy(password = password) }
@@ -89,6 +92,7 @@ fun AdminUserCreateScreen(
             PocsOutlineTextField(
                 value = createInfo.name,
                 label = stringResource(id = R.string.name),
+                maxLength = MAX_USER_NAME_LEN,
                 onValueChange = { name ->
                     uiState.updateCreateInfo { it.copy(name = name) }
                 },
@@ -99,6 +103,7 @@ fun AdminUserCreateScreen(
             PocsOutlineTextField(
                 value = createInfo.studentId,
                 label = stringResource(id = R.string.student_id),
+                maxLength = MAX_USER_STUDENT_ID_LEN,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 onValueChange = { studentId ->
                     uiState.updateCreateInfo { it.copy(studentId = studentId) }
@@ -110,6 +115,7 @@ fun AdminUserCreateScreen(
             PocsOutlineTextField(
                 value = createInfo.email,
                 label = stringResource(id = R.string.email),
+                maxLength = MAX_USER_EMAIL_LEN,
                 placeholder = stringResource(R.string.email_placeholder),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 onValueChange = { email ->
@@ -139,6 +145,7 @@ fun AdminUserCreateScreen(
             PocsOutlineTextField(
                 value = createInfo.company,
                 label = stringResource(id = R.string.company),
+                maxLength = MAX_USER_COMPANY_LEN,
                 onValueChange = { company ->
                     uiState.updateCreateInfo { it.copy(company = company) }
                 },
@@ -149,6 +156,7 @@ fun AdminUserCreateScreen(
             PocsOutlineTextField(
                 value = createInfo.github,
                 label = stringResource(id = R.string.github),
+                maxLength = MAX_USER_GITHUB_LEN,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
                 placeholder = stringResource(R.string.github_placeholder),
                 onValueChange = { github ->
