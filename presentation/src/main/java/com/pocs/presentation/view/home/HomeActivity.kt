@@ -15,7 +15,7 @@ import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ActivityHomeBinding
 import com.pocs.presentation.view.admin.AdminActivity
 import com.pocs.presentation.view.user.UserActivity
-import com.pocs.presentation.view.user.edit.UserEditActivity
+import com.pocs.presentation.view.user.detail.UserDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -57,10 +57,6 @@ class HomeActivity : AppCompatActivity() {
                 val intent = AdminActivity.getIntent(this)
                 startActivity(intent)
             }
-            R.id.action_edit_my_info -> {
-                val intent = UserEditActivity.getIntent(this, viewModel.uiState.value.userDetail)
-                startActivity(intent)
-            }
         }
         binding.drawerLayout.close()
         return true
@@ -72,10 +68,13 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.action_go_my_info -> {
+                val intent = UserDetailActivity.getIntent(this, viewModel.uiState.value.userDetail.id)
+                startActivity(intent)
+            }
         }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onSupportNavigateUp(): Boolean {
