@@ -156,7 +156,7 @@ fun UserDetailContent(
             item {
                 UserInfo(
                     stringResource(R.string.generation),
-                    stringResource(R.string.user_generation_info, userDetail.generation)
+                    userDetail.generation.toString()
                 )
             }
             item {
