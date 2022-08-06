@@ -84,4 +84,49 @@ class UserEditScreenTest {
             onNodeWithText("비밀번호를 입력하세요").assertIsDisplayed()
         }
     }
+
+    @Test
+    fun disableSaveButton_WhenNameIsEmpty() {
+        composeTestRule.run {
+            setContent {
+                UserEditContent(
+                    uiState = mockUiState.copy(name = "", email = "abc"),
+                    navigateUp = {},
+                    onSuccessToSave = {}
+                )
+            }
+
+            onNodeWithContentDescription("저장하기").assertIsNotEnabled()
+        }
+    }
+
+    @Test
+    fun disableSaveButton_WhenEmailIsEmpty() {
+        composeTestRule.run {
+            setContent {
+                UserEditContent(
+                    uiState = mockUiState.copy(name = "kim", email = ""),
+                    navigateUp = {},
+                    onSuccessToSave = {}
+                )
+            }
+
+            onNodeWithContentDescription("저장하기").assertIsNotEnabled()
+        }
+    }
+
+    @Test
+    fun enableSaveButton_WhenNameAndEmailAreNotEmpty() {
+        composeTestRule.run {
+            setContent {
+                UserEditContent(
+                    uiState = mockUiState.copy(name = "kim", email = "ail.com"),
+                    navigateUp = {},
+                    onSuccessToSave = {}
+                )
+            }
+
+            onNodeWithContentDescription("저장하기").assertIsEnabled()
+        }
+    }
 }
