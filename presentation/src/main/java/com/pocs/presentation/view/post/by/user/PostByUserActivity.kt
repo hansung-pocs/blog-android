@@ -60,7 +60,7 @@ class PostByUserActivity : AppCompatActivity() {
             recyclerView.layoutManager = LinearLayoutManager(this@PostByUserActivity)
             recyclerView.addDividerDecoration()
 
-            loadState.setListeners(adapter, refresh)
+            loadState.setListeners(adapter, refresh, recyclerView)
         }
 
         lifecycleScope.launch {
