@@ -14,6 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
+import com.pocs.presentation.constant.MAX_POST_CONTENT_LEN
+import com.pocs.presentation.constant.MAX_POST_TITLE_LEN
 import com.pocs.presentation.model.BasePostEditUiState
 import com.pocs.presentation.model.post.PostEditUiState
 import com.pocs.presentation.view.component.RecheckHandler
@@ -88,6 +90,7 @@ fun PostEditContent(
             SimpleTextField(
                 hint = stringResource(R.string.title),
                 value = uiState.title,
+                maxLength = MAX_POST_TITLE_LEN,
                 onValueChange = {
                     uiState.onTitleChange(it.filter { char -> char != '\n' })
                 },
@@ -99,6 +102,7 @@ fun PostEditContent(
             SimpleTextField(
                 hint = stringResource(R.string.content),
                 value = uiState.content,
+                maxLength = MAX_POST_CONTENT_LEN,
                 onValueChange = uiState.onContentChange,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -113,6 +117,7 @@ fun PostEditContent(
 fun SimpleTextField(
     hint: String,
     value: String,
+    maxLength: Int,
     onValueChange: (String) -> Unit,
     modifier: Modifier
 ) {
@@ -125,7 +130,11 @@ fun SimpleTextField(
         ),
         placeholder = { Text(hint) },
         value = value,
-        onValueChange = onValueChange,
+        onValueChange = {
+            if (it.length <= maxLength) {
+                onValueChange(it)
+            }
+        },
         modifier = modifier
     )
 }

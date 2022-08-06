@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.pocs.domain.model.post.PostCategory
+import com.pocs.presentation.constant.MAX_POST_TITLE_LEN
 import com.pocs.presentation.model.post.PostEditUiState
 import com.pocs.presentation.view.post.edit.PostEditScreen
 import org.junit.Assert.assertEquals
@@ -195,5 +196,20 @@ class PostEditScreenTest {
         }
 
         composeTestRule.onNodeWithContentDescription("제목 입력창").performTextInput("he\nll\no\n")
+    }
+
+    @Test
+    fun shouldLimitLengthOfTitle_WhenTypeTitle() {
+        composeTestRule.setContent {
+            PostEditScreen(uiState = emptyUiState.copy(
+                onTitleChange = {
+                    assertEquals(MAX_POST_TITLE_LEN, it.length)
+                }
+            ), {}) {}
+        }
+
+        composeTestRule.onNodeWithContentDescription("제목 입력창").performTextInput(
+            "아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주아주긴제목이것은50자에끊겨야함"
+        )
     }
 }
