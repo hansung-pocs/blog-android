@@ -31,6 +31,7 @@
     <string name="github">깃허브</string>
     <string name="email">이메일</string>
     <string name="email_is_not_valid">이메일이 유효하지 않습니다</string>
+    <string name="github_url_is_not_valid">깃허브 주소가 유효하지 않습니다</string>
     <string name="mailto_scheme">mailto:%s</string>
     <string name="kick">강퇴하기</string>
     <string name="see_user_post">작성글 보기</string>

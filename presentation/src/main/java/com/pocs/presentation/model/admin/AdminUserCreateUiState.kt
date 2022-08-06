@@ -1,6 +1,7 @@
 package com.pocs.presentation.model.admin
 
 import com.pocs.presentation.extension.isValidEmail
+import com.pocs.presentation.extension.isValidGithubUserUrl
 
 data class AdminUserCreateUiState(
     val createInfo: UserCreateInfoUiState = UserCreateInfoUiState(),
@@ -19,9 +20,11 @@ data class AdminUserCreateUiState(
                     && createInfo.studentId.isNotEmpty()
                     && createInfo.generation.isNotEmpty()
                     && isEmailValid
+                    && isGithubUrlValid
         }
 
     val isEmailValid = createInfo.email.isValidEmail()
+    val isGithubUrlValid = createInfo.github.isEmpty() || createInfo.github.isValidGithubUserUrl()
 
     fun updateCreateInfo(updater: (UserCreateInfoUiState) -> UserCreateInfoUiState) {
         onUpdateCreateInfo(updater(createInfo))

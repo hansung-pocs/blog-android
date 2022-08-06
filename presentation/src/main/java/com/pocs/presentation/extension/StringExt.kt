@@ -11,3 +11,7 @@ fun String.isValidEmail(): Boolean {
                 ")+"
     ).matches(this)
 }
+
+fun String.isValidGithubUserUrl(): Boolean {
+    return Regex("https://github\\.com/[a-zA-Z0-9\\-]{1,38}").matches(this)
+}
