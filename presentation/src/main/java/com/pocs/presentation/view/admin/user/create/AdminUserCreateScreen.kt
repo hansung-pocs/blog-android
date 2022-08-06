@@ -58,8 +58,6 @@ fun AdminUserCreateScreen(
     ) { innerPadding ->
         val scrollState = rememberScrollState()
         val createInfo = uiState.createInfo
-        // 생성 화면이 띄워지고 바로 이메일 입력창만 빨갛게 에러를 보이면 이상하기 때문에 공백일때는 에러를 보이지 않는다.
-        val showEmailError = !uiState.isEmailValid && createInfo.email.isNotEmpty()
 
         Column(
             Modifier
@@ -116,8 +114,8 @@ fun AdminUserCreateScreen(
             )
             PocsOutlineTextField(
                 value = createInfo.email,
-                label = stringResource(id = if (showEmailError) R.string.email_is_not_valid else R.string.email),
-                isError = showEmailError,
+                label = stringResource(if (uiState.showEmailError) R.string.email_is_not_valid else R.string.email),
+                isError = uiState.showEmailError,
                 maxLength = MAX_USER_EMAIL_LEN,
                 placeholder = stringResource(R.string.email_placeholder),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
