@@ -100,7 +100,12 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
             UserEditAvatar {}
             PocsOutlineTextField(
                 value = uiState.name,
-                label = stringResource(R.string.name),
+                label = if (uiState.canSaveName) {
+                    stringResource(R.string.name)
+                } else {
+                    stringResource(R.string.name_must_be_needed)
+                },
+                isError = !uiState.canSaveName,
                 maxLength = MAX_USER_NAME_LEN,
                 onValueChange = { name ->
                     uiState.update { it.copy(name = name) }
@@ -111,7 +116,13 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
             )
             PocsOutlineTextField(
                 value = uiState.email,
-                label = stringResource(id = if (uiState.canSaveEmail) R.string.email else R.string.email_is_not_valid),
+                label = if (uiState.canSaveEmail) {
+                    stringResource(R.string.email)
+                } else if (uiState.email.isEmpty()) {
+                    stringResource(R.string.email_must_be_needed)
+                } else {
+                    stringResource(R.string.email_is_not_valid)
+                },
                 isError = !uiState.canSaveEmail,
                 maxLength = MAX_USER_EMAIL_LEN,
                 placeholder = stringResource(R.string.email_placeholder),

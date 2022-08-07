@@ -15,9 +15,10 @@ data class UserEditUiState(
 ) {
     val canSave: Boolean
         get() {
-            return name.isNotEmpty() && canSaveEmail && canSaveGithubUrl
+            return canSaveName && canSaveEmail && canSaveGithubUrl
         }
 
+    val canSaveName = name.isNotEmpty()
     val canSaveEmail = email.isValidEmail()
     val canSaveGithubUrl = github == null || github.canSaveAsGithubUrl()
 
