@@ -1,5 +1,6 @@
 package com.pocs.presentation.view.component.dialog
 
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -68,6 +69,11 @@ private fun PasswordDialogContent(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Send
+                ),
+                keyboardActions = KeyboardActions(
+                    onSend = {
+                        onSaveClick(password)
+                    }
                 ),
                 visualTransformation = if (passwordVisible) {
                     VisualTransformation.None
