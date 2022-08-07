@@ -1,9 +1,7 @@
 package com.pocs.presentation.view.admin.user.create
 
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -66,6 +64,7 @@ fun AdminUserCreateScreen(
                 .verticalScroll(scrollState)
                 .fillMaxWidth()
         ) {
+            EditGroupLabel("필수")
             PocsOutlineTextField(
                 value = createInfo.nickname,
                 label = stringResource(R.string.nickname),
@@ -144,6 +143,7 @@ fun AdminUserCreateScreen(
                     uiState.updateCreateInfo { it.copy(type = userType) }
                 }
             )
+            EditGroupLabel("선택")
             PocsOutlineTextField(
                 value = createInfo.company,
                 label = stringResource(id = R.string.company),
@@ -169,8 +169,20 @@ fun AdminUserCreateScreen(
                     uiState.updateCreateInfo { it.copy(github = "") }
                 }
             )
+            Box(Modifier.height(8.dp))
         }
     }
+}
+
+@Composable
+fun EditGroupLabel(text: String) {
+    Text(
+        text,
+        modifier = Modifier.padding(top = 16.dp),
+        style = MaterialTheme.typography.labelMedium.copy(
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+        )
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
