@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -105,6 +106,7 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
                 } else {
                     stringResource(R.string.name_must_be_needed)
                 },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 isError = !uiState.canSaveName,
                 maxLength = MAX_USER_NAME_LEN,
                 onValueChange = { name ->
@@ -126,7 +128,10 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
                 isError = !uiState.canSaveEmail,
                 maxLength = MAX_USER_EMAIL_LEN,
                 placeholder = stringResource(R.string.email_placeholder),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                ),
                 onValueChange = { email ->
                     uiState.update { it.copy(email = email) }
                 },
@@ -138,6 +143,7 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
                 value = uiState.company ?: "",
                 label = stringResource(R.string.company),
                 maxLength = MAX_USER_COMPANY_LEN,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 onValueChange = { company ->
                     uiState.update { it.copy(company = company) }
                 },
@@ -150,7 +156,10 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
                 label = stringResource(if (uiState.canSaveGithubUrl) R.string.github else R.string.github_url_is_not_valid),
                 isError = !uiState.canSaveGithubUrl,
                 maxLength = MAX_USER_GITHUB_LEN,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Uri,
+                    imeAction = ImeAction.Next
+                ),
                 placeholder = stringResource(R.string.github_placeholder),
                 onValueChange = { github ->
                     uiState.update { it.copy(github = github) }

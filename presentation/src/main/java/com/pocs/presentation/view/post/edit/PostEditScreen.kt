@@ -2,6 +2,7 @@ package com.pocs.presentation.view.post.edit
 
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -10,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pocs.domain.model.post.PostCategory
@@ -91,6 +93,7 @@ fun PostEditContent(
                 hint = stringResource(R.string.title),
                 value = uiState.title,
                 maxLength = MAX_POST_TITLE_LEN,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 onValueChange = {
                     uiState.onTitleChange(it.filter { char -> char != '\n' })
                 },
@@ -118,6 +121,7 @@ fun SimpleTextField(
     hint: String,
     value: String,
     maxLength: Int,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onValueChange: (String) -> Unit,
     modifier: Modifier
 ) {
@@ -128,6 +132,7 @@ fun SimpleTextField(
             unfocusedIndicatorColor = Color.Transparent,
             containerColor = Color.Transparent
         ),
+        keyboardOptions = keyboardOptions,
         placeholder = { Text(hint) },
         value = value,
         onValueChange = {

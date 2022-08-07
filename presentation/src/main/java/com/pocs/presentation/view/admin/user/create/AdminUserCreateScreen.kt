@@ -9,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.pocs.domain.model.user.UserType
@@ -68,6 +69,7 @@ fun AdminUserCreateScreen(
             PocsOutlineTextField(
                 value = createInfo.nickname,
                 label = stringResource(R.string.nickname),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 maxLength = MAX_USER_NICKNAME_LEN,
                 onValueChange = { nickname ->
                     uiState.updateCreateInfo { it.copy(nickname = nickname) }
@@ -80,7 +82,10 @@ fun AdminUserCreateScreen(
                 value = createInfo.password,
                 label = stringResource(R.string.password),
                 maxLength = MAX_USER_PASSWORD_LEN,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Next
+                ),
                 onValueChange = { password ->
                     uiState.updateCreateInfo { it.copy(password = password) }
                 },
@@ -91,6 +96,7 @@ fun AdminUserCreateScreen(
             PocsOutlineTextField(
                 value = createInfo.name,
                 label = stringResource(id = R.string.name),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 maxLength = MAX_USER_NAME_LEN,
                 onValueChange = { name ->
                     uiState.updateCreateInfo { it.copy(name = name) }
@@ -103,7 +109,10 @@ fun AdminUserCreateScreen(
                 value = createInfo.studentId,
                 label = stringResource(id = R.string.student_id),
                 maxLength = MAX_USER_STUDENT_ID_LEN,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Next
+                ),
                 onValueChange = { studentId ->
                     uiState.updateCreateInfo { it.copy(studentId = studentId) }
                 },
@@ -117,7 +126,10 @@ fun AdminUserCreateScreen(
                 isError = uiState.showEmailError,
                 maxLength = MAX_USER_EMAIL_LEN,
                 placeholder = stringResource(R.string.email_placeholder),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                ),
                 onValueChange = { email ->
                     uiState.updateCreateInfo { it.copy(email = email) }
                 },
@@ -129,7 +141,10 @@ fun AdminUserCreateScreen(
                 value = createInfo.generation,
                 label = stringResource(id = R.string.generation),
                 maxLength = MAX_USER_GENERATION_LEN,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Next
+                ),
                 onValueChange = { generation ->
                     uiState.updateCreateInfo { it.copy(generation = generation) }
                 },
@@ -147,6 +162,7 @@ fun AdminUserCreateScreen(
             PocsOutlineTextField(
                 value = createInfo.company,
                 label = stringResource(id = R.string.company),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 maxLength = MAX_USER_COMPANY_LEN,
                 onValueChange = { company ->
                     uiState.updateCreateInfo { it.copy(company = company) }
@@ -160,7 +176,10 @@ fun AdminUserCreateScreen(
                 label = stringResource(if (uiState.canSaveGithubUrl) R.string.github else R.string.github_url_is_not_valid),
                 isError = !uiState.canSaveGithubUrl,
                 maxLength = MAX_USER_GITHUB_LEN,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Uri,
+                    imeAction = ImeAction.Next
+                ),
                 placeholder = stringResource(R.string.github_placeholder),
                 onValueChange = { github ->
                     uiState.updateCreateInfo { it.copy(github = github) }
