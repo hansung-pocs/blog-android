@@ -7,6 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -189,7 +190,8 @@ fun UserEditAvatar(onClick: () -> Unit) {
             modifier = Modifier
                 .size(120.dp)
                 .clickable(onClick = onClick),
-            imageVector = Icons.Filled.Person,
+            imageVector = Icons.Filled.AccountCircle,
+            tint = MaterialTheme.colorScheme.onBackground,
             contentDescription = stringResource(id = R.string.user_image)
         )
     }
