@@ -171,4 +171,34 @@ class UserEditScreenTest {
             onNodeWithContentDescription("저장하기").assertIsNotEnabled()
         }
     }
+
+    @Test
+    fun showNameMustBeNeededError_WhenNameIsEmpty() {
+        composeTestRule.run {
+            setContent {
+                UserEditContent(
+                    uiState = mockUiState.copy(name = ""),
+                    navigateUp = {},
+                    onSuccessToSave = {},
+                )
+            }
+
+            onNodeWithText("이름은 필수 사항입니다").assertIsDisplayed()
+        }
+    }
+
+    @Test
+    fun showEmailMustBeNeededError_WhenEmailIsEmpty() {
+        composeTestRule.run {
+            setContent {
+                UserEditContent(
+                    uiState = mockUiState.copy(email = ""),
+                    navigateUp = {},
+                    onSuccessToSave = {},
+                )
+            }
+
+            onNodeWithText("이메일은 필수 사항입니다").assertIsDisplayed()
+        }
+    }
 }
