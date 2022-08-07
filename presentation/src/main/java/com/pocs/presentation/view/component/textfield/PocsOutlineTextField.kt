@@ -47,12 +47,14 @@ fun PocsOutlineTextField(
             placeholder?.let { Text(text = it) }
         },
         trailingIcon = {
-            IconButton(onClick = onClearClick) {
-                Icon(
-                    imageVector = Icons.Filled.Clear,
-                    contentDescription = stringResource(R.string.clear_text_field),
-                    tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
-                )
+            if (value.isNotEmpty()) {
+                IconButton(onClick = onClearClick) {
+                    Icon(
+                        imageVector = Icons.Filled.Clear,
+                        contentDescription = stringResource(R.string.clear_text_field),
+                        tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                    )
+                }
             }
         }
     )
