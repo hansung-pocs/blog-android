@@ -22,7 +22,7 @@ class UserEditScreenTest {
         "박민석",
         "hello@gmiad.com",
         "google",
-        "https://github.com/",
+        "https://github.com/user",
         isInSaving = false,
         onUpdate = ::onUpdate,
         onSave = { Result.success(Unit) }
@@ -82,6 +82,7 @@ class UserEditScreenTest {
             }
 
             onNodeWithContentDescription("저장하기").performClick()
+            mainClock.advanceTimeByFrame()
 
             onNodeWithText("비밀번호를 입력하세요").assertIsDisplayed()
         }
@@ -118,11 +119,15 @@ class UserEditScreenTest {
     }
 
     @Test
-    fun enableSaveButton_WhenNameAndEmailAreNotEmpty() {
+    fun enableSaveButton_WhenAllInputsAreValid() {
         composeTestRule.run {
             setContent {
                 UserEditContent(
-                    uiState = mockUiState.copy(name = "kim", email = "ail.com"),
+                    uiState = mockUiState.copy(
+                        name = "kim",
+                        email = "ail@he.com",
+                        github = "https://github.com/user"
+                    ),
                     navigateUp = {},
                     onSuccessToSave = {}
                 )
@@ -152,7 +157,7 @@ class UserEditScreenTest {
 
             for (i in 1..4) {
                 stringBuilder.append("가")
-                onNodeWithText("이름").performTextInput(stringBuilder.toString())
+                onNodeWithContentDescription("이름 입력창").performTextInput(stringBuilder.toString())
             }
         }
     }

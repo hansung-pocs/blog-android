@@ -13,6 +13,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -106,6 +108,7 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
                 } else {
                     stringResource(R.string.name_must_be_needed)
                 },
+                modifier = Modifier.semantics { contentDescription = "이름 입력창" },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 isError = !uiState.canSaveName,
                 maxLength = MAX_USER_NAME_LEN,

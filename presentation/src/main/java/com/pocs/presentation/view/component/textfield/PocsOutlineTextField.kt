@@ -16,6 +16,7 @@ import com.pocs.presentation.R
 fun PocsOutlineTextField(
     value: String,
     label: String,
+    modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     isError: Boolean = false,
     placeholder: String? = null,
@@ -26,7 +27,7 @@ fun PocsOutlineTextField(
 ) {
     OutlinedTextField(
         keyboardOptions = keyboardOptions,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
         value = value,
