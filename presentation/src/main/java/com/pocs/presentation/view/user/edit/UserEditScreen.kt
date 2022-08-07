@@ -13,10 +13,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pocs.presentation.R
+import com.pocs.presentation.constant.MAX_USER_COMPANY_LEN
+import com.pocs.presentation.constant.MAX_USER_EMAIL_LEN
+import com.pocs.presentation.constant.MAX_USER_GITHUB_LEN
+import com.pocs.presentation.constant.MAX_USER_NAME_LEN
 import com.pocs.presentation.model.user.UserEditUiState
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
@@ -96,7 +103,15 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
             UserEditAvatar {}
             PocsOutlineTextField(
                 value = uiState.name,
-                label = stringResource(R.string.name),
+                label = if (uiState.canSaveName) {
+                    stringResource(R.string.name)
+                } else {
+                    stringResource(R.string.name_must_be_needed)
+                },
+                modifier = Modifier.semantics { contentDescription = "이름 입력창" },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                isError = !uiState.canSaveName,
+                maxLength = MAX_USER_NAME_LEN,
                 onValueChange = { name ->
                     uiState.update { it.copy(name = name) }
                 },
@@ -106,9 +121,20 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
             )
             PocsOutlineTextField(
                 value = uiState.email,
-                label = stringResource(R.string.email),
+                label = if (uiState.canSaveEmail) {
+                    stringResource(R.string.email)
+                } else if (uiState.email.isEmpty()) {
+                    stringResource(R.string.email_must_be_needed)
+                } else {
+                    stringResource(R.string.email_is_not_valid)
+                },
+                isError = !uiState.canSaveEmail,
+                maxLength = MAX_USER_EMAIL_LEN,
                 placeholder = stringResource(R.string.email_placeholder),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                ),
                 onValueChange = { email ->
                     uiState.update { it.copy(email = email) }
                 },
@@ -119,6 +145,8 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
             PocsOutlineTextField(
                 value = uiState.company ?: "",
                 label = stringResource(R.string.company),
+                maxLength = MAX_USER_COMPANY_LEN,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 onValueChange = { company ->
                     uiState.update { it.copy(company = company) }
                 },
@@ -128,8 +156,13 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
             )
             PocsOutlineTextField(
                 value = uiState.github ?: "",
-                label = stringResource(R.string.github),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
+                label = stringResource(if (uiState.canSaveGithubUrl) R.string.github else R.string.github_url_is_not_valid),
+                isError = !uiState.canSaveGithubUrl,
+                maxLength = MAX_USER_GITHUB_LEN,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Uri,
+                    imeAction = ImeAction.Next
+                ),
                 placeholder = stringResource(R.string.github_placeholder),
                 onValueChange = { github ->
                     uiState.update { it.copy(github = github) }

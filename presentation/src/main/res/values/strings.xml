@@ -29,6 +29,9 @@
     <string name="company">회사</string>
     <string name="github">깃허브</string>
     <string name="email">이메일</string>
+    <string name="email_must_be_needed">이메일은 필수 사항입니다</string>
+    <string name="email_is_not_valid">이메일이 유효하지 않습니다</string>
+    <string name="github_url_is_not_valid">깃허브 주소가 유효하지 않습니다</string>
     <string name="mailto_scheme">mailto:%s</string>
     <string name="kick">강퇴하기</string>
     <string name="see_user_post">작성글 보기</string>
@@ -39,6 +42,7 @@
     <string name="recheck_dialog_text">작성하신 내용은 저장되지 않습니다.</string>
     <string name="clear_text_field">입력 창 내용 지우기</string>
     <string name="name">이름</string>
+    <string name="name_must_be_needed">이름은 필수 사항입니다</string>
     <string name="email_placeholder">example@gmail.com</string>
     <string name="github_placeholder">https://github.com/user</string>
     <string name="title_text_field">제목 입력창</string>
@@ -68,6 +72,8 @@
     <string name="my_info_edited">내 정보 편집됨</string>
     <string name="empty_label">-</string>
     <string name="cannot_edit_post">글을 편집할 수 없습니다.</string>
+    <string name="nickname">닉네임</string>
+    <string name="password">비밀번호</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>
         <item>회원목록</item>

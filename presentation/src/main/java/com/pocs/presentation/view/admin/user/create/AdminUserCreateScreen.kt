@@ -1,9 +1,7 @@
 package com.pocs.presentation.view.admin.user.create
 
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -11,10 +9,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.R
+import com.pocs.presentation.constant.*
 import com.pocs.presentation.model.admin.AdminUserCreateUiState
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
@@ -65,9 +65,12 @@ fun AdminUserCreateScreen(
                 .verticalScroll(scrollState)
                 .fillMaxWidth()
         ) {
+            EditGroupLabel("필수")
             PocsOutlineTextField(
                 value = createInfo.nickname,
-                label = "닉네임",
+                label = stringResource(R.string.nickname),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                maxLength = MAX_USER_NICKNAME_LEN,
                 onValueChange = { nickname ->
                     uiState.updateCreateInfo { it.copy(nickname = nickname) }
                 },
@@ -77,8 +80,12 @@ fun AdminUserCreateScreen(
             )
             PocsOutlineTextField(
                 value = createInfo.password,
-                label = "비밀번호",
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                label = stringResource(R.string.password),
+                maxLength = MAX_USER_PASSWORD_LEN,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Next
+                ),
                 onValueChange = { password ->
                     uiState.updateCreateInfo { it.copy(password = password) }
                 },
@@ -89,6 +96,8 @@ fun AdminUserCreateScreen(
             PocsOutlineTextField(
                 value = createInfo.name,
                 label = stringResource(id = R.string.name),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                maxLength = MAX_USER_NAME_LEN,
                 onValueChange = { name ->
                     uiState.updateCreateInfo { it.copy(name = name) }
                 },
@@ -99,7 +108,11 @@ fun AdminUserCreateScreen(
             PocsOutlineTextField(
                 value = createInfo.studentId,
                 label = stringResource(id = R.string.student_id),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                maxLength = MAX_USER_STUDENT_ID_LEN,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Next
+                ),
                 onValueChange = { studentId ->
                     uiState.updateCreateInfo { it.copy(studentId = studentId) }
                 },
@@ -109,9 +122,14 @@ fun AdminUserCreateScreen(
             )
             PocsOutlineTextField(
                 value = createInfo.email,
-                label = stringResource(id = R.string.email),
+                label = stringResource(if (uiState.showEmailError) R.string.email_is_not_valid else R.string.email),
+                isError = uiState.showEmailError,
+                maxLength = MAX_USER_EMAIL_LEN,
                 placeholder = stringResource(R.string.email_placeholder),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                ),
                 onValueChange = { email ->
                     uiState.updateCreateInfo { it.copy(email = email) }
                 },
@@ -122,7 +140,11 @@ fun AdminUserCreateScreen(
             PocsOutlineTextField(
                 value = createInfo.generation,
                 label = stringResource(id = R.string.generation),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                maxLength = MAX_USER_GENERATION_LEN,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Next
+                ),
                 onValueChange = { generation ->
                     uiState.updateCreateInfo { it.copy(generation = generation) }
                 },
@@ -136,9 +158,12 @@ fun AdminUserCreateScreen(
                     uiState.updateCreateInfo { it.copy(type = userType) }
                 }
             )
+            EditGroupLabel("선택")
             PocsOutlineTextField(
                 value = createInfo.company,
                 label = stringResource(id = R.string.company),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                maxLength = MAX_USER_COMPANY_LEN,
                 onValueChange = { company ->
                     uiState.updateCreateInfo { it.copy(company = company) }
                 },
@@ -148,8 +173,13 @@ fun AdminUserCreateScreen(
             )
             PocsOutlineTextField(
                 value = createInfo.github,
-                label = stringResource(id = R.string.github),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
+                label = stringResource(if (uiState.canSaveGithubUrl) R.string.github else R.string.github_url_is_not_valid),
+                isError = !uiState.canSaveGithubUrl,
+                maxLength = MAX_USER_GITHUB_LEN,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Uri,
+                    imeAction = ImeAction.Next
+                ),
                 placeholder = stringResource(R.string.github_placeholder),
                 onValueChange = { github ->
                     uiState.updateCreateInfo { it.copy(github = github) }
@@ -158,8 +188,20 @@ fun AdminUserCreateScreen(
                     uiState.updateCreateInfo { it.copy(github = "") }
                 }
             )
+            Box(Modifier.height(8.dp))
         }
     }
+}
+
+@Composable
+fun EditGroupLabel(text: String) {
+    Text(
+        text,
+        modifier = Modifier.padding(top = 16.dp),
+        style = MaterialTheme.typography.labelMedium.copy(
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+        )
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -5,8 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
+import com.pocs.presentation.constant.MAX_USER_NAME_LEN
 import com.pocs.presentation.model.user.UserEditUiState
 import com.pocs.presentation.view.user.edit.UserEditContent
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -20,7 +22,7 @@ class UserEditScreenTest {
         "박민석",
         "hello@gmiad.com",
         "google",
-        "https://github.com/",
+        "https://github.com/user",
         isInSaving = false,
         onUpdate = ::onUpdate,
         onSave = { Result.success(Unit) }
@@ -34,7 +36,7 @@ class UserEditScreenTest {
     @Test
     fun showRecheckDialog_WhenUserClickBackButton() {
         composeTestRule.run {
-            setContent { 
+            setContent {
                 UserEditContent(
                     uiState = mockUiState,
                     navigateUp = {},
@@ -51,7 +53,7 @@ class UserEditScreenTest {
     @Test
     fun removeTextFieldValues_WhenClickClearButton() {
         composeTestRule.run {
-            setContent { 
+            setContent {
                 UserEditContent(
                     uiState = mockUiState,
                     navigateUp = {},
@@ -71,7 +73,7 @@ class UserEditScreenTest {
     @Test
     fun showPasswordDialog_WhenClickSendButton() {
         composeTestRule.run {
-            setContent { 
+            setContent {
                 UserEditContent(
                     uiState = mockUiState,
                     navigateUp = {},
@@ -80,6 +82,7 @@ class UserEditScreenTest {
             }
 
             onNodeWithContentDescription("저장하기").performClick()
+            mainClock.advanceTimeByFrame()
 
             onNodeWithText("비밀번호를 입력하세요").assertIsDisplayed()
         }
@@ -116,17 +119,91 @@ class UserEditScreenTest {
     }
 
     @Test
-    fun enableSaveButton_WhenNameAndEmailAreNotEmpty() {
+    fun enableSaveButton_WhenAllInputsAreValid() {
         composeTestRule.run {
             setContent {
                 UserEditContent(
-                    uiState = mockUiState.copy(name = "kim", email = "ail.com"),
+                    uiState = mockUiState.copy(
+                        name = "kim",
+                        email = "ail@he.com",
+                        github = "https://github.com/user"
+                    ),
                     navigateUp = {},
                     onSuccessToSave = {}
                 )
             }
 
             onNodeWithContentDescription("저장하기").assertIsEnabled()
+        }
+    }
+
+    @Test
+    fun shouldLimitNameLength_WhenTypeName() {
+        composeTestRule.run {
+            setContent {
+                UserEditContent(
+                    uiState = mockUiState.copy(name = "", onUpdate = {
+                        assertTrue(it.name.length <= MAX_USER_NAME_LEN)
+                    }),
+                    navigateUp = {},
+                    onSuccessToSave = {},
+                )
+            }
+
+            val stringBuilder = StringBuilder()
+            for (i in 1..(MAX_USER_NAME_LEN - 2)) {
+                stringBuilder.append("가")
+            }
+
+            for (i in 1..4) {
+                stringBuilder.append("가")
+                onNodeWithContentDescription("이름 입력창").performTextInput(stringBuilder.toString())
+            }
+        }
+    }
+
+    @Test
+    fun shouldDisableSaveButton_WhenEmailIsNotValid() {
+        composeTestRule.run {
+            setContent {
+                UserEditContent(
+                    uiState = mockUiState.copy(email = "abc@.com"),
+                    navigateUp = {},
+                    onSuccessToSave = {},
+                )
+            }
+
+            onNodeWithContentDescription("저장하기").assertIsNotEnabled()
+        }
+    }
+
+    @Test
+    fun showNameMustBeNeededError_WhenNameIsEmpty() {
+        composeTestRule.run {
+            setContent {
+                UserEditContent(
+                    uiState = mockUiState.copy(name = ""),
+                    navigateUp = {},
+                    onSuccessToSave = {},
+                )
+            }
+
+            onNodeWithText("이름은 필수 사항입니다").assertIsDisplayed()
+        }
+    }
+
+    @Test
+    fun showEmailMustBeNeededError_WhenEmailIsEmpty() {
+        composeTestRule.run {
+            setContent {
+                UserEditContent(
+                    uiState = mockUiState.copy(email = ""),
+                    navigateUp = {},
+                    onSuccessToSave = {},
+                )
+            }
+
+            onNodeWithText("이메일은 필수 사항입니다").assertIsDisplayed()
         }
     }
 }

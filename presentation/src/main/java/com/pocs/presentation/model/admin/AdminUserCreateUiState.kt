@@ -1,5 +1,8 @@
 package com.pocs.presentation.model.admin
 
+import com.pocs.presentation.extension.canSaveAsGithubUrl
+import com.pocs.presentation.extension.isValidEmail
+
 data class AdminUserCreateUiState(
     val createInfo: UserCreateInfoUiState = UserCreateInfoUiState(),
     val isInSaving: Boolean = false,
@@ -15,9 +18,17 @@ data class AdminUserCreateUiState(
                     && createInfo.password.isNotEmpty()
                     && createInfo.name.isNotEmpty()
                     && createInfo.studentId.isNotEmpty()
-                    && createInfo.email.isNotEmpty()
                     && createInfo.generation.isNotEmpty()
+                    && canSaveEmail
+                    && canSaveGithubUrl
         }
+
+    private val canSaveEmail = createInfo.email.isValidEmail()
+
+    // 생성 화면이 띄워지고 바로 이메일 입력창만 빨갛게 에러를 보이면 이상하기 때문에 공백일때는 에러를 보이지 않는다.
+    val showEmailError = !canSaveEmail && createInfo.email.isNotEmpty()
+
+    val canSaveGithubUrl = createInfo.github.canSaveAsGithubUrl()
 
     fun updateCreateInfo(updater: (UserCreateInfoUiState) -> UserCreateInfoUiState) {
         onUpdateCreateInfo(updater(createInfo))

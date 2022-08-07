@@ -16,24 +16,30 @@ import com.pocs.presentation.R
 fun PocsOutlineTextField(
     value: String,
     label: String,
+    modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    isError: Boolean = false,
     placeholder: String? = null,
+    maxLength: Int,
     onValueChange: (String) -> Unit,
     onClearClick: () -> Unit,
     preventToInputEnterKey: Boolean = true
 ) {
     OutlinedTextField(
         keyboardOptions = keyboardOptions,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
         value = value,
+        isError = isError,
         onValueChange = {
-            var newValue = it
-            if (preventToInputEnterKey) {
-                newValue = newValue.filterNot { char -> char == '\n' }
+            if (it.length <= maxLength) {
+                var newValue = it
+                if (preventToInputEnterKey) {
+                    newValue = newValue.filterNot { char -> char == '\n' }
+                }
+                onValueChange(newValue)
             }
-            onValueChange(newValue)
         },
         label = {
             Text(text = label)
@@ -42,12 +48,14 @@ fun PocsOutlineTextField(
             placeholder?.let { Text(text = it) }
         },
         trailingIcon = {
-            IconButton(onClick = onClearClick) {
-                Icon(
-                    imageVector = Icons.Filled.Clear,
-                    contentDescription = stringResource(R.string.clear_text_field),
-                    tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
-                )
+            if (value.isNotEmpty()) {
+                IconButton(onClick = onClearClick) {
+                    Icon(
+                        imageVector = Icons.Filled.Clear,
+                        contentDescription = stringResource(R.string.clear_text_field),
+                        tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                    )
+                }
             }
         }
     )
