@@ -157,8 +157,8 @@ fun AdminUserCreateScreen(
             )
             PocsOutlineTextField(
                 value = createInfo.github,
-                label = stringResource(if (uiState.isGithubUrlValid) R.string.github else R.string.github_url_is_not_valid),
-                isError = !uiState.isGithubUrlValid,
+                label = stringResource(if (uiState.canSaveGithubUrl) R.string.github else R.string.github_url_is_not_valid),
+                isError = !uiState.canSaveGithubUrl,
                 maxLength = MAX_USER_GITHUB_LEN,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
                 placeholder = stringResource(R.string.github_placeholder),

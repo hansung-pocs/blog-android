@@ -12,6 +12,10 @@ fun String.isValidEmail(): Boolean {
     ).matches(this)
 }
 
-fun String.isValidGithubUserUrl(): Boolean {
+private fun String.isValidGithubUserUrl(): Boolean {
     return Regex("https://github\\.com/[a-zA-Z0-9\\-]{1,38}").matches(this)
+}
+
+fun String.canSaveAsGithubUrl(): Boolean {
+    return this.isEmpty() || this.isValidGithubUserUrl()
 }

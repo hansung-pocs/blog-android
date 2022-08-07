@@ -1,7 +1,7 @@
 package com.pocs.presentation.model.user
 
+import com.pocs.presentation.extension.canSaveAsGithubUrl
 import com.pocs.presentation.extension.isValidEmail
-import com.pocs.presentation.extension.isValidGithubUserUrl
 
 data class UserEditUiState(
     val id: Int,
@@ -15,11 +15,11 @@ data class UserEditUiState(
 ) {
     val canSave: Boolean
         get() {
-            return name.isNotEmpty() && isEmailValid && isGithubUrlValid
+            return name.isNotEmpty() && canSaveEmail && canSaveGithubUrl
         }
 
-    val isEmailValid = email.isValidEmail()
-    val isGithubUrlValid = github == null || github.isEmpty() || github.isValidGithubUserUrl()
+    val canSaveEmail = email.isValidEmail()
+    val canSaveGithubUrl = github == null || github.canSaveAsGithubUrl()
 
     fun update(updater: (UserEditUiState) -> UserEditUiState) {
         onUpdate(updater(this))
