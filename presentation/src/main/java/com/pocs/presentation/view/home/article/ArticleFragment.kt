@@ -18,6 +18,7 @@ import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentPostBinding
 import com.pocs.presentation.extension.RefreshStateContract
 import com.pocs.presentation.extension.addDividerDecoration
+import com.pocs.presentation.extension.registerObserverForScrollToTop
 import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.ArticleUiState
 import com.pocs.presentation.model.post.item.PostItemUiState
@@ -55,7 +56,8 @@ class ArticleFragment : Fragment(R.layout.fragment_post) {
             recyclerView.layoutManager = LinearLayoutManager(view.context)
             recyclerView.addDividerDecoration()
 
-            loadState.setListeners(adapter, refresh, recyclerView)
+            loadState.setListeners(adapter, refresh)
+            adapter.registerObserverForScrollToTop(recyclerView)
 
             fab.text = getString(R.string.write_post)
             fab.setOnClickListener { startPostCreateActivity() }

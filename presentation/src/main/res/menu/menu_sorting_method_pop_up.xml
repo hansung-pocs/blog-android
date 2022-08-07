@@ -3,6 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_created_at_descending"
+        android:title="@string/sorting_by_created_at_descending" />
+    <item
         android:id="@+id/action_generation_descending"
         android:title="@string/sorting_by_generation_descending" />
     <item

@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentAdminUserBinding
 import com.pocs.presentation.extension.RefreshStateContract
+import com.pocs.presentation.extension.registerObserverForScrollToTop
 import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.admin.AdminUserUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
@@ -55,7 +56,8 @@ class AdminUserFragment : Fragment(R.layout.fragment_admin_user) {
             )
             recyclerView.layoutManager = LinearLayoutManager(view.context)
 
-            loadState.setListeners(adapter, refresh, recyclerView)
+            loadState.setListeners(adapter, refresh)
+            adapter.registerObserverForScrollToTop(recyclerView)
 
             fab.setOnClickListener { startAdminUserCreateActivity() }
 

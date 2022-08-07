@@ -18,6 +18,7 @@ import com.pocs.domain.model.user.UserListSortingMethod
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.FragmentUserBinding
 import com.pocs.presentation.extension.RefreshStateContract
+import com.pocs.presentation.extension.registerObserverForScrollToTop
 import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.user.UserUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
@@ -55,7 +56,12 @@ class UserFragment : Fragment(R.layout.fragment_user) {
             )
             recyclerView.layoutManager = LinearLayoutManager(view.context)
 
-            loadState.setListeners(adapter, refresh, recyclerView)
+            loadState.setListeners(adapter, refresh)
+            adapter.registerObserverForScrollToTop(
+                recyclerView,
+                whenItemRangeMoved = true,
+                whenItemInsertedFirst = false
+            )
 
             sortBox.setOnClickListener { showSortingMethodPopUpMenu() }
 
@@ -90,6 +96,7 @@ class UserFragment : Fragment(R.layout.fragment_user) {
             menuInflater.inflate(R.menu.menu_sorting_method_pop_up, menu)
             setOnMenuItemClickListener {
                 val newSortingMethod = when (it.itemId) {
+                    R.id.action_created_at_descending -> UserListSortingMethod.CREATED_AT
                     R.id.action_generation_descending -> UserListSortingMethod.GENERATION
                     R.id.action_student_id_ascending -> UserListSortingMethod.STUDENT_ID
                     else -> throw IllegalArgumentException()
@@ -103,6 +110,7 @@ class UserFragment : Fragment(R.layout.fragment_user) {
     private fun updateUi(uiState: UserUiState) {
         adapter.submitData(viewLifecycleOwner.lifecycle, uiState.userPagingData)
         val stringResource = when (uiState.sortingMethod) {
+            UserListSortingMethod.CREATED_AT -> R.string.sorting_by_created_at_descending
             UserListSortingMethod.STUDENT_ID -> R.string.sorting_by_student_id_ascending
             UserListSortingMethod.GENERATION -> R.string.sorting_by_generation_descending
         }
