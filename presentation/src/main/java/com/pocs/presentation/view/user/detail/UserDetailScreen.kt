@@ -264,7 +264,8 @@ fun UserAvatar(name: String, isKicked: Boolean) {
         // TODO: 회원 사진 정보가 생기면 넣기
         Icon(
             modifier = Modifier.size(120.dp),
-            imageVector = Icons.Filled.Person,
+            imageVector = Icons.Filled.AccountCircle,
+            tint = MaterialTheme.colorScheme.onBackground,
             contentDescription = stringResource(id = R.string.user_image)
         )
         Text(text = name, style = MaterialTheme.typography.titleMedium)
