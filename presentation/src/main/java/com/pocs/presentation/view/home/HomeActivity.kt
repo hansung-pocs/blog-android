@@ -69,7 +69,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_go_my_info -> {
+            R.id.action_my_info -> {
                 val intent = UserDetailActivity.getIntent(this, viewModel.uiState.value.userDetail.id)
                 startActivity(intent)
             }
