@@ -12,6 +12,7 @@ import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.constant.MAX_POST_TITLE_LEN
 import com.pocs.presentation.model.post.PostEditUiState
 import com.pocs.presentation.view.post.edit.PostEditScreen
+import com.pocs.presentation.extension.assertSnackBarIsDisplayed
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -118,13 +119,18 @@ class PostEditScreenTest {
             isInSaving = false,
             onSave = { Result.failure(exception) }
         )
-        composeTestRule.setContent {
-            PostEditScreen(uiState = fakeUiState, {}) {}
+        composeTestRule.run {
+            setContent {
+                PostEditScreen(uiState = fakeUiState, {}) {}
+            }
+
+            assertSnackBarIsDisplayed(
+                before = {
+                    onNodeWithContentDescription("저장하기").performClick()
+                },
+                message = exception.message!!
+            )
         }
-
-        composeTestRule.onNodeWithContentDescription("저장하기").performClick()
-
-        composeTestRule.onNodeWithText(exception.message!!).assertIsDisplayed()
     }
 
     @Test

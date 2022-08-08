@@ -10,6 +10,7 @@ import com.pocs.domain.usecase.post.UpdatePostUseCase
 import com.pocs.presentation.extension.RESULT_REFRESH
 import com.pocs.presentation.view.post.edit.PostEditActivity
 import com.pocs.presentation.view.post.edit.PostEditViewModel
+import com.pocs.presentation.extension.assertSnackBarIsDisplayed
 import com.pocs.test_library.fake.FakePostRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
 import com.pocs.test_library.mock.mockPostDetail2
@@ -72,8 +73,13 @@ class PostEditActivityTest {
         )
         launchActivity<PostEditActivity>(intent)
 
-        composeRule.onNodeWithContentDescription("저장하기").performClick()
-
-        composeRule.onNodeWithText(errorMessage).assertIsDisplayed()
+        composeRule.run {
+            assertSnackBarIsDisplayed(
+                before = {
+                    onNodeWithContentDescription("저장하기").performClick()
+                },
+                message = errorMessage
+            )
+        }
     }
 }
