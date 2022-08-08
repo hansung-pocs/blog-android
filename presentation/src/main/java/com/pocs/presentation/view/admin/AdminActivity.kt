@@ -3,18 +3,18 @@ package com.pocs.presentation.view.admin
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
 import com.google.android.material.tabs.TabLayoutMediator
 import com.pocs.presentation.R
+import com.pocs.presentation.base.ViewBindingActivity
 import com.pocs.presentation.databinding.ActivityAdminBinding
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
-class AdminActivity : AppCompatActivity() {
+class AdminActivity : ViewBindingActivity<ActivityAdminBinding>() {
 
-    private var _binding: ActivityAdminBinding? = null
-    private val binding: ActivityAdminBinding get() = requireNotNull(_binding)
+    override val bindingInflater: (LayoutInflater) -> ActivityAdminBinding
+        get() = ActivityAdminBinding::inflate
 
     companion object {
         fun getIntent(context: Context): Intent {
@@ -25,8 +25,6 @@ class AdminActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        _binding = ActivityAdminBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         initToolBar()
 
         val viewPager = binding.viewPager
@@ -52,5 +50,4 @@ class AdminActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(true)
         supportActionBar?.title = getString(R.string.admin_page)
     }
-
 }
