@@ -5,10 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.admin.KickUserUseCase
-import com.pocs.domain.usecase.user.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.user.GetUserDetailUseCase
+import com.pocs.domain.usecase.user.IsCurrentUserAdminUseCase
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.user.UserDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class UserDetailViewModel @Inject constructor(
     private val getUserDetailUseCase: GetUserDetailUseCase,
-    private val getCurrentUserTypeUseCase: GetCurrentUserTypeUseCase,
+    private val isCurrentUserAdminUseCase: IsCurrentUserAdminUseCase,
     private val kickUserUseCase: KickUserUseCase
 ) : ViewModel() {
 
@@ -36,7 +35,7 @@ class UserDetailViewModel @Inject constructor(
                 val user = result.getOrNull()!!
                 UserDetailUiState.Success(
                     userDetail = user.toUiState(),
-                    isCurrentUserAdmin = getCurrentUserTypeUseCase() == UserType.ADMIN,
+                    isCurrentUserAdmin = isCurrentUserAdminUseCase(),
                     shownErrorMessage = ::shownErrorMessage,
                     onKickClick = ::kickUser
                 )
