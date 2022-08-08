@@ -25,7 +25,7 @@ import com.pocs.presentation.paging.PagingLoadStateAdapter
 import com.pocs.presentation.view.user.detail.UserDetailActivity
 import kotlinx.coroutines.launch
 
-class UserFragment : ViewBindingFragment<FragmentUserBinding>(R.layout.fragment_user) {
+class UserFragment : ViewBindingFragment<FragmentUserBinding>() {
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentUserBinding
         get() = FragmentUserBinding::inflate

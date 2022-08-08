@@ -28,7 +28,7 @@ import com.pocs.presentation.view.post.create.PostCreateActivity
 import com.pocs.presentation.view.post.detail.PostDetailActivity
 import kotlinx.coroutines.launch
 
-class AdminPostFragment : ViewBindingFragment<FragmentPostBinding>(R.layout.fragment_post) {
+class AdminPostFragment : ViewBindingFragment<FragmentPostBinding>() {
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentPostBinding
         get() = FragmentPostBinding::inflate
