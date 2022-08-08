@@ -10,6 +10,7 @@ import com.pocs.domain.usecase.post.UpdatePostUseCase
 import com.pocs.presentation.extension.RESULT_REFRESH
 import com.pocs.presentation.view.post.edit.PostEditActivity
 import com.pocs.presentation.view.post.edit.PostEditViewModel
+import com.pocs.presentation.extension.assertSnackBarIsDisplayed
 import com.pocs.test_library.fake.FakePostRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
 import com.pocs.test_library.mock.mockPostDetail2
@@ -73,14 +74,12 @@ class PostEditActivityTest {
         launchActivity<PostEditActivity>(intent)
 
         composeRule.run {
-            mainClock.autoAdvance = false
-            onNodeWithContentDescription("저장하기").performClick()
-            mainClock.advanceTimeByFrame() // trigger recomposition
-            waitForIdle() // await layout pass to set up animation
-            mainClock.advanceTimeByFrame() // give animation a start time
-            mainClock.advanceTimeBy(500)
-
-            onNodeWithText(errorMessage).assertIsDisplayed()
+            assertSnackBarIsDisplayed(
+                before = {
+                    onNodeWithContentDescription("저장하기").performClick()
+                },
+                message = errorMessage
+            )
         }
     }
 }

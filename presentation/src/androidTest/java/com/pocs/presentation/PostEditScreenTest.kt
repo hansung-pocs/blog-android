@@ -12,6 +12,7 @@ import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.constant.MAX_POST_TITLE_LEN
 import com.pocs.presentation.model.post.PostEditUiState
 import com.pocs.presentation.view.post.edit.PostEditScreen
+import com.pocs.presentation.extension.assertSnackBarIsDisplayed
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -123,14 +124,12 @@ class PostEditScreenTest {
                 PostEditScreen(uiState = fakeUiState, {}) {}
             }
 
-            mainClock.autoAdvance = false
-            onNodeWithContentDescription("저장하기").performClick()
-            mainClock.advanceTimeByFrame() // trigger recomposition
-            waitForIdle() // await layout pass to set up animation
-            mainClock.advanceTimeByFrame() // give animation a start time
-            mainClock.advanceTimeBy(500)
-
-            onNodeWithText(exception.message!!).assertIsDisplayed()
+            assertSnackBarIsDisplayed(
+                before = {
+                    onNodeWithContentDescription("저장하기").performClick()
+                },
+                message = exception.message!!
+            )
         }
     }
 
