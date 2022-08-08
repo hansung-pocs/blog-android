@@ -39,7 +39,7 @@ class UserDetailViewModelTest {
         30,
         "https://github/jja08111",
         "",
-        ""
+        null
     )
 
     @Before
