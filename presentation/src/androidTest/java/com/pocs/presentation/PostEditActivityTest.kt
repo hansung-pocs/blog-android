@@ -72,8 +72,15 @@ class PostEditActivityTest {
         )
         launchActivity<PostEditActivity>(intent)
 
-        composeRule.onNodeWithContentDescription("저장하기").performClick()
+        composeRule.run {
+            mainClock.autoAdvance = false
+            onNodeWithContentDescription("저장하기").performClick()
+            mainClock.advanceTimeByFrame() // trigger recomposition
+            waitForIdle() // await layout pass to set up animation
+            mainClock.advanceTimeByFrame() // give animation a start time
+            mainClock.advanceTimeBy(500)
 
-        composeRule.onNodeWithText(errorMessage).assertIsDisplayed()
+            onNodeWithText(errorMessage).assertIsDisplayed()
+        }
     }
 }

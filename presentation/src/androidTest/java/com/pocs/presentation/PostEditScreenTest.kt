@@ -118,13 +118,20 @@ class PostEditScreenTest {
             isInSaving = false,
             onSave = { Result.failure(exception) }
         )
-        composeTestRule.setContent {
-            PostEditScreen(uiState = fakeUiState, {}) {}
+        composeTestRule.run {
+            setContent {
+                PostEditScreen(uiState = fakeUiState, {}) {}
+            }
+
+            mainClock.autoAdvance = false
+            onNodeWithContentDescription("저장하기").performClick()
+            mainClock.advanceTimeByFrame() // trigger recomposition
+            waitForIdle() // await layout pass to set up animation
+            mainClock.advanceTimeByFrame() // give animation a start time
+            mainClock.advanceTimeBy(500)
+
+            onNodeWithText(exception.message!!).assertIsDisplayed()
         }
-
-        composeTestRule.onNodeWithContentDescription("저장하기").performClick()
-
-        composeTestRule.onNodeWithText(exception.message!!).assertIsDisplayed()
     }
 
     @Test
