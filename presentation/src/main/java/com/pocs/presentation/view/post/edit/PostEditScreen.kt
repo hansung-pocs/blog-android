@@ -116,6 +116,7 @@ fun PostEditContent(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SimpleTextField(
     hint: String,

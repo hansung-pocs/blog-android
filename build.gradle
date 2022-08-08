@@ -12,9 +12,9 @@ buildscript {
         retrofit_version = "2.9.0"
         androidx_core = "1.8.0"
         hilt_version = "2.42"
-        fragment_version = "1.5.0"
+        fragment_version = "1.5.1"
         paging = "3.1.1"
-        compose_version = "1.1.1"
+        compose_version = "1.2.0"
         coroutines_version = "1.6.4"
         joda = "2.10.13"
     }
@@ -29,7 +29,7 @@ buildscript {
 plugins {
     id 'com.android.application' version '7.2.1' apply false
     id 'com.android.library' version '7.2.1' apply false
-    id 'org.jetbrains.kotlin.android' version '1.6.10' apply false
+    id 'org.jetbrains.kotlin.android' version '1.7.0' apply false
 }
 
 task clean(type: Delete) {

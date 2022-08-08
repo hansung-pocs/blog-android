@@ -12,13 +12,10 @@ class JodaRule @JvmOverloads constructor(private val provider: Provider = UTCPro
     override fun apply(base: Statement, description: Description): Statement {
 
         return object : Statement() {
-
-            @Throws(Throwable::class)
             override fun evaluate() {
                 DateTimeZone.setProvider(provider)
                 base.evaluate()
             }
         }
     }
-
 }

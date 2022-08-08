@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.pocs.presentation.R
 import com.pocs.presentation.view.component.button.SendButton
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditContentAppBar(
     title: String,

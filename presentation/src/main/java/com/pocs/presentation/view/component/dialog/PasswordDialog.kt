@@ -39,7 +39,7 @@ fun PasswordDialog(
     )
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun PasswordDialogContent(
     password: String,
