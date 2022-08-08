@@ -27,7 +27,7 @@ class UserRepositoryImpl @Inject constructor(
         "권김정",
         "abc@google.com",
         1971034,
-        UserType.ADMIN,
+        UserType.UNKNOWN,
         "-",
         30,
         "https://github.com/",
