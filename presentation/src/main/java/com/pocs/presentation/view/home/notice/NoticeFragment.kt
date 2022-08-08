@@ -2,7 +2,6 @@ package com.pocs.presentation.view.home.notice
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
+import com.pocs.presentation.base.ViewBindingFragment
 import com.pocs.presentation.databinding.FragmentPostBinding
 import com.pocs.presentation.extension.RefreshStateContract
 import com.pocs.presentation.extension.addDividerDecoration
@@ -28,23 +28,14 @@ import com.pocs.presentation.view.post.create.PostCreateActivity
 import com.pocs.presentation.view.post.detail.PostDetailActivity
 import kotlinx.coroutines.launch
 
-class NoticeFragment : Fragment(R.layout.fragment_post) {
+class NoticeFragment : ViewBindingFragment<FragmentPostBinding>(R.layout.fragment_post) {
 
-    private var _binding: FragmentPostBinding? = null
-    private val binding get() = _binding!!
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentPostBinding
+        get() = FragmentPostBinding::inflate
 
     private val viewModel: NoticeViewModel by activityViewModels()
 
     private var launcher: ActivityResultLauncher<Intent>? = null
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentPostBinding.inflate(inflater, container, false)
-        return binding.root
-
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -78,11 +69,6 @@ class NoticeFragment : Fragment(R.layout.fragment_post) {
                 it.message?.let { message -> showSnackBar(message) }
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun updateUi(uiState: NoticeUiState, adapter: PostAdapter) {

@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.widget.PopupMenu
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.domain.model.user.UserListSortingMethod
 import com.pocs.presentation.R
+import com.pocs.presentation.base.ViewBindingFragment
 import com.pocs.presentation.databinding.FragmentUserBinding
 import com.pocs.presentation.extension.RefreshStateContract
 import com.pocs.presentation.extension.registerObserverForScrollToTop
@@ -25,10 +25,10 @@ import com.pocs.presentation.paging.PagingLoadStateAdapter
 import com.pocs.presentation.view.user.detail.UserDetailActivity
 import kotlinx.coroutines.launch
 
-class UserFragment : Fragment(R.layout.fragment_user) {
+class UserFragment : ViewBindingFragment<FragmentUserBinding>(R.layout.fragment_user) {
 
-    private var _binding: FragmentUserBinding? = null
-    private val binding get() = _binding!!
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentUserBinding
+        get() = FragmentUserBinding::inflate
 
     private var _adapter: UserAdapter? = null
     private val adapter get() = _adapter!!
@@ -36,14 +36,6 @@ class UserFragment : Fragment(R.layout.fragment_user) {
     private var launcher: ActivityResultLauncher<Intent>? = null
 
     private val viewModel: UserViewModel by activityViewModels()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentUserBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -82,7 +74,6 @@ class UserFragment : Fragment(R.layout.fragment_user) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
         _adapter = null
     }
 
