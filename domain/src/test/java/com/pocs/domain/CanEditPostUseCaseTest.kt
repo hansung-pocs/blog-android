@@ -6,16 +6,16 @@ import com.pocs.domain.model.post.PostWriter
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.post.CanEditPostUseCase
-import com.pocs.test_library.fake.FakeUserRepositoryImpl
+import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.mock.mockPostWriter1
 import org.junit.Assert.*
 import org.junit.Test
 
 class CanEditPostUseCaseTest {
 
-    private val userRepository = FakeUserRepositoryImpl()
+    private val authRepository = FakeAuthRepositoryImpl()
 
-    private val useCase = CanEditPostUseCase(userRepository)
+    private val useCase = CanEditPostUseCase(authRepository)
 
     private val postDetail = PostDetail(1, "", mockPostWriter1, "", "", "", PostCategory.NOTICE)
     private val userDetail = UserDetail(
@@ -33,7 +33,7 @@ class CanEditPostUseCaseTest {
 
     @Test
     fun shouldReturnTrue_WhenSamePostWriterIdAndCurrentUserId() {
-        userRepository.currentUser = userDetail
+        authRepository.currentUser.value = userDetail
 
         val result = useCase(
             postDetail = postDetail.copy(
@@ -51,7 +51,7 @@ class CanEditPostUseCaseTest {
 
     @Test
     fun shouldReturnFalse_WhenDifferentPostWriterIdAndCurrentUserId() {
-        userRepository.currentUser = userDetail
+        authRepository.currentUser.value = userDetail
 
         val result = useCase(
             postDetail = postDetail.copy(

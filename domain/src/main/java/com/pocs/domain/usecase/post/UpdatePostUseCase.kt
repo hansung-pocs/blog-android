@@ -1,24 +1,29 @@
 package com.pocs.domain.usecase.post
 
 import com.pocs.domain.model.post.PostCategory
+import com.pocs.domain.repository.AuthRepository
 import com.pocs.domain.repository.PostRepository
-import com.pocs.domain.repository.UserRepository
 import javax.inject.Inject
 
 class UpdatePostUseCase @Inject constructor(
-    private val repository: PostRepository,
-    private val userRepository: UserRepository
+    private val postRepository: PostRepository,
+    private val authRepository: AuthRepository
 ) {
     suspend operator fun invoke(
         id: Int,
         title: String,
         content: String,
         category: PostCategory
-    ) = repository.updatePost(
-        postId = id,
-        title = title,
-        content = content,
-        userId = userRepository.getCurrentUserDetail().id,
-        category = category
-    )
+    ): Result<Unit> {
+        val userId = authRepository.getCurrentUser().value?.id
+            ?: return Result.failure(Exception("수정할 권한이 없습니다."))
+
+        return postRepository.updatePost(
+            postId = id,
+            title = title,
+            content = content,
+            userId = userId,
+            category = category
+        )
+    }
 }

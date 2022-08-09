@@ -6,7 +6,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.pocs.domain.model.user.UserListSortingMethod
 import com.pocs.domain.usecase.user.GetAllUsersUseCase
-import com.pocs.domain.usecase.user.GetCurrentUserTypeUseCase
+import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.user.UserUiState
 import dagger.hilt.android.lifecycle.HiltViewModel

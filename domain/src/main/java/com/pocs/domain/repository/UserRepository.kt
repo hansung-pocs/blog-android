@@ -20,6 +20,4 @@ interface UserRepository {
         company: String?,
         github: String?
     ): Result<Unit>
-
-    fun getCurrentUserDetail(): UserDetail
 }

@@ -4,11 +4,12 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.pocs.domain.usecase.admin.GetAllUsersAsAdminUseCase
-import com.pocs.domain.usecase.user.GetCurrentUserTypeUseCase
+import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import com.pocs.presentation.view.admin.user.AdminUserFragment
 import com.pocs.presentation.view.admin.user.AdminUserViewModel
 import com.pocs.test_library.extension.launchFragmentInHiltContainer
 import com.pocs.test_library.fake.FakeAdminRepositoryImpl
+import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
 import com.pocs.test_library.mock.mockKickedUser
 import com.pocs.test_library.mock.mockNormalUser
@@ -36,6 +37,9 @@ class AdminUserFragmentTest {
     val userRepository = FakeUserRepositoryImpl()
 
     @BindValue
+    val authRepository = FakeAuthRepositoryImpl()
+
+    @BindValue
     lateinit var viewModel: AdminUserViewModel
 
     @Before
@@ -46,7 +50,7 @@ class AdminUserFragmentTest {
     private fun initViewModel() {
         viewModel = AdminUserViewModel(
             GetAllUsersAsAdminUseCase(adminRepository),
-            GetCurrentUserTypeUseCase(userRepository)
+            GetCurrentUserTypeUseCase(authRepository)
         )
     }
 

@@ -2,8 +2,9 @@ package com.pocs.presentation
 
 import com.pocs.domain.model.user.UserListSortingMethod
 import com.pocs.domain.usecase.user.GetAllUsersUseCase
-import com.pocs.domain.usecase.user.GetCurrentUserTypeUseCase
+import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import com.pocs.presentation.view.user.UserViewModel
+import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,15 +24,17 @@ class UserViewModelTest {
 
     private val dispatcher = UnconfinedTestDispatcher()
 
-    private val repository = FakeUserRepositoryImpl()
+    private val authRepository = FakeAuthRepositoryImpl()
+    private val userRepository = FakeUserRepositoryImpl()
+
     private lateinit var viewModel: UserViewModel
 
     @Before
     fun setUp() {
         Dispatchers.setMain(dispatcher)
         viewModel = UserViewModel(
-            GetAllUsersUseCase(repository),
-            GetCurrentUserTypeUseCase(repository)
+            GetAllUsersUseCase(userRepository),
+            GetCurrentUserTypeUseCase(authRepository)
         )
     }
 

@@ -1,9 +1,9 @@
 package com.pocs.presentation
 
 import com.pocs.domain.model.user.UserType
-import com.pocs.domain.usecase.user.GetCurrentUserDetailUseCase
+import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
 import com.pocs.presentation.view.home.HomeViewModel
-import com.pocs.test_library.fake.FakeUserRepositoryImpl
+import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.mock.mockNormalUserDetail
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -11,13 +11,13 @@ import org.junit.Test
 
 class HomeViewModelTest {
 
-    private val userRepository = FakeUserRepositoryImpl()
+    private val authRepository = FakeAuthRepositoryImpl()
 
     private lateinit var viewModel: HomeViewModel
 
     @Test
     fun shouldIsCurrentUserAdminIsTrue_WhenCurrentUserIsAdmin() {
-        userRepository.currentUser = mockNormalUserDetail.copy(type = UserType.ADMIN)
+        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.ADMIN)
         initViewModel()
 
         assertTrue(viewModel.isCurrentUserAdmin)
@@ -25,7 +25,7 @@ class HomeViewModelTest {
 
     @Test
     fun shouldIsCurrentUserAdminIsFalse_WhenCurrentUserIsNotAdmin() {
-        userRepository.currentUser = mockNormalUserDetail.copy(type = UserType.MEMBER)
+        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.MEMBER)
         initViewModel()
 
         assertFalse(viewModel.isCurrentUserAdmin)
@@ -33,7 +33,7 @@ class HomeViewModelTest {
 
     private fun initViewModel() {
         viewModel = HomeViewModel(
-            GetCurrentUserDetailUseCase(userRepository)
+            GetCurrentUserUseCase(authRepository)
         )
     }
 }

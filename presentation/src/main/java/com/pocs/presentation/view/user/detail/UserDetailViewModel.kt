@@ -6,9 +6,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pocs.domain.usecase.admin.KickUserUseCase
-import com.pocs.domain.usecase.user.GetCurrentUserDetailUseCase
+import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
 import com.pocs.domain.usecase.user.GetUserDetailUseCase
-import com.pocs.domain.usecase.user.IsCurrentUserAdminUseCase
+import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.user.UserDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class UserDetailViewModel @Inject constructor(
     private val getUserDetailUseCase: GetUserDetailUseCase,
     private val isCurrentUserAdminUseCase: IsCurrentUserAdminUseCase,
-    private val getCurrentUserDetailUseCase: GetCurrentUserDetailUseCase,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val kickUserUseCase: KickUserUseCase
 ) : ViewModel() {
 
@@ -38,7 +38,7 @@ class UserDetailViewModel @Inject constructor(
                 UserDetailUiState.Success(
                     userDetail = user.toUiState(),
                     isCurrentUserAdmin = isCurrentUserAdminUseCase(),
-                    isMyInfo = getCurrentUserDetailUseCase().id == id,
+                    isMyInfo = getCurrentUserUseCase()?.id == id,
                     shownErrorMessage = ::shownErrorMessage,
                     onKickClick = ::kickUser
                 )

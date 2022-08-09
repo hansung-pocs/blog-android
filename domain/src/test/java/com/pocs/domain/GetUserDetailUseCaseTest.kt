@@ -1,9 +1,10 @@
 package com.pocs.domain
 
 import com.pocs.domain.model.user.UserType
-import com.pocs.domain.usecase.user.GetCurrentUserTypeUseCase
+import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.user.GetUserDetailUseCase
 import com.pocs.test_library.fake.FakeAdminRepositoryImpl
+import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
 import com.pocs.test_library.mock.mockKickedUserDetail
 import com.pocs.test_library.mock.mockNormalUserDetail
@@ -16,11 +17,12 @@ class GetUserDetailUseCaseTest {
 
     private val userRepository = FakeUserRepositoryImpl()
     private val adminRepository = FakeAdminRepositoryImpl()
+    private val authRepository = FakeAuthRepositoryImpl()
 
     private val getUserDetailUseCase = GetUserDetailUseCase(
         userRepository = userRepository,
         adminRepository = adminRepository,
-        getCurrentUserTypeUseCase = GetCurrentUserTypeUseCase(userRepository)
+        getCurrentUserTypeUseCase = GetCurrentUserTypeUseCase(authRepository)
     )
 
     private val userDetailFromMember = mockNormalUserDetail
@@ -34,7 +36,7 @@ class GetUserDetailUseCaseTest {
 
     @Test
     fun returnsUserDetailFromAdmin_WhenCurrentUserTypeIsAdmin() {
-        userRepository.changeCurrentUserType(UserType.ADMIN)
+        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.ADMIN)
 
         runBlocking {
             val result = getUserDetailUseCase(userDetailFromAdmin.id)
@@ -44,7 +46,7 @@ class GetUserDetailUseCaseTest {
 
     @Test
     fun returnsUserDetailFromMember_WhenCurrentUserTypeIsMember() {
-        userRepository.changeCurrentUserType(UserType.MEMBER)
+        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.MEMBER)
 
         runBlocking {
             val result = getUserDetailUseCase(userDetailFromMember.id)
@@ -54,7 +56,7 @@ class GetUserDetailUseCaseTest {
 
     @Test
     fun returnsFailureResult_WhenCurrentUserTypeIsUnknown() {
-        userRepository.changeCurrentUserType(UserType.UNKNOWN)
+        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.UNKNOWN)
 
         runBlocking {
             val result = getUserDetailUseCase(userDetailFromMember.id)

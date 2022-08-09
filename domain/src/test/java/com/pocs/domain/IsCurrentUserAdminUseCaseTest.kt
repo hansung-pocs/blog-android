@@ -1,9 +1,9 @@
 package com.pocs.domain
 
 import com.pocs.domain.model.user.UserType
-import com.pocs.domain.usecase.user.GetCurrentUserTypeUseCase
-import com.pocs.domain.usecase.user.IsCurrentUserAdminUseCase
-import com.pocs.test_library.fake.FakeUserRepositoryImpl
+import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
+import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
+import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.mock.mockNormalUserDetail
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -11,23 +11,23 @@ import org.junit.Test
 
 class IsCurrentUserAdminUseCaseTest {
 
-    private val userRepository = FakeUserRepositoryImpl()
+    private val authRepository = FakeAuthRepositoryImpl()
 
     private val isCurrentUserAdminUseCase = IsCurrentUserAdminUseCase(
-        GetCurrentUserTypeUseCase(userRepository)
+        GetCurrentUserTypeUseCase(authRepository)
     )
 
     @Test
-    fun returnsTrue_WhenCurrentUserIsAdmin(){
-        userRepository.currentUser = mockNormalUserDetail.copy(type = UserType.ADMIN)
+    fun returnsTrue_WhenCurrentUserIsAdmin() {
+        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.ADMIN)
 
         val result = isCurrentUserAdminUseCase()
         assertTrue(result)
     }
 
     @Test
-    fun returnsFalse_WhenCurrentUserIsNotAdmin(){
-        userRepository.currentUser = mockNormalUserDetail.copy(type = UserType.MEMBER)
+    fun returnsFalse_WhenCurrentUserIsNotAdmin() {
+        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.MEMBER)
 
         val result = isCurrentUserAdminUseCase()
         assertFalse(result)

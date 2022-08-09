@@ -6,16 +6,16 @@ import com.pocs.domain.model.post.PostWriter
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.post.CanDeletePostUseCase
-import com.pocs.test_library.fake.FakeUserRepositoryImpl
+import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.mock.mockPostWriter1
 import org.junit.Assert.*
 import org.junit.Test
 
 class CanDeletePostUseCaseTest {
 
-    private val userRepository = FakeUserRepositoryImpl()
+    private val authRepository = FakeAuthRepositoryImpl()
 
-    private val useCase = CanDeletePostUseCase(userRepository)
+    private val useCase = CanDeletePostUseCase(authRepository)
 
     private val postDetail = PostDetail(1, "", mockPostWriter1, "", "", "", PostCategory.NOTICE)
     private val userDetail = UserDetail(
@@ -33,7 +33,7 @@ class CanDeletePostUseCaseTest {
 
     @Test
     fun shouldReturnTrue_WhenCurrentUserTypeIsAdmin() {
-        userRepository.currentUser = userDetail.copy(type = UserType.ADMIN)
+        authRepository.currentUser.value = userDetail.copy(type = UserType.ADMIN)
 
         val result = useCase(
             postDetail = postDetail.copy(
@@ -51,7 +51,7 @@ class CanDeletePostUseCaseTest {
 
     @Test
     fun shouldReturnTrue_WhenSamePostWriterIdAndCurrentUserId() {
-        userRepository.currentUser = userDetail
+        authRepository.currentUser.value = userDetail
 
         val result = useCase(
             postDetail = postDetail.copy(
@@ -69,7 +69,7 @@ class CanDeletePostUseCaseTest {
 
     @Test
     fun shouldReturnFalse_WhenDifferentPostWriterIdAndCurrentUserId_AndNotAdmin() {
-        userRepository.currentUser = userDetail.copy(type = UserType.MEMBER)
+        authRepository.currentUser.value = userDetail.copy(type = UserType.MEMBER)
 
         val result = useCase(
             postDetail = postDetail.copy(

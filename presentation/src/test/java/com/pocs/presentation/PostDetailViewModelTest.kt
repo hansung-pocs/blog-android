@@ -6,8 +6,9 @@ import com.pocs.domain.usecase.post.DeletePostUseCase
 import com.pocs.domain.usecase.post.GetPostDetailUseCase
 import com.pocs.presentation.model.post.PostDetailUiState
 import com.pocs.presentation.view.post.detail.PostDetailViewModel
+import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakePostRepositoryImpl
-import com.pocs.test_library.fake.FakeUserRepositoryImpl
+import com.pocs.test_library.mock.mockNormalUserDetail
 import com.pocs.test_library.mock.mockPostDetail1
 import com.pocs.test_library.rule.JodaRule
 import kotlinx.coroutines.Dispatchers
@@ -33,14 +34,14 @@ class PostDetailViewModelTest {
 
     private val dispatcher = UnconfinedTestDispatcher()
 
-    private val userRepository = FakeUserRepositoryImpl()
+    private val authRepository = FakeAuthRepositoryImpl()
     private val postRepository = FakePostRepositoryImpl()
 
     private val viewModel = PostDetailViewModel(
         GetPostDetailUseCase(postRepository),
-        DeletePostUseCase(postRepository, userRepository),
-        CanEditPostUseCase(userRepository),
-        CanDeletePostUseCase(userRepository)
+        DeletePostUseCase(postRepository, authRepository),
+        CanEditPostUseCase(authRepository),
+        CanDeletePostUseCase(authRepository)
     )
 
     @Before
@@ -93,6 +94,7 @@ class PostDetailViewModelTest {
         val exception = Exception("ERROR")
         postRepository.postDetailResult = Result.success(mockPostDetail1)
         postRepository.deletePostResult = Result.failure(exception)
+        authRepository.currentUser.value = mockNormalUserDetail.copy(id = mockPostDetail1.writer.id)
         viewModel.fetchPost(mockPostDetail1.id, isDeleted = false)
 
         viewModel.requestPostDeleting(1)
@@ -107,6 +109,7 @@ class PostDetailViewModelTest {
     fun shouldIsSuccessToDeleteValueIsTrue_WhenSuccessToDeletePost() {
         postRepository.postDetailResult = Result.success(mockPostDetail1)
         postRepository.deletePostResult = Result.success(Unit)
+        authRepository.currentUser.value = mockNormalUserDetail.copy(id = mockPostDetail1.writer.id)
         viewModel.fetchPost(mockPostDetail1.id, isDeleted = false)
 
         viewModel.requestPostDeleting(1)

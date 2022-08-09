@@ -2,9 +2,11 @@ package com.pocs.test_library.di
 
 import com.pocs.data.di.RepositoryModule
 import com.pocs.domain.repository.AdminRepository
+import com.pocs.domain.repository.AuthRepository
 import com.pocs.domain.repository.PostRepository
 import com.pocs.domain.repository.UserRepository
 import com.pocs.test_library.fake.FakeAdminRepositoryImpl
+import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakePostRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
 import dagger.Binds
@@ -31,4 +33,8 @@ abstract class FakeRepositoryModule {
     @Singleton
     @Binds
     abstract fun provideAdminRepository(fakeAdminRepositoryImpl: FakeAdminRepositoryImpl): AdminRepository
+
+    @Singleton
+    @Binds
+    abstract fun provideAuthRepository(fakeAuthRepositoryImpl: FakeAuthRepositoryImpl): AuthRepository
 }
