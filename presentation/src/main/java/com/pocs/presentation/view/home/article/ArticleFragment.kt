@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -73,6 +74,7 @@ class ArticleFragment : ViewBindingFragment<FragmentPostBinding>() {
 
     private fun updateUi(uiState: ArticleUiState, adapter: PostAdapter) {
         adapter.submitData(viewLifecycleOwner.lifecycle, uiState.articlePagingData)
+        binding.fab.isVisible = uiState.visiblePostWriteFab
     }
 
     private fun onClickArticle(postItemUiState: PostItemUiState) {

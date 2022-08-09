@@ -35,6 +35,19 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
 
         setSupportActionBar(binding.toolbar)
 
+        initNavigationView()
+        initBottomNavigationView()
+    }
+
+    private fun initNavigationView() {
+        with(binding) {
+            val adminMenu = navigationView.menu.findItem(R.id.action_admin)
+            adminMenu.isVisible = viewModel.isCurrentUserAdmin
+            navigationView.setNavigationItemSelectedListener(::onSelectNavigationItem)
+        }
+    }
+
+    private fun initBottomNavigationView() {
         val navController = findNavController(R.id.nav_host_fragment_content_home)
         appBarConfiguration = AppBarConfiguration(
             topLevelDestinationIds = setOf(R.id.NoticeFragment, R.id.ArticleFragment),
@@ -42,18 +55,17 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
             fallbackOnNavigateUpListener = ::onSupportNavigateUp
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-
-        binding.navigationView.setNavigationItemSelectedListener(::onSelectNavigationItem)
         binding.bottomNav.setupWithNavController(navController)
     }
 
     private fun onSelectNavigationItem(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_user_list -> {
+                // TODO: 회원이 아닌 경우 가입 or 로그인 엑티비티로 전환하기
                 val intent = UserActivity.getIntent(this)
                 startActivity(intent)
             }
-            R.id.action_Admin -> {
+            R.id.action_admin -> {
                 val intent = AdminActivity.getIntent(this)
                 startActivity(intent)
             }
@@ -70,7 +82,7 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_my_info -> {
-                val intent = UserDetailActivity.getIntent(this, viewModel.uiState.value.userDetail.id)
+                val intent = UserDetailActivity.getIntent(this, viewModel.currentUserId)
                 startActivity(intent)
             }
         }

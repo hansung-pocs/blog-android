@@ -5,6 +5,7 @@ import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.admin.KickUserUseCase
 import com.pocs.domain.usecase.user.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.user.GetUserDetailUseCase
+import com.pocs.domain.usecase.user.IsCurrentUserAdminUseCase
 import com.pocs.presentation.model.user.UserDetailUiState
 import com.pocs.presentation.view.user.detail.UserDetailViewModel
 import com.pocs.test_library.fake.FakeAdminRepositoryImpl
@@ -51,7 +52,7 @@ class UserDetailViewModelTest {
                 adminRepository = adminRepository,
                 getCurrentUserTypeUseCase = GetCurrentUserTypeUseCase(userRepository)
             ),
-            GetCurrentUserTypeUseCase(userRepository),
+            IsCurrentUserAdminUseCase(GetCurrentUserTypeUseCase(userRepository)),
             KickUserUseCase(adminRepository)
         )
         userRepository.currentUser = mockUserDetail

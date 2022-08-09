@@ -7,6 +7,7 @@ import androidx.paging.filter
 import androidx.paging.map
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.usecase.post.GetAllPostsUseCase
+import com.pocs.domain.usecase.user.IsCurrentUserAdminUseCase
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.NoticeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,10 +17,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoticeViewModel @Inject constructor(
-    getAllPostsUseCase: GetAllPostsUseCase
+    getAllPostsUseCase: GetAllPostsUseCase,
+    isCurrentUserAdminUseCase: IsCurrentUserAdminUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(NoticeUiState())
+    private val _uiState = MutableStateFlow(
+        NoticeUiState(isCurrentUserAdmin = isCurrentUserAdminUseCase())
+    )
     val uiState = _uiState.asStateFlow()
 
     init {

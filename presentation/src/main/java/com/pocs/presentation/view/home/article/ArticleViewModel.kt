@@ -6,6 +6,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.usecase.post.GetAllPostsUseCase
+import com.pocs.domain.usecase.user.IsCurrentUserUnknownUseCase
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.ArticleUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,10 +16,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ArticleViewModel @Inject constructor(
-    private val getAllPostsUseCase: GetAllPostsUseCase
+    private val getAllPostsUseCase: GetAllPostsUseCase,
+    isCurrentUserUnknownUseCase: IsCurrentUserUnknownUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ArticleUiState())
+    private val _uiState = MutableStateFlow(
+        ArticleUiState(visiblePostWriteFab = !isCurrentUserUnknownUseCase())
+    )
     val uiState = _uiState.asStateFlow()
 
     init {
