@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_Admin"
+        android:id="@+id/action_admin"
         android:icon="@drawable/ic_baseline_settings_24"
         android:title="@string/admin_page"
         app:showAsAction="never" />

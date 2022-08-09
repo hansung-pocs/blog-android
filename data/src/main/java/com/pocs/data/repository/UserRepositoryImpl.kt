@@ -27,12 +27,12 @@ class UserRepositoryImpl @Inject constructor(
         "권김정",
         "abc@google.com",
         1971034,
-        UserType.UNKNOWN,
-        "-",
+        UserType.ADMIN,
+        null,
         30,
         "https://github.com/",
         "2021-02-12",
-        "-",
+        null,
     )
 
     override fun getAll(sortingMethod: UserListSortingMethod): Flow<PagingData<User>> {
