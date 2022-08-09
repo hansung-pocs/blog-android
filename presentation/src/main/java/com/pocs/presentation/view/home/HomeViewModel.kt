@@ -16,13 +16,13 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<HomeUiState> = MutableStateFlow(
-        HomeUiState(userDetail = requireNotNull(getCurrentUserDetailUseCase()).toUiState())
+        HomeUiState(userDetail = getCurrentUserDetailUseCase()?.toUiState())
     )
     val uiState: StateFlow<HomeUiState> get() = _uiState
 
-    val currentUserId: Int
-        get() = uiState.value.userDetail.id
+    val currentUserId: Int?
+        get() = uiState.value.userDetail?.id
 
     val isCurrentUserAdmin: Boolean
-        get() = uiState.value.userDetail.type == UserType.ADMIN
+        get() = uiState.value.userDetail?.type == UserType.ADMIN
 }
