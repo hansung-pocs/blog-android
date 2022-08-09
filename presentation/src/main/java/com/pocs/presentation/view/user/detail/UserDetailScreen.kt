@@ -55,6 +55,7 @@ fun UserDetailScreen(uiState: UserDetailUiState, onEdited: () -> Unit) {
                 userDetail = uiState.userDetail,
                 snackBarHostState = snackBarHostState,
                 isCurrentUserAdmin = uiState.isCurrentUserAdmin,
+                isMyInfo = uiState.isMyInfo,
                 onConfirmToKick = uiState.onKickClick,
                 onEdited = onEdited
             )
@@ -73,6 +74,7 @@ fun UserDetailScreen(uiState: UserDetailUiState, onEdited: () -> Unit) {
 fun UserDetailContent(
     userDetail: UserDetailItemUiState,
     snackBarHostState: SnackbarHostState,
+    isMyInfo: Boolean,
     onConfirmToKick: () -> Unit,
     onEdited: () -> Unit,
     isCurrentUserAdmin: Boolean
@@ -127,19 +129,21 @@ fun UserDetailContent(
             )
         },
         floatingActionButton = {
-            val context = LocalContext.current
-            // TODO: 본인 정보인 경우에만 내 정보 수정 버튼 보이기
-            ExtendedFloatingActionButton(
-                onClick = {
-                    val intent = UserEditActivity.getIntent(context, userDetail)
-                    userEditActivityResult.launch(intent)
+            if (isMyInfo) {
+                val context = LocalContext.current
+
+                ExtendedFloatingActionButton(
+                    onClick = {
+                        val intent = UserEditActivity.getIntent(context, userDetail)
+                        userEditActivityResult.launch(intent)
+                    }
+                ) {
+                    Icon(Icons.Filled.Edit, contentDescription = stringResource(id = R.string.edit))
+                    Text(
+                        stringResource(R.string.edit_my_info),
+                        modifier = Modifier.padding(start = 12.dp)
+                    )
                 }
-            ) {
-                Icon(Icons.Filled.Edit, contentDescription = stringResource(id = R.string.edit))
-                Text(
-                    stringResource(R.string.edit_my_info),
-                    modifier = Modifier.padding(start = 12.dp)
-                )
             }
         }
     ) {
@@ -372,6 +376,7 @@ fun UserDetailContentPreview() {
             "2022-04-04",
             "-"
         ),
+        isMyInfo = true,
         snackBarHostState = SnackbarHostState(),
         onConfirmToKick = {},
         isCurrentUserAdmin = true,
@@ -395,6 +400,7 @@ fun KickedUserDetailContentPreview() {
             "2022-04-04",
             "2022-04-04",
         ),
+        isMyInfo = true,
         snackBarHostState = SnackbarHostState(),
         onConfirmToKick = {},
         isCurrentUserAdmin = true,

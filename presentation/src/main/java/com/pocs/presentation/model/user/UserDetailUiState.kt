@@ -6,6 +6,7 @@ sealed class UserDetailUiState {
     data class Success(
         val userDetail: UserDetailItemUiState,
         val isCurrentUserAdmin: Boolean,
+        val isMyInfo: Boolean,
         val errorMessage: String? = null,
         val shownErrorMessage: () -> Unit,
         val onKickClick: () -> Unit,

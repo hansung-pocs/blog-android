@@ -12,6 +12,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.admin.KickUserUseCase
+import com.pocs.domain.usecase.user.GetCurrentUserDetailUseCase
 import com.pocs.domain.usecase.user.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.user.GetUserDetailUseCase
 import com.pocs.domain.usecase.user.IsCurrentUserAdminUseCase
@@ -54,6 +55,7 @@ class UserDetailActivityTest {
             GetCurrentUserTypeUseCase(userRepository)
         ),
         IsCurrentUserAdminUseCase(GetCurrentUserTypeUseCase(userRepository)),
+        GetCurrentUserDetailUseCase(userRepository),
         KickUserUseCase(adminRepository)
     )
 
