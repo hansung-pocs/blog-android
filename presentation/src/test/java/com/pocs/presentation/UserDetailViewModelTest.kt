@@ -3,6 +3,7 @@ package com.pocs.presentation
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.admin.KickUserUseCase
+import com.pocs.domain.usecase.user.GetCurrentUserDetailUseCase
 import com.pocs.domain.usecase.user.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.user.GetUserDetailUseCase
 import com.pocs.domain.usecase.user.IsCurrentUserAdminUseCase
@@ -16,6 +17,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -53,6 +55,7 @@ class UserDetailViewModelTest {
                 getCurrentUserTypeUseCase = GetCurrentUserTypeUseCase(userRepository)
             ),
             IsCurrentUserAdminUseCase(GetCurrentUserTypeUseCase(userRepository)),
+            GetCurrentUserDetailUseCase(userRepository),
             KickUserUseCase(adminRepository)
         )
         userRepository.currentUser = mockUserDetail
@@ -79,5 +82,25 @@ class UserDetailViewModelTest {
         viewModel.fetchUserInfo(mockUserDetail.id)
 
         assertTrue(viewModel.uiState is UserDetailUiState.Failure)
+    }
+
+    @Test
+    fun shouldIsMyInfoIsTrue_WhenSameUserDetailIdAndCurrentUserId() {
+        userRepository.userDetailResult = Result.success(mockUserDetail)
+
+        viewModel.fetchUserInfo(mockUserDetail.id)
+
+        val uiState = viewModel.uiState as UserDetailUiState.Success
+        assertTrue(uiState.isMyInfo)
+    }
+
+    @Test
+    fun shouldIsMyInfoIsFalse_WhenDifferentUserDetailIdAndCurrentUserId() {
+        userRepository.userDetailResult = Result.success(mockUserDetail)
+
+        viewModel.fetchUserInfo(mockUserDetail.id + 3)
+
+        val uiState = viewModel.uiState as UserDetailUiState.Success
+        assertFalse(uiState.isMyInfo)
     }
 }
