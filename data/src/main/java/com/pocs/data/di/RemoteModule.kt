@@ -1,6 +1,7 @@
 package com.pocs.data.di
 
 import com.pocs.data.api.AdminApi
+import com.pocs.data.api.AuthApi
 import com.pocs.data.api.PostApi
 import com.pocs.data.api.UserApi
 import com.pocs.data.source.*
@@ -30,5 +31,11 @@ class RemoteModule {
     @Provides
     fun provideAdminRemoteDataSource(api: AdminApi): AdminRemoteDataSource {
         return AdminRemoteDataSourceImpl(api)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAuthRemoteDataSource(api: AuthApi): AuthRemoteDataSource {
+        return AuthRemoteDataSourceImpl(api)
     }
 }

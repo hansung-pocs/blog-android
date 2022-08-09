@@ -51,6 +51,11 @@ dependencies {
     // joda datetime
     implementation "net.danlew:android.joda:$joda"
 
+    // Retrofit2
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.2'
+
     implementation "androidx.core:core-ktx:$androidx_core"
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'
