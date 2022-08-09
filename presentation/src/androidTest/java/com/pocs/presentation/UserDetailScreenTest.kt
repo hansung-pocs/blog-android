@@ -36,6 +36,7 @@ class UserDetailScreenTest {
             userDetail,
             isCurrentUserAdmin = false,
             shownErrorMessage = {},
+            isMyInfo = true,
             onKickClick = {}
         )
         composeTestRule.setContent { UserDetailScreen(uiState = uiState, onEdited = {}) }
@@ -59,6 +60,7 @@ class UserDetailScreenTest {
             userDetail,
             isCurrentUserAdmin = true,
             shownErrorMessage = {},
+            isMyInfo = true,
             onKickClick = {}
         )
 
@@ -75,6 +77,7 @@ class UserDetailScreenTest {
             userDetail,
             isCurrentUserAdmin = false,
             shownErrorMessage = {},
+            isMyInfo = true,
             onKickClick = {}
         )
 
@@ -91,6 +94,7 @@ class UserDetailScreenTest {
             userDetail.copy(canceledAt = null),
             isCurrentUserAdmin = true,
             shownErrorMessage = {},
+            isMyInfo = true,
             onKickClick = {}
         )
 
@@ -112,6 +116,7 @@ class UserDetailScreenTest {
             isCurrentUserAdmin = true,
             errorMessage = errorMessage,
             shownErrorMessage = {},
+            isMyInfo = true,
             onKickClick = {}
         )
 
