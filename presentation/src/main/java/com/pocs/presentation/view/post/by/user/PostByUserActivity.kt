@@ -3,15 +3,16 @@ package com.pocs.presentation.view.post.by.user
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.R
+import com.pocs.presentation.base.ViewBindingActivity
 import com.pocs.presentation.databinding.ActivityPostByUserBinding
 import com.pocs.presentation.extension.RefreshStateContract
 import com.pocs.presentation.extension.addDividerDecoration
@@ -25,10 +26,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class PostByUserActivity : AppCompatActivity() {
+class PostByUserActivity : ViewBindingActivity<ActivityPostByUserBinding>() {
 
-    private var _binding: ActivityPostByUserBinding? = null
-    private val binding: ActivityPostByUserBinding get() = requireNotNull(_binding)
+    override val bindingInflater: (LayoutInflater) -> ActivityPostByUserBinding
+        get() = ActivityPostByUserBinding::inflate
 
     private var launcher: ActivityResultLauncher<Intent>? = null
 
@@ -45,9 +46,6 @@ class PostByUserActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        _binding = ActivityPostByUserBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         initToolBar()
         fetchPosts()

@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -15,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
+import com.pocs.presentation.base.ViewBindingFragment
 import com.pocs.presentation.databinding.FragmentPostBinding
 import com.pocs.presentation.extension.RefreshStateContract
 import com.pocs.presentation.extension.addDividerDecoration
@@ -28,22 +28,14 @@ import com.pocs.presentation.view.post.create.PostCreateActivity
 import com.pocs.presentation.view.post.detail.PostDetailActivity
 import kotlinx.coroutines.launch
 
-class AdminPostFragment : Fragment(R.layout.fragment_post) {
+class AdminPostFragment : ViewBindingFragment<FragmentPostBinding>() {
 
-    private var _binding: FragmentPostBinding? = null
-    private val binding get() = _binding!!
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentPostBinding
+        get() = FragmentPostBinding::inflate
 
     private val viewModel: AdminPostViewModel by activityViewModels()
 
     private var launcher: ActivityResultLauncher<Intent>? = null
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentPostBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -81,7 +73,6 @@ class AdminPostFragment : Fragment(R.layout.fragment_post) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
         launcher = null
     }
 

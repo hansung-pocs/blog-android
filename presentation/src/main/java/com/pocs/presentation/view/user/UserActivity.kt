@@ -3,15 +3,16 @@ package com.pocs.presentation.view.user
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import com.pocs.presentation.base.ViewBindingActivity
 import com.pocs.presentation.databinding.ActivityUserBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class UserActivity : AppCompatActivity() {
+class UserActivity : ViewBindingActivity<ActivityUserBinding>() {
 
-    private var _binding: ActivityUserBinding? = null
-    private val binding: ActivityUserBinding get() = requireNotNull(_binding)
+    override val bindingInflater: (LayoutInflater) -> ActivityUserBinding
+        get() = ActivityUserBinding::inflate
 
     companion object {
         fun getIntent(context: Context): Intent {
@@ -21,9 +22,6 @@ class UserActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        _binding = ActivityUserBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         initToolBar()
     }

@@ -3,11 +3,11 @@ package com.pocs.presentation.view.post.detail
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
@@ -16,6 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.R
+import com.pocs.presentation.base.ViewBindingActivity
 import com.pocs.presentation.databinding.ActivityPostDetailBinding
 import com.pocs.presentation.extension.RefreshStateContract
 import com.pocs.presentation.extension.setResultRefresh
@@ -25,10 +26,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class PostDetailActivity : AppCompatActivity() {
+class PostDetailActivity : ViewBindingActivity<ActivityPostDetailBinding>() {
 
-    private var _binding: ActivityPostDetailBinding? = null
-    private val binding: ActivityPostDetailBinding get() = requireNotNull(_binding)
+    override val bindingInflater: (LayoutInflater) -> ActivityPostDetailBinding
+        get() = ActivityPostDetailBinding::inflate
 
     private val viewModel: PostDetailViewModel by viewModels()
 
@@ -45,9 +46,6 @@ class PostDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        _binding = ActivityPostDetailBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         fetchPost()
         initToolBar()
