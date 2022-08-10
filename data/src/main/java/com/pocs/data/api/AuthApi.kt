@@ -21,8 +21,7 @@ interface AuthApi {
         @Header("x-pocs-session-token") token: String
     ): Response<ResponseBody<Unit>>
 
-    // TODO: 아래 주소 잘못된듯? 고쳐야함
-    @POST("auth/logout")
+    @POST("auth/validation")
     suspend fun isSessionValid(
         @Header("x-pocs-session-token") token: String
     ): Response<ResponseBody<Unit>>
