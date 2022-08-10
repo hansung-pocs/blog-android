@@ -162,7 +162,7 @@ fun PostCategoryChips(
                     labelColor = if (isSelected) {
                         MaterialTheme.colorScheme.onPrimaryContainer
                     } else {
-                        MaterialTheme.colorScheme.onSurface
+                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                     },
                 )
             )
