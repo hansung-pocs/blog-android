@@ -10,7 +10,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.pocs.presentation.extension.RESULT_REFRESH
 import com.pocs.presentation.view.post.create.PostCreateActivity
+import com.pocs.test_library.fake.FakeAuthRepositoryImpl
+import com.pocs.test_library.mock.mockNormalUserDetail
 import com.pocs.test_library.mock.mockPostDetail2
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Assert.assertEquals
@@ -29,6 +32,9 @@ class PostCreateActivityTest {
     @get:Rule(order = 1)
     val composeRule = createEmptyComposeRule()
 
+    @BindValue
+    val authRepository = FakeAuthRepositoryImpl()
+
     private lateinit var context: Context
 
     @Before
@@ -39,6 +45,7 @@ class PostCreateActivityTest {
 
     @Test
     fun shouldSetResultRefresh_AfterSuccessAddingNewPost() {
+        authRepository.currentUser.value = mockNormalUserDetail
         val post = mockPostDetail2
         val intent = PostCreateActivity.getIntent(context, post.category)
         val scenario = launchActivity<PostCreateActivity>(intent)

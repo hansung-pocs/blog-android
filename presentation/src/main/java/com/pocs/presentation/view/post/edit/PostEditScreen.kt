@@ -1,7 +1,9 @@
 package com.pocs.presentation.view.post.edit
 
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -18,6 +20,7 @@ import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
 import com.pocs.presentation.constant.MAX_POST_CONTENT_LEN
 import com.pocs.presentation.constant.MAX_POST_TITLE_LEN
+import com.pocs.presentation.extension.koreanStringResource
 import com.pocs.presentation.model.BasePostEditUiState
 import com.pocs.presentation.model.post.PostEditUiState
 import com.pocs.presentation.view.component.RecheckHandler
@@ -88,6 +91,11 @@ fun PostEditContent(
             val titleContentDescription = stringResource(R.string.title_text_field)
             val contentContentDescription = stringResource(R.string.content_text_field)
 
+            PostCategoryChips(
+                isUserAdmin = uiState.isUserAdmin,
+                selectedCategory = uiState.category,
+                onClick = uiState.onCategoryChange
+            )
             SimpleTextField(
                 hint = stringResource(R.string.title),
                 value = uiState.title,
@@ -110,6 +118,53 @@ fun PostEditContent(
                     .fillMaxWidth()
                     .fillMaxHeight()
                     .semantics { contentDescription = contentContentDescription }
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PostCategoryChips(
+    isUserAdmin: Boolean,
+    selectedCategory: PostCategory,
+    onClick: (PostCategory) -> Unit
+) {
+    val categories = remember {
+        val posts = PostCategory.values().toMutableList()
+        if (!isUserAdmin) {
+            posts.remove(PostCategory.NOTICE)
+        }
+        posts
+    }
+    val scrollState = rememberScrollState()
+
+    Row(
+        Modifier
+            .horizontalScroll(scrollState)
+            .padding(horizontal = 12.dp)
+    ) {
+        for (category in categories) {
+            val isSelected = selectedCategory == category
+
+            ElevatedAssistChip(
+                modifier = Modifier.padding(horizontal = 4.dp),
+                onClick = { onClick(category) },
+                label = {
+                    Text(text = stringResource(category.koreanStringResource))
+                },
+                colors = AssistChipDefaults.assistChipColors(
+                    containerColor = if (isSelected) {
+                        MaterialTheme.colorScheme.primaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.surface
+                    },
+                    labelColor = if (isSelected) {
+                        MaterialTheme.colorScheme.onPrimaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.onSurface
+                    },
+                )
             )
         }
     }
@@ -150,12 +205,14 @@ fun PostEditContentEmptyPreview() {
     PostEditContent(
         "게시글 수정",
         PostEditUiState(
-            id = 1,
+            postId = 1,
             title = "",
             content = "",
             category = PostCategory.STUDY,
+            isUserAdmin = true,
             onTitleChange = {},
             onContentChange = {},
+            onCategoryChange = {},
             onSave = { Result.success(Unit) }
         ),
         {}
@@ -168,12 +225,14 @@ fun PostEditContentPreview() {
     PostEditContent(
         "게시글 수정",
         PostEditUiState(
-            id = 1,
+            postId = 1,
             title = "공지입니다.",
             content = "안녕하세요.",
             category = PostCategory.STUDY,
+            isUserAdmin = true,
             onTitleChange = {},
             onContentChange = {},
+            onCategoryChange = {},
             onSave = { Result.success(Unit) }
         ),
         {}

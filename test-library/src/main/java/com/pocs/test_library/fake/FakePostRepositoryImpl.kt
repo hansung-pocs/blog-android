@@ -33,7 +33,7 @@ class FakePostRepositoryImpl @Inject constructor() : PostRepository {
     }
 
     override suspend fun updatePost(
-        id: Int,
+        postId: Int,
         title: String,
         content: String,
         userId: Int,

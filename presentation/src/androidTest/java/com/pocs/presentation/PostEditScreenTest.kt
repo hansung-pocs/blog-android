@@ -24,12 +24,14 @@ class PostEditScreenTest {
     val composeTestRule = createComposeRule()
 
     private val emptyUiState = PostEditUiState(
-        id = 1,
+        postId = 1,
         title = "",
         content = "",
         category = PostCategory.NOTICE,
+        isUserAdmin = true,
         onTitleChange = {},
         onContentChange = {},
+        onCategoryChange = {},
         onSave = { Result.success(Unit) }
     )
 

@@ -2,15 +2,23 @@ package com.pocs.domain.usecase.post
 
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.repository.PostRepository
+import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
 import javax.inject.Inject
 
 class AddPostUseCase @Inject constructor(
-    private val repository: PostRepository
+    private val repository: PostRepository,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase
 ) {
     suspend operator fun invoke(
         title: String,
         content: String,
-        userId: Int,
         category: PostCategory
-    ) = repository.addPost(title = title, content = content, userId = userId, category = category)
+    ): Result<Unit> {
+        return repository.addPost(
+            title = title,
+            content = content,
+            userId = requireNotNull(getCurrentUserUseCase()?.id),
+            category = category
+        )
+    }
 }

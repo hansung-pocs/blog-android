@@ -6,6 +6,8 @@ import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.test.core.app.launchActivity
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
+import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
 import com.pocs.domain.usecase.post.UpdatePostUseCase
 import com.pocs.presentation.extension.RESULT_REFRESH
 import com.pocs.presentation.view.post.edit.PostEditActivity
@@ -45,7 +47,8 @@ class PostEditActivityTest {
         UpdatePostUseCase(
             postRepository = postRepository,
             authRepository = authRepository
-        )
+        ),
+        IsCurrentUserAdminUseCase(GetCurrentUserTypeUseCase(authRepository))
     )
 
     private lateinit var context: Context

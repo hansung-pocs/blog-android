@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.pocs.domain.model.post.PostCategory
+import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
 import com.pocs.domain.usecase.post.AddPostUseCase
 import com.pocs.presentation.model.post.PostCreateUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PostCreateViewModel @Inject constructor(
-    private val addPostUseCase: AddPostUseCase
+    private val addPostUseCase: AddPostUseCase,
+    private val isCurrentUserAdminUseCase: IsCurrentUserAdminUseCase
 ) : ViewModel() {
 
     private lateinit var _uiState: MutableState<PostCreateUiState>
@@ -22,8 +24,10 @@ class PostCreateViewModel @Inject constructor(
         _uiState = mutableStateOf(
             PostCreateUiState(
                 category = category,
+                isUserAdmin = isCurrentUserAdminUseCase(),
                 onTitleChange = ::updateTitle,
                 onContentChange = ::updateContent,
+                onCategoryChange = ::updateCategory,
                 onSave = ::savePost
             )
         )
@@ -37,13 +41,15 @@ class PostCreateViewModel @Inject constructor(
         _uiState.value = uiState.value.copy(content = content)
     }
 
+    private fun updateCategory(category: PostCategory) {
+        _uiState.value = uiState.value.copy(category = category)
+    }
+
     private suspend fun savePost(): Result<Unit> {
         _uiState.value = uiState.value.copy(isInSaving = true)
         val result = addPostUseCase(
             title = uiState.value.title,
             content = uiState.value.content,
-            // TODO: 현재 접속중인 유저의 ID로 변경하기
-            userId = 1,
             category = uiState.value.category
         )
         _uiState.value = uiState.value.copy(isInSaving = false)
