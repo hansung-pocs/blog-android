@@ -12,11 +12,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    getCurrentUserDetailUseCase: GetCurrentUserUseCase,
+    getCurrentUserUseCase: GetCurrentUserUseCase,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<HomeUiState> = MutableStateFlow(
-        HomeUiState(userDetail = getCurrentUserDetailUseCase()?.toUiState())
+        HomeUiState(userDetail = getCurrentUserUseCase()?.toUiState())
     )
     val uiState: StateFlow<HomeUiState> get() = _uiState
 
