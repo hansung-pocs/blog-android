@@ -3,13 +3,14 @@ package com.pocs.presentation
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.admin.KickUserUseCase
-import com.pocs.domain.usecase.user.GetCurrentUserDetailUseCase
-import com.pocs.domain.usecase.user.GetCurrentUserTypeUseCase
+import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
+import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
 import com.pocs.domain.usecase.user.GetUserDetailUseCase
-import com.pocs.domain.usecase.user.IsCurrentUserAdminUseCase
+import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
 import com.pocs.presentation.model.user.UserDetailUiState
 import com.pocs.presentation.view.user.detail.UserDetailViewModel
 import com.pocs.test_library.fake.FakeAdminRepositoryImpl
+import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,6 +28,7 @@ class UserDetailViewModelTest {
 
     private val dispatcher = UnconfinedTestDispatcher()
 
+    private val authRepository = FakeAuthRepositoryImpl()
     private val userRepository = FakeUserRepositoryImpl()
     private val adminRepository = FakeAdminRepositoryImpl()
 
@@ -52,13 +54,13 @@ class UserDetailViewModelTest {
             getUserDetailUseCase = GetUserDetailUseCase(
                 userRepository = userRepository,
                 adminRepository = adminRepository,
-                getCurrentUserTypeUseCase = GetCurrentUserTypeUseCase(userRepository)
+                getCurrentUserTypeUseCase = GetCurrentUserTypeUseCase(authRepository)
             ),
-            IsCurrentUserAdminUseCase(GetCurrentUserTypeUseCase(userRepository)),
-            GetCurrentUserDetailUseCase(userRepository),
+            IsCurrentUserAdminUseCase(GetCurrentUserTypeUseCase(authRepository)),
+            GetCurrentUserUseCase(authRepository),
             KickUserUseCase(adminRepository)
         )
-        userRepository.currentUser = mockUserDetail
+        authRepository.currentUser.value = mockUserDetail
     }
 
     @After

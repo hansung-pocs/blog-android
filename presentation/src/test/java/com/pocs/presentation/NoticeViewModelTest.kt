@@ -2,11 +2,10 @@ package com.pocs.presentation
 
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.post.GetAllPostsUseCase
-import com.pocs.domain.usecase.user.GetCurrentUserTypeUseCase
-import com.pocs.domain.usecase.user.IsCurrentUserAdminUseCase
+import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import com.pocs.presentation.view.home.notice.NoticeViewModel
+import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakePostRepositoryImpl
-import com.pocs.test_library.fake.FakeUserRepositoryImpl
 import com.pocs.test_library.mock.mockNormalUserDetail
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -24,7 +23,7 @@ class NoticeViewModelTest {
 
     private val dispatcher = UnconfinedTestDispatcher()
 
-    private val userRepository = FakeUserRepositoryImpl()
+    private val authRepository = FakeAuthRepositoryImpl()
     private val postRepository = FakePostRepositoryImpl()
 
     private lateinit var viewModel: NoticeViewModel
@@ -41,7 +40,7 @@ class NoticeViewModelTest {
 
     @Test
     fun shouldIsCurrentUserAdminIsTrue() {
-        userRepository.currentUser = mockNormalUserDetail.copy(type = UserType.ADMIN)
+        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.ADMIN)
         initViewModel()
 
         assertTrue(viewModel.uiState.value.isCurrentUserAdmin)
@@ -49,7 +48,7 @@ class NoticeViewModelTest {
 
     @Test
     fun shouldIsCurrentUserAdminIsFalse() {
-        userRepository.currentUser = mockNormalUserDetail.copy(type = UserType.UNKNOWN)
+        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.UNKNOWN)
         initViewModel()
 
         assertFalse(viewModel.uiState.value.isCurrentUserAdmin)
@@ -58,8 +57,8 @@ class NoticeViewModelTest {
     private fun initViewModel() {
         viewModel = NoticeViewModel(
             getAllPostsUseCase = GetAllPostsUseCase(postRepository),
-            isCurrentUserAdminUseCase = IsCurrentUserAdminUseCase(
-                GetCurrentUserTypeUseCase(userRepository)
+            isCurrentUserAdminUseCase = com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase(
+                GetCurrentUserTypeUseCase(authRepository)
             )
         )
     }

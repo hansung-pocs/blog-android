@@ -82,8 +82,11 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_my_info -> {
-                val intent = UserDetailActivity.getIntent(this, viewModel.currentUserId)
-                startActivity(intent)
+                val currentUserId = viewModel.currentUserId
+                if (currentUserId != null) {
+                    val intent = UserDetailActivity.getIntent(this, currentUserId)
+                    startActivity(intent)
+                }
             }
         }
         return super.onOptionsItemSelected(item)

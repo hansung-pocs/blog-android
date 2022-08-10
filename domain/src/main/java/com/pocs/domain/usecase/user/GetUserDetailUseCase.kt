@@ -4,6 +4,7 @@ import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.repository.AdminRepository
 import com.pocs.domain.repository.UserRepository
+import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import javax.inject.Inject
 
 class GetUserDetailUseCase @Inject constructor(

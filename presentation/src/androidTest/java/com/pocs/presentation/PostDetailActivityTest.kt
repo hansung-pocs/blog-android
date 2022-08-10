@@ -13,8 +13,8 @@ import com.pocs.domain.usecase.post.DeletePostUseCase
 import com.pocs.domain.usecase.post.GetPostDetailUseCase
 import com.pocs.presentation.view.post.detail.PostDetailActivity
 import com.pocs.presentation.view.post.detail.PostDetailViewModel
+import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakePostRepositoryImpl
-import com.pocs.test_library.fake.FakeUserRepositoryImpl
 import com.pocs.test_library.mock.mockNormalUserDetail
 import com.pocs.test_library.mock.mockPostDetail1
 import dagger.hilt.android.testing.BindValue
@@ -36,14 +36,14 @@ class PostDetailActivityTest {
     val postRepository = FakePostRepositoryImpl()
 
     @BindValue
-    val userRepository = FakeUserRepositoryImpl()
+    val authRepository = FakeAuthRepositoryImpl()
 
     @BindValue
     val viewModel = PostDetailViewModel(
         GetPostDetailUseCase(postRepository),
-        DeletePostUseCase(postRepository = postRepository, userRepository = userRepository),
-        CanEditPostUseCase(userRepository),
-        CanDeletePostUseCase(userRepository)
+        DeletePostUseCase(postRepository = postRepository, authRepository = authRepository),
+        CanEditPostUseCase(authRepository),
+        CanDeletePostUseCase(authRepository)
     )
 
     private lateinit var context: Context
@@ -80,7 +80,7 @@ class PostDetailActivityTest {
     fun shouldNotShowMoreInfoOptionButton_WhenPostWasDeleted() {
         val postDetail = mockPostDetail1
         postRepository.postDetailResult = Result.success(postDetail)
-        userRepository.currentUser = mockNormalUserDetail.copy(
+        authRepository.currentUser.value = mockNormalUserDetail.copy(
             id = postDetail.writer.id,
             type = UserType.ADMIN
         )
@@ -97,7 +97,7 @@ class PostDetailActivityTest {
     fun shouldNotShowMoreInfoOptionButton_WhenPostWasNotDeleted_AndUserIsNotAdminAndIsNotWriter() {
         val postDetail = mockPostDetail1
         postRepository.postDetailResult = Result.success(postDetail)
-        userRepository.currentUser = mockNormalUserDetail.copy(
+        authRepository.currentUser.value = mockNormalUserDetail.copy(
             id = 98765341,
             type = UserType.MEMBER
         )
@@ -114,7 +114,7 @@ class PostDetailActivityTest {
     fun shouldShowDeleteOption_WhenPostWasNotDeleted_AndUserIsWriter() {
         val postDetail = mockPostDetail1
         postRepository.postDetailResult = Result.success(postDetail)
-        userRepository.currentUser = mockNormalUserDetail.copy(
+        authRepository.currentUser.value = mockNormalUserDetail.copy(
             id = postDetail.writer.id,
             type = UserType.MEMBER
         )
@@ -131,7 +131,7 @@ class PostDetailActivityTest {
     fun shouldNotShowEditOption_WhenPostWasNotDeleted_AndUserIsNotWriter() {
         val postDetail = mockPostDetail1
         postRepository.postDetailResult = Result.success(postDetail)
-        userRepository.currentUser = mockNormalUserDetail.copy(
+        authRepository.currentUser.value = mockNormalUserDetail.copy(
             id = 96412433,
             type = UserType.ADMIN
         )
@@ -150,7 +150,7 @@ class PostDetailActivityTest {
     fun shouldShowEditOption_WhenPostWasNotDeleted_AndUserIsWriter() {
         val postDetail = mockPostDetail1
         postRepository.postDetailResult = Result.success(postDetail)
-        userRepository.currentUser = mockNormalUserDetail.copy(
+        authRepository.currentUser.value = mockNormalUserDetail.copy(
             id = postDetail.writer.id,
             type = UserType.MEMBER
         )

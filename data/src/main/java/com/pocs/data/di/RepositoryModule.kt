@@ -4,12 +4,12 @@ import com.pocs.data.api.AdminApi
 import com.pocs.data.api.PostApi
 import com.pocs.data.api.UserApi
 import com.pocs.data.repository.AdminRepositoryImpl
+import com.pocs.data.repository.AuthRepositoryImpl
 import com.pocs.data.repository.PostRepositoryImpl
 import com.pocs.data.repository.UserRepositoryImpl
-import com.pocs.data.source.AdminRemoteDataSource
-import com.pocs.data.source.PostRemoteDataSource
-import com.pocs.data.source.UserRemoteDataSource
+import com.pocs.data.source.*
 import com.pocs.domain.repository.AdminRepository
+import com.pocs.domain.repository.AuthRepository
 import com.pocs.domain.repository.PostRepository
 import com.pocs.domain.repository.UserRepository
 import dagger.Module
@@ -38,5 +38,19 @@ class RepositoryModule {
     @Provides
     fun provideAdminRepository(api: AdminApi, dataSource: AdminRemoteDataSource): AdminRepository {
         return AdminRepositoryImpl(api = api, dataSource = dataSource)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAuthRepository(
+        remoteDataSource: AuthRemoteDataSource,
+        localDataSource: AuthLocalDataSource,
+        userRepository: UserRepository
+    ): AuthRepository {
+        return AuthRepositoryImpl(
+            remoteDataSource = remoteDataSource,
+            localDataSource = localDataSource,
+            userRepository = userRepository
+        )
     }
 }

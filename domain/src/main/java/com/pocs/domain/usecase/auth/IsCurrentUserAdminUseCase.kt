@@ -1,4 +1,4 @@
-package com.pocs.domain.usecase.user
+package com.pocs.domain.usecase.auth
 
 import com.pocs.domain.model.user.UserType
 import javax.inject.Inject

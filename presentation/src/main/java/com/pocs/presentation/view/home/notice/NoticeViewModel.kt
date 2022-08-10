@@ -6,8 +6,8 @@ import androidx.paging.cachedIn
 import androidx.paging.filter
 import androidx.paging.map
 import com.pocs.domain.model.post.PostCategory
+import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
 import com.pocs.domain.usecase.post.GetAllPostsUseCase
-import com.pocs.domain.usecase.user.IsCurrentUserAdminUseCase
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.NoticeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel

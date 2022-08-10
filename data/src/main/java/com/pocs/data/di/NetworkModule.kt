@@ -2,6 +2,7 @@ package com.pocs.data.di
 
 import com.pocs.data.BuildConfig
 import com.pocs.data.api.AdminApi
+import com.pocs.data.api.AuthApi
 import com.pocs.data.api.PostApi
 import com.pocs.data.api.UserApi
 import com.pocs.data.mapper.EnumConverterFactory
@@ -65,5 +66,11 @@ class NetworkModule {
     @Singleton
     fun provideAdminApiService(retrofit: Retrofit): AdminApi {
         return retrofit.create(AdminApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthApiService(retrofit: Retrofit): AuthApi {
+        return retrofit.create(AuthApi::class.java)
     }
 }

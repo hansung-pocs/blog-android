@@ -11,7 +11,6 @@ import com.pocs.data.source.UserRemoteDataSource
 import com.pocs.domain.model.user.User
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserListSortingMethod
-import com.pocs.domain.model.user.UserType
 import com.pocs.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -20,20 +19,6 @@ class UserRepositoryImpl @Inject constructor(
     private val api: UserApi,
     private val dataSource: UserRemoteDataSource
 ) : UserRepository {
-
-    // TODO: 로그인 기능이 구현되면 실제 로그인한 사용자의 정보로 초기화하기
-    private val currentUser = UserDetail(
-        1,
-        "권김정",
-        "abc@google.com",
-        1971034,
-        UserType.ADMIN,
-        null,
-        30,
-        "https://github.com/",
-        "2021-02-12",
-        null,
-    )
 
     override fun getAll(sortingMethod: UserListSortingMethod): Flow<PagingData<User>> {
         return Pager(
@@ -81,10 +66,5 @@ class UserRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Result.failure(e)
         }
-    }
-
-    override fun getCurrentUserDetail(): UserDetail {
-        // TODO: 로그인 기능 API 구현되면 현재 로그인한 유저를 반환하도록 수정하기
-        return currentUser
     }
 }

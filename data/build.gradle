@@ -9,6 +9,7 @@ apply from: rootProject.file("android.gradle")
 
 dependencies {
     implementation project(":domain")
+    testImplementation project(":test-library")
 
     // paging
     implementation "androidx.paging:paging-common-ktx:$paging"
@@ -21,6 +22,15 @@ dependencies {
     // hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+    testAnnotationProcessor "com.google.dagger:hilt-android-compiler:$hilt_version"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+    androidTestAnnotationProcessor "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    // coroutine
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
 
     implementation "androidx.core:core-ktx:$androidx_core"
     testImplementation 'junit:junit:4.13.2'
