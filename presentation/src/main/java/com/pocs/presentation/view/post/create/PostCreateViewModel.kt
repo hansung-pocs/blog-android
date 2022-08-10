@@ -17,10 +17,13 @@ class PostCreateViewModel @Inject constructor(
     private val isCurrentUserAdminUseCase: IsCurrentUserAdminUseCase
 ) : ViewModel() {
 
-    private lateinit var _uiState: MutableState<PostCreateUiState>
-    val uiState: State<PostCreateUiState> get() = _uiState
+    private var _uiState: MutableState<PostCreateUiState>? = null
+    val uiState: State<PostCreateUiState> get() = requireNotNull(_uiState)
 
     fun initUiState(category: PostCategory) {
+        if (_uiState != null) {
+            return
+        }
         _uiState = mutableStateOf(
             PostCreateUiState(
                 category = category,
@@ -34,25 +37,25 @@ class PostCreateViewModel @Inject constructor(
     }
 
     private fun updateTitle(title: String) {
-        _uiState.value = uiState.value.copy(title = title)
+        _uiState!!.value = uiState.value.copy(title = title)
     }
 
     private fun updateContent(content: String) {
-        _uiState.value = uiState.value.copy(content = content)
+        _uiState!!.value = uiState.value.copy(content = content)
     }
 
     private fun updateCategory(category: PostCategory) {
-        _uiState.value = uiState.value.copy(category = category)
+        _uiState!!.value = uiState.value.copy(category = category)
     }
 
     private suspend fun savePost(): Result<Unit> {
-        _uiState.value = uiState.value.copy(isInSaving = true)
+        _uiState!!.value = uiState.value.copy(isInSaving = true)
         val result = addPostUseCase(
             title = uiState.value.title,
             content = uiState.value.content,
             category = uiState.value.category
         )
-        _uiState.value = uiState.value.copy(isInSaving = false)
+        _uiState!!.value = uiState.value.copy(isInSaving = false)
         return result
     }
 }
