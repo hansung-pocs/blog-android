@@ -71,7 +71,7 @@
     <string name="user_created">회원 생성됨</string>
     <string name="my_info_edited">내 정보 편집됨</string>
     <string name="empty_label">-</string>
-    <string name="cannot_edit_post">글을 편집할 수 없습니다.</string>
+    <string name="failed_to_save_post">글 저장 실패</string>
     <string name="sorting_by_created_at_descending">가입일 최근순</string>
     <string name="nickname">닉네임</string>
     <string name="password">비밀번호</string>

@@ -27,7 +27,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun PostEditScreen(uiState: PostEditUiState, navigateUp: () -> Unit, onSuccessSave: () -> Unit) {
     PostEditContent(
-        // TODO: 게시글 속성에 따라 "OOO 편집"과 같이 다르게 보이기
         title = stringResource(id = R.string.edit_post),
         uiState = uiState,
         navigateUp = navigateUp,
@@ -55,7 +54,7 @@ fun PostEditContent(
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
         topBar = {
-            val cannotEditPostString = stringResource(R.string.cannot_edit_post)
+            val cannotEditPostString = stringResource(R.string.failed_to_save_post)
 
             EditContentAppBar(
                 title = title,
