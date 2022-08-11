@@ -23,4 +23,18 @@ class FakeAuthRepositoryImpl @Inject constructor() : AuthRepository {
     override fun getCurrentUser(): StateFlow<UserDetail?> {
         return currentUser
     }
+
+    override fun syncCurrentUser(
+        name: String,
+        email: String,
+        company: String?,
+        github: String?
+    ) {
+        currentUser.value = currentUser.value?.copy(
+            name = name,
+            email = email,
+            company = company,
+            github = github
+        )
+    }
 }

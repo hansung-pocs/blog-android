@@ -7,4 +7,10 @@ interface AuthRepository {
     suspend fun login(userName: String, password: String): Result<Unit>
     suspend fun logout(): Result<Unit>
     fun getCurrentUser(): StateFlow<UserDetail?>
+    fun syncCurrentUser(
+        name: String,
+        email: String,
+        company: String?,
+        github: String?
+    )
 }

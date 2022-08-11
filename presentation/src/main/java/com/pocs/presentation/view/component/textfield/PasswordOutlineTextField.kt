@@ -61,8 +61,13 @@ fun PasswordOutlineTextField(
             } else {
                 stringResource(R.string.show_password)
             }
+
             IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                Icon(imageVector = imageVector, description)
+                Icon(
+                    imageVector = imageVector,
+                    contentDescription = description,
+                    tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                )
             }
         },
         onClearClick = onClearClick,

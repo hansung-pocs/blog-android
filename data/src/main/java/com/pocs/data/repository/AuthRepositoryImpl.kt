@@ -104,4 +104,18 @@ class AuthRepositoryImpl @Inject constructor(
     override fun getCurrentUser(): StateFlow<UserDetail?> {
         return currentUserState
     }
+
+    override fun syncCurrentUser(
+        name: String,
+        email: String,
+        company: String?,
+        github: String?
+    ) {
+        currentUserState.value = currentUserState.value?.copy(
+            name = name,
+            email = email,
+            company = company,
+            github = github
+        )
+    }
 }

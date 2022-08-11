@@ -1,7 +1,8 @@
 package com.pocs.presentation
 
 import com.pocs.domain.model.user.UserType
-import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
+import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
+import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
 import com.pocs.presentation.view.home.HomeViewModel
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.mock.mockNormalUserDetail
@@ -20,7 +21,7 @@ class HomeViewModelTest {
         authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.ADMIN)
         initViewModel()
 
-        assertTrue(viewModel.isCurrentUserAdmin)
+        assertTrue(viewModel.uiState.value.isCurrentUserAdmin)
     }
 
     @Test
@@ -28,12 +29,12 @@ class HomeViewModelTest {
         authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.MEMBER)
         initViewModel()
 
-        assertFalse(viewModel.isCurrentUserAdmin)
+        assertFalse(viewModel.uiState.value.isCurrentUserAdmin)
     }
 
     private fun initViewModel() {
         viewModel = HomeViewModel(
-            GetCurrentUserUseCase(authRepository)
+            IsCurrentUserAdminUseCase(GetCurrentUserTypeUseCase(authRepository))
         )
     }
 }

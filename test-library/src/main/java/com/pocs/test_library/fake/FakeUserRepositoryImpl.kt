@@ -13,6 +13,8 @@ class FakeUserRepositoryImpl @Inject constructor() : UserRepository {
 
     var userDetailResult: Result<UserDetail> = Result.failure(Exception("Empty"))
 
+    var updateUserResult = Result.success(Unit)
+
     override fun getAll(sortingMethod: UserListSortingMethod): Flow<PagingData<User>> {
         return flow {
             PagingData.from<User>(listOf())
@@ -29,6 +31,6 @@ class FakeUserRepositoryImpl @Inject constructor() : UserRepository {
         company: String?,
         github: String?
     ): Result<Unit> {
-        TODO("Not yet implemented")
+        return updateUserResult
     }
 }
