@@ -3,6 +3,6 @@ package com.pocs.data.model.auth
 import java.io.Serializable
 
 data class AuthLocalData(
-    val token: String,
+    val sessionToken: String,
     val userId: Int
 ) : Serializable

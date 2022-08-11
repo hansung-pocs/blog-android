@@ -2,17 +2,24 @@ package com.pocs.test_library.fake
 
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.repository.AuthRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class FakeAuthRepositoryImpl @Inject constructor() : AuthRepository {
+
+    private var isReadyFlow = MutableSharedFlow<Boolean>()
 
     var currentUser = MutableStateFlow<UserDetail?>(null)
 
     var loginResult = Result.success(Unit)
 
     var logoutResult = Result.success(Unit)
+
+    suspend fun emit(isReady: Boolean) {
+        isReadyFlow.emit(isReady)
+    }
+
+    override fun isReady(): Flow<Boolean> = isReadyFlow
 
     override suspend fun login(userName: String, password: String): Result<Unit> {
         return loginResult

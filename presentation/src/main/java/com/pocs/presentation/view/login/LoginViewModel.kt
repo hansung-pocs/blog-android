@@ -3,6 +3,7 @@ package com.pocs.presentation.view.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
+import com.pocs.domain.usecase.auth.IsAuthReadyUseCase
 import com.pocs.domain.usecase.auth.LoginUseCase
 import com.pocs.presentation.model.auth.LoginUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    getCurrentUserUseCase: GetCurrentUserUseCase,
+    isAuthReadyUseCase: IsAuthReadyUseCase,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
@@ -21,10 +23,16 @@ class LoginViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val currentUser = getCurrentUserUseCase()
-            _uiState.update {
-                it.copy(isLoggedIn = currentUser != null)
+            isAuthReadyUseCase().collectLatest { ready ->
+                _uiState.update { it.copy(isAuthReady = ready) }
             }
+        }
+    }
+
+    fun fetchCurrentUser() {
+        val currentUser = getCurrentUserUseCase()
+        _uiState.update {
+            it.copy(isLoggedIn = currentUser != null)
         }
     }
 

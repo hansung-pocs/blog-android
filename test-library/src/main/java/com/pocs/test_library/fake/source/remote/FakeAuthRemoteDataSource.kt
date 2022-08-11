@@ -4,8 +4,6 @@ import com.pocs.data.model.ResponseBody
 import com.pocs.data.model.auth.LoginRequestBody
 import com.pocs.data.model.auth.LoginResponseData
 import com.pocs.data.source.AuthRemoteDataSource
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -38,6 +36,8 @@ class FakeAuthRemoteDataSource @Inject constructor() : AuthRemoteDataSource {
         )
     )
 
+    var isSessionValidInnerLambda: () -> Unit = {}
+
     override suspend fun login(loginRequestBody: LoginRequestBody): Response<ResponseBody<LoginResponseData>> {
         return loginResponse
     }
@@ -47,6 +47,7 @@ class FakeAuthRemoteDataSource @Inject constructor() : AuthRemoteDataSource {
     }
 
     override suspend fun isSessionValid(token: String): Response<ResponseBody<Unit>> {
+        isSessionValidInnerLambda()
         return isSessionValidResponse
     }
 }

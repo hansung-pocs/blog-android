@@ -3,6 +3,8 @@ package com.pocs.presentation.view.login
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.ViewTreeObserver
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +34,8 @@ class LoginActivity : AppCompatActivity() {
 
         WindowCompat.setDecorFitsSystemWindows(window, true)
 
+        showSplashUntilAuthIsReady()
+
         if (viewModel.uiState.value.isLoggedIn) {
             navigateToHomeActivity()
         }
@@ -50,6 +54,23 @@ class LoginActivity : AppCompatActivity() {
                 )
             }
         }
+    }
+
+    private fun showSplashUntilAuthIsReady() {
+        val content: View = findViewById(android.R.id.content)
+        content.viewTreeObserver.addOnPreDrawListener(
+            object : ViewTreeObserver.OnPreDrawListener {
+                override fun onPreDraw(): Boolean {
+                    return if (viewModel.uiState.value.isAuthReady) {
+                        viewModel.fetchCurrentUser()
+                        content.viewTreeObserver.removeOnPreDrawListener(this)
+                        true
+                    } else {
+                        false
+                    }
+                }
+            }
+        )
     }
 
     private fun updateUi(uiState: LoginUiState) {
