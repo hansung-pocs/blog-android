@@ -1,5 +1,7 @@
 package com.pocs.presentation.view.home
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -28,6 +30,12 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     private val viewModel: HomeViewModel by viewModels()
+
+    companion object {
+        fun getIntent(context: Context): Intent {
+            return Intent(context, HomeActivity::class.java)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
