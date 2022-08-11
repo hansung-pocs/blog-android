@@ -10,8 +10,10 @@ class FakeAuthRepositoryImpl @Inject constructor() : AuthRepository {
 
     var currentUser = MutableStateFlow<UserDetail?>(null)
 
+    var loginResult = Result.success(Unit)
+
     override suspend fun login(userName: String, password: String): Result<Unit> {
-        TODO("Not yet implemented")
+        return loginResult
     }
 
     override suspend fun logout(): Result<Unit> {
