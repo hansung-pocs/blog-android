@@ -92,6 +92,7 @@ fun LoginContent(
             )
             Box(modifier = Modifier.height(16.dp))
             PocsButton(label = stringResource(id = R.string.login), onClick = onLoginClick)
+            Box(modifier = Modifier.height(8.dp))
             TextButton(onClick = onBrowseAsNonMemberClick) {
                 Text(
                     text = stringResource(R.string.brows_as_non_member),
