@@ -13,7 +13,6 @@ fun PostCreateScreen(
     onSuccessSave: () -> Unit
 ) {
     PostEditContent(
-        // TODO: 게시글 속성에 따라 "OOO 편집"과 같이 다르게 보이기
         title = stringResource(R.string.write_post),
         uiState = uiState,
         navigateUp = navigateUp,
