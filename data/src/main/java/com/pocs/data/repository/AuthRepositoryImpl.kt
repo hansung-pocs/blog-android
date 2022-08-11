@@ -35,18 +35,22 @@ class AuthRepositoryImpl @Inject constructor(
         val localData = localDataSource.getData()
         MainScope().launch {
             if (localData != null) {
-                val response = remoteDataSource.isSessionValid(localData.token)
-                val isSessionValid = response.isSuccessful
+                try {
+                    val response = remoteDataSource.isSessionValid(localData.token)
+                    val isSessionValid = response.isSuccessful
 
-                if (isSessionValid) {
-                    val userDetailResult = userRepository.getUserDetail(localData.userId)
+                    if (isSessionValid) {
+                        val userDetailResult = userRepository.getUserDetail(localData.userId)
 
-                    if (userDetailResult.isSuccess) {
-                        currentUserState.value = userDetailResult.getOrNull()!!
-                        token = localData.token
+                        if (userDetailResult.isSuccess) {
+                            currentUserState.value = userDetailResult.getOrNull()!!
+                            token = localData.token
+                        }
+                    } else {
+                        localDataSource.clear()
                     }
-                } else {
-                    localDataSource.clear()
+                } catch (e: Exception) {
+                    // 인터넷 연결이 끊김 등의 예외는 무시한다.
                 }
             }
             isReady.emit(true)

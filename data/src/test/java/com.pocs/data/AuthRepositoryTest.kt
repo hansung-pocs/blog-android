@@ -22,6 +22,7 @@ import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import java.net.ConnectException
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
@@ -176,6 +177,24 @@ class AuthRepositoryTest {
     @Test
     fun emitTrueFromIsReady_WhenThereIsNoLocalData() = runTest {
         localDataSource.authLocalData = null
+
+        initRepository()
+        var isReady = false
+        val job = launch(testDispatcher) {
+            repository.isReady().collectLatest {
+                isReady = it
+            }
+        }
+
+        assertTrue(isReady)
+
+        job.cancel()
+    }
+
+    @Test
+    fun emitTrueFromIsReady_WhenInternetIsNotConnected() = runTest {
+        remoteDataSource.isSessionValidInnerLambda = { throw ConnectException() }
+        localDataSource.authLocalData = AuthLocalData("abc", 1)
 
         initRepository()
         var isReady = false
