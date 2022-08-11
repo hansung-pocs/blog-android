@@ -76,7 +76,6 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
                 val intent = AdminActivity.getIntent(this)
                 startActivity(intent)
             }
-            else -> throw IllegalArgumentException()
         }
         binding.drawerLayout.close()
         return true
@@ -93,7 +92,6 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
                 val intent = SettingActivity.getIntent(this)
                 startActivity(intent)
             }
-            else -> throw IllegalArgumentException()
         }
         return super.onOptionsItemSelected(item)
     }
