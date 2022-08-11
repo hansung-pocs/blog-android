@@ -83,6 +83,7 @@
     <string name="id">아이디</string>
     <string name="brows_as_non_member">비회원으로 둘러보기</string>
     <string name="login_title">POCS</string>
+    <string name="setting">설정</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>
         <item>회원목록</item>
