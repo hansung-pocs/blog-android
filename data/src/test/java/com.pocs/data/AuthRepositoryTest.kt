@@ -12,6 +12,8 @@ import com.pocs.test_library.mock.successResponse
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -25,6 +27,8 @@ import org.junit.Test
 @HiltAndroidTest
 class AuthRepositoryTest {
 
+    private val testDispatcher = UnconfinedTestDispatcher()
+
     private val userRepository = FakeUserRepositoryImpl()
     private val remoteDataSource = FakeAuthRemoteDataSource()
     private val localDataSource = FakeAuthLocalDataSource()
@@ -33,7 +37,7 @@ class AuthRepositoryTest {
 
     @Before
     fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
+        Dispatchers.setMain(testDispatcher)
     }
 
     @After
@@ -148,6 +152,42 @@ class AuthRepositoryTest {
         repository.logout()
 
         assertNull(localDataSource.authLocalData)
+    }
+
+    @Test
+    fun emitTrueFromIsReady_WhenLocalDataIsValid() = runTest {
+        val userDetail = mockNormalUserDetail
+        localDataSource.authLocalData = AuthLocalData("abc", 1)
+        userRepository.userDetailResult = Result.success(userDetail)
+
+        initRepository()
+        var isReady = false
+        val job = launch(testDispatcher) {
+            repository.isReady().collectLatest {
+                isReady = it
+            }
+        }
+
+        assertTrue(isReady)
+
+        job.cancel()
+    }
+
+    @Test
+    fun emitTrueFromIsReady_WhenThereIsNoLocalData() = runTest {
+        localDataSource.authLocalData = null
+
+        initRepository()
+        var isReady = false
+        val job = launch(testDispatcher) {
+            repository.isReady().collectLatest {
+                isReady = it
+            }
+        }
+
+        assertTrue(isReady)
+
+        job.cancel()
     }
 
     private fun initRepository() {

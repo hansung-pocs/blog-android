@@ -9,6 +9,7 @@ import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.repository.AuthRepository
 import com.pocs.domain.repository.UserRepository
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -20,6 +21,8 @@ class AuthRepositoryImpl @Inject constructor(
     private val userRepository: UserRepository
 ) : AuthRepository {
 
+    private val isReady = MutableStateFlow(false)
+
     private val currentUserState: MutableStateFlow<UserDetail?> = MutableStateFlow(null)
 
     private var token: String? = null
@@ -30,8 +33,8 @@ class AuthRepositoryImpl @Inject constructor(
 
     private fun initAuth() {
         val localData = localDataSource.getData()
-        if (localData != null) {
-            MainScope().launch {
+        MainScope().launch {
+            if (localData != null) {
                 val response = remoteDataSource.isSessionValid(localData.token)
                 val isSessionValid = response.isSuccessful
 
@@ -46,8 +49,11 @@ class AuthRepositoryImpl @Inject constructor(
                     localDataSource.clear()
                 }
             }
+            isReady.emit(true)
         }
     }
+
+    override fun isReady(): Flow<Boolean> = isReady
 
     override suspend fun login(userName: String, password: String): Result<Unit> {
         if (token != null) {
