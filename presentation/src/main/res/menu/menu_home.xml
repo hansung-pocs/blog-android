@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.pocs.presentation.view.home.HomeActivity">
     <item
-        android:id="@+id/action_my_info"
-        android:icon="@drawable/ic_baseline_account_circle_24"
-        android:title=""
-        app:showAsAction="always" />
+        android:id="@+id/action_setting"
+        android:title="@string/setting"
+        app:showAsAction="never" />
 </menu>

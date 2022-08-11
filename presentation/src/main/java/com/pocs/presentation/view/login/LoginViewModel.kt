@@ -50,4 +50,8 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
+
+    fun errorMessageShown() {
+        _uiState.update { it.copy(errorMessage = null) }
+    }
 }

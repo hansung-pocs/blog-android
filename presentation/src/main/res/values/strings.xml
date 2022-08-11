@@ -28,6 +28,7 @@
     <string name="user_info_title">%s님의 정보</string>
     <string name="failed_to_load">불러오기에 실패했습니다.</string>
     <string name="login">로그인</string>
+    <string name="navigate_to_login_screen">로그인 하러가기</string>
     <string name="user_generation_info">%s기</string>
     <string name="generation">기수</string>
     <string name="student_id">학번</string>
@@ -83,6 +84,10 @@
     <string name="id">아이디</string>
     <string name="brows_as_non_member">비회원으로 둘러보기</string>
     <string name="login_title">POCS</string>
+    <string name="setting">설정</string>
+    <string name="non_member">비회원</string>
+    <string name="logout">로그아웃</string>
+    <string name="logout_dialog_title">정말로 로그아웃 하시겠습니까?</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>
         <item>회원목록</item>

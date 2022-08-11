@@ -17,8 +17,8 @@ import com.pocs.presentation.R
 import com.pocs.presentation.base.ViewBindingActivity
 import com.pocs.presentation.databinding.ActivityHomeBinding
 import com.pocs.presentation.view.admin.AdminActivity
+import com.pocs.presentation.view.setting.SettingActivity
 import com.pocs.presentation.view.user.UserActivity
-import com.pocs.presentation.view.user.detail.UserDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -50,7 +50,7 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
     private fun initNavigationView() {
         with(binding) {
             val adminMenu = navigationView.menu.findItem(R.id.action_admin)
-            adminMenu.isVisible = viewModel.isCurrentUserAdmin
+            adminMenu.isVisible = viewModel.uiState.value.isCurrentUserAdmin
             navigationView.setNavigationItemSelectedListener(::onSelectNavigationItem)
         }
     }
@@ -69,7 +69,6 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
     private fun onSelectNavigationItem(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_user_list -> {
-                // TODO: 회원이 아닌 경우 가입 or 로그인 엑티비티로 전환하기
                 val intent = UserActivity.getIntent(this)
                 startActivity(intent)
             }
@@ -89,12 +88,9 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_my_info -> {
-                val currentUserId = viewModel.currentUserId
-                if (currentUserId != null) {
-                    val intent = UserDetailActivity.getIntent(this, currentUserId)
-                    startActivity(intent)
-                }
+            R.id.action_setting -> {
+                val intent = SettingActivity.getIntent(this)
+                startActivity(intent)
             }
         }
         return super.onOptionsItemSelected(item)

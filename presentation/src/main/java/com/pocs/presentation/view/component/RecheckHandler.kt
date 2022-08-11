@@ -23,7 +23,9 @@ fun RecheckHandler(
     if (enabledAlertDialog) {
         RecheckDialog(
             onDismissRequest = { enabledAlertDialog = false },
-            onOkClick = { navigateUp() }
+            onOkClick = { navigateUp() },
+            title = stringResource(R.string.recheck_dialog_title),
+            text = stringResource(R.string.recheck_dialog_text)
         )
     }
 
@@ -42,10 +44,14 @@ fun RecheckDialog(
 ) {
     AlertDialog(
         title = {
-            Text(text = title ?: stringResource(R.string.recheck_dialog_title))
+            if (title != null) {
+                Text(text = title)
+            }
         },
         text = {
-            Text(text = text ?: stringResource(R.string.recheck_dialog_text))
+            if (text != null) {
+                Text(text = text)
+            }
         },
         onDismissRequest = onDismissRequest,
         dismissButton = {

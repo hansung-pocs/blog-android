@@ -11,12 +11,13 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun PocsButton(
+    modifier: Modifier = Modifier,
     label: String,
     onClick: () -> Unit
 ) {
     Button(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth(1f)
             .height(48.dp),
         onClick = onClick,
         shape = RoundedCornerShape(100.dp)

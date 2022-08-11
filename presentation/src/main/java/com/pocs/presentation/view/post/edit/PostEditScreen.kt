@@ -23,6 +23,7 @@ import com.pocs.presentation.constant.MAX_POST_TITLE_LEN
 import com.pocs.presentation.extension.koreanStringResource
 import com.pocs.presentation.model.BasePostEditUiState
 import com.pocs.presentation.model.post.PostEditUiState
+import com.pocs.presentation.view.component.PocsDivider
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
 import kotlinx.coroutines.launch
@@ -108,7 +109,7 @@ fun PostEditContent(
                     .fillMaxWidth()
                     .semantics { contentDescription = titleContentDescription }
             )
-            Divider(startIndent = 16.dp, modifier = Modifier.alpha(0.4f))
+            PocsDivider(startIndent = 16.dp)
             SimpleTextField(
                 hint = stringResource(R.string.content),
                 value = uiState.content,

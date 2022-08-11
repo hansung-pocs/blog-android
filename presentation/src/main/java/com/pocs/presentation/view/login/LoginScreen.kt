@@ -30,7 +30,8 @@ fun LoginScreen(viewModel: LoginViewModel, onBrowseAsNonMemberClick: () -> Unit)
     LoginContent(
         uiState = uiState.value,
         onLoginClick = viewModel::login,
-        onBrowseAsNonMemberClick = onBrowseAsNonMemberClick
+        onBrowseAsNonMemberClick = onBrowseAsNonMemberClick,
+        onErrorMessageShown = viewModel::errorMessageShown
     )
 }
 
@@ -39,7 +40,8 @@ fun LoginScreen(viewModel: LoginViewModel, onBrowseAsNonMemberClick: () -> Unit)
 fun LoginContent(
     uiState: LoginUiState,
     onLoginClick: () -> Unit,
-    onBrowseAsNonMemberClick: () -> Unit
+    onBrowseAsNonMemberClick: () -> Unit,
+    onErrorMessageShown: () -> Unit
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
     val errorMessage = uiState.errorMessage
@@ -47,6 +49,7 @@ fun LoginContent(
     if (errorMessage != null) {
         LaunchedEffect(errorMessage) {
             snackBarHostState.showSnackbar(message = errorMessage)
+            onErrorMessageShown()
         }
     }
 
@@ -92,6 +95,7 @@ fun LoginContent(
             )
             Box(modifier = Modifier.height(16.dp))
             PocsButton(label = stringResource(id = R.string.login), onClick = onLoginClick)
+            Box(modifier = Modifier.height(8.dp))
             TextButton(onClick = onBrowseAsNonMemberClick) {
                 Text(
                     text = stringResource(R.string.brows_as_non_member),
@@ -126,6 +130,7 @@ fun LoginContentPreview() {
             onUpdate = {}
         ),
         onLoginClick = {},
-        onBrowseAsNonMemberClick = {}
+        onBrowseAsNonMemberClick = {},
+        onErrorMessageShown = {}
     )
 }
