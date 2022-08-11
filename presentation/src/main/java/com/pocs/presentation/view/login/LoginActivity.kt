@@ -38,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
             Mdc3Theme(this) {
                 LoginScreen(
                     viewModel = viewModel,
-                    onBrowsAsNonMemberClick = ::navigateToHomeActivity
+                    onBrowseAsNonMemberClick = ::navigateToHomeActivity
                 )
             }
         }

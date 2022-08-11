@@ -24,13 +24,13 @@ import com.pocs.presentation.view.component.textfield.PasswordOutlineTextField
 import com.pocs.presentation.view.component.textfield.PocsOutlineTextField
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel, onBrowsAsNonMemberClick: () -> Unit) {
+fun LoginScreen(viewModel: LoginViewModel, onBrowseAsNonMemberClick: () -> Unit) {
     val uiState = viewModel.uiState.collectAsState()
 
     LoginContent(
         uiState = uiState.value,
         onLoginClick = viewModel::login,
-        onBrowsAsNonMemberClick = onBrowsAsNonMemberClick
+        onBrowseAsNonMemberClick = onBrowseAsNonMemberClick
     )
 }
 
@@ -39,7 +39,7 @@ fun LoginScreen(viewModel: LoginViewModel, onBrowsAsNonMemberClick: () -> Unit) 
 fun LoginContent(
     uiState: LoginUiState,
     onLoginClick: () -> Unit,
-    onBrowsAsNonMemberClick: () -> Unit
+    onBrowseAsNonMemberClick: () -> Unit
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
     val errorMessage = uiState.errorMessage
@@ -92,7 +92,7 @@ fun LoginContent(
             )
             Box(modifier = Modifier.height(16.dp))
             PocsButton(label = stringResource(id = R.string.login), onClick = onLoginClick)
-            TextButton(onClick = onBrowsAsNonMemberClick) {
+            TextButton(onClick = onBrowseAsNonMemberClick) {
                 Text(
                     text = stringResource(R.string.brows_as_non_member),
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4F)
@@ -126,6 +126,6 @@ fun LoginContentPreview() {
             onUpdate = {}
         ),
         onLoginClick = {},
-        onBrowsAsNonMemberClick = {}
+        onBrowseAsNonMemberClick = {}
     )
 }
