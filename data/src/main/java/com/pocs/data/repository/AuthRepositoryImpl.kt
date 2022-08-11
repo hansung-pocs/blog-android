@@ -56,9 +56,7 @@ class AuthRepositoryImpl @Inject constructor(
     override fun isReady(): Flow<Boolean> = isReady
 
     override suspend fun login(userName: String, password: String): Result<Unit> {
-        if (token != null) {
-            throw IllegalStateException("이미 로그인한 상태에서 로그인을 시도했습니다.")
-        }
+        assert(token == null) { "이미 로그인한 상태에서 로그인을 시도했습니다." }
         try {
             val response = remoteDataSource.login(
                 LoginRequestBody(username = userName, password = password)
@@ -92,9 +90,7 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun logout(): Result<Unit> {
-        if (token == null) {
-            throw IllegalStateException("로그인하지 않은 상태로 로그아웃을 시도했습니다.")
-        }
+        assert(token != null) { "로그인하지 않은 상태로 로그아웃을 시도했습니다." }
         return try {
             val response = remoteDataSource.logout(token!!)
 
