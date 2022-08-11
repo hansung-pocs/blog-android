@@ -27,6 +27,7 @@
     <string name="write_post">게시글 쓰기</string>
     <string name="user_info_title">%s님의 정보</string>
     <string name="failed_to_load">불러오기에 실패했습니다.</string>
+    <string name="login">로그인</string>
     <string name="user_generation_info">%s기</string>
     <string name="generation">기수</string>
     <string name="student_id">학번</string>
@@ -79,6 +80,9 @@
     <string name="sorting_by_created_at_descending">가입일 최근순</string>
     <string name="nickname">닉네임</string>
     <string name="password">비밀번호</string>
+    <string name="id">아이디</string>
+    <string name="brows_as_non_member">비회원으로 둘러보기</string>
+    <string name="login_title">POCS</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>
         <item>회원목록</item>
