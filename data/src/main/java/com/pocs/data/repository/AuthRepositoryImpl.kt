@@ -28,15 +28,11 @@ class AuthRepositoryImpl @Inject constructor(
     private var token: String? = null
 
     init {
-        initAuth()
-    }
-
-    private fun initAuth() {
         val localData = localDataSource.getData()
         MainScope().launch {
             if (localData != null) {
                 try {
-                    val response = remoteDataSource.isSessionValid(localData.token)
+                    val response = remoteDataSource.isSessionValid(localData.sessionToken)
                     val isSessionValid = response.isSuccessful
 
                     if (isSessionValid) {
@@ -44,7 +40,7 @@ class AuthRepositoryImpl @Inject constructor(
 
                         if (userDetailResult.isSuccess) {
                             currentUserState.value = userDetailResult.getOrNull()!!
-                            token = localData.token
+                            token = localData.sessionToken
                         }
                     } else {
                         localDataSource.clear()
@@ -77,7 +73,12 @@ class AuthRepositoryImpl @Inject constructor(
 
                     currentUserState.value = userDetail
                     token = loginResponseData.sessionToken
-                    localDataSource.setData(AuthLocalData(token = token!!, userId = userDetail.id))
+                    localDataSource.setData(
+                        AuthLocalData(
+                            sessionToken = token!!,
+                            userId = userDetail.id
+                        )
+                    )
 
                     return Result.success(Unit)
                 }

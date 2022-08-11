@@ -112,7 +112,7 @@ class AuthRepositoryTest {
 
         repository.login("id", "password")
 
-        assertEquals(token, localDataSource.authLocalData!!.token)
+        assertEquals(token, localDataSource.authLocalData!!.sessionToken)
         assertEquals(userDetail.id, localDataSource.authLocalData!!.userId)
     }
 
