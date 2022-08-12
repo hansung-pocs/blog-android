@@ -60,14 +60,13 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
     }
 
     private fun showSplashUntilAppReady() {
-        val content: View = findViewById(android.R.id.content)
-        content.viewTreeObserver.addOnPreDrawListener(
+        binding.root.viewTreeObserver.addOnPreDrawListener(
             object : ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
                     val hideSplashScreen = viewModel.uiState.value.hideSplashScreen
 
                     return if (hideSplashScreen) {
-                        content.viewTreeObserver.removeOnPreDrawListener(this)
+                        binding.root.viewTreeObserver.removeOnPreDrawListener(this)
                         true
                     } else {
                         false
