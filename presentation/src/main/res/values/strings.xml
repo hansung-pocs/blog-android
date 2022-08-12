@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">presentation</string>
     <string name="notice">공지사항</string>
-    <string name="article">게시글</string>
+    <string name="post">게시글</string>
     <string name="study">스터디</string>
     <string name="memory">추억</string>
     <string name="knowhow">노하우</string>

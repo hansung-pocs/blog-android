@@ -3,18 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/NoticeFragment">
+    app:startDestination="@id/PostFragment">
 
     <fragment
-        android:id="@+id/NoticeFragment"
-        android:name="com.pocs.presentation.view.home.notice.NoticeFragment"
-        android:label="@string/notice"
-        tools:layout="@layout/fragment_notice" />
-
-    <fragment
-        android:id="@+id/ArticleFragment"
-        android:name="com.pocs.presentation.view.home.article.ArticleFragment"
-        android:label="@string/article"
-        tools:layout="@layout/fragment_article" />
+        android:id="@+id/PostFragment"
+        android:name="com.pocs.presentation.view.home.post.PostFragment"
+        android:label="@string/post"
+        tools:layout="@layout/fragment_post" />
 
 </navigation>

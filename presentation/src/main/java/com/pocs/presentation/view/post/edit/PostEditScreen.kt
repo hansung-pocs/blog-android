@@ -18,7 +18,7 @@ import com.pocs.presentation.R
 import com.pocs.presentation.constant.MAX_POST_CONTENT_LEN
 import com.pocs.presentation.constant.MAX_POST_TITLE_LEN
 import com.pocs.presentation.extension.koreanStringResource
-import com.pocs.presentation.model.BasePostEditUiState
+import com.pocs.presentation.model.post.BasePostEditUiState
 import com.pocs.presentation.model.post.PostEditUiState
 import com.pocs.presentation.view.component.HorizontalChips
 import com.pocs.presentation.view.component.PocsDivider

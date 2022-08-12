@@ -1,4 +1,4 @@
-package com.pocs.presentation.view.home.notice
+package com.pocs.presentation.view.home.post
 
 import android.content.Intent
 import android.os.Bundle
@@ -21,7 +21,7 @@ import com.pocs.presentation.extension.RefreshStateContract
 import com.pocs.presentation.extension.addDividerDecoration
 import com.pocs.presentation.extension.registerObserverForScrollToTop
 import com.pocs.presentation.extension.setListeners
-import com.pocs.presentation.model.NoticeUiState
+import com.pocs.presentation.model.post.PostUiState
 import com.pocs.presentation.model.post.item.PostItemUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
 import com.pocs.presentation.view.post.adapter.PostAdapter
@@ -29,19 +29,19 @@ import com.pocs.presentation.view.post.create.PostCreateActivity
 import com.pocs.presentation.view.post.detail.PostDetailActivity
 import kotlinx.coroutines.launch
 
-class NoticeFragment : ViewBindingFragment<FragmentPostBinding>() {
+class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentPostBinding
         get() = FragmentPostBinding::inflate
 
-    private val viewModel: NoticeViewModel by activityViewModels()
+    private val viewModel: PostViewModel by activityViewModels()
 
     private var launcher: ActivityResultLauncher<Intent>? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = PostAdapter(::onClickArticle)
+        val adapter = PostAdapter(::onClickPost)
         binding.apply {
             recyclerView.adapter = adapter.withLoadStateFooter(
                 PagingLoadStateAdapter { adapter.retry() }
@@ -52,7 +52,7 @@ class NoticeFragment : ViewBindingFragment<FragmentPostBinding>() {
             loadState.setListeners(adapter, refresh)
             adapter.registerObserverForScrollToTop(recyclerView)
 
-            fab.text = getString(R.string.write_notice)
+            fab.text = getString(R.string.write_post)
             fab.setOnClickListener { startPostCreateActivity() }
 
             viewLifecycleOwner.lifecycleScope.launch {
@@ -72,12 +72,12 @@ class NoticeFragment : ViewBindingFragment<FragmentPostBinding>() {
         }
     }
 
-    private fun updateUi(uiState: NoticeUiState, adapter: PostAdapter) {
-        adapter.submitData(viewLifecycleOwner.lifecycle, uiState.noticePagingData)
-        binding.fab.isVisible = uiState.isCurrentUserAdmin
+    private fun updateUi(uiState: PostUiState, adapter: PostAdapter) {
+        adapter.submitData(viewLifecycleOwner.lifecycle, uiState.pagingData)
+        binding.fab.isVisible = uiState.visiblePostWriteFab
     }
 
-    private fun onClickArticle(postItemUiState: PostItemUiState) {
+    private fun onClickPost(postItemUiState: PostItemUiState) {
         val intent = PostDetailActivity.getIntent(
             requireContext(),
             id = postItemUiState.id,
@@ -93,7 +93,7 @@ class NoticeFragment : ViewBindingFragment<FragmentPostBinding>() {
     }
 
     private fun startPostCreateActivity() {
-        val intent = PostCreateActivity.getIntent(requireContext(), PostCategory.NOTICE)
+        val intent = PostCreateActivity.getIntent(requireContext(), PostCategory.MEMORY)
         launcher?.launch(intent)
     }
 }

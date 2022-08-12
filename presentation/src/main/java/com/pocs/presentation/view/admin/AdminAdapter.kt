@@ -6,7 +6,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.pocs.presentation.view.admin.post.AdminPostFragment
 import com.pocs.presentation.view.admin.user.AdminUserFragment
-import com.pocs.presentation.view.home.notice.NoticeFragment
 
 class AdminAdapter(
     fragmentManager: FragmentManager,
