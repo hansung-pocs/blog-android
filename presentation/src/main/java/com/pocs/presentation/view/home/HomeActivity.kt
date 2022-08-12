@@ -45,7 +45,7 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
-        showSplashUntilAppReady()
+        showSplashUntilAppIsReady()
 
         setSupportActionBar(binding.toolbar)
 
@@ -59,7 +59,7 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
         }
     }
 
-    private fun showSplashUntilAppReady() {
+    private fun showSplashUntilAppIsReady() {
         binding.root.viewTreeObserver.addOnPreDrawListener(
             object : ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
