@@ -61,8 +61,8 @@ fun LoginContent(
         Column(
             Modifier
                 .padding(innerPadding)
-                .padding(horizontal = 24.dp)
                 .verticalScroll(scrollState)
+                .padding(horizontal = 24.dp)
                 .fillMaxWidth()
                 .fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally,

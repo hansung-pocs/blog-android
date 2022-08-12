@@ -1,6 +1,6 @@
 package com.pocs.presentation
 
-import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
+import com.pocs.domain.usecase.auth.GetCurrentUserStateFlowUseCase
 import com.pocs.domain.usecase.auth.IsAuthReadyUseCase
 import com.pocs.domain.usecase.auth.LoginUseCase
 import com.pocs.presentation.view.login.LoginViewModel
@@ -37,9 +37,8 @@ class LoginViewModelTest {
     @Test
     fun shouldIsLoggedInIsTrue_WhenUserAlreadyLoggedIn() {
         authRepository.currentUser.value = mockNormalUserDetail
-        initViewModel()
 
-        viewModel.fetchCurrentUser()
+        initViewModel()
 
         assertTrue(viewModel.uiState.value.isLoggedIn)
     }
@@ -47,9 +46,8 @@ class LoginViewModelTest {
     @Test
     fun shouldIsLoggedInIsFalse_WhenUserDidNotLogin() {
         authRepository.currentUser.value = null
-        initViewModel()
 
-        viewModel.fetchCurrentUser()
+        initViewModel()
 
         assertFalse(viewModel.uiState.value.isLoggedIn)
     }
@@ -89,18 +87,29 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun shouldIsAuthReadyIsTrue_WhenEmit() = runTest{
+    fun shouldHideSplashScreenIsTrue_WhenEmit() = runTest {
         initViewModel()
 
         authRepository.emit(isReady = true)
 
-        assertTrue(viewModel.uiState.value.isAuthReady)
+        assertTrue(viewModel.uiState.value.hideSplashScreen)
+    }
+
+    // https://github.com/hansung-pocs/blog-android/issues/150 를 위한 테스트
+    @Test
+    fun shouldHideSplashScreenIsFalse_WhenCurrentUserExistsAndThenAuthIsReady() = runTest {
+        initViewModel()
+
+        authRepository.currentUser.value = mockNormalUserDetail
+        authRepository.emit(isReady = true)
+
+        assertFalse(viewModel.uiState.value.hideSplashScreen)
     }
 
     private fun initViewModel() {
         viewModel = LoginViewModel(
             isAuthReadyUseCase = IsAuthReadyUseCase(authRepository),
-            getCurrentUserUseCase = GetCurrentUserUseCase(authRepository),
+            getCurrentUserStateFlowUseCase = GetCurrentUserStateFlowUseCase(authRepository),
             loginUseCase = LoginUseCase(authRepository)
         )
     }

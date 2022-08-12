@@ -61,8 +61,9 @@ class LoginActivity : AppCompatActivity() {
         content.viewTreeObserver.addOnPreDrawListener(
             object : ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
-                    return if (viewModel.uiState.value.isAuthReady) {
-                        viewModel.fetchCurrentUser()
+                    val hideSplashScreen = viewModel.uiState.value.hideSplashScreen
+
+                    return if (hideSplashScreen) {
                         content.viewTreeObserver.removeOnPreDrawListener(this)
                         true
                     } else {
