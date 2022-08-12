@@ -1,6 +1,6 @@
 package com.pocs.presentation
 
-import com.pocs.domain.usecase.auth.GetCurrentUserStateFlowUseCase
+import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
 import com.pocs.domain.usecase.auth.IsAuthReadyUseCase
 import com.pocs.domain.usecase.auth.LoginUseCase
 import com.pocs.presentation.view.login.LoginViewModel
@@ -35,19 +35,21 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun shouldIsLoggedInIsTrue_WhenUserAlreadyLoggedIn() {
+    fun shouldIsLoggedInIsTrue_WhenUserAlreadyLoggedIn() = runTest {
         authRepository.currentUser.value = mockNormalUserDetail
-
         initViewModel()
+
+        authRepository.emit(isReady = true)
 
         assertTrue(viewModel.uiState.value.isLoggedIn)
     }
 
     @Test
-    fun shouldIsLoggedInIsFalse_WhenUserDidNotLogin() {
+    fun shouldIsLoggedInIsFalse_WhenUserDidNotLogin() = runTest {
         authRepository.currentUser.value = null
-
         initViewModel()
+
+        authRepository.emit(isReady = true)
 
         assertFalse(viewModel.uiState.value.isLoggedIn)
     }
@@ -109,7 +111,7 @@ class LoginViewModelTest {
     private fun initViewModel() {
         viewModel = LoginViewModel(
             isAuthReadyUseCase = IsAuthReadyUseCase(authRepository),
-            getCurrentUserStateFlowUseCase = GetCurrentUserStateFlowUseCase(authRepository),
+            getCurrentUserUseCase = GetCurrentUserUseCase(authRepository),
             loginUseCase = LoginUseCase(authRepository)
         )
     }

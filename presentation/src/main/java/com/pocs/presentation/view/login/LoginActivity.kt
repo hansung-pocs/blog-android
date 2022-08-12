@@ -36,10 +36,6 @@ class LoginActivity : AppCompatActivity() {
 
         showSplashUntilAuthIsReady()
 
-        if (viewModel.uiState.value.isLoggedIn) {
-            navigateToHomeActivity()
-        }
-
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect(::updateUi)
