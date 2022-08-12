@@ -36,22 +36,18 @@ class LoginActivity : AppCompatActivity() {
 
         showSplashUntilAuthIsReady()
 
-        if (viewModel.uiState.value.isLoggedIn) {
-            navigateToHomeActivity()
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect(::updateUi)
-            }
-        }
-
         setContent {
             Mdc3Theme(this) {
                 LoginScreen(
                     viewModel = viewModel,
                     onBrowseAsNonMemberClick = ::navigateToHomeActivity
                 )
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect(::updateUi)
             }
         }
     }
