@@ -22,24 +22,24 @@ class LoginViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(LoginUiState(onUpdate = ::update))
     val uiState: StateFlow<LoginUiState> get() = _uiState.asStateFlow()
 
-    private var authReadyFetchJob: Job? = null
+    private var splashScreenFetchJob: Job? = null
 
     init {
         viewModelScope.launch {
             getCurrentUserStateFlowUseCase().collectLatest { currentUser ->
                 val isLoggedIn = currentUser != null
-                // 이미 로그인 되어있을 때는 `isAuthReady`를 갱신하지 않는다. 그 이유는 앱을 실행하고 곧바로 홈 화면으로
-                // 이동시 짧은 시간동안 로그인 화면이 등장하는 버그를 막기 위해서이다.
+                // 이미 로그인 되어있을 때는 `hideSplashScreen`를 `true`로 갱신하지 않는다. 그 이유는 앱을 실행하고
+                // 곧바로 홈 화면으로 이동시 짧은 시간동안 로그인 화면이 등장하는 버그를 막기 위해서이다.
                 // https://github.com/hansung-pocs/blog-android/issues/150
                 if (isLoggedIn) {
-                    authReadyFetchJob?.cancel()
+                    splashScreenFetchJob?.cancel()
                 }
                 _uiState.update { it.copy(isLoggedIn = isLoggedIn) }
             }
         }
-        authReadyFetchJob = viewModelScope.launch {
-            isAuthReadyUseCase().collectLatest { ready ->
-                _uiState.update { it.copy(isAuthReady = ready) }
+        splashScreenFetchJob = viewModelScope.launch {
+            isAuthReadyUseCase().collectLatest { isAuthReady ->
+                _uiState.update { it.copy(hideSplashScreen = isAuthReady) }
             }
         }
     }

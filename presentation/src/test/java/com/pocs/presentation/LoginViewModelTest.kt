@@ -87,23 +87,23 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun shouldIsAuthReadyIsTrue_WhenEmit() = runTest {
+    fun shouldHideSplashScreenIsTrue_WhenEmit() = runTest {
         initViewModel()
 
         authRepository.emit(isReady = true)
 
-        assertTrue(viewModel.uiState.value.isAuthReady)
+        assertTrue(viewModel.uiState.value.hideSplashScreen)
     }
 
     // https://github.com/hansung-pocs/blog-android/issues/150 를 위한 테스트
     @Test
-    fun shouldDoNotInitAuthReady_WhenCurrentUserExists() = runTest {
+    fun shouldHideSplashScreenIsFalse_WhenCurrentUserExistsAndThenAuthIsReady() = runTest {
         initViewModel()
 
         authRepository.currentUser.value = mockNormalUserDetail
         authRepository.emit(isReady = true)
 
-        assertFalse(viewModel.uiState.value.isAuthReady)
+        assertFalse(viewModel.uiState.value.hideSplashScreen)
     }
 
     private fun initViewModel() {
