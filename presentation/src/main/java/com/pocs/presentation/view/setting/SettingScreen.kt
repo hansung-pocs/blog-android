@@ -168,7 +168,9 @@ fun SettingUserTile(name: String, studentId: String, onClick: () -> Unit) {
             contentDescription = stringResource(id = R.string.user_image)
         )
         Box(modifier = Modifier.width(16.dp))
-        Column {
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
             Text(
                 text = name,
                 style = MaterialTheme.typography.titleMedium.copy(
@@ -183,6 +185,10 @@ fun SettingUserTile(name: String, studentId: String, onClick: () -> Unit) {
                 )
             )
         }
+        Icon(
+            imageVector = Icons.Default.ChevronRight,
+            contentDescription = stringResource(id = R.string.more_info_button)
+        )
     }
 }
 
