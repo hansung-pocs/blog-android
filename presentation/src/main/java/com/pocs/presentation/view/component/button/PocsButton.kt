@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 fun PocsButton(
     modifier: Modifier = Modifier,
     label: String,
+    enabled: Boolean,
     onClick: () -> Unit
 ) {
     Button(
@@ -20,6 +21,7 @@ fun PocsButton(
             .fillMaxWidth(1f)
             .height(48.dp),
         onClick = onClick,
+        enabled = enabled,
         shape = RoundedCornerShape(100.dp)
     ) {
         Text(text = label)

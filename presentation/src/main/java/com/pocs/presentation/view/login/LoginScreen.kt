@@ -94,7 +94,11 @@ fun LoginContent(
                 onSend = { onLoginClick() }
             )
             Box(modifier = Modifier.height(16.dp))
-            PocsButton(label = stringResource(id = R.string.login), onClick = onLoginClick)
+            PocsButton(
+                label = stringResource(id = R.string.login),
+                enabled = uiState.canTryLogin,
+                onClick = onLoginClick
+            )
             Box(modifier = Modifier.height(8.dp))
             TextButton(onClick = onBrowseAsNonMemberClick) {
                 Text(
