@@ -30,7 +30,7 @@ class LocalModule {
 
         return EncryptedSharedPreferences.create(
             context,
-            "auth_session_token",
+            "auth",
             masterKeyAlias,
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
