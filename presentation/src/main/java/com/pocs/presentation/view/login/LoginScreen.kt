@@ -96,7 +96,7 @@ fun LoginContent(
             Box(modifier = Modifier.height(16.dp))
             PocsButton(
                 label = stringResource(id = R.string.login),
-                enabled = uiState.canTryLogin,
+                enabled = uiState.enableLoginButton,
                 onClick = onLoginClick
             )
             Box(modifier = Modifier.height(8.dp))

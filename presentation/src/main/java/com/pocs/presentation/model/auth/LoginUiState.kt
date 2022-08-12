@@ -12,5 +12,5 @@ data class LoginUiState(
         onUpdate(function(this))
     }
 
-    val canTryLogin: Boolean get() = userName.isNotEmpty() && password.isNotEmpty()
+    val enableLoginButton: Boolean get() = userName.isNotEmpty() && password.isNotEmpty()
 }
