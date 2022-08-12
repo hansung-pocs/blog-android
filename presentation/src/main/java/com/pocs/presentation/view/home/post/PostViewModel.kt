@@ -38,4 +38,8 @@ class PostViewModel @Inject constructor(
                 }
         }
     }
+
+    fun updateChip(chip: PostUiState.ChipCategory) {
+        _uiState.update { it.copy(selectedChip = chip) }
+    }
 }

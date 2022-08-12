@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
+import androidx.compose.runtime.collectAsState
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.composethemeadapter3.Mdc3Theme
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
@@ -24,6 +26,7 @@ import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.post.PostUiState
 import com.pocs.presentation.model.post.item.PostItemUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
+import com.pocs.presentation.view.component.HorizontalChips
 import com.pocs.presentation.view.post.adapter.PostAdapter
 import com.pocs.presentation.view.post.create.PostCreateActivity
 import com.pocs.presentation.view.post.detail.PostDetailActivity
@@ -42,24 +45,14 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = PostAdapter(::onClickPost)
-        binding.apply {
-            recyclerView.adapter = adapter.withLoadStateFooter(
-                PagingLoadStateAdapter { adapter.retry() }
-            )
-            recyclerView.layoutManager = LinearLayoutManager(view.context)
-            recyclerView.addDividerDecoration()
 
-            loadState.setListeners(adapter, refresh)
-            adapter.registerObserverForScrollToTop(recyclerView)
+        initRecyclerView(adapter)
+        initChips()
 
-            fab.text = getString(R.string.write_post)
-            fab.setOnClickListener { startPostCreateActivity() }
-
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.uiState.collect {
-                        updateUi(it, adapter)
-                    }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect {
+                    updateUi(it, adapter)
                 }
             }
         }
@@ -68,6 +61,36 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
             if (it != null) {
                 adapter.refresh()
                 it.message?.let { message -> showSnackBar(message) }
+            }
+        }
+    }
+
+    private fun initRecyclerView(adapter: PostAdapter) = with(binding) {
+        recyclerView.adapter = adapter.withLoadStateFooter(
+            PagingLoadStateAdapter { adapter.retry() }
+        )
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.addDividerDecoration()
+
+        loadState.setListeners(adapter, refresh)
+        adapter.registerObserverForScrollToTop(recyclerView)
+
+        fab.text = getString(R.string.write_post)
+        fab.setOnClickListener { startPostCreateActivity() }
+    }
+
+    private fun initChips() {
+        val items = PostUiState.ChipCategory.values().toList()
+        binding.chips.setContent {
+            Mdc3Theme {
+                val uiState = viewModel.uiState.collectAsState()
+
+                HorizontalChips(
+                    items = items,
+                    itemLabelBuilder = { it.korean },
+                    selectedItem = uiState.value.selectedChip,
+                    onItemClick = viewModel::updateChip
+                )
             }
         }
     }
