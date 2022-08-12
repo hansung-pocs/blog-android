@@ -61,8 +61,9 @@ class LoginActivity : AppCompatActivity() {
         content.viewTreeObserver.addOnPreDrawListener(
             object : ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
-                    return if (viewModel.uiState.value.isAuthReady) {
-                        viewModel.fetchCurrentUser()
+                    val isAuthReady = viewModel.uiState.value.isAuthReady
+
+                    return if (isAuthReady) {
                         content.viewTreeObserver.removeOnPreDrawListener(this)
                         true
                     } else {
