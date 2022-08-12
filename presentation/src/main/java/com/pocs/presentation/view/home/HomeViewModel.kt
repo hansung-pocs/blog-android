@@ -15,7 +15,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     isAuthReadyUseCase: IsAuthReadyUseCase,
     isCurrentUserAdminUseCase: IsCurrentUserAdminUseCase,
-    private val getCurrentUserUseCase: GetCurrentUserUseCase,
+    getCurrentUserUseCase: GetCurrentUserUseCase,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<HomeUiState> = MutableStateFlow(
