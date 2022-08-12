@@ -3,11 +3,12 @@ package com.pocs.presentation.view.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
 import androidx.activity.viewModels
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -16,10 +17,13 @@ import androidx.navigation.ui.setupWithNavController
 import com.pocs.presentation.R
 import com.pocs.presentation.base.ViewBindingActivity
 import com.pocs.presentation.databinding.ActivityHomeBinding
+import com.pocs.presentation.model.post.HomeUiState
 import com.pocs.presentation.view.admin.AdminActivity
+import com.pocs.presentation.view.login.LoginActivity
 import com.pocs.presentation.view.setting.SettingActivity
 import com.pocs.presentation.view.user.UserActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
@@ -41,10 +45,36 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
+        showSplashUntilAppReady()
+
         setSupportActionBar(binding.toolbar)
 
         initNavigationView()
         initBottomNavigationView()
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect(::updateUi)
+            }
+        }
+    }
+
+    private fun showSplashUntilAppReady() {
+        val content: View = findViewById(android.R.id.content)
+        content.viewTreeObserver.addOnPreDrawListener(
+            object : ViewTreeObserver.OnPreDrawListener {
+                override fun onPreDraw(): Boolean {
+                    val hideSplashScreen = viewModel.uiState.value.hideSplashScreen
+
+                    return if (hideSplashScreen) {
+                        content.viewTreeObserver.removeOnPreDrawListener(this)
+                        true
+                    } else {
+                        false
+                    }
+                }
+            }
+        )
     }
 
     private fun initNavigationView() {
@@ -64,6 +94,14 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.bottomNav.setupWithNavController(navController)
+    }
+
+    private fun updateUi(uiState: HomeUiState) {
+        if (uiState.replaceToLoginActivity) {
+            val intent = LoginActivity.getIntent(this)
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun onSelectNavigationItem(item: MenuItem): Boolean {

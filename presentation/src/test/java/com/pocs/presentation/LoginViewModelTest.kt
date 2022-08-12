@@ -1,7 +1,6 @@
 package com.pocs.presentation
 
 import com.pocs.domain.usecase.auth.GetCurrentUserStateFlowUseCase
-import com.pocs.domain.usecase.auth.IsAuthReadyUseCase
 import com.pocs.domain.usecase.auth.LoginUseCase
 import com.pocs.presentation.view.login.LoginViewModel
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
@@ -10,7 +9,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.*
@@ -86,29 +84,8 @@ class LoginViewModelTest {
         assertEquals(errorMessage, viewModel.uiState.value.errorMessage)
     }
 
-    @Test
-    fun shouldHideSplashScreenIsTrue_WhenEmit() = runTest {
-        initViewModel()
-
-        authRepository.emit(isReady = true)
-
-        assertTrue(viewModel.uiState.value.hideSplashScreen)
-    }
-
-    // https://github.com/hansung-pocs/blog-android/issues/150 를 위한 테스트
-    @Test
-    fun shouldHideSplashScreenIsFalse_WhenCurrentUserExistsAndThenAuthIsReady() = runTest {
-        initViewModel()
-
-        authRepository.currentUser.value = mockNormalUserDetail
-        authRepository.emit(isReady = true)
-
-        assertFalse(viewModel.uiState.value.hideSplashScreen)
-    }
-
     private fun initViewModel() {
         viewModel = LoginViewModel(
-            isAuthReadyUseCase = IsAuthReadyUseCase(authRepository),
             getCurrentUserStateFlowUseCase = GetCurrentUserStateFlowUseCase(authRepository),
             loginUseCase = LoginUseCase(authRepository)
         )

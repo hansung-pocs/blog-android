@@ -1,7 +1,6 @@
 package com.pocs.presentation.model.auth
 
 data class LoginUiState(
-    val hideSplashScreen: Boolean = false,
     val isLoggedIn: Boolean = false,
     val errorMessage: String? = null,
     val userName: String = "",
