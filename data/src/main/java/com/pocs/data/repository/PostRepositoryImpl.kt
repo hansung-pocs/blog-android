@@ -3,6 +3,7 @@ package com.pocs.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.filter
 import com.pocs.data.api.PostApi
 import com.pocs.data.extension.errorMessage
 import com.pocs.data.mapper.toDto
@@ -15,8 +16,10 @@ import com.pocs.data.source.PostRemoteDataSource
 import com.pocs.domain.model.post.Post
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.model.post.PostDetail
+import com.pocs.domain.model.post.PostFilterType
 import com.pocs.domain.repository.PostRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(
@@ -24,12 +27,22 @@ class PostRepositoryImpl @Inject constructor(
     private val api: PostApi
 ) : PostRepository {
 
-    override fun getAll(category: PostCategory): Flow<PagingData<Post>> {
+    // TODO: Post Category 별로 얻는 API 구현되면 수정하기. 아래는 임시로 필터링하고 있는 모습임
+    override fun getAll(filterType: PostFilterType): Flow<PagingData<Post>> {
+        if (filterType == PostFilterType.ALL || filterType == PostFilterType.BEST) {
+            return Pager(
+                // TODO: API 페이지네이션 구현되면 페이지 사이즈 수정하기
+                config = PagingConfig(pageSize = 30),
+                pagingSourceFactory = { PostPagingSource(api) }
+            ).flow
+        }
         return Pager(
             // TODO: API 페이지네이션 구현되면 페이지 사이즈 수정하기
             config = PagingConfig(pageSize = 30),
             pagingSourceFactory = { PostPagingSource(api) }
-        ).flow
+        ).flow.map { pagingData ->
+            pagingData.filter { it.category.name == filterType.name }
+        }
     }
 
     override suspend fun getPostDetail(id: Int): Result<PostDetail> {

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.res.stringResource
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -16,13 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.composethemeadapter3.Mdc3Theme
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.domain.model.post.PostCategory
+import com.pocs.domain.model.post.PostFilterType
 import com.pocs.presentation.R
 import com.pocs.presentation.base.ViewBindingFragment
 import com.pocs.presentation.databinding.FragmentPostBinding
-import com.pocs.presentation.extension.RefreshStateContract
-import com.pocs.presentation.extension.addDividerDecoration
-import com.pocs.presentation.extension.registerObserverForScrollToTop
-import com.pocs.presentation.extension.setListeners
+import com.pocs.presentation.extension.*
 import com.pocs.presentation.model.post.PostUiState
 import com.pocs.presentation.model.post.item.PostItemUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
@@ -80,16 +79,16 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
     }
 
     private fun initChips() {
-        val items = PostUiState.ChipCategory.values().toList()
+        val items = PostFilterType.values().toList()
         binding.chips.setContent {
             Mdc3Theme {
                 val uiState = viewModel.uiState.collectAsState()
 
                 HorizontalChips(
                     items = items,
-                    itemLabelBuilder = { it.korean },
-                    selectedItem = uiState.value.selectedChip,
-                    onItemClick = viewModel::updateChip
+                    itemLabelBuilder = { stringResource(id = it.koreanStringResource) },
+                    selectedItem = uiState.value.selectedPostFilterType,
+                    onItemClick = viewModel::updatePostFilterType
                 )
             }
         }
