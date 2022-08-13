@@ -41,7 +41,7 @@ class QuestionViewModel @Inject constructor(
                 .map { it.map { post -> post.toUiState() } }
                 .collectLatest { pagingData ->
                     _uiState.update {
-                        it.copy()
+                        it.copy(pagingData = pagingData)
                     }
                 }
         }
