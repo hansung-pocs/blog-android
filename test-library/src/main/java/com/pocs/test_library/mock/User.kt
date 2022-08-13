@@ -1,5 +1,6 @@
 package com.pocs.test_library.mock
 
+import com.pocs.data.model.user.UserDto
 import com.pocs.domain.model.post.PostWriter
 import com.pocs.domain.model.user.User
 import com.pocs.domain.model.user.UserDetail
@@ -33,4 +34,17 @@ val mockKickedUserDetail = UserDetail(
     "https://github.com/",
     "2021-02-12",
     "2021-02-13",
+)
+
+val mockUserDto = UserDto(
+    2,
+    "권김정",
+    "abc@google.com",
+    1971034,
+    UserType.ADMIN.toString().lowercase(),
+    null,
+    30,
+    "https://github.com/aa",
+    "2021-02-12",
+    null,
 )

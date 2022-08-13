@@ -1,13 +1,13 @@
 package com.pocs.data
 
+import com.pocs.data.mapper.toDetailEntity
 import com.pocs.data.model.auth.AuthLocalData
 import com.pocs.data.model.auth.LoginResponseData
 import com.pocs.data.repository.AuthRepositoryImpl
 import com.pocs.test_library.fake.source.remote.FakeAuthRemoteDataSource
-import com.pocs.test_library.fake.FakeUserRepositoryImpl
 import com.pocs.test_library.fake.source.local.FakeAuthLocalDataSource
 import com.pocs.test_library.mock.errorResponse
-import com.pocs.test_library.mock.mockNormalUserDetail
+import com.pocs.test_library.mock.mockUserDto
 import com.pocs.test_library.mock.successResponse
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +30,6 @@ class AuthRepositoryTest {
 
     private val testDispatcher = UnconfinedTestDispatcher()
 
-    private val userRepository = FakeUserRepositoryImpl()
     private val remoteDataSource = FakeAuthRemoteDataSource()
     private val localDataSource = FakeAuthLocalDataSource()
 
@@ -57,22 +56,19 @@ class AuthRepositoryTest {
 
     @Test
     fun currentUserExists_WhenUserAlreadyLoggedInBefore() {
-        val userDetail = mockNormalUserDetail
-        localDataSource.authLocalData = AuthLocalData("abc", userDetail.id)
-        remoteDataSource.isSessionValidResponse = successResponse(Unit)
-        userRepository.userDetailResult = Result.success(userDetail)
+        val userDto = mockUserDto
+        localDataSource.authLocalData = AuthLocalData("abc")
+        remoteDataSource.isSessionValidResponse = successResponse(userDto)
 
         initRepository()
 
-        assertEquals(userDetail, repository.getCurrentUser().value)
+        assertEquals(userDto.toDetailEntity(), repository.getCurrentUser().value)
     }
 
     @Test
     fun clearLocalSession_WhenRemoteSessionIsExpired() {
-        val userDetail = mockNormalUserDetail
-        localDataSource.authLocalData = AuthLocalData("abc", userDetail.id)
+        localDataSource.authLocalData = AuthLocalData("abc")
         remoteDataSource.isSessionValidResponse = errorResponse()
-        userRepository.userDetailResult = Result.success(userDetail)
 
         initRepository()
 
@@ -82,29 +78,27 @@ class AuthRepositoryTest {
 
     @Test
     fun currentUserExists_WhenSuccessToLogin() = runTest {
-        val userDetail = mockNormalUserDetail
+        val userDto = mockUserDto
         localDataSource.authLocalData = null
         remoteDataSource.loginResponse = successResponse(
-            LoginResponseData(sessionToken = "abc", userId = userDetail.id)
+            LoginResponseData(sessionToken = "abc", user = userDto)
         )
-        userRepository.userDetailResult = Result.success(userDetail)
         initRepository()
 
         assertNull(repository.getCurrentUser().value)
 
         repository.login("id", "password")
 
-        assertEquals(userDetail, repository.getCurrentUser().value)
+        assertEquals(userDto.toDetailEntity(), repository.getCurrentUser().value)
     }
 
     @Test
     fun saveAuthLocalData_WhenSuccessToLogin() = runTest {
         val token = "abc"
-        val userDetail = mockNormalUserDetail
+        val userDto = mockUserDto
         localDataSource.authLocalData = null
-        userRepository.userDetailResult = Result.success(userDetail)
         remoteDataSource.loginResponse = successResponse(
-            LoginResponseData(sessionToken = token, userId = userDetail.id)
+            LoginResponseData(sessionToken = token, user = userDto)
         )
         initRepository()
 
@@ -113,7 +107,6 @@ class AuthRepositoryTest {
         repository.login("id", "password")
 
         assertEquals(token, localDataSource.authLocalData!!.sessionToken)
-        assertEquals(userDetail.id, localDataSource.authLocalData!!.userId)
     }
 
     @Test
@@ -129,13 +122,12 @@ class AuthRepositoryTest {
 
     @Test
     fun currentUserIsNull_WhenLoggedOut() = runTest {
-        val userDetail = mockNormalUserDetail
-        localDataSource.authLocalData = AuthLocalData("abc", 1)
-        userRepository.userDetailResult = Result.success(userDetail)
+        localDataSource.authLocalData = AuthLocalData("abc")
+        remoteDataSource.isSessionValidResponse = successResponse(mockUserDto)
         remoteDataSource.logoutResponse = successResponse(Unit)
         initRepository()
 
-        assertEquals(repository.getCurrentUser().value, userDetail)
+        assertNotNull(repository.getCurrentUser().value)
 
         repository.logout()
 
@@ -144,9 +136,8 @@ class AuthRepositoryTest {
 
     @Test
     fun clearLocalAuthData_WhenLoggedOut() = runTest {
-        val userDetail = mockNormalUserDetail
-        localDataSource.authLocalData = AuthLocalData("abc", 1)
-        userRepository.userDetailResult = Result.success(userDetail)
+        localDataSource.authLocalData = AuthLocalData("abc")
+        remoteDataSource.isSessionValidResponse = successResponse(mockUserDto)
         remoteDataSource.logoutResponse = successResponse(Unit)
         initRepository()
 
@@ -157,9 +148,7 @@ class AuthRepositoryTest {
 
     @Test
     fun emitTrueFromIsReady_WhenLocalDataIsValid() = runTest {
-        val userDetail = mockNormalUserDetail
-        localDataSource.authLocalData = AuthLocalData("abc", 1)
-        userRepository.userDetailResult = Result.success(userDetail)
+        localDataSource.authLocalData = AuthLocalData("abc")
 
         initRepository()
         var isReady = false
@@ -194,7 +183,7 @@ class AuthRepositoryTest {
     @Test
     fun emitTrueFromIsReady_WhenInternetIsNotConnected() = runTest {
         remoteDataSource.isSessionValidInnerLambda = { throw ConnectException() }
-        localDataSource.authLocalData = AuthLocalData("abc", 1)
+        localDataSource.authLocalData = AuthLocalData("abc")
 
         initRepository()
         var isReady = false
@@ -212,8 +201,7 @@ class AuthRepositoryTest {
     private fun initRepository() {
         repository = AuthRepositoryImpl(
             remoteDataSource = remoteDataSource,
-            localDataSource = localDataSource,
-            userRepository = userRepository
+            localDataSource = localDataSource
         )
     }
 }

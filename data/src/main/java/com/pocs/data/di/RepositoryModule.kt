@@ -44,13 +44,11 @@ class RepositoryModule {
     @Provides
     fun provideAuthRepository(
         remoteDataSource: AuthRemoteDataSource,
-        localDataSource: AuthLocalDataSource,
-        userRepository: UserRepository
+        localDataSource: AuthLocalDataSource
     ): AuthRepository {
         return AuthRepositoryImpl(
             remoteDataSource = remoteDataSource,
-            localDataSource = localDataSource,
-            userRepository = userRepository
+            localDataSource = localDataSource
         )
     }
 }
