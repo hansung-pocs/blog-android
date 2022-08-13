@@ -13,6 +13,5 @@ fun Comment.toUiState(currentUserId: Int) = CommentItemUiState(
     isMyComment = currentUserId == writer.userId,
     content = content,
     createdAt = createdAt.toFormattedDateString(),
-    updatedAt = updatedAt?.toFormattedDateString(),
-    canceledAt = canceledAt
+    updatedAt = updatedAt?.toFormattedDateString()
 )

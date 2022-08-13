@@ -154,8 +154,7 @@ fun CommentsPreview() {
         ),
         content = "댓글 내용입니다.",
         createdAt = "오늘",
-        updatedAt = null,
-        canceledAt = null
+        updatedAt = null
     )
     Comments(
         comments = listOf(mockComment, mockComment, mockComment, mockComment),
@@ -181,8 +180,7 @@ fun CommentPreview() {
             ),
             content = "댓글 내용입니다.",
             createdAt = "오늘",
-            updatedAt = "오늘",
-            canceledAt = null
+            updatedAt = "오늘"
         ),
         onClick = {},
         onMoreButtonClick = {},

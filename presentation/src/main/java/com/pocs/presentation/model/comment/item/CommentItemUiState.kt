@@ -9,11 +9,8 @@ data class CommentItemUiState(
     val isMyComment: Boolean,
     val content: String,
     private val createdAt: String,
-    private val updatedAt: String? = null,
-    private val canceledAt: String? = null
+    private val updatedAt: String? = null
 ) {
-    val isDeleted: Boolean get() = canceledAt != null
-
     val time: String
         get() {
             if (updatedAt != null) {
