@@ -7,4 +7,10 @@
         android:icon="@drawable/ic_baseline_article_24"
         android:title="@string/post" />
 
+    <item
+        android:id="@id/StudyFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_menu_book_24"
+        android:title="@string/study" />
+
 </menu>

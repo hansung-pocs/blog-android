@@ -11,4 +11,10 @@
         android:label="@string/post"
         tools:layout="@layout/fragment_post" />
 
+    <fragment
+        android:id="@+id/StudyFragment"
+        android:name="com.pocs.presentation.view.home.study.StudyFragment"
+        android:label="@string/study"
+        tools:layout="@layout/fragment_post" />
+
 </navigation>

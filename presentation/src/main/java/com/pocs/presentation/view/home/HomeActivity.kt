@@ -60,7 +60,7 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(
-            topLevelDestinationIds = setOf(R.id.PostFragment),
+            topLevelDestinationIds = setOf(R.id.PostFragment, R.id.StudyFragment),
             drawerLayout = binding.drawerLayout,
             fallbackOnNavigateUpListener = ::onSupportNavigateUp
         )
