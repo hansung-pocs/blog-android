@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">presentation</string>
     <string name="notice">공지사항</string>
-    <string name="article">게시글</string>
+    <string name="post">게시글</string>
     <string name="study">스터디</string>
     <string name="memory">추억</string>
     <string name="knowhow">노하우</string>
@@ -88,6 +88,8 @@
     <string name="non_member">비회원</string>
     <string name="logout">로그아웃</string>
     <string name="logout_dialog_title">정말로 로그아웃 하시겠습니까?</string>
+    <string name="all">전체</string>
+    <string name="best">인기</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>
         <item>회원목록</item>

@@ -1,7 +1,6 @@
 package com.pocs.presentation.model.post
 
 import com.pocs.domain.model.post.PostCategory
-import com.pocs.presentation.model.BasePostEditUiState
 
 data class PostCreateUiState(
     override val title: String = "",

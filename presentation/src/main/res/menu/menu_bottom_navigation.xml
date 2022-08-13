@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@id/NoticeFragment"
-        android:enabled="true"
-        android:icon="@drawable/ic_notification_filled_24"
-        android:title="@string/notice" />
 
     <item
-        android:id="@id/ArticleFragment"
+        android:id="@id/PostFragment"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_article_24"
-        android:title="@string/article" />
+        android:title="@string/post" />
+
+    <item
+        android:id="@id/StudyFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_menu_book_24"
+        android:title="@string/study" />
 
 </menu>

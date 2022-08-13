@@ -1,4 +1,4 @@
-package com.pocs.presentation.model
+package com.pocs.presentation.model.post
 
 import com.pocs.domain.model.post.PostCategory
 

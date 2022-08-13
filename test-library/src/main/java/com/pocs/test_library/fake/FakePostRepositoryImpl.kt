@@ -4,20 +4,22 @@ import androidx.paging.PagingData
 import com.pocs.domain.model.post.Post
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.model.post.PostDetail
+import com.pocs.domain.model.post.PostFilterType
 import com.pocs.domain.repository.PostRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import javax.inject.Inject
 
 class FakePostRepositoryImpl @Inject constructor() : PostRepository {
 
-    private val postFlow = MutableSharedFlow<PagingData<Post>>()
+    var postPagingDataFlow = MutableSharedFlow<PagingData<Post>>()
+
     var postDetailResult: Result<PostDetail> = Result.failure(Exception())
 
     var updatePostResult = Result.success(Unit)
 
     var deletePostResult = Result.success(Unit)
 
-    override fun getAll(category: PostCategory) = postFlow
+    override fun getAll(filterType: PostFilterType) = postPagingDataFlow
 
     override suspend fun getPostDetail(id: Int): Result<PostDetail> {
         return postDetailResult
