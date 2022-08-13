@@ -7,11 +7,11 @@
     <string name="knowhow">노하우</string>
     <string name="reference">레퍼런스</string>
     <string name="user_list">회원 목록</string>
-    <string name="post_subtitle">%s · %s</string>
-    <string name="middle_dot">\u0020·\u0020</string>
-    <string name="deleted_post_subtitle_prefix">삭제됨 ·\u0020</string>
-    <string name="user_item_subtitle">%s · %s기</string>
-    <string name="kicked_user_item_subtitle">탈퇴됨 · %s · %s기</string>
+    <string name="post_subtitle">%s • %s</string>
+    <string name="middle_dot">\u0020•\u0020</string>
+    <string name="deleted_post_subtitle_prefix">삭제됨 •\u0020</string>
+    <string name="user_item_subtitle">%s • %s기</string>
+    <string name="kicked_user_item_subtitle">탈퇴됨 • %s • %s기</string>
     <string name="fail_to_connect">연결에 실패하였습니다.</string>
     <string name="retry">재시도</string>
     <string name="user_image">회원 사진</string>
@@ -90,6 +90,8 @@
     <string name="logout_dialog_title">정말로 로그아웃 하시겠습니까?</string>
     <string name="all">전체</string>
     <string name="best">인기</string>
+    <string name="writing_time">작성시간</string>
+    <string name="child_comment_count">대댓글 갯수</string>
     <string name="question_answer">질문답변</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>

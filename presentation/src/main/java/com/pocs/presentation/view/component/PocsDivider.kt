@@ -9,5 +9,5 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun PocsDivider(startIndent: Dp = 0.dp) {
-    Divider(startIndent = startIndent, modifier = Modifier.alpha(0.4f))
+    Divider(startIndent = startIndent, modifier = Modifier.alpha(0.2f))
 }
