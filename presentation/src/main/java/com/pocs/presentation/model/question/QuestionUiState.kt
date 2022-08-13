@@ -4,6 +4,5 @@ import androidx.paging.PagingData
 import com.pocs.presentation.model.post.item.PostItemUiState
 
 data class QuestionUiState(
-    val pagingData: PagingData<PostItemUiState> = PagingData.empty(),
-    val isCurrentUserUnknown : Boolean
+    val pagingData: PagingData<PostItemUiState> = PagingData.empty()
 )

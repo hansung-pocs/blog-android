@@ -18,12 +18,9 @@ import javax.inject.Inject
 @HiltViewModel
 class QuestionViewModel @Inject constructor(
     private val getAllPostsUseCase: GetAllPostsUseCase,
-    isCurrentUserUnknownUseCase: IsCurrentUserUnknownUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(
-        QuestionUiState(isCurrentUserUnknown = isCurrentUserUnknownUseCase())
-    )
+    private val _uiState = MutableStateFlow(QuestionUiState())
     val uiState = _uiState.asStateFlow()
 
     private var fetchJob: Job? = null
