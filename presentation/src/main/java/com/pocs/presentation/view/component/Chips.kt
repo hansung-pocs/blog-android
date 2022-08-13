@@ -63,7 +63,6 @@ private fun selectedBorder(): ChipBorder = AssistChipDefaults.assistChipBorder(
     borderColor = MaterialTheme.colorScheme.primaryContainer
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Stable
 private fun unselectedBorder(): ChipBorder = AssistChipDefaults.assistChipBorder(
