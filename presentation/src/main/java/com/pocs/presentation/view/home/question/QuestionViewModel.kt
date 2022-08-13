@@ -33,7 +33,7 @@ class QuestionViewModel @Inject constructor(
         fetchJob = viewModelScope.launch {
             // TODO : 임시 필터 Question 필터가 없음. <- 백엔드에게 말하기
             getAllPostsUseCase(PostFilterType.REFERENCE).cachedIn(viewModelScope)
-                // TODD : QuestionFilter 만들기
+                // TODO : QuestionFilter 만들기
                 .map { it.map { post -> post.toUiState() } }
                 .collectLatest { pagingData ->
                     _uiState.update {
