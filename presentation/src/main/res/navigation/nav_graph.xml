@@ -17,4 +17,10 @@
         android:label="@string/study"
         tools:layout="@layout/fragment_post" />
 
+    <fragment
+        android:id="@+id/QuestionFragment"
+        android:name="com.pocs.presentation.view.home.question.QuestionFragment"
+        android:label="@string/question"
+        tools:layout="@layout/fragment_question" />
+
 </navigation>

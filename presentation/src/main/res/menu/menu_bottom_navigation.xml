@@ -13,4 +13,11 @@
         android:icon="@drawable/ic_baseline_menu_book_24"
         android:title="@string/study" />
 
+    <item
+        android:id="@id/QuestionFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_pan_tool_24"
+        android:title="@string/write_question"
+        />
+
 </menu>
