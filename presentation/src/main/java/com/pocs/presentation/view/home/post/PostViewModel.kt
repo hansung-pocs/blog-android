@@ -36,7 +36,11 @@ class PostViewModel @Inject constructor(
         fetchJob?.cancel()
         fetchJob = viewModelScope.launch {
             getAllPostsUseCase(uiState.value.selectedPostFilterType).cachedIn(viewModelScope)
-                .map { it.map { post -> post.toUiState() } }
+                .map {
+                    it.map { post ->
+                        post.toUiState(showCategory = uiState.value.visiblePostCategory)
+                    }
+                }
                 .collectLatest { pagingData ->
                     _uiState.update {
                         it.copy(pagingData = pagingData)

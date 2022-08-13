@@ -104,6 +104,45 @@ class PostViewModelTest {
         assertNotEquals(list.map { it.toUiState() }, differ.snapshot().items)
     }
 
+    @Test
+    fun shouldExistCategory_WhenPostFilterTypeIsAllOrBest() = runTest {
+        val differ = AsyncPagingDataDiffer(
+            diffCallback = PostItemUiStateDiffCallback(),
+            updateCallback = NoopListCallback(),
+            workerDispatcher = Dispatchers.Main
+        )
+        initViewModel()
+        viewModel.updatePostFilterType(PostFilterType.ALL)
+
+        postRepository.postPagingDataFlow.emit(PagingData.from(listOf(mockPost)))
+
+        differ.submitData(viewModel.uiState.value.pagingData)
+        advanceUntilIdle()
+        differ.snapshot().items.forEach {
+            assertNotNull(it.category)
+        }
+    }
+
+
+    @Test
+    fun shouldCategoryIsNull_WhenPostFilterTypeIsNotAllOrBest() = runTest {
+        val differ = AsyncPagingDataDiffer(
+            diffCallback = PostItemUiStateDiffCallback(),
+            updateCallback = NoopListCallback(),
+            workerDispatcher = Dispatchers.Main
+        )
+        initViewModel()
+        viewModel.updatePostFilterType(PostFilterType.STUDY)
+
+        postRepository.postPagingDataFlow.emit(PagingData.from(listOf(mockPost)))
+
+        differ.submitData(viewModel.uiState.value.pagingData)
+        advanceUntilIdle()
+        differ.snapshot().items.forEach {
+            assertNull(it.category)
+        }
+    }
+
     private fun initViewModel() {
         viewModel = PostViewModel(
             getAllPostsUseCase = GetAllPostsUseCase(postRepository),
