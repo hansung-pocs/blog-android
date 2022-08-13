@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/QuestionFragment"
         android:name="com.pocs.presentation.view.home.question.QuestionFragment"
-        android:label="@string/question"
+        android:label="@string/question_answer"
         tools:layout="@layout/fragment_question" />
 
 </navigation>

@@ -48,7 +48,7 @@ class PostCreateViewModel @Inject constructor(
         _uiState!!.value = uiState.value.copy(category = category)
     }
 
-    private suspend fun savePost(): Result<Unit> {
+    private suspend fun savePost(): Result<Unit> { // TODO : 비회원 포스트 -> username : (비회원)
         _uiState!!.value = uiState.value.copy(isInSaving = true)
         val result = addPostUseCase(
             title = uiState.value.title,
