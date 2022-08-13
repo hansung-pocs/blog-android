@@ -88,6 +88,7 @@ class PostViewModelTest {
         )
         val list = listOf(mockPost)
         initViewModel()
+        viewModel.updatePostFilterType(PostFilterType.STUDY)
         postRepository.postPagingDataFlow.emit(PagingData.from(list))
         differ.submitData(viewModel.uiState.value.pagingData)
         advanceUntilIdle()
