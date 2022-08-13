@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.pocs.domain.model.post.PostFilterType
-import com.pocs.domain.usecase.auth.IsCurrentUserUnknownUseCase
 import com.pocs.domain.usecase.post.GetAllPostsUseCase
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.question.QuestionUiState
