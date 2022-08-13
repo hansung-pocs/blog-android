@@ -31,7 +31,7 @@ class QuestionViewModel @Inject constructor(
     private fun fetchQuestions() {
         fetchJob?.cancel()
         fetchJob = viewModelScope.launch {
-            // TODO : 임시 필터 Question 필터가 없음. <- 백엔드에게 말하기
+            // TODO : 임시로 REFERENCE 사용 Question 카테고리가 없음. <- 백엔드에게 말하기
             getAllPostsUseCase(PostFilterType.REFERENCE).cachedIn(viewModelScope)
                 // TODO : QuestionFilter 만들기
                 .map { it.map { post -> post.toUiState() } }
