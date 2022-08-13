@@ -7,7 +7,6 @@ sealed class PostDetailUiState {
         val postDetail: PostDetailItemUiState,
         val canEditPost: Boolean,
         val canDeletePost: Boolean,
-        val isDeleted: Boolean,
         val isSuccessToDelete: Boolean = false,
         val errorMessage: String? = null
     ) : PostDetailUiState()

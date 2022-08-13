@@ -62,7 +62,7 @@ class PostDetailViewModelTest {
             viewModel.uiState.collect()
         }
 
-        viewModel.fetchPost(mockPostDetail1.id, isDeleted = false)
+        viewModel.fetchPost(mockPostDetail1.id)
 
         assertTrue(viewModel.uiState.value is PostDetailUiState.Success)
 
@@ -78,7 +78,7 @@ class PostDetailViewModelTest {
             viewModel.uiState.collect()
         }
 
-        viewModel.fetchPost(mockPostDetail1.id, isDeleted = false)
+        viewModel.fetchPost(mockPostDetail1.id)
 
         assertTrue(viewModel.uiState.value is PostDetailUiState.Failure)
         assertEquals(
@@ -95,7 +95,7 @@ class PostDetailViewModelTest {
         postRepository.postDetailResult = Result.success(mockPostDetail1)
         postRepository.deletePostResult = Result.failure(exception)
         authRepository.currentUser.value = mockNormalUserDetail.copy(id = mockPostDetail1.writer.id)
-        viewModel.fetchPost(mockPostDetail1.id, isDeleted = false)
+        viewModel.fetchPost(mockPostDetail1.id)
 
         viewModel.requestPostDeleting(1)
 
@@ -110,7 +110,7 @@ class PostDetailViewModelTest {
         postRepository.postDetailResult = Result.success(mockPostDetail1)
         postRepository.deletePostResult = Result.success(Unit)
         authRepository.currentUser.value = mockNormalUserDetail.copy(id = mockPostDetail1.writer.id)
-        viewModel.fetchPost(mockPostDetail1.id, isDeleted = false)
+        viewModel.fetchPost(mockPostDetail1.id)
 
         viewModel.requestPostDeleting(1)
 

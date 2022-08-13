@@ -36,10 +36,9 @@ class PostDetailActivity : ViewBindingActivity<ActivityPostDetailBinding>() {
     private var launcher: ActivityResultLauncher<Intent>? = null
 
     companion object {
-        fun getIntent(context: Context, id: Int, isDeleted: Boolean): Intent {
+        fun getIntent(context: Context, id: Int): Intent {
             return Intent(context, PostDetailActivity::class.java).apply {
                 putExtra("id", id)
-                putExtra("isDeleted", isDeleted)
             }
         }
     }
@@ -112,9 +111,8 @@ class PostDetailActivity : ViewBindingActivity<ActivityPostDetailBinding>() {
 
     private fun fetchPost() {
         val id = intent.getIntExtra("id", -1)
-        val isDeleted = intent.getBooleanExtra("isDeleted", false)
 
-        viewModel.fetchPost(id, isDeleted)
+        viewModel.fetchPost(id)
     }
 
     private fun initToolBar() {
@@ -137,7 +135,6 @@ class PostDetailActivity : ViewBindingActivity<ActivityPostDetailBinding>() {
                     postDetail.writer.name
                 )
                 content.text = postDetail.content
-                deleted.isVisible = uiState.isDeleted
 
                 if (uiState.isSuccessToDelete) {
                     onDeleteSuccess()
