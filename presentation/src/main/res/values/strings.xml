@@ -79,7 +79,6 @@
     <string name="empty_label">-</string>
     <string name="failed_to_save_post">글 저장 실패</string>
     <string name="sorting_by_created_at_descending">가입일 최근순</string>
-    <string name="nickname">닉네임</string>
     <string name="password">비밀번호</string>
     <string name="id">아이디</string>
     <string name="brows_as_non_member">비회원으로 둘러보기</string>

@@ -67,15 +67,15 @@ fun AdminUserCreateScreen(
         ) {
             EditGroupLabel("필수")
             PocsOutlineTextField(
-                value = createInfo.nickname,
-                label = stringResource(R.string.nickname),
+                value = createInfo.userName,
+                label = stringResource(R.string.id),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                maxLength = MAX_USER_NICKNAME_LEN,
-                onValueChange = { nickname ->
-                    uiState.updateCreateInfo { it.copy(nickname = nickname) }
+                maxLength = MAX_USER_ID_LEN,
+                onValueChange = { userName ->
+                    uiState.updateCreateInfo { it.copy(userName = userName) }
                 },
                 onClearClick = {
-                    uiState.updateCreateInfo { it.copy(nickname = "") }
+                    uiState.updateCreateInfo { it.copy(userName = "") }
                 }
             )
             PocsOutlineTextField(

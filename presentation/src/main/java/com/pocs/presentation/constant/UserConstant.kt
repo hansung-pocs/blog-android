@@ -1,6 +1,6 @@
 package com.pocs.presentation.constant
 
-const val MAX_USER_NICKNAME_LEN = 15
+const val MAX_USER_ID_LEN = 15
 const val MAX_USER_NAME_LEN = 20
 const val MAX_USER_PASSWORD_LEN = 255
 const val MAX_USER_STUDENT_ID_LEN = 7

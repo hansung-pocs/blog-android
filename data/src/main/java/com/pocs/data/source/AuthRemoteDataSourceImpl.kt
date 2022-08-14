@@ -3,6 +3,7 @@ package com.pocs.data.source
 import com.pocs.data.api.AuthApi
 import com.pocs.data.model.ResponseBody
 import com.pocs.data.model.auth.LoginRequestBody
+import com.pocs.data.model.auth.SessionValidResponseData
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -14,5 +15,7 @@ class AuthRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun logout(token: String) = api.logout(token)
 
-    override suspend fun isSessionValid(token: String) = api.isSessionValid(token)
+    override suspend fun isSessionValid(
+        token: String
+    ): Response<ResponseBody<SessionValidResponseData>> = api.isSessionValid(token)
 }

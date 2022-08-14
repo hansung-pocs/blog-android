@@ -21,7 +21,7 @@ class UserRemoteDataSourceImpl @Inject constructor(
         userId = id,
         userUpdateBody = UserUpdateBody(
             password = password,
-            userName = name,
+            name = name,
             email = email,
             github = github,
             company = company
