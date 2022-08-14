@@ -40,3 +40,10 @@ fun String.toFormattedDateString(): String {
     }
     throw IllegalArgumentException("DatePattern들 중에 포함되지 않는 문자열입니다.")
 }
+
+fun createFormattedDateText(createdAt: String, updatedAt: String?): String {
+    if (updatedAt != null) {
+        return "${updatedAt.toFormattedDateString()}(수정됨)"
+    }
+    return createdAt.toFormattedDateString()
+}

@@ -35,11 +35,15 @@ class PostDetailViewModel @Inject constructor(
             val result = getPostDetailUseCase(id)
             if (result.isSuccess) {
                 val postDetail = result.getOrNull()!!
+                val previousUiStateValue = uiState.value
                 _uiState.update {
                     PostDetailUiState.Success(
                         postDetail = postDetail.toUiState(),
                         canEditPost = canEditPostUseCase(postDetail),
-                        canDeletePost = canDeletePostUseCase(postDetail)
+                        canDeletePost = canDeletePostUseCase(postDetail),
+                        userMessage = if (previousUiStateValue is PostDetailUiState.Success) {
+                            previousUiStateValue.userMessage
+                        } else null
                     )
                 }
             } else {
@@ -55,22 +59,28 @@ class PostDetailViewModel @Inject constructor(
 
             if (result.isSuccess) {
                 _uiState.update {
-                    (it as PostDetailUiState.Success).copy(isSuccessToDelete = true)
+                    (it as PostDetailUiState.Success).copy(isDeleteSuccess = true)
                 }
             } else {
-                _uiState.update {
-                    val errorMessage = result.exceptionOrNull()!!.message ?: "삭제에 실패했습니다."
-                    (it as PostDetailUiState.Success).copy(errorMessage = errorMessage)
-                }
+                val errorMessage = result.exceptionOrNull()!!.message ?: "삭제에 실패했습니다."
+                showUserMessage(errorMessage)
             }
         }
     }
 
-    fun shownErrorMessage() {
+    fun showUserMessage(message: String) {
         val uiStateValue = _uiState.value
-        if(uiStateValue !is PostDetailUiState.Success) return
+        require(uiStateValue is PostDetailUiState.Success)
         _uiState.update {
-            uiStateValue.copy(errorMessage = null)
+            uiStateValue.copy(userMessage = message)
+        }
+    }
+
+    fun userMessageShown() {
+        val uiStateValue = _uiState.value
+        require(uiStateValue is PostDetailUiState.Success)
+        _uiState.update {
+            uiStateValue.copy(userMessage = null)
         }
     }
 }

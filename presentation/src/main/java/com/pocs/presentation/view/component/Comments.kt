@@ -74,7 +74,7 @@ private fun Comment(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = uiState.writer.name + stringResource(R.string.middle_dot) + uiState.time,
+                    text = uiState.writer.name + stringResource(R.string.middle_dot) + uiState.date,
                     style = MaterialTheme.typography.labelMedium.copy(
                         color = onBackgroundColor.copy(alpha = 0.6f)
                     )
@@ -153,8 +153,7 @@ fun CommentsPreview() {
             name = "홍길동"
         ),
         content = "댓글 내용입니다.",
-        createdAt = "오늘",
-        updatedAt = null
+        date = "오늘"
     )
     Comments(
         comments = listOf(mockComment, mockComment, mockComment, mockComment),
@@ -179,8 +178,7 @@ fun CommentPreview() {
                 name = "홍길동"
             ),
             content = "댓글 내용입니다.",
-            createdAt = "오늘",
-            updatedAt = "오늘"
+            date = "오늘"
         ),
         onClick = {},
         onMoreButtonClick = {},

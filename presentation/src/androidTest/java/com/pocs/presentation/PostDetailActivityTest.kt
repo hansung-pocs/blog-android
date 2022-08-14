@@ -1,10 +1,9 @@
 package com.pocs.presentation
 
 import android.content.Context
+import androidx.compose.ui.test.*
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.launchActivity
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.post.CanDeletePostUseCase
@@ -20,8 +19,6 @@ import com.pocs.test_library.mock.mockPostDetail1
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import org.hamcrest.Matchers.not
-import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -31,6 +28,9 @@ class PostDetailActivityTest {
 
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 1)
+    val composeRule = createComposeRule()
 
     @BindValue
     val postRepository = FakePostRepositoryImpl()
@@ -66,9 +66,7 @@ class PostDetailActivityTest {
         val intent = PostDetailActivity.getIntent(context, postDetail.id)
         launchActivity<PostDetailActivity>(intent)
 
-        onView(withContentDescription(R.string.more_info_button)).check { _, noViewFoundException ->
-            assertNotNull(noViewFoundException)
-        }
+        findMoreInfoButton().assertDoesNotExist()
     }
 
     @Test
@@ -79,13 +77,12 @@ class PostDetailActivityTest {
             id = postDetail.writer.id,
             type = UserType.MEMBER
         )
-
         val intent = PostDetailActivity.getIntent(context, postDetail.id)
-        launchActivity<PostDetailActivity>(intent).onActivity {
-            it.openOptionsMenu()
-        }
+        launchActivity<PostDetailActivity>(intent)
 
-        onView(withText(R.string.delete)).check(matches(isDisplayed()))
+        openDropdownMenu()
+
+        findDeleteText().assertIsDisplayed()
     }
 
     @Test
@@ -96,15 +93,12 @@ class PostDetailActivityTest {
             id = 96412433,
             type = UserType.ADMIN
         )
-
         val intent = PostDetailActivity.getIntent(context, postDetail.id)
-        launchActivity<PostDetailActivity>(intent).onActivity {
-            it.openOptionsMenu()
-        }
+        launchActivity<PostDetailActivity>(intent)
 
-        onView(withText(R.string.edit)).check { _, noViewFoundException ->
-            assertNotNull(noViewFoundException)
-        }
+        openDropdownMenu()
+
+        findEditText().assertDoesNotExist()
     }
 
     @Test
@@ -115,12 +109,27 @@ class PostDetailActivityTest {
             id = postDetail.writer.id,
             type = UserType.MEMBER
         )
-
         val intent = PostDetailActivity.getIntent(context, postDetail.id)
-        launchActivity<PostDetailActivity>(intent).onActivity {
-            it.openOptionsMenu()
-        }
+        launchActivity<PostDetailActivity>(intent)
 
-        onView(withText(R.string.edit)).check(matches(isDisplayed()))
+        openDropdownMenu()
+
+        findEditText().assertIsDisplayed()
+    }
+
+    private fun openDropdownMenu() {
+        composeRule.onNodeWithContentDescription("더보기 버튼").performClick()
+    }
+
+    private fun findEditText(): SemanticsNodeInteraction {
+        return composeRule.onNodeWithText("편집")
+    }
+
+    private fun findDeleteText(): SemanticsNodeInteraction {
+        return composeRule.onNodeWithText("삭제")
+    }
+
+    private fun findMoreInfoButton(): SemanticsNodeInteraction {
+        return composeRule.onNodeWithContentDescription("더보기 버튼")
     }
 }

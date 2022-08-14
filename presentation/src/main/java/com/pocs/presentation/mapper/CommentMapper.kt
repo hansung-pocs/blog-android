@@ -1,7 +1,7 @@
 package com.pocs.presentation.mapper
 
 import com.pocs.domain.model.comment.Comment
-import com.pocs.presentation.extension.toFormattedDateString
+import com.pocs.presentation.extension.createFormattedDateText
 import com.pocs.presentation.model.comment.item.CommentItemUiState
 
 fun Comment.toUiState(currentUserId: Int) = CommentItemUiState(
@@ -12,6 +12,5 @@ fun Comment.toUiState(currentUserId: Int) = CommentItemUiState(
     writer = writer.toUiState(),
     isMyComment = currentUserId == writer.userId,
     content = content,
-    createdAt = createdAt.toFormattedDateString(),
-    updatedAt = updatedAt?.toFormattedDateString()
+    date = createFormattedDateText(createdAt, updatedAt)
 )

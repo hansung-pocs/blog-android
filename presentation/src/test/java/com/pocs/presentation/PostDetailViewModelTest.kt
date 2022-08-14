@@ -101,7 +101,7 @@ class PostDetailViewModelTest {
 
         assertEquals(
             exception.message,
-            (viewModel.uiState.value as PostDetailUiState.Success).errorMessage
+            (viewModel.uiState.value as PostDetailUiState.Success).userMessage
         )
     }
 
@@ -114,6 +114,6 @@ class PostDetailViewModelTest {
 
         viewModel.requestPostDeleting(1)
 
-        assertEquals(true, (viewModel.uiState.value as PostDetailUiState.Success).isSuccessToDelete)
+        assertEquals(true, (viewModel.uiState.value as PostDetailUiState.Success).isDeleteSuccess)
     }
 }

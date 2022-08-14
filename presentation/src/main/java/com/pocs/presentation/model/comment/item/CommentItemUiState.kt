@@ -8,14 +8,5 @@ data class CommentItemUiState(
     val writer: CommentWriterUiState,
     val isMyComment: Boolean,
     val content: String,
-    private val createdAt: String,
-    private val updatedAt: String? = null
-) {
-    val time: String
-        get() {
-            if (updatedAt != null) {
-                return "$updatedAt(수정됨)"
-            }
-            return createdAt
-        }
-}
+    val date: String
+)

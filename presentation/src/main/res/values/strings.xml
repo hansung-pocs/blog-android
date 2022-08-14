@@ -92,6 +92,7 @@
     <string name="best">인기</string>
     <string name="writing_time">작성시간</string>
     <string name="child_comment_count">대댓글 갯수</string>
+    <string name="error_icon">에러 아이콘</string>
     <string name="question_answer">질문답변</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>
