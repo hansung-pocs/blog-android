@@ -111,6 +111,12 @@ fun PostDetailContent(
             item {
                 ThickDivider()
             }
+            item {
+                CommentAddButton(onClick = {})
+            }
+            item {
+                PocsDivider()
+            }
             commentItems(
                 uiState = uiState.comments,
                 onMoreButtonClick = {},

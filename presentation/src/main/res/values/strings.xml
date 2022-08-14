@@ -95,6 +95,7 @@
     <string name="error_icon">에러 아이콘</string>
     <string name="question_answer">질문답변</string>
     <string name="failed_to_load_comment">댓글을 불러올 수 없습니다</string>
+    <string name="add_comment">댓글 추가...</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>
         <item>회원목록</item>

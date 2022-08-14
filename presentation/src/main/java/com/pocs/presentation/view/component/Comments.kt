@@ -66,6 +66,28 @@ fun LazyListScope.commentItems(
 }
 
 @Composable
+fun CommentAddButton(onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(
+                onClick = onClick,
+                interactionSource = remember { MutableInteractionSource() },
+                indication = rememberRipple(bounded = true),
+                role = Role.Button,
+            )
+            .padding(horizontal = 20.dp, vertical = 16.dp)
+    ) {
+        Text(
+            text = stringResource(id = R.string.add_comment),
+            style = MaterialTheme.typography.bodyMedium.copy(
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+            )
+        )
+    }
+}
+
+@Composable
 private fun Comment(
     uiState: CommentItemUiState,
     onClick: () -> Unit,
