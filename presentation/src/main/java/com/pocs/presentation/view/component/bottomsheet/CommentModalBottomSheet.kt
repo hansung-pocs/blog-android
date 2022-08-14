@@ -16,17 +16,18 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.pocs.presentation.R
+import com.pocs.presentation.model.comment.item.CommentItemUiState
 import com.pocs.presentation.view.component.textfield.SimpleTextField
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-typealias CommentSendCallback = (parentId: Int?, content: String) -> Unit
+typealias CommentCreateCallback = (parentId: Int?, content: String) -> Unit
+
+typealias CommentUpdateCallback = (id: Int, content: String) -> Unit
 
 @Composable
 private fun CommentTextField(
@@ -62,7 +63,8 @@ private fun CommentTextField(
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun CommentModalBottomSheet(
-    onSend: CommentSendCallback,
+    onCreated: CommentCreateCallback,
+    onUpdated: CommentUpdateCallback,
     content: @Composable (CommentModalController) -> Unit
 ) {
     val bottomSheetState = rememberModalBottomSheetState(
@@ -70,13 +72,7 @@ fun CommentModalBottomSheet(
     )
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
-    val commentModalController = remember {
-        CommentModalController(
-            bottomSheetState,
-            keyboardController,
-            focusRequester
-        )
-    }
+    val controller = remember { CommentModalController(bottomSheetState) }
     val coroutineScope = rememberCoroutineScope()
     var comment by remember { mutableStateOf("") }
 
@@ -88,10 +84,24 @@ fun CommentModalBottomSheet(
 
     LaunchedEffect(Unit) {
         snapshotFlow { bottomSheetState.currentValue }
-            .filter { it == ModalBottomSheetValue.Hidden }
             .collectLatest {
-                keyboardController?.hide()
-                comment = ""
+                when (it) {
+                    ModalBottomSheetValue.Expanded -> {
+                        val commentToBeUpdated = controller.commentToBeUpdated
+                        if (commentToBeUpdated != null) {
+                            comment = commentToBeUpdated.content
+                        }
+                        focusRequester.requestFocus()
+                        keyboardController?.show()
+                    }
+                    ModalBottomSheetValue.Hidden -> {
+                        focusRequester.freeFocus()
+                        keyboardController?.hide()
+                        controller.clear()
+                        comment = ""
+                    }
+                    else -> {}
+                }
             }
     }
 
@@ -106,13 +116,20 @@ fun CommentModalBottomSheet(
                 onCommentChange = { comment = it },
                 focusRequester = focusRequester,
                 onSend = {
-                    onSend(commentModalController.parentId, it)
+                    val commentToBeUpdated = controller.commentToBeUpdated
+
+                    if (commentToBeUpdated != null) {
+                        onUpdated(commentToBeUpdated.id, it)
+                    } else {
+                        onCreated(controller.parentId, it)
+                    }
+
                     coroutineScope.launch {
-                        commentModalController.hide()
+                        controller.hide()
                     }
                 },
                 hint = stringResource(
-                    id = if (commentModalController.isReply) {
+                    id = if (controller.isReply) {
                         R.string.add_reply
                     } else {
                         R.string.add_comment
@@ -121,34 +138,45 @@ fun CommentModalBottomSheet(
             )
         },
     ) {
-        content(commentModalController)
+        content(controller)
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 class CommentModalController(
     private val modalBottomSheetState: ModalBottomSheetState,
-    private val keyboardController: SoftwareKeyboardController?,
-    private val focusRequester: FocusRequester
 ) {
 
-    private var _parentId: Int? = null
-    val parentId: Int? get() = _parentId
+    var parentId: Int? = null
+        private set
+
+    var commentToBeUpdated: CommentItemUiState? = null
+        private set
 
     val isReply: Boolean get() = parentId != null
 
-    suspend fun show(parentId: Int? = null) {
-        _parentId = parentId
-        focusRequester.requestFocus()
+    suspend fun showForCreate(parentId: Int? = null) {
+        this.parentId = parentId
+        show()
+    }
+
+    suspend fun showForUpdate(comment: CommentItemUiState) {
+        this.commentToBeUpdated = comment
+        show()
+    }
+
+    private suspend fun show() {
         modalBottomSheetState.snapTo(ModalBottomSheetValue.Expanded)
-        keyboardController?.show()
     }
 
     suspend fun hide() {
-        _parentId = null
-        focusRequester.freeFocus()
+        clear()
         modalBottomSheetState.snapTo(ModalBottomSheetValue.Hidden)
-        keyboardController?.hide()
+    }
+
+    fun clear() {
+        parentId = null
+        commentToBeUpdated = null
     }
 }
 

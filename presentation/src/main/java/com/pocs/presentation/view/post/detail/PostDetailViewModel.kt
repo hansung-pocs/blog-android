@@ -90,6 +90,10 @@ class PostDetailViewModel @Inject constructor(
         // TODO: 구현하기
     }
 
+    fun updateComment(id: Int, comment: String) {
+
+    }
+
     fun deleteComment(comment: CommentItemUiState) {
         // TODO: 구현하기
     }

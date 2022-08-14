@@ -2,10 +2,7 @@ package com.pocs.presentation.view.component.textfield
 
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,7 +24,8 @@ fun SimpleTextField(
             focusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
-            containerColor = Color.Transparent
+            containerColor = Color.Transparent,
+            placeholderColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
         ),
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,

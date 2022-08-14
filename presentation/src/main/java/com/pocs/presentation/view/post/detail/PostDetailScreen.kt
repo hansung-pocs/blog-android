@@ -31,10 +31,7 @@ import com.pocs.presentation.model.post.PostDetailUiState
 import com.pocs.presentation.model.post.item.PostDetailItemUiState
 import com.pocs.presentation.model.post.item.PostWriterUiState
 import com.pocs.presentation.view.component.*
-import com.pocs.presentation.view.component.bottomsheet.CommentModalBottomSheet
-import com.pocs.presentation.view.component.bottomsheet.CommentSendCallback
-import com.pocs.presentation.view.component.bottomsheet.Option
-import com.pocs.presentation.view.component.bottomsheet.OptionModalBottomSheet
+import com.pocs.presentation.view.component.bottomsheet.*
 import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.component.button.DropdownButton
 import com.pocs.presentation.view.component.button.DropdownOption
@@ -72,7 +69,8 @@ fun PostDetailScreen(
                 onEditClick = onEditClick,
                 onDeleteClick = { viewModel.requestPostDeleting(uiState.postDetail.id) },
                 onCommentDelete = viewModel::deleteComment,
-                onCommentSend = viewModel::addComment
+                onCommentCreated = viewModel::addComment,
+                onCommentUpdated = viewModel::updateComment
             )
         }
     }
@@ -86,12 +84,13 @@ fun PostDetailContent(
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
     onCommentDelete: (CommentItemUiState) -> Unit,
-    onCommentSend: CommentSendCallback
+    onCommentCreated: CommentCreateCallback,
+    onCommentUpdated: CommentUpdateCallback
 ) {
     val postDetail = uiState.postDetail
     val coroutineScope = rememberCoroutineScope()
     var showDeleteDialog by remember { mutableStateOf(false) }
-    var maybeDeletedComment by remember { mutableStateOf<CommentItemUiState?>(null) }
+    var commentToBeDeleted by remember { mutableStateOf<CommentItemUiState?>(null) }
 
     if (showDeleteDialog) {
         RecheckDialog(
@@ -102,21 +101,22 @@ fun PostDetailContent(
         )
     }
 
-    if (maybeDeletedComment != null) {
+    if (commentToBeDeleted != null) {
         RecheckDialog(
             title = stringResource(id = R.string.are_you_sure_you_want_to_delete),
             onOkClick = {
-                maybeDeletedComment?.let { onCommentDelete(it) }
-                maybeDeletedComment = null
+                commentToBeDeleted?.let { onCommentDelete(it) }
+                commentToBeDeleted = null
             },
-            onDismissRequest = { maybeDeletedComment = null },
+            onDismissRequest = { commentToBeDeleted = null },
             confirmText = stringResource(id = R.string.delete)
         )
     }
 
 
     CommentModalBottomSheet(
-        onSend = onCommentSend
+        onCreated = onCommentCreated,
+        onUpdated = onCommentUpdated
     ) { commentModalController ->
 
         OptionModalBottomSheet(
@@ -125,12 +125,16 @@ fun PostDetailContent(
                     Option(
                         imageVector = Icons.Default.Edit,
                         stringResId = R.string.edit,
-                        onClick = {}
+                        onClick = {
+                            coroutineScope.launch {
+                                commentModalController.showForUpdate(it)
+                            }
+                        }
                     ),
                     Option(
                         imageVector = Icons.Default.Delete,
                         stringResId = R.string.delete,
-                        onClick = { maybeDeletedComment = it }
+                        onClick = { commentToBeDeleted = it }
                     )
                 )
             }
@@ -168,7 +172,7 @@ fun PostDetailContent(
                         CommentAddButton(
                             onClick = {
                                 coroutineScope.launch {
-                                    commentModalController.show()
+                                    commentModalController.showForCreate()
                                 }
                             }
                         )
@@ -185,12 +189,12 @@ fun PostDetailContent(
                         },
                         onReplyIconClick = {
                             coroutineScope.launch {
-                                commentModalController.show(parentId = it.id)
+                                commentModalController.showForCreate(parentId = it.id)
                             }
                         },
                         onCommentClick = {
                             coroutineScope.launch {
-                                commentModalController.show(parentId = it.id)
+                                commentModalController.showForCreate(parentId = it.id)
                             }
                         },
                     )
@@ -355,7 +359,8 @@ private fun PostDetailContentPreview() {
         onEditClick = {},
         onDeleteClick = {},
         onCommentDelete = {},
-        onCommentSend = { _, _ -> }
+        onCommentCreated = { _, _ -> },
+        onCommentUpdated = { _, _ -> }
     )
 }
 
