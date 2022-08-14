@@ -4,7 +4,7 @@ import com.pocs.data.model.admin.UserCreateInfoBody
 import com.pocs.domain.model.admin.UserCreateInfo
 
 fun UserCreateInfo.toDto() = UserCreateInfoBody(
-    nickname = nickname,
+    userName = userName,
     password = password,
     name = name,
     studentId = studentId,

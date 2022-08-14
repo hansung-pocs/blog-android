@@ -17,7 +17,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pocs.presentation.R
-import com.pocs.presentation.constant.MAX_USER_NICKNAME_LEN
+import com.pocs.presentation.constant.MAX_USER_ID_LEN
 import com.pocs.presentation.model.auth.LoginUiState
 import com.pocs.presentation.view.component.button.PocsButton
 import com.pocs.presentation.view.component.textfield.PasswordOutlineTextField
@@ -78,7 +78,7 @@ fun LoginContent(
                 onClearClick = {
                     uiState.update { it.copy(userName = "") }
                 },
-                maxLength = MAX_USER_NICKNAME_LEN,
+                maxLength = MAX_USER_ID_LEN,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
                 )

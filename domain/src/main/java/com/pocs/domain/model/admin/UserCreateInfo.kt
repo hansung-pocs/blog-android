@@ -3,7 +3,7 @@ package com.pocs.domain.model.admin
 import com.pocs.domain.model.user.UserType
 
 data class UserCreateInfo(
-    val nickname: String,
+    val userName: String,
     val password: String,
     val name: String,
     val studentId: Int,

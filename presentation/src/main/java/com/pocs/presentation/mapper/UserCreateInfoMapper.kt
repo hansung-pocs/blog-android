@@ -4,7 +4,7 @@ import com.pocs.domain.model.admin.UserCreateInfo
 import com.pocs.presentation.model.admin.UserCreateInfoUiState
 
 fun UserCreateInfoUiState.toEntity() = UserCreateInfo(
-    nickname = nickname,
+    userName = userName,
     password = password,
     name = name,
     studentId = studentId.toInt(),

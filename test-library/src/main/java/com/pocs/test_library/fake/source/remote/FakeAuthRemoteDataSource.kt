@@ -3,6 +3,7 @@ package com.pocs.test_library.fake.source.remote
 import com.pocs.data.model.ResponseBody
 import com.pocs.data.model.auth.LoginRequestBody
 import com.pocs.data.model.auth.LoginResponseData
+import com.pocs.data.model.auth.SessionValidResponseData
 import com.pocs.data.model.user.UserDto
 import com.pocs.data.source.AuthRemoteDataSource
 import com.pocs.test_library.mock.errorResponse
@@ -15,7 +16,7 @@ class FakeAuthRemoteDataSource @Inject constructor() : AuthRemoteDataSource {
 
     var logoutResponse: Response<ResponseBody<Unit>> = errorResponse()
 
-    var isSessionValidResponse: Response<ResponseBody<UserDto>> = errorResponse()
+    var isSessionValidResponse: Response<ResponseBody<SessionValidResponseData>> = errorResponse()
 
     var isSessionValidInnerLambda: () -> Unit = {}
 
@@ -27,7 +28,7 @@ class FakeAuthRemoteDataSource @Inject constructor() : AuthRemoteDataSource {
         return logoutResponse
     }
 
-    override suspend fun isSessionValid(token: String): Response<ResponseBody<UserDto>> {
+    override suspend fun isSessionValid(token: String): Response<ResponseBody<SessionValidResponseData>> {
         isSessionValidInnerLambda()
         return isSessionValidResponse
     }

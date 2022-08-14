@@ -3,7 +3,7 @@ package com.pocs.data.api
 import com.pocs.data.model.ResponseBody
 import com.pocs.data.model.auth.LoginRequestBody
 import com.pocs.data.model.auth.LoginResponseData
-import com.pocs.data.model.user.UserDto
+import com.pocs.data.model.auth.SessionValidResponseData
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header
@@ -25,5 +25,5 @@ interface AuthApi {
     @POST("auth/validation")
     suspend fun isSessionValid(
         @Header("x-pocs-session-token") token: String
-    ): Response<ResponseBody<UserDto>>
+    ): Response<ResponseBody<SessionValidResponseData>>
 }

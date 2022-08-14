@@ -14,7 +14,7 @@ data class AdminUserCreateUiState(
 ) {
     val canSave
         get() : Boolean {
-            return createInfo.nickname.isNotEmpty()
+            return createInfo.userName.isNotEmpty()
                     && createInfo.password.isNotEmpty()
                     && createInfo.name.isNotEmpty()
                     && createInfo.studentId.isNotEmpty()

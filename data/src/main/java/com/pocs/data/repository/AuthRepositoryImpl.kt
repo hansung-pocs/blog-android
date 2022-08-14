@@ -35,7 +35,7 @@ class AuthRepositoryImpl @Inject constructor(
                     val isSessionValid = response.isSuccessful
 
                     if (isSessionValid) {
-                        val userDto = response.body()!!.data
+                        val userDto = response.body()!!.data.user
                         currentUserState.value = userDto.toDetailEntity()
                         token = localData.sessionToken
                     } else {
