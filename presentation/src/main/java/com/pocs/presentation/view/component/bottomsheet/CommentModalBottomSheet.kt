@@ -14,6 +14,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -24,6 +25,7 @@ import com.pocs.presentation.view.component.textfield.SimpleTextField
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 
 typealias CommentSendCallback = (parentComment: CommentItemUiState?, comment: String) -> Unit
 
@@ -100,7 +102,7 @@ fun CommentModalBottomSheet(
         sheetState = bottomSheetState,
         sheetContent = {
             CommentTextField(
-                modifier = Modifier.heightIn(max = 260.dp),
+                modifier = Modifier.heightIn(max = 260.dp).verticalScrollDisabled(),
                 comment = comment,
                 onCommentChange = { comment = it },
                 focusRequester = focusRequester,
@@ -139,14 +141,29 @@ class CommentModalController(
     suspend fun show(parentComment: CommentItemUiState? = null) {
         _parentComment = parentComment
         focusRequester.requestFocus()
-        modalBottomSheetState.show()
+        modalBottomSheetState.snapTo(ModalBottomSheetValue.Expanded)
         keyboardController?.show()
     }
 
     suspend fun hide() {
         _parentComment = null
         focusRequester.freeFocus()
-        modalBottomSheetState.hide()
+        modalBottomSheetState.snapTo(ModalBottomSheetValue.Hidden)
         keyboardController?.hide()
     }
 }
+
+fun Modifier.verticalScrollDisabled() =
+    pointerInput(Unit) {
+        awaitPointerEventScope {
+            // we should wait for all new pointer events
+            while (true) {
+                awaitPointerEvent(pass = PointerEventPass.Initial).changes.forEach {
+                    val offset = it.positionChange()
+                    if (abs(offset.y) > 0f) {
+                        it.consume()
+                    }
+                }
+            }
+        }
+    }
