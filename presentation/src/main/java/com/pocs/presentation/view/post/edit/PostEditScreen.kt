@@ -6,7 +6,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -24,6 +23,7 @@ import com.pocs.presentation.view.component.HorizontalChips
 import com.pocs.presentation.view.component.PocsDivider
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
+import com.pocs.presentation.view.component.textfield.SimpleTextField
 import kotlinx.coroutines.launch
 
 @Composable
@@ -141,35 +141,6 @@ fun PostCategoryChips(
         itemLabelBuilder = { stringResource(id = it.koreanStringResource) },
         selectedItem = selectedCategory,
         onItemClick = onClick
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SimpleTextField(
-    hint: String,
-    value: String,
-    maxLength: Int,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    onValueChange: (String) -> Unit,
-    modifier: Modifier
-) {
-    TextField(
-        colors = TextFieldDefaults.textFieldColors(
-            focusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            containerColor = Color.Transparent
-        ),
-        keyboardOptions = keyboardOptions,
-        placeholder = { Text(hint) },
-        value = value,
-        onValueChange = {
-            if (it.length <= maxLength) {
-                onValueChange(it)
-            }
-        },
-        modifier = modifier
     )
 }
 
