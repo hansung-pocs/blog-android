@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.*
 import androidx.compose.material3.Icon
@@ -13,6 +15,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -30,6 +33,8 @@ import com.pocs.presentation.model.post.item.PostWriterUiState
 import com.pocs.presentation.view.component.*
 import com.pocs.presentation.view.component.bottomsheet.CommentModalBottomSheet
 import com.pocs.presentation.view.component.bottomsheet.CommentSendCallback
+import com.pocs.presentation.view.component.bottomsheet.Option
+import com.pocs.presentation.view.component.bottomsheet.OptionModalBottomSheet
 import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.component.button.DropdownButton
 import com.pocs.presentation.view.component.button.DropdownOption
@@ -66,7 +71,8 @@ fun PostDetailScreen(
                 snackbarHostState = snackbarHostState,
                 onEditClick = onEditClick,
                 onDeleteClick = { viewModel.requestPostDeleting(uiState.postDetail.id) },
-                onSend = viewModel::addComment
+                onCommentDelete = viewModel::deleteComment,
+                onCommentSend = viewModel::addComment
             )
         }
     }
@@ -79,11 +85,13 @@ fun PostDetailContent(
     snackbarHostState: SnackbarHostState,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    onSend: CommentSendCallback
+    onCommentDelete: (CommentItemUiState) -> Unit,
+    onCommentSend: CommentSendCallback
 ) {
     val postDetail = uiState.postDetail
     val coroutineScope = rememberCoroutineScope()
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var maybeDeletedComment by remember { mutableStateOf<CommentItemUiState?>(null) }
 
     if (showDeleteDialog) {
         RecheckDialog(
@@ -94,63 +102,99 @@ fun PostDetailContent(
         )
     }
 
+    if (maybeDeletedComment != null) {
+        RecheckDialog(
+            title = stringResource(id = R.string.are_you_sure_you_want_to_delete),
+            onOkClick = {
+                maybeDeletedComment?.let { onCommentDelete(it) }
+                maybeDeletedComment = null
+            },
+            onDismissRequest = { maybeDeletedComment = null },
+            confirmText = stringResource(id = R.string.delete)
+        )
+    }
+
+
     CommentModalBottomSheet(
-        onSend = onSend
+        onSend = onCommentSend
     ) { commentModalController ->
-        Scaffold(
-            snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-            topBar = {
-                PostDetailTopAppBar(
-                    uiState,
-                    onEditClick = onEditClick,
-                    onDeleteClick = { showDeleteDialog = true }
+
+        OptionModalBottomSheet(
+            options = rememberSaveable {
+                listOf(
+                    Option(
+                        imageVector = Icons.Default.Edit,
+                        stringResId = R.string.edit,
+                        onClick = {}
+                    ),
+                    Option(
+                        imageVector = Icons.Default.Delete,
+                        stringResId = R.string.delete,
+                        onClick = { maybeDeletedComment = it }
+                    )
                 )
             }
-        ) { paddingValues ->
-            LazyColumn(Modifier.padding(paddingValues)) {
-                headerItems(
-                    title = postDetail.title,
-                    writerName = postDetail.writer.name,
-                    date = postDetail.date
-                )
-                item {
-                    Text(
-                        modifier = Modifier.padding(20.dp),
-                        text = postDetail.content,
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            color = MaterialTheme.colorScheme.onBackground
+        ) { optionModalController ->
+
+            Scaffold(
+                snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+                topBar = {
+                    PostDetailTopAppBar(
+                        uiState,
+                        onEditClick = onEditClick,
+                        onDeleteClick = { showDeleteDialog = true }
+                    )
+                }
+            ) { paddingValues ->
+                LazyColumn(Modifier.padding(paddingValues)) {
+                    headerItems(
+                        title = postDetail.title,
+                        writerName = postDetail.writer.name,
+                        date = postDetail.date
+                    )
+                    item {
+                        Text(
+                            modifier = Modifier.padding(20.dp),
+                            text = postDetail.content,
+                            style = MaterialTheme.typography.bodyLarge.copy(
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
                         )
-                    )
-                }
-                item {
-                    ThickDivider()
-                }
-                item {
-                    CommentAddButton(
-                        onClick = {
-                            coroutineScope.launch {
-                                commentModalController.show()
+                    }
+                    item {
+                        ThickDivider()
+                    }
+                    item {
+                        CommentAddButton(
+                            onClick = {
+                                coroutineScope.launch {
+                                    commentModalController.show()
+                                }
                             }
-                        }
+                        )
+                    }
+                    item {
+                        PocsDivider()
+                    }
+                    commentItems(
+                        uiState = uiState.comments,
+                        onMoreButtonClick = {
+                            coroutineScope.launch {
+                                optionModalController.show(comment = it)
+                            }
+                        },
+                        onReplyIconClick = {
+                            coroutineScope.launch {
+                                commentModalController.show(parentComment = it)
+                            }
+                        },
+                        onCommentClick = {
+                            coroutineScope.launch {
+                                commentModalController.show(parentComment = it)
+                            }
+                        },
                     )
                 }
-                item {
-                    PocsDivider()
-                }
-                commentItems(
-                    uiState = uiState.comments,
-                    onMoreButtonClick = { },
-                    onReplyIconClick = {
-                        coroutineScope.launch {
-                            commentModalController.show(parentComment = it)
-                        }
-                    },
-                    onCommentClick = {
-                        coroutineScope.launch {
-                            commentModalController.show(parentComment = it)
-                        }
-                    },
-                )
             }
         }
     }
@@ -273,7 +317,8 @@ private fun PostDetailContentPreview() {
         parentId = null,
         childrenCount = 0,
         postId = 1,
-        isMyComment = true,
+        canEdit = true,
+        canDelete = true,
         writer = CommentWriterUiState(
             userId = 1,
             name = "홍길동"
@@ -309,7 +354,8 @@ private fun PostDetailContentPreview() {
         snackbarHostState = SnackbarHostState(),
         onEditClick = {},
         onDeleteClick = {},
-        onSend = { _, _ -> }
+        onCommentDelete = {},
+        onCommentSend = { _, _ -> }
     )
 }
 

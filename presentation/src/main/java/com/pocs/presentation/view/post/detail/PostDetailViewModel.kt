@@ -2,6 +2,7 @@ package com.pocs.presentation.view.post.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
 import com.pocs.domain.usecase.comment.GetCommentsUseCase
 import com.pocs.domain.usecase.post.CanDeletePostUseCase
@@ -69,8 +70,13 @@ class PostDetailViewModel @Inject constructor(
         val result = getCommentsUseCase(postId = postId)
 
         val comments = if (result.isSuccess) {
-            val currentUserId = getCurrentUserUseCase()?.id
-            val comments = result.getOrNull()!!.map { it.toUiState(currentUserId) }
+            val currentUser = getCurrentUserUseCase()
+            val comments = result.getOrNull()!!.map {
+                it.toUiState(
+                    currentUserId = currentUser?.id,
+                    isAdmin = currentUser?.type == UserType.ADMIN
+                )
+            }
             CommentsUiState.Success(comments = comments)
         } else {
             val errorMessage = result.exceptionOrNull()!!.message
@@ -81,6 +87,10 @@ class PostDetailViewModel @Inject constructor(
     }
 
     fun addComment(parentComment: CommentItemUiState?, comment: String) {
+        // TODO: 구현하기
+    }
+
+    fun deleteComment(comment: CommentItemUiState) {
         // TODO: 구현하기
     }
 

@@ -82,10 +82,8 @@ fun CommentModalBottomSheet(
     var comment by remember { mutableStateOf("") }
 
     BackHandler(bottomSheetState.isVisible) {
-        if (bottomSheetState.isVisible) {
-            coroutineScope.launch {
-                bottomSheetState.hide()
-            }
+        coroutineScope.launch {
+            bottomSheetState.hide()
         }
     }
 
@@ -102,7 +100,9 @@ fun CommentModalBottomSheet(
         sheetState = bottomSheetState,
         sheetContent = {
             CommentTextField(
-                modifier = Modifier.heightIn(max = 260.dp).verticalScrollDisabled(),
+                modifier = Modifier
+                    .heightIn(max = 260.dp)
+                    .verticalScrollDisabled(),
                 comment = comment,
                 onCommentChange = { comment = it },
                 focusRequester = focusRequester,

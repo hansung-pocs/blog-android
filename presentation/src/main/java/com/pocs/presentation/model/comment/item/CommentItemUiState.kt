@@ -6,7 +6,10 @@ data class CommentItemUiState(
     val childrenCount: Int,
     val postId: Int,
     val writer: CommentWriterUiState,
-    val isMyComment: Boolean,
+    val canEdit: Boolean,
+    val canDelete: Boolean,
     val content: String,
     val date: String
-)
+) {
+    val showMoreInfoButton: Boolean get() = canDelete || canEdit
+}

@@ -132,7 +132,7 @@ private fun Comment(
                     style = MaterialTheme.typography.bodyMedium.copy(color = onBackgroundColor)
                 )
             }
-            if (uiState.isMyComment) {
+            if (uiState.showMoreInfoButton) {
                 IconButton(onClick = onMoreButtonClick) {
                     Icon(
                         modifier = Modifier.size(16.dp),
@@ -226,7 +226,8 @@ fun CommentsPreview() {
         parentId = null,
         childrenCount = 0,
         postId = 1,
-        isMyComment = true,
+        canEdit = true,
+        canDelete = true,
         writer = CommentWriterUiState(
             userId = 1,
             name = "홍길동"
@@ -262,7 +263,8 @@ fun CommentPreview() {
             parentId = null,
             childrenCount = 2,
             postId = 1,
-            isMyComment = true,
+            canEdit = true,
+            canDelete = true,
             writer = CommentWriterUiState(
                 userId = 1,
                 name = "홍길동"
