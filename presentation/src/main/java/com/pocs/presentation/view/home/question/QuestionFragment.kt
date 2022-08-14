@@ -94,6 +94,7 @@ class QuestionFragment : ViewBindingFragment<FragmentQuestionBinding>() {
     }
 
     private fun startPostCreateActivity() {
+        // TODO: 아래는 임시로 전달하는 enum임. 추후 질문 타입이 생기면 수정필요
         val intent = PostCreateActivity.getIntent(requireContext(), PostCategory.MEMORY)
         launcher?.launch(intent)
     }
