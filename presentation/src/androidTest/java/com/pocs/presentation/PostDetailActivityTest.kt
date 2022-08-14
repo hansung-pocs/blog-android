@@ -6,6 +6,8 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.launchActivity
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.pocs.domain.model.user.UserType
+import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
+import com.pocs.domain.usecase.comment.GetCommentsUseCase
 import com.pocs.domain.usecase.post.CanDeletePostUseCase
 import com.pocs.domain.usecase.post.CanEditPostUseCase
 import com.pocs.domain.usecase.post.DeletePostUseCase
@@ -43,7 +45,9 @@ class PostDetailActivityTest {
         GetPostDetailUseCase(postRepository),
         DeletePostUseCase(postRepository = postRepository, authRepository = authRepository),
         CanEditPostUseCase(authRepository),
-        CanDeletePostUseCase(authRepository)
+        CanDeletePostUseCase(authRepository),
+        GetCommentsUseCase(),
+        GetCurrentUserUseCase(authRepository)
     )
 
     private lateinit var context: Context

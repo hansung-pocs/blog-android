@@ -1,9 +1,11 @@
 package com.pocs.presentation.view.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Comment
@@ -18,33 +20,46 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pocs.presentation.R
+import com.pocs.presentation.model.comment.CommentsUiState
 import com.pocs.presentation.model.comment.item.CommentItemUiState
 import com.pocs.presentation.model.comment.item.CommentWriterUiState
 
 typealias CommentCallback = (CommentItemUiState) -> Unit
 
-@Composable
-fun Comments(
-    modifier: Modifier = Modifier,
-    comments: List<CommentItemUiState>,
+fun LazyListScope.commentItems(
+    uiState: CommentsUiState,
     onCommentClick: CommentCallback,
-    onSubCommentIconClick: CommentCallback,
+    onReplyIconClick: CommentCallback,
     onMoreButtonClick: CommentCallback
 ) {
-    LazyColumn(modifier = modifier) {
-        items(count = comments.size) { index ->
-            val comment = comments[index]
+    when (uiState) {
+        is CommentsUiState.Failure -> {
+            item {
+                CommentFailureContent()
+            }
+        }
+        CommentsUiState.Loading -> {
+            item {
+                LoadingContent(modifier = Modifier.padding(20.dp))
+            }
+        }
+        is CommentsUiState.Success -> {
+            items(count = uiState.comments.size) { index ->
+                val comment = uiState.comments[index]
 
-            Column {
-                Comment(
-                    uiState = comment,
-                    onClick = { onCommentClick(comment) },
-                    onSubCommentIconClick = { onSubCommentIconClick(comment) },
-                    onMoreButtonClick = { onMoreButtonClick(comment) }
-                )
+                Column {
+                    Comment(
+                        uiState = comment,
+                        onClick = { onCommentClick(comment) },
+                        onReplyIconClick = { onReplyIconClick(comment) },
+                        onMoreButtonClick = { onMoreButtonClick(comment) }
+                    )
+                    PocsDivider()
+                }
             }
         }
     }
@@ -54,9 +69,11 @@ fun Comments(
 private fun Comment(
     uiState: CommentItemUiState,
     onClick: () -> Unit,
-    onSubCommentIconClick: () -> Unit,
+    onReplyIconClick: () -> Unit,
     onMoreButtonClick: () -> Unit
 ) {
+    val isReply = uiState.parentId != null
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -65,6 +82,14 @@ private fun Comment(
                 indication = rememberRipple(bounded = true),
                 interactionSource = remember { MutableInteractionSource() }
             )
+            .background(
+                color = if (isReply) {
+                    MaterialTheme.colorScheme.onBackground.copy(alpha = 0.03f)
+                } else {
+                    MaterialTheme.colorScheme.background
+                }
+            )
+            .padding(start = if (isReply) 8.dp else 0.dp)
     ) {
         Row(
             modifier = Modifier.padding(top = 16.dp, start = 20.dp),
@@ -82,7 +107,7 @@ private fun Comment(
                 Box(Modifier.height(8.dp))
                 Text(
                     text = uiState.content,
-                    style = MaterialTheme.typography.titleMedium.copy(color = onBackgroundColor)
+                    style = MaterialTheme.typography.bodyMedium.copy(color = onBackgroundColor)
                 )
             }
             if (uiState.isMyComment) {
@@ -96,46 +121,78 @@ private fun Comment(
                 }
             }
         }
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(start = 10.dp)
-        ) {
-            CommentLabel(
-                imageVector = Icons.Outlined.Comment,
-                onClick = onSubCommentIconClick,
-                label = uiState.childrenCount.toString(),
-                contentDescription = stringResource(R.string.child_comment_count)
-            )
+        if (isReply) {
+            Box(modifier = Modifier.height(12.dp))
+        } else {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 4.dp)
+            ) {
+                CommentLabel(
+                    imageVector = Icons.Outlined.Comment,
+                    onClick = onReplyIconClick,
+                    label = if (uiState.childrenCount == 0) null else uiState.childrenCount.toString(),
+                    contentDescription = stringResource(R.string.child_comment_count)
+                )
+            }
         }
-        PocsDivider()
     }
 }
 
 @Composable
 private fun CommentLabel(
     imageVector: ImageVector,
-    label: String,
+    label: String?,
     contentDescription: String,
     onClick: () -> Unit
 ) {
     val color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+    val interactionSource = remember { MutableInteractionSource() }
 
-    IconButton(onClick = onClick) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                modifier = Modifier.size(16.dp),
-                imageVector = imageVector,
-                contentDescription = contentDescription,
-                tint = color
+    Box(
+        contentAlignment = Alignment.CenterStart,
+        modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp)
+    ) {
+        Icon(
+            modifier = Modifier
+                .size(16.dp)
+                .clickable(
+                    onClick = onClick,
+                    interactionSource = interactionSource,
+                    indication = rememberRipple(
+                        bounded = false,
+                        radius = 24.dp
+                    ),
+                    role = Role.Button,
+                ),
+            imageVector = imageVector,
+            contentDescription = contentDescription,
+            tint = color
+        )
+        Text(
+            modifier = Modifier
+                .padding(start = 24.dp)
+                .defaultMinSize(minWidth = 32.dp),
+            text = label ?: "",
+            style = MaterialTheme.typography.labelMedium.copy(color = color)
+        )
+    }
+}
+
+@Composable
+private fun CommentFailureContent() {
+    Box(
+        Modifier
+            .fillMaxSize()
+            .padding(20.dp)
+    ) {
+        Text(
+            text = stringResource(R.string.failed_to_load_comment),
+            style = MaterialTheme.typography.bodyLarge.copy(
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f)
             )
-            Box(modifier = Modifier.width(4.dp))
-            Text(
-                text = label, style = MaterialTheme.typography.labelMedium.copy(color = color)
-            )
-        }
+        )
     }
 }
 
@@ -145,7 +202,7 @@ fun CommentsPreview() {
     val mockComment = CommentItemUiState(
         id = 10,
         parentId = null,
-        childrenCount = 2,
+        childrenCount = 0,
         postId = 1,
         isMyComment = true,
         writer = CommentWriterUiState(
@@ -155,12 +212,23 @@ fun CommentsPreview() {
         content = "댓글 내용입니다.",
         date = "오늘"
     )
-    Comments(
-        comments = listOf(mockComment, mockComment, mockComment, mockComment),
-        onCommentClick = {},
-        onSubCommentIconClick = {},
-        onMoreButtonClick = {}
+    val uiState = CommentsUiState.Success(
+        comments = listOf(
+            mockComment,
+            mockComment.copy(childrenCount = 1),
+            mockComment.copy(parentId = 10, id = 11),
+            mockComment
+        )
     )
+
+    LazyColumn {
+        commentItems(
+            uiState = uiState,
+            onCommentClick = {},
+            onReplyIconClick = {},
+            onMoreButtonClick = {}
+        )
+    }
 }
 
 @Preview(showBackground = true)
@@ -182,6 +250,6 @@ fun CommentPreview() {
         ),
         onClick = {},
         onMoreButtonClick = {},
-        onSubCommentIconClick = {}
+        onReplyIconClick = {}
     )
 }

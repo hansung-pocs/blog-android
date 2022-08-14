@@ -4,7 +4,7 @@ import com.pocs.domain.model.comment.Comment
 import com.pocs.presentation.extension.createFormattedDateText
 import com.pocs.presentation.model.comment.item.CommentItemUiState
 
-fun Comment.toUiState(currentUserId: Int) = CommentItemUiState(
+fun Comment.toUiState(currentUserId: Int?) = CommentItemUiState(
     id = id,
     parentId = parentId,
     childrenCount = childrenCount,

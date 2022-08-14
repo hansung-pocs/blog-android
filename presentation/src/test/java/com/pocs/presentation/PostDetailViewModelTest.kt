@@ -1,5 +1,7 @@
 package com.pocs.presentation
 
+import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
+import com.pocs.domain.usecase.comment.GetCommentsUseCase
 import com.pocs.domain.usecase.post.CanDeletePostUseCase
 import com.pocs.domain.usecase.post.CanEditPostUseCase
 import com.pocs.domain.usecase.post.DeletePostUseCase
@@ -41,7 +43,9 @@ class PostDetailViewModelTest {
         GetPostDetailUseCase(postRepository),
         DeletePostUseCase(postRepository, authRepository),
         CanEditPostUseCase(authRepository),
-        CanDeletePostUseCase(authRepository)
+        CanDeletePostUseCase(authRepository),
+        GetCommentsUseCase(),
+        GetCurrentUserUseCase(authRepository)
     )
 
     @Before

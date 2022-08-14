@@ -2,11 +2,14 @@ package com.pocs.presentation.view.post.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
+import com.pocs.domain.usecase.comment.GetCommentsUseCase
 import com.pocs.domain.usecase.post.CanDeletePostUseCase
 import com.pocs.domain.usecase.post.CanEditPostUseCase
 import com.pocs.domain.usecase.post.DeletePostUseCase
 import com.pocs.domain.usecase.post.GetPostDetailUseCase
 import com.pocs.presentation.mapper.toUiState
+import com.pocs.presentation.model.comment.CommentsUiState
 import com.pocs.presentation.model.post.PostDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -21,7 +24,9 @@ class PostDetailViewModel @Inject constructor(
     private val getPostDetailUseCase: GetPostDetailUseCase,
     private val deletePostUseCase: DeletePostUseCase,
     private val canEditPostUseCase: CanEditPostUseCase,
-    private val canDeletePostUseCase: CanDeletePostUseCase
+    private val canDeletePostUseCase: CanDeletePostUseCase,
+    private val getCommentsUseCase: GetCommentsUseCase,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<PostDetailUiState>(PostDetailUiState.Loading)
@@ -33,24 +38,45 @@ class PostDetailViewModel @Inject constructor(
         fetchJob?.cancel()
         fetchJob = viewModelScope.launch {
             val result = getPostDetailUseCase(id)
+
             if (result.isSuccess) {
                 val postDetail = result.getOrNull()!!
                 val previousUiStateValue = uiState.value
-                _uiState.update {
-                    PostDetailUiState.Success(
-                        postDetail = postDetail.toUiState(),
-                        canEditPost = canEditPostUseCase(postDetail),
-                        canDeletePost = canDeletePostUseCase(postDetail),
-                        userMessage = if (previousUiStateValue is PostDetailUiState.Success) {
-                            previousUiStateValue.userMessage
-                        } else null
-                    )
-                }
+
+                val userMessage = if (previousUiStateValue is PostDetailUiState.Success) {
+                    previousUiStateValue.userMessage
+                } else null
+
+                val newUiState = PostDetailUiState.Success(
+                    postDetail = postDetail.toUiState(),
+                    canEditPost = canEditPostUseCase(postDetail),
+                    canDeletePost = canDeletePostUseCase(postDetail),
+                    userMessage = userMessage,
+                )
+
+                _uiState.update { newUiState }
+
+                fetchComments(postId = id, postDetailUiState = newUiState)
             } else {
                 val errorMessage = result.exceptionOrNull()!!.message
                 _uiState.update { PostDetailUiState.Failure(message = errorMessage) }
             }
         }
+    }
+
+    private suspend fun fetchComments(postId: Int, postDetailUiState: PostDetailUiState.Success) {
+        val result = getCommentsUseCase(postId = postId)
+
+        val comments = if (result.isSuccess) {
+            val currentUserId = getCurrentUserUseCase()?.id
+            val comments = result.getOrNull()!!.map { it.toUiState(currentUserId) }
+            CommentsUiState.Success(comments = comments)
+        } else {
+            val errorMessage = result.exceptionOrNull()!!.message
+            CommentsUiState.Failure(message = errorMessage)
+        }
+
+        _uiState.update { postDetailUiState.copy(comments = comments) }
     }
 
     fun requestPostDeleting(id: Int) {

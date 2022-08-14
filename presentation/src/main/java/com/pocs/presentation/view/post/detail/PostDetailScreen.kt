@@ -15,13 +15,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
+import com.pocs.presentation.model.comment.CommentsUiState
+import com.pocs.presentation.model.comment.item.CommentItemUiState
+import com.pocs.presentation.model.comment.item.CommentWriterUiState
 import com.pocs.presentation.model.post.PostDetailUiState
 import com.pocs.presentation.model.post.item.PostDetailItemUiState
 import com.pocs.presentation.model.post.item.PostWriterUiState
-import com.pocs.presentation.view.component.LoadingContent
-import com.pocs.presentation.view.component.PocsDivider
-import com.pocs.presentation.view.component.RecheckDialog
-import com.pocs.presentation.view.component.ThickDivider
+import com.pocs.presentation.view.component.*
 import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.component.button.DropdownButton
 import com.pocs.presentation.view.component.button.DropdownOption
@@ -111,6 +111,12 @@ fun PostDetailContent(
             item {
                 ThickDivider()
             }
+            commentItems(
+                uiState = uiState.comments,
+                onMoreButtonClick = {},
+                onReplyIconClick = {},
+                onCommentClick = {}
+            )
         }
     }
 }
@@ -227,6 +233,28 @@ private fun PostDetailFailureContent(uiState: PostDetailUiState.Failure) {
 @Preview
 @Composable
 private fun PostDetailContentPreview() {
+    val mockComment = CommentItemUiState(
+        id = 10,
+        parentId = null,
+        childrenCount = 0,
+        postId = 1,
+        isMyComment = true,
+        writer = CommentWriterUiState(
+            userId = 1,
+            name = "홍길동"
+        ),
+        content = "댓글 내용입니다.",
+        date = "오늘"
+    )
+    val commentsUiState = CommentsUiState.Success(
+        comments = listOf(
+            mockComment,
+            mockComment.copy(childrenCount = 1),
+            mockComment.copy(parentId = 10, id = 11),
+            mockComment
+        )
+    )
+
     PostDetailContent(
         uiState = PostDetailUiState.Success(
             postDetail = PostDetailItemUiState(
@@ -235,12 +263,13 @@ private fun PostDetailContentPreview() {
                 writer = PostWriterUiState(id = 1, name = "김정은"),
                 content = "내용이 들어가는 자리입니다.",
                 date = "어제",
-                category = PostCategory.NOTICE
+                category = PostCategory.NOTICE,
             ),
             canDeletePost = true,
             canEditPost = true,
             isDeleteSuccess = false,
-            userMessage = null
+            userMessage = null,
+            comments = commentsUiState
         ),
         snackbarHostState = SnackbarHostState(),
         onEditClick = {},
