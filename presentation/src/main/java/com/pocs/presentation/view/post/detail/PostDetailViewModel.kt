@@ -10,6 +10,7 @@ import com.pocs.domain.usecase.post.DeletePostUseCase
 import com.pocs.domain.usecase.post.GetPostDetailUseCase
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.comment.CommentsUiState
+import com.pocs.presentation.model.comment.item.CommentItemUiState
 import com.pocs.presentation.model.post.PostDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -77,6 +78,10 @@ class PostDetailViewModel @Inject constructor(
         }
 
         _uiState.update { postDetailUiState.copy(comments = comments) }
+    }
+
+    fun addComment(parentComment: CommentItemUiState?, comment: String) {
+        // TODO: 구현하기
     }
 
     fun requestPostDeleting(id: Int) {

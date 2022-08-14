@@ -1,5 +1,6 @@
 package com.pocs.presentation.view.component.textfield
 
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -12,12 +13,14 @@ import androidx.compose.ui.graphics.Color
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SimpleTextField(
+    modifier: Modifier,
     hint: String,
     value: String,
     maxLength: Int,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     onValueChange: (String) -> Unit,
-    modifier: Modifier
+    trailingIcon: @Composable (() -> Unit)? = null
 ) {
     TextField(
         colors = TextFieldDefaults.textFieldColors(
@@ -27,6 +30,7 @@ fun SimpleTextField(
             containerColor = Color.Transparent
         ),
         keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
         placeholder = { Text(hint) },
         value = value,
         onValueChange = {
@@ -34,6 +38,7 @@ fun SimpleTextField(
                 onValueChange(it)
             }
         },
-        modifier = modifier
+        modifier = modifier,
+        trailingIcon = trailingIcon
     )
 }
