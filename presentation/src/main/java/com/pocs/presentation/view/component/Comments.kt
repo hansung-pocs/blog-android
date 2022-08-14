@@ -111,10 +111,10 @@ private fun Comment(
                     MaterialTheme.colorScheme.background
                 }
             )
-            .padding(start = if (isReply) 8.dp else 0.dp)
+            .padding(start = if (isReply) 20.dp else 0.dp)
     ) {
         Row(
-            modifier = Modifier.padding(top = 16.dp, start = 20.dp),
+            modifier = Modifier.padding(top = 20.dp, start = 20.dp),
             verticalAlignment = Alignment.Top
         ) {
             val onBackgroundColor = MaterialTheme.colorScheme.onBackground
@@ -144,7 +144,7 @@ private fun Comment(
             }
         }
         if (isReply) {
-            Box(modifier = Modifier.height(12.dp))
+            Box(modifier = Modifier.height(16.dp))
         } else {
             Row(
                 Modifier
@@ -174,7 +174,7 @@ private fun CommentLabel(
 
     Box(
         contentAlignment = Alignment.CenterStart,
-        modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp)
+        modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 20.dp)
     ) {
         Icon(
             modifier = Modifier
