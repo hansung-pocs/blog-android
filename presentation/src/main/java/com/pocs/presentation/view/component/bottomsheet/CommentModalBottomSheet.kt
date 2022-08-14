@@ -17,6 +17,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.pocs.presentation.R
 import com.pocs.presentation.model.comment.item.CommentItemUiState
@@ -32,8 +34,8 @@ typealias CommentUpdateCallback = (id: Int, content: String) -> Unit
 @Composable
 private fun CommentTextField(
     modifier: Modifier = Modifier,
-    comment: String,
-    onCommentChange: (String) -> Unit,
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
     hint: String,
     onSend: (String) -> Unit,
     focusRequester: FocusRequester
@@ -43,12 +45,12 @@ private fun CommentTextField(
             .fillMaxWidth()
             .focusRequester(focusRequester),
         hint = hint,
-        value = comment,
-        onValueChange = onCommentChange,
+        value = value,
+        onValueChange = onValueChange,
         maxLength = 250,// TODO: 벡엔드에서 댓글 최대 길이 결정되면 수정하기
         trailingIcon = {
-            if (comment.isNotEmpty()) {
-                IconButton(onClick = { onSend(comment) }) {
+            if (value.text.isNotEmpty()) {
+                IconButton(onClick = { onSend(value.text) }) {
                     Icon(
                         imageVector = Icons.Default.Send,
                         contentDescription = stringResource(R.string.send_comment),
@@ -74,7 +76,7 @@ fun CommentModalBottomSheet(
     val focusRequester = remember { FocusRequester() }
     val controller = remember { CommentModalController(bottomSheetState) }
     val coroutineScope = rememberCoroutineScope()
-    var comment by remember { mutableStateOf("") }
+    var textFieldValue by remember { mutableStateOf(TextFieldValue(text = "")) }
 
     BackHandler(bottomSheetState.isVisible) {
         coroutineScope.launch {
@@ -88,17 +90,24 @@ fun CommentModalBottomSheet(
                 when (it) {
                     ModalBottomSheetValue.Expanded -> {
                         val commentToBeUpdated = controller.commentToBeUpdated
+                        // 댓글을 업데이트하는 경우는 이전에 작성한 댓글의 내용을 텍스트 필드에 넣는다.
                         if (commentToBeUpdated != null) {
-                            comment = commentToBeUpdated.content
+                            val text = commentToBeUpdated.content
+                            textFieldValue = textFieldValue.copy(
+                                text = text,
+                                selection = TextRange(text.length)
+                            )
                         }
+
                         focusRequester.requestFocus()
                         keyboardController?.show()
                     }
                     ModalBottomSheetValue.Hidden -> {
+                        textFieldValue = textFieldValue.copy(text = "")
+                        controller.clear()
+
                         focusRequester.freeFocus()
                         keyboardController?.hide()
-                        controller.clear()
-                        comment = ""
                     }
                     else -> {}
                 }
@@ -112,8 +121,8 @@ fun CommentModalBottomSheet(
                 modifier = Modifier
                     .heightIn(max = 260.dp)
                     .verticalScrollDisabled(),
-                comment = comment,
-                onCommentChange = { comment = it },
+                value = textFieldValue,
+                onValueChange = { textFieldValue = it },
                 focusRequester = focusRequester,
                 onSend = {
                     val commentToBeUpdated = controller.commentToBeUpdated
