@@ -86,7 +86,7 @@ class PostDetailViewModel @Inject constructor(
         _uiState.update { postDetailUiState.copy(comments = comments) }
     }
 
-    fun addComment(parentComment: CommentItemUiState?, comment: String) {
+    fun addComment(parentId: Int?, comment: String) {
         // TODO: 구현하기
     }
 

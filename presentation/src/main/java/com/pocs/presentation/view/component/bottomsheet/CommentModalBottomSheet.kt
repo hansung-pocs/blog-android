@@ -20,14 +20,13 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.pocs.presentation.R
-import com.pocs.presentation.model.comment.item.CommentItemUiState
 import com.pocs.presentation.view.component.textfield.SimpleTextField
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-typealias CommentSendCallback = (parentComment: CommentItemUiState?, comment: String) -> Unit
+typealias CommentSendCallback = (parentId: Int?, content: String) -> Unit
 
 @Composable
 private fun CommentTextField(
@@ -107,7 +106,7 @@ fun CommentModalBottomSheet(
                 onCommentChange = { comment = it },
                 focusRequester = focusRequester,
                 onSend = {
-                    onSend(commentModalController.parentComment, it)
+                    onSend(commentModalController.parentId, it)
                     coroutineScope.launch {
                         commentModalController.hide()
                     }
@@ -133,20 +132,20 @@ class CommentModalController(
     private val focusRequester: FocusRequester
 ) {
 
-    private var _parentComment: CommentItemUiState? = null
-    val parentComment: CommentItemUiState? get() = _parentComment
+    private var _parentId: Int? = null
+    val parentId: Int? get() = _parentId
 
-    val isReply: Boolean get() = parentComment != null
+    val isReply: Boolean get() = parentId != null
 
-    suspend fun show(parentComment: CommentItemUiState? = null) {
-        _parentComment = parentComment
+    suspend fun show(parentId: Int? = null) {
+        _parentId = parentId
         focusRequester.requestFocus()
         modalBottomSheetState.snapTo(ModalBottomSheetValue.Expanded)
         keyboardController?.show()
     }
 
     suspend fun hide() {
-        _parentComment = null
+        _parentId = null
         focusRequester.freeFocus()
         modalBottomSheetState.snapTo(ModalBottomSheetValue.Hidden)
         keyboardController?.hide()

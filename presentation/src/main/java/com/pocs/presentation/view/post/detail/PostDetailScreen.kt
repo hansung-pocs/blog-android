@@ -185,12 +185,12 @@ fun PostDetailContent(
                         },
                         onReplyIconClick = {
                             coroutineScope.launch {
-                                commentModalController.show(parentComment = it)
+                                commentModalController.show(parentId = it.id)
                             }
                         },
                         onCommentClick = {
                             coroutineScope.launch {
-                                commentModalController.show(parentComment = it)
+                                commentModalController.show(parentId = it.id)
                             }
                         },
                     )
