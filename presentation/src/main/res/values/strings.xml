@@ -25,6 +25,7 @@
     <string name="admin_page">관리자 페이지</string>
     <string name="write_notice">공지 쓰기</string>
     <string name="write_post">게시글 쓰기</string>
+    <string name="write_question">질문하기</string>
     <string name="user_info_title">%s님의 정보</string>
     <string name="failed_to_load">불러오기에 실패했습니다.</string>
     <string name="login">로그인</string>
@@ -89,6 +90,7 @@
     <string name="logout_dialog_title">정말로 로그아웃 하시겠습니까?</string>
     <string name="all">전체</string>
     <string name="best">인기</string>
+    <string name="question_answer">질문답변</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>
         <item>회원목록</item>
