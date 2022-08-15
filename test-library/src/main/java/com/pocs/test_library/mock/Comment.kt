@@ -3,7 +3,7 @@ package com.pocs.test_library.mock
 import com.pocs.presentation.model.comment.item.CommentItemUiState
 import com.pocs.presentation.model.comment.item.CommentWriterUiState
 
-val mockComment = CommentItemUiState(
+val mockCommentItemUiState = CommentItemUiState(
     id = 10,
     parentId = null,
     childrenCount = 0,

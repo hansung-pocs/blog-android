@@ -4,7 +4,7 @@ import com.pocs.presentation.model.comment.item.CommentItemUiState
 
 sealed class CommentsUiState {
 
-    class Success(
+    data class Success(
         val comments: List<CommentItemUiState> = emptyList(),
     ) : CommentsUiState()
 

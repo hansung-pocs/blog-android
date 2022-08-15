@@ -18,6 +18,8 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -32,6 +34,8 @@ typealias CommentCreateCallback = (parentId: Int?, content: String) -> Unit
 
 typealias CommentUpdateCallback = (id: Int, content: String) -> Unit
 
+const val commentTextFieldDescription = "CommentTextField"
+
 @Composable
 private fun CommentTextField(
     modifier: Modifier = Modifier,
@@ -45,7 +49,10 @@ private fun CommentTextField(
     SimpleTextField(
         modifier = modifier
             .fillMaxWidth()
-            .focusRequester(focusRequester),
+            .focusRequester(focusRequester)
+            .semantics {
+                contentDescription = commentTextFieldDescription
+            },
         hint = hint,
         value = value,
         onValueChange = onValueChange,
@@ -130,7 +137,6 @@ fun CommentModalBottomSheet(
                             controller.clear()
                         }
 
-                        focusRequester.freeFocus()
                         keyboardController?.hide()
 
                         didSend = false

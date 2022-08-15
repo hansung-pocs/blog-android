@@ -21,6 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pocs.presentation.R
@@ -65,6 +67,8 @@ fun LazyListScope.commentItems(
     }
 }
 
+const val commentAddButtonDescription = "CommentAddButton"
+
 @Composable
 fun CommentAddButton(onClick: () -> Unit) {
     Box(
@@ -77,6 +81,7 @@ fun CommentAddButton(onClick: () -> Unit) {
                 role = Role.Button,
             )
             .padding(horizontal = 20.dp, vertical = 16.dp)
+            .semantics { contentDescription = commentAddButtonDescription }
     ) {
         Text(
             text = stringResource(id = R.string.add_comment),
