@@ -74,27 +74,35 @@ private fun CommentTextField(
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun CommentModalBottomSheet(
+    controller: CommentModalController,
     onCreated: CommentCreateCallback,
     onUpdated: CommentUpdateCallback,
-    content: @Composable (CommentModalController) -> Unit
+    content: @Composable () -> Unit
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusRequester = remember { FocusRequester() }
+    val coroutineScope = rememberCoroutineScope()
+
     val bottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         animationSpec = TweenSpec(durationMillis = 75, easing = FastOutSlowInEasing)
     )
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val focusRequester = remember { FocusRequester() }
-    val controller = remember { CommentModalController(bottomSheetState) }
-    val coroutineScope = rememberCoroutineScope()
-    val textFieldValue = controller.textFieldValue
-    var showRecheckDialog by remember { mutableStateOf(false) }
+    val textFieldValueState = remember {
+        mutableStateOf(TextFieldValue()).apply {
+            controller.init(
+                textFieldValueState = this@apply,
+                bottomSheetState = bottomSheetState
+            )
+        }
+    }
 
+    var showRecheckDialog by remember { mutableStateOf(false) }
     var didSend by remember { mutableStateOf(false) }
     val canSend by rememberUpdatedState(
         if (controller.isUpdate) {
-            textFieldValue.text != controller.commentToBeUpdated!!.content
+            textFieldValueState.value.text != controller.commentToBeUpdated!!.content
         } else {
-            textFieldValue.text.isNotEmpty()
+            textFieldValueState.value.text.isNotEmpty()
         }
     )
 
@@ -151,8 +159,8 @@ fun CommentModalBottomSheet(
         sheetContent = {
             CommentTextField(
                 modifier = Modifier.heightIn(max = 260.dp),
-                value = textFieldValue,
-                onValueChange = { controller.textFieldValue = it },
+                value = textFieldValueState.value,
+                onValueChange = { textFieldValueState.value = it },
                 focusRequester = focusRequester,
                 showSendIcon = canSend,
                 onSend = {
@@ -180,16 +188,17 @@ fun CommentModalBottomSheet(
             )
         },
     ) {
-        content(controller)
+        content()
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
-class CommentModalController(
-    private val modalBottomSheetState: ModalBottomSheetState,
-) {
+class CommentModalController {
 
-    var textFieldValue: TextFieldValue by mutableStateOf(TextFieldValue())
+    private lateinit var bottomSheetState: ModalBottomSheetState
+    private lateinit var textFieldValueState: MutableState<TextFieldValue>
+
+    private var inited: Boolean = false
 
     var parentId: Int? = null
         private set
@@ -201,6 +210,16 @@ class CommentModalController(
 
     val isUpdate: Boolean get() = commentToBeUpdated != null
 
+    fun init(
+        textFieldValueState: MutableState<TextFieldValue>,
+        bottomSheetState: ModalBottomSheetState
+    ) {
+        check(!inited) { "이미 초기화되었습니다." }
+        inited = true
+        this.textFieldValueState = textFieldValueState
+        this.bottomSheetState = bottomSheetState
+    }
+
     suspend fun showForCreate(parentId: Int? = null) {
         this.parentId = parentId
         show()
@@ -209,7 +228,7 @@ class CommentModalController(
     suspend fun showForUpdate(comment: CommentItemUiState) {
         this.commentToBeUpdated = comment
 
-        textFieldValue = textFieldValue.copy(
+        textFieldValueState.value = textFieldValueState.value.copy(
             text = comment.content,
             selection = TextRange(comment.content.length)
         )
@@ -217,16 +236,16 @@ class CommentModalController(
     }
 
     private suspend fun show() {
-        modalBottomSheetState.show()
+        bottomSheetState.show()
     }
 
     suspend fun hide() {
         clear()
-        modalBottomSheetState.hide()
+        bottomSheetState.hide()
     }
 
     fun clear() {
-        textFieldValue = textFieldValue.copy(text = "")
+        textFieldValueState.value = textFieldValueState.value.copy(text = "")
         parentId = null
         commentToBeUpdated = null
     }

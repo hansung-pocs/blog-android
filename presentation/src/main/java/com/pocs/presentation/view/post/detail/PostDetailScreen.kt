@@ -80,6 +80,7 @@ fun PostDetailScreen(
 @Composable
 fun PostDetailContent(
     uiState: PostDetailUiState.Success,
+    commentModalController: CommentModalController = remember { CommentModalController() },
     snackbarHostState: SnackbarHostState,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
@@ -115,10 +116,10 @@ fun PostDetailContent(
 
 
     CommentModalBottomSheet(
+        controller = commentModalController,
         onCreated = onCommentCreated,
         onUpdated = onCommentUpdated
-    ) { commentModalController ->
-
+    ) {
         OptionModalBottomSheet(
             options = rememberSaveable {
                 listOf(
