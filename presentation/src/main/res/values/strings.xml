@@ -92,7 +92,7 @@
     <string name="all">전체</string>
     <string name="best">인기</string>
     <string name="writing_time">작성시간</string>
-    <string name="child_comment_count">대댓글 갯수</string>
+    <string name="reply_count">답글 갯수</string>
     <string name="error_icon">에러 아이콘</string>
     <string name="question_answer">질문답변</string>
     <string name="failed_to_load_comment">댓글을 불러올 수 없습니다</string>

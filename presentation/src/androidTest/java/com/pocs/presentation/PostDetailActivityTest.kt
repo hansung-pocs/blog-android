@@ -1,6 +1,7 @@
 package com.pocs.presentation
 
 import android.content.Context
+import androidx.annotation.StringRes
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.launchActivity
@@ -52,6 +53,8 @@ class PostDetailActivityTest {
 
     private lateinit var context: Context
 
+    private fun getString(@StringRes resId: Int) = context.getString(resId)
+
     @Before
     fun setUp() {
         hiltRule.inject()
@@ -84,7 +87,7 @@ class PostDetailActivityTest {
         val intent = PostDetailActivity.getIntent(context, postDetail.id)
         launchActivity<PostDetailActivity>(intent)
 
-        openDropdownMenu()
+        clickMoreInfoButton()
 
         findDeleteText().assertIsDisplayed()
     }
@@ -100,7 +103,7 @@ class PostDetailActivityTest {
         val intent = PostDetailActivity.getIntent(context, postDetail.id)
         launchActivity<PostDetailActivity>(intent)
 
-        openDropdownMenu()
+        clickMoreInfoButton()
 
         findEditText().assertDoesNotExist()
     }
@@ -116,24 +119,24 @@ class PostDetailActivityTest {
         val intent = PostDetailActivity.getIntent(context, postDetail.id)
         launchActivity<PostDetailActivity>(intent)
 
-        openDropdownMenu()
+        clickMoreInfoButton()
 
         findEditText().assertIsDisplayed()
     }
 
-    private fun openDropdownMenu() {
-        composeRule.onNodeWithContentDescription("더보기 버튼").performClick()
+    private fun clickMoreInfoButton() {
+        findMoreInfoButton().performClick()
     }
 
     private fun findEditText(): SemanticsNodeInteraction {
-        return composeRule.onNodeWithText("편집")
+        return composeRule.onNodeWithTag(getString(R.string.edit))
     }
 
     private fun findDeleteText(): SemanticsNodeInteraction {
-        return composeRule.onNodeWithText("삭제")
+        return composeRule.onNodeWithTag(getString(R.string.delete))
     }
 
     private fun findMoreInfoButton(): SemanticsNodeInteraction {
-        return composeRule.onNodeWithContentDescription("더보기 버튼")
+        return composeRule.onNodeWithContentDescription(getString(R.string.more_info_button))
     }
 }

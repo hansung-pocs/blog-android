@@ -1,9 +1,12 @@
 package com.pocs.presentation
 
+import android.content.Context
+import androidx.annotation.StringRes
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.test.platform.app.InstrumentationRegistry
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.comment.CommentsUiState
 import com.pocs.presentation.model.post.PostDetailUiState
@@ -14,6 +17,7 @@ import com.pocs.presentation.view.post.detail.PostDetailContent
 import com.pocs.test_library.mock.mockCommentItemUiState
 import com.pocs.test_library.mock.mockPostDetail1
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -32,6 +36,15 @@ class PostDetailScreenTest {
         canDeletePost = true,
         comments = commentsUiState
     )
+
+    private lateinit var context: Context
+
+    private fun getString(@StringRes resId: Int) = context.getString(resId)
+
+    @Before
+    fun setUp() {
+        context = InstrumentationRegistry.getInstrumentation().targetContext
+    }
 
     @Test
     fun shouldShowReplyCommentBottomSheet_WhenClickComment() {
@@ -52,7 +65,7 @@ class PostDetailScreenTest {
 
             onNodeWithText(commentItem.content).performClick()
 
-            onNodeWithText("답글 추가…").assertIsDisplayed()
+            onNodeWithText(getString(R.string.add_reply)).assertIsDisplayed()
         }
     }
 
@@ -73,9 +86,9 @@ class PostDetailScreenTest {
                 )
             }
 
-            onNodeWithContentDescription("대댓글 갯수").performClick()
+            onNodeWithContentDescription(getString(R.string.reply_count)).performClick()
 
-            onNodeWithText("답글 추가…").assertIsDisplayed()
+            onNodeWithText(getString(R.string.add_reply)).assertIsDisplayed()
         }
     }
 
@@ -105,7 +118,7 @@ class PostDetailScreenTest {
 
             onNodeWithText(comment.content).performClick()
 
-            onNodeWithText("답글 추가…").assertIsDisplayed()
+            onNodeWithText(getString(R.string.add_reply)).assertIsDisplayed()
         }
     }
 
@@ -283,7 +296,7 @@ class PostDetailScreenTest {
             onNodeWithContentDescription(commentTextFieldDescription).performTextInput("hi")
             onNodeWithContentDescription(commentAddButtonDescription).performClick()
 
-            onNodeWithText("그만두기").assertIsDisplayed()
+            onNodeWithText(getString(R.string.stop)).assertIsDisplayed()
         }
     }
 
@@ -307,7 +320,7 @@ class PostDetailScreenTest {
             onNodeWithContentDescription(commentAddButtonDescription).performClick()
             onNodeWithContentDescription(commentTextFieldDescription).performTextInput("hi")
             onNodeWithContentDescription(commentAddButtonDescription).performClick()
-            onNodeWithText("그만두기").performClick()
+            onNodeWithText(getString(R.string.stop)).performClick()
 
             onNodeWithContentDescription(commentTextFieldDescription).assertIsNotDisplayed()
         }
@@ -336,7 +349,7 @@ class PostDetailScreenTest {
             onNodeWithContentDescription(commentAddButtonDescription).performClick()
             onNodeWithContentDescription(commentTextFieldDescription).performTextInput("hi")
             onNodeWithContentDescription(commentAddButtonDescription).performClick()
-            onNodeWithText("그만두기").performClick()
+            onNodeWithText(getString(R.string.stop)).performClick()
 
             assertTrue(controller.isCleared)
         }
@@ -369,7 +382,7 @@ class PostDetailScreenTest {
 
             onNodeWithText(text).assertIsNotDisplayed()
 
-            onNodeWithText("계속작성").performClick()
+            onNodeWithText(getString(R.string.keep_writing)).performClick()
 
             onNodeWithText(text).assertIsDisplayed()
         }

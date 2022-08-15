@@ -1,11 +1,17 @@
 package com.pocs.presentation.comment
 
+import com.pocs.presentation.R
+import android.content.Context
+import androidx.annotation.StringRes
+import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
+import androidx.test.platform.app.InstrumentationRegistry
 import com.pocs.presentation.view.component.Comment
 import com.pocs.test_library.mock.mockCommentItemUiState
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -13,6 +19,15 @@ class CommentTest {
 
     @get:Rule(order = 0)
     val composeRule = createComposeRule()
+
+    private lateinit var context: Context
+
+    private fun getString(@StringRes resId: Int) = context.getString(resId)
+
+    @Before
+    fun setUp() {
+        context = InstrumentationRegistry.getInstrumentation().targetContext
+    }
 
     @Test
     fun shouldShowReplyIcon_WhenItIsComment() {
@@ -24,7 +39,7 @@ class CommentTest {
                 )
             }
 
-            onNodeWithContentDescription("대댓글 갯수").assertIsDisplayed()
+            findReplyLabelButton().assertIsDisplayed()
         }
     }
 
@@ -38,7 +53,7 @@ class CommentTest {
                 )
             }
 
-            onNodeWithContentDescription("대댓글 갯수").assertDoesNotExist()
+            findReplyLabelButton().assertDoesNotExist()
         }
     }
 
@@ -80,7 +95,7 @@ class CommentTest {
                 )
             }
 
-            onNodeWithContentDescription("더보기 버튼").assertIsDisplayed()
+            findCommentInfoButton().assertIsDisplayed()
         }
     }
 
@@ -94,7 +109,7 @@ class CommentTest {
                 )
             }
 
-            onNodeWithContentDescription("더보기 버튼").assertIsDisplayed()
+            findCommentInfoButton().assertIsDisplayed()
         }
     }
 
@@ -108,7 +123,15 @@ class CommentTest {
                 )
             }
 
-            onNodeWithContentDescription("더보기 버튼").assertDoesNotExist()
+            findCommentInfoButton().assertDoesNotExist()
         }
+    }
+
+    private fun findReplyLabelButton(): SemanticsNodeInteraction {
+        return composeRule.onNodeWithContentDescription(getString(R.string.reply_count))
+    }
+
+    private fun findCommentInfoButton(): SemanticsNodeInteraction {
+        return composeRule.onNodeWithContentDescription(getString(R.string.comment_info_button))
     }
 }

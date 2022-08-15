@@ -23,13 +23,14 @@ import androidx.compose.ui.unit.dp
 import com.pocs.presentation.R
 import com.pocs.presentation.model.comment.item.CommentItemUiState
 import kotlinx.coroutines.launch
+import java.io.Serializable
 
 @Stable
 data class Option(
     val imageVector: ImageVector,
     @StringRes val stringResId: Int,
     val onClick: (CommentItemUiState) -> Unit
-)
+) : Serializable
 
 @Composable
 private fun OptionBottomSheet(options: List<Option>, controller: OptionModalController) {
