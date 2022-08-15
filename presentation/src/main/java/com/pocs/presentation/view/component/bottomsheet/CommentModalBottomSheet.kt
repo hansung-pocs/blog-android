@@ -1,6 +1,7 @@
 package com.pocs.presentation.view.component.bottomsheet
 
 import androidx.activity.compose.BackHandler
+import androidx.annotation.VisibleForTesting
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -251,4 +252,10 @@ class CommentModalController {
         parentId = null
         commentToBeUpdated = null
     }
+
+    @VisibleForTesting
+    val isCleared: Boolean
+        get() = textFieldValueState.value.text.isEmpty()
+                && parentId == null
+                && commentToBeUpdated == null
 }

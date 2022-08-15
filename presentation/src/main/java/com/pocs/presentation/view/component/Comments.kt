@@ -143,7 +143,7 @@ fun Comment(
                         modifier = Modifier.size(16.dp),
                         imageVector = Icons.Default.MoreVert,
                         tint = onBackgroundColor.copy(alpha = 0.6f),
-                        contentDescription = stringResource(R.string.more_info_button)
+                        contentDescription = stringResource(R.string.comment_info_button)
                     )
                 }
             }
