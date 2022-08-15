@@ -190,15 +190,18 @@ fun PostDetailContent(
                         },
                         onReplyIconClick = {
                             coroutineScope.launch {
-                                commentModalController.showForCreate(parentId = it.id)
+                                commentModalController.showForCreate(parentComment = it)
                             }
                         },
                         onCommentClick = {
                             coroutineScope.launch {
-                                commentModalController.showForCreate(parentId = it.id)
+                                commentModalController.showForCreate(parentComment = it)
                             }
                         },
                     )
+                    item {
+                        Box(Modifier.height(104.dp))
+                    }
                 }
             }
         }

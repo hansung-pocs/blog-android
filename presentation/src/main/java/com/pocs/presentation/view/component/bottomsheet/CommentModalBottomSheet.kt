@@ -220,8 +220,10 @@ class CommentModalController {
         this.bottomSheetState = bottomSheetState
     }
 
-    suspend fun showForCreate(parentId: Int? = null) {
-        this.parentId = parentId
+    suspend fun showForCreate(parentComment: CommentItemUiState? = null) {
+        if (parentComment != null) {
+            parentId = parentComment.parentId ?: parentComment.id
+        }
         show()
     }
 
