@@ -29,6 +29,7 @@ import com.pocs.presentation.model.comment.item.CommentItemUiState
 import com.pocs.presentation.view.component.RecheckDialog
 import com.pocs.presentation.view.component.textfield.SimpleTextField
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 typealias CommentCreateCallback = (parentId: Int?, content: String) -> Unit
@@ -133,31 +134,27 @@ fun CommentModalBottomSheet(
 
     LaunchedEffect(Unit) {
         snapshotFlow { bottomSheetState.currentValue }
+            .filter { it == ModalBottomSheetValue.Expanded }
             .collectLatest {
-                when (it) {
-                    ModalBottomSheetValue.Expanded -> {
-                        focusRequester.requestFocus()
-                        keyboardController?.show()
-                    }
-                    ModalBottomSheetValue.Hidden -> {
-                        if (!didSend && canSend) {
-                            showRecheckDialog = true
-                        } else {
-                            controller.clear()
-                        }
-
-                        keyboardController?.hide()
-
-                        didSend = false
-                    }
-                    else -> {}
-                }
+                focusRequester.requestFocus()
+                keyboardController?.show()
             }
     }
 
-    ModalBottomSheetLayout(
+    PocsModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetBackgroundColor = MaterialTheme.colorScheme.surface,
+        onDismiss = {
+            if (!didSend && canSend) {
+                showRecheckDialog = true
+            } else {
+                controller.clear()
+            }
+
+            keyboardController?.hide()
+
+            didSend = false
+        },
         sheetContent = {
             CommentTextField(
                 modifier = Modifier.heightIn(max = 260.dp),

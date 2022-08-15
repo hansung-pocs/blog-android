@@ -95,7 +95,7 @@ fun OptionModalBottomSheet(
         }
     }
 
-    ModalBottomSheetLayout(
+    PocsModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetBackgroundColor = MaterialTheme.colorScheme.surface,
         sheetContent = { OptionBottomSheet(options, controller) },
