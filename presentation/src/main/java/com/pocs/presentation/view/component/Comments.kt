@@ -67,10 +67,10 @@ fun LazyListScope.commentItems(
     }
 }
 
-const val commentAddButtonDescription = "CommentAddButton"
-
 @Composable
 fun CommentAddButton(onClick: () -> Unit) {
+    val commentAddButtonDescription = stringResource(id = R.string.comment_add_button)
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -81,7 +81,9 @@ fun CommentAddButton(onClick: () -> Unit) {
                 role = Role.Button,
             )
             .padding(horizontal = 20.dp, vertical = 16.dp)
-            .semantics { contentDescription = commentAddButtonDescription }
+            .semantics {
+                contentDescription = commentAddButtonDescription
+            }
     ) {
         Text(
             text = stringResource(id = R.string.add_comment),

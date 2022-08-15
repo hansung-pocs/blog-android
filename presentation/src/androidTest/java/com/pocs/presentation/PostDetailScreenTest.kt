@@ -11,8 +11,6 @@ import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.comment.CommentsUiState
 import com.pocs.presentation.model.post.PostDetailUiState
 import com.pocs.presentation.view.component.bottomsheet.CommentModalController
-import com.pocs.presentation.view.component.bottomsheet.commentTextFieldDescription
-import com.pocs.presentation.view.component.commentAddButtonDescription
 import com.pocs.presentation.view.post.detail.PostDetailContent
 import com.pocs.test_library.mock.mockCommentItemUiState
 import com.pocs.test_library.mock.mockPostDetail1
@@ -139,9 +137,9 @@ class PostDetailScreenTest {
                 )
             }
 
-            onNodeWithContentDescription(commentAddButtonDescription).performClick()
+            onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
 
-            onNodeWithContentDescription(commentTextFieldDescription).assertIsDisplayed()
+            onNodeWithContentDescription(getString(R.string.comment_text_field)).assertIsDisplayed()
         }
     }
 
@@ -168,7 +166,7 @@ class PostDetailScreenTest {
             assertNull(commentModalController.parentId)
             assertNull(commentModalController.commentToBeUpdated)
 
-            onNodeWithContentDescription(commentAddButtonDescription).performClick()
+            onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
             mainClock.advanceTimeByFrame()
 
             assertNull(commentModalController.parentId)
@@ -241,7 +239,6 @@ class PostDetailScreenTest {
 
 //    아래의 테스트는 https://issuetracker.google.com/issues/229378536 문제로 인해 잠시 보류한다.
 //    발생하는 문제는 텍스트 셀렉션이 out of bounds 하는 것이다.
-//
 //    @Test
 //    fun commentTextFieldHasText_WhenClickEditComment() {
 //        composeRule.run {
@@ -270,7 +267,7 @@ class PostDetailScreenTest {
 //            onNodeWithContentDescription("댓글 정보 버튼").performClick()
 //            onNodeWithText("편집").performClick()
 //
-//            onNode(hasContentDescription(commentTextFieldDescription) and hasText(comment.content))
+//            onNode(hasContentDescription(getString(R.string.comment_text_field)) and hasText(comment.content))
 //                .assertIsDisplayed()
 //        }
 //    }
@@ -292,9 +289,9 @@ class PostDetailScreenTest {
                 )
             }
 
-            onNodeWithContentDescription(commentAddButtonDescription).performClick()
-            onNodeWithContentDescription(commentTextFieldDescription).performTextInput("hi")
-            onNodeWithContentDescription(commentAddButtonDescription).performClick()
+            onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
+            onNodeWithContentDescription(getString(R.string.comment_text_field)).performTextInput("hi")
+            onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
 
             onNodeWithText(getString(R.string.stop)).assertIsDisplayed()
         }
@@ -317,12 +314,12 @@ class PostDetailScreenTest {
                 )
             }
 
-            onNodeWithContentDescription(commentAddButtonDescription).performClick()
-            onNodeWithContentDescription(commentTextFieldDescription).performTextInput("hi")
-            onNodeWithContentDescription(commentAddButtonDescription).performClick()
+            onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
+            onNodeWithContentDescription(getString(R.string.comment_text_field)).performTextInput("hi")
+            onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
             onNodeWithText(getString(R.string.stop)).performClick()
 
-            onNodeWithContentDescription(commentTextFieldDescription).assertIsNotDisplayed()
+            onNodeWithContentDescription(getString(R.string.comment_text_field)).assertIsNotDisplayed()
         }
     }
 
@@ -346,9 +343,9 @@ class PostDetailScreenTest {
                 )
             }
 
-            onNodeWithContentDescription(commentAddButtonDescription).performClick()
-            onNodeWithContentDescription(commentTextFieldDescription).performTextInput("hi")
-            onNodeWithContentDescription(commentAddButtonDescription).performClick()
+            onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
+            onNodeWithContentDescription(getString(R.string.comment_text_field)).performTextInput("hi")
+            onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
             onNodeWithText(getString(R.string.stop)).performClick()
 
             assertTrue(controller.isCleared)
@@ -376,15 +373,69 @@ class PostDetailScreenTest {
             }
 
             val text = "hello"
-            onNodeWithContentDescription(commentAddButtonDescription).performClick()
-            onNodeWithContentDescription(commentTextFieldDescription).performTextInput(text)
-            onNodeWithContentDescription(commentAddButtonDescription).performClick()
+            onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
+            onNodeWithContentDescription(getString(R.string.comment_text_field)).performTextInput(text)
+            onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
 
             onNodeWithText(text).assertIsNotDisplayed()
 
             onNodeWithText(getString(R.string.keep_writing)).performClick()
 
             onNodeWithText(text).assertIsDisplayed()
+        }
+    }
+
+    @Test
+    fun shouldShowRecheckDialog_WhenCllickDeleteCommentButton() {
+        composeRule.run {
+            setContent {
+                val snackbarHostState = remember { SnackbarHostState() }
+
+                PostDetailContent(
+                    uiState = uiState,
+                    snackbarHostState = snackbarHostState,
+                    onEditClick = {},
+                    onDeleteClick = {},
+                    onCommentDelete = {},
+                    onCommentCreated = { _, _ -> },
+                    onCommentUpdated = { _, _ -> }
+                )
+            }
+
+            onNodeWithContentDescription(getString(R.string.comment_info_button)).performClick()
+            onNodeWithText(getString(R.string.delete)).performClick()
+
+            onNodeWithText(getString(R.string.are_you_sure_you_want_to_delete)).assertIsDisplayed()
+        }
+    }
+
+    @Test
+    fun shouldHideCommentBottomSheet_WhenClickSendButton() {
+        composeRule.run {
+            val controller = CommentModalController()
+
+            setContent {
+                val snackbarHostState = remember { SnackbarHostState() }
+
+                PostDetailContent(
+                    commentModalController = controller,
+                    uiState = uiState,
+                    snackbarHostState = snackbarHostState,
+                    onEditClick = {},
+                    onDeleteClick = {},
+                    onCommentDelete = {},
+                    onCommentCreated = { _, _ -> },
+                    onCommentUpdated = { _, _ -> }
+                )
+            }
+
+            val text = "hello"
+            onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
+            onNodeWithContentDescription(getString(R.string.comment_text_field)).performTextInput(text)
+            onNodeWithContentDescription(getString(R.string.send_comment)).performClick()
+
+            onNodeWithText(text).assertDoesNotExist()
+            assertTrue(controller.isCleared)
         }
     }
 }

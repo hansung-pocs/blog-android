@@ -103,6 +103,7 @@
     <string name="keep_writing">계속작성</string>
     <string name="stop_writing">작성을 그만둘까요?</string>
     <string name="comment_add_button">댓글 추가 버튼</string>
+    <string name="comment_text_field">댓글 입력 창</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>
         <item>회원목록</item>

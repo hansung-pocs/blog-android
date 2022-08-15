@@ -35,8 +35,6 @@ typealias CommentCreateCallback = (parentId: Int?, content: String) -> Unit
 
 typealias CommentUpdateCallback = (id: Int, content: String) -> Unit
 
-const val commentTextFieldDescription = "CommentTextField"
-
 @Composable
 private fun CommentTextField(
     modifier: Modifier = Modifier,
@@ -47,6 +45,8 @@ private fun CommentTextField(
     focusRequester: FocusRequester,
     showSendIcon: Boolean
 ) {
+    val commentTextFieldDescription = stringResource(R.string.comment_text_field)
+
     SimpleTextField(
         modifier = modifier
             .fillMaxWidth()
