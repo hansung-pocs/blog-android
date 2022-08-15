@@ -157,6 +157,7 @@ fun CommentModalBottomSheet(
 
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
+        sheetBackgroundColor = MaterialTheme.colorScheme.surface,
         sheetContent = {
             CommentTextField(
                 modifier = Modifier.heightIn(max = 260.dp),
