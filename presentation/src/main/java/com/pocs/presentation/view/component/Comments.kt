@@ -88,7 +88,7 @@ fun CommentAddButton(onClick: () -> Unit) {
 }
 
 @Composable
-private fun Comment(
+fun Comment(
     uiState: CommentItemUiState,
     onClick: () -> Unit,
     onReplyIconClick: () -> Unit,
