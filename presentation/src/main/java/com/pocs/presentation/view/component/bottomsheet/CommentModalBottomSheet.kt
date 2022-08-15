@@ -1,6 +1,8 @@
 package com.pocs.presentation.view.component.bottomsheet
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.TweenSpec
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material.*
@@ -14,7 +16,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
@@ -22,10 +23,10 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.pocs.presentation.R
 import com.pocs.presentation.model.comment.item.CommentItemUiState
+import com.pocs.presentation.view.component.RecheckDialog
 import com.pocs.presentation.view.component.textfield.SimpleTextField
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlin.math.abs
 
 typealias CommentCreateCallback = (parentId: Int?, content: String) -> Unit
 
@@ -38,7 +39,8 @@ private fun CommentTextField(
     onValueChange: (TextFieldValue) -> Unit,
     hint: String,
     onSend: (String) -> Unit,
-    focusRequester: FocusRequester
+    focusRequester: FocusRequester,
+    showSendIcon: Boolean
 ) {
     SimpleTextField(
         modifier = modifier
@@ -49,7 +51,7 @@ private fun CommentTextField(
         onValueChange = onValueChange,
         maxLength = 250,// TODO: 벡엔드에서 댓글 최대 길이 결정되면 수정하기
         trailingIcon = {
-            if (value.text.isNotEmpty()) {
+            if (showSendIcon) {
                 IconButton(onClick = { onSend(value.text) }) {
                     Icon(
                         imageVector = Icons.Default.Send,
@@ -70,13 +72,42 @@ fun CommentModalBottomSheet(
     content: @Composable (CommentModalController) -> Unit
 ) {
     val bottomSheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden
+        initialValue = ModalBottomSheetValue.Hidden,
+        animationSpec = TweenSpec(durationMillis = 75, easing = FastOutSlowInEasing)
     )
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
     val controller = remember { CommentModalController(bottomSheetState) }
     val coroutineScope = rememberCoroutineScope()
-    var textFieldValue by remember { mutableStateOf(TextFieldValue(text = "")) }
+    val textFieldValue = controller.textFieldValue
+    var showRecheckDialog by remember { mutableStateOf(false) }
+
+    var didSend by remember { mutableStateOf(false) }
+    val canSend by rememberUpdatedState(
+        if (controller.isUpdate) {
+            textFieldValue.text != controller.commentToBeUpdated!!.content
+        } else {
+            textFieldValue.text.isNotEmpty()
+        }
+    )
+
+    if (showRecheckDialog) {
+        RecheckDialog(
+            title = stringResource(R.string.stop_writing),
+            confirmText = stringResource(R.string.stop),
+            onOkClick = {
+                showRecheckDialog = false
+                controller.clear()
+            },
+            dismissText = stringResource(R.string.keep_writing),
+            onDismissRequest = {
+                showRecheckDialog = false
+                coroutineScope.launch {
+                    bottomSheetState.show()
+                }
+            }
+        )
+    }
 
     BackHandler(bottomSheetState.isVisible) {
         coroutineScope.launch {
@@ -89,25 +120,20 @@ fun CommentModalBottomSheet(
             .collectLatest {
                 when (it) {
                     ModalBottomSheetValue.Expanded -> {
-                        val commentToBeUpdated = controller.commentToBeUpdated
-                        // 댓글을 업데이트하는 경우는 이전에 작성한 댓글의 내용을 텍스트 필드에 넣는다.
-                        if (commentToBeUpdated != null) {
-                            val text = commentToBeUpdated.content
-                            textFieldValue = textFieldValue.copy(
-                                text = text,
-                                selection = TextRange(text.length)
-                            )
-                        }
-
                         focusRequester.requestFocus()
                         keyboardController?.show()
                     }
                     ModalBottomSheetValue.Hidden -> {
-                        textFieldValue = textFieldValue.copy(text = "")
-                        controller.clear()
+                        if (!didSend && canSend) {
+                            showRecheckDialog = true
+                        } else {
+                            controller.clear()
+                        }
 
                         focusRequester.freeFocus()
                         keyboardController?.hide()
+
+                        didSend = false
                     }
                     else -> {}
                 }
@@ -118,13 +144,14 @@ fun CommentModalBottomSheet(
         sheetState = bottomSheetState,
         sheetContent = {
             CommentTextField(
-                modifier = Modifier
-                    .heightIn(max = 260.dp)
-                    .verticalScrollDisabled(),
+                modifier = Modifier.heightIn(max = 260.dp),
                 value = textFieldValue,
-                onValueChange = { textFieldValue = it },
+                onValueChange = { controller.textFieldValue = it },
                 focusRequester = focusRequester,
+                showSendIcon = canSend,
                 onSend = {
+                    didSend = true
+
                     val commentToBeUpdated = controller.commentToBeUpdated
 
                     if (commentToBeUpdated != null) {
@@ -156,6 +183,8 @@ class CommentModalController(
     private val modalBottomSheetState: ModalBottomSheetState,
 ) {
 
+    var textFieldValue: TextFieldValue by mutableStateOf(TextFieldValue())
+
     var parentId: Int? = null
         private set
 
@@ -164,6 +193,8 @@ class CommentModalController(
 
     val isReply: Boolean get() = parentId != null
 
+    val isUpdate: Boolean get() = commentToBeUpdated != null
+
     suspend fun showForCreate(parentId: Int? = null) {
         this.parentId = parentId
         show()
@@ -171,35 +202,26 @@ class CommentModalController(
 
     suspend fun showForUpdate(comment: CommentItemUiState) {
         this.commentToBeUpdated = comment
+
+        textFieldValue = textFieldValue.copy(
+            text = comment.content,
+            selection = TextRange(comment.content.length)
+        )
         show()
     }
 
     private suspend fun show() {
-        modalBottomSheetState.snapTo(ModalBottomSheetValue.Expanded)
+        modalBottomSheetState.show()
     }
 
     suspend fun hide() {
         clear()
-        modalBottomSheetState.snapTo(ModalBottomSheetValue.Hidden)
+        modalBottomSheetState.hide()
     }
 
     fun clear() {
+        textFieldValue = textFieldValue.copy(text = "")
         parentId = null
         commentToBeUpdated = null
     }
 }
-
-fun Modifier.verticalScrollDisabled() =
-    pointerInput(Unit) {
-        awaitPointerEventScope {
-            // we should wait for all new pointer events
-            while (true) {
-                awaitPointerEvent(pass = PointerEventPass.Initial).changes.forEach {
-                    val offset = it.positionChange()
-                    if (abs(offset.y) > 0f) {
-                        it.consume()
-                    }
-                }
-            }
-        }
-    }

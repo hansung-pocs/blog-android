@@ -40,6 +40,7 @@ fun RecheckDialog(
     onDismissRequest: () -> Unit,
     title: String? = null,
     text: String? = null,
+    dismissText: String? = null,
     confirmText: String? = null
 ) {
     AlertDialog(
@@ -55,7 +56,9 @@ fun RecheckDialog(
         },
         onDismissRequest = onDismissRequest,
         dismissButton = {
-            TextButton(onClick = onDismissRequest) { Text(stringResource(R.string.cancel)) }
+            TextButton(onClick = onDismissRequest) {
+                Text(dismissText ?: stringResource(R.string.cancel))
+            }
         },
         confirmButton = {
             TextButton(onClick = onOkClick) { Text(confirmText ?: stringResource(R.string.ok)) }

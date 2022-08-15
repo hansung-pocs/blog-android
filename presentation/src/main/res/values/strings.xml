@@ -98,6 +98,9 @@
     <string name="add_comment">댓글 추가…</string>
     <string name="add_reply">답글 추가…</string>
     <string name="send_comment">댓글 제출</string>
+    <string name="stop">그만두기</string>
+    <string name="keep_writing">계속작성</string>
+    <string name="stop_writing">작성을 그만둘까요?</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>
         <item>회원목록</item>
