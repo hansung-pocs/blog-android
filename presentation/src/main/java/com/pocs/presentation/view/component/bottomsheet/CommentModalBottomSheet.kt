@@ -88,9 +88,9 @@ fun CommentModalBottomSheet(
         animationSpec = TweenSpec(durationMillis = 75, easing = FastOutSlowInEasing)
     )
     val textFieldValueState = remember {
-        mutableStateOf(TextFieldValue()).apply {
+        mutableStateOf(TextFieldValue()).also {
             controller.init(
-                textFieldValueState = this@apply,
+                textFieldValueState = it,
                 bottomSheetState = bottomSheetState
             )
         }
@@ -230,7 +230,7 @@ class CommentModalController {
     suspend fun showForUpdate(comment: CommentItemUiState) {
         this.commentToBeUpdated = comment
 
-        textFieldValueState.value = textFieldValueState.value.copy(
+        textFieldValueState.value = TextFieldValue(
             text = comment.content,
             selection = TextRange(comment.content.length)
         )
@@ -247,7 +247,7 @@ class CommentModalController {
     }
 
     fun clear() {
-        textFieldValueState.value = textFieldValueState.value.copy(text = "")
+        textFieldValueState.value = TextFieldValue(text = "")
         parentId = null
         commentToBeUpdated = null
     }
