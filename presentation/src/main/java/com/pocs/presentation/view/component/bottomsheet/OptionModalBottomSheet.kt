@@ -10,10 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -23,14 +20,13 @@ import androidx.compose.ui.unit.dp
 import com.pocs.presentation.R
 import com.pocs.presentation.model.comment.item.CommentItemUiState
 import kotlinx.coroutines.launch
-import java.io.Serializable
 
-@Stable
+@Immutable
 data class Option(
     val imageVector: ImageVector,
     @StringRes val stringResId: Int,
     val onClick: (CommentItemUiState) -> Unit
-) : Serializable
+)
 
 @Composable
 private fun OptionBottomSheet(options: List<Option>, controller: OptionModalController) {

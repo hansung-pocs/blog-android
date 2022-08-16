@@ -15,7 +15,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -121,7 +120,7 @@ fun PostDetailContent(
         onUpdated = onCommentUpdated
     ) {
         OptionModalBottomSheet(
-            options = rememberSaveable {
+            options = remember {
                 listOf(
                     Option(
                         imageVector = Icons.Default.Edit,
