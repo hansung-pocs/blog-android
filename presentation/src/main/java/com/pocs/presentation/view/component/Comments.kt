@@ -129,8 +129,8 @@ fun Comment(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = uiState.writer.name + stringResource(R.string.middle_dot) + uiState.date,
-                    style = MaterialTheme.typography.labelMedium.copy(
-                        color = onBackgroundColor.copy(alpha = 0.6f)
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        color = onBackgroundColor.copy(alpha = 0.5f)
                     )
                 )
                 Box(Modifier.height(8.dp))
@@ -144,7 +144,7 @@ fun Comment(
                     Icon(
                         modifier = Modifier.size(16.dp),
                         imageVector = Icons.Default.MoreVert,
-                        tint = onBackgroundColor.copy(alpha = 0.6f),
+                        tint = onBackgroundColor.copy(alpha = 0.5f),
                         contentDescription = stringResource(R.string.comment_info_button)
                     )
                 }
@@ -176,7 +176,7 @@ private fun CommentLabel(
     contentDescription: String,
     onClick: () -> Unit
 ) {
-    val color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+    val color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
     val interactionSource = remember { MutableInteractionSource() }
 
     Box(
@@ -204,7 +204,7 @@ private fun CommentLabel(
                 .padding(start = 24.dp)
                 .defaultMinSize(minWidth = 32.dp),
             text = label ?: "",
-            style = MaterialTheme.typography.labelMedium.copy(color = color)
+            style = MaterialTheme.typography.bodySmall.copy(color = color)
         )
     }
 }
