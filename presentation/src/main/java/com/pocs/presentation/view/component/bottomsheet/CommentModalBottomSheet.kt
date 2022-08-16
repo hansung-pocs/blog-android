@@ -27,6 +27,7 @@ import com.pocs.presentation.R
 import com.pocs.presentation.model.comment.item.CommentItemUiState
 import com.pocs.presentation.view.component.RecheckDialog
 import com.pocs.presentation.view.component.textfield.SimpleTextField
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
@@ -140,6 +141,7 @@ fun CommentModalBottomSheet(
             .filter { it == ModalBottomSheetValue.Expanded }
             .collectLatest {
                 focusRequester.requestFocus()
+                delay(50)
                 keyboardController?.show()
             }
     }
