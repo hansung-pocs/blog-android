@@ -99,7 +99,6 @@ fun CommentModalBottomSheet(
     }
 
     var showRecheckDialog by remember { mutableStateOf(false) }
-    var didSend by remember { mutableStateOf(false) }
     val canSend by rememberUpdatedState(
         if (controller.isUpdate) {
             textFieldValueState.value.text != controller.commentToBeUpdated!!.content
@@ -129,6 +128,11 @@ fun CommentModalBottomSheet(
     BackHandler(bottomSheetState.isVisible) {
         coroutineScope.launch {
             bottomSheetState.hide()
+            if (canSend) {
+                showRecheckDialog = true
+            } else {
+                controller.clear()
+            }
         }
     }
 
@@ -145,15 +149,12 @@ fun CommentModalBottomSheet(
         sheetState = bottomSheetState,
         sheetBackgroundColor = MaterialTheme.colorScheme.surface,
         onDismiss = {
-            if (!didSend && canSend) {
+            keyboardController?.hide()
+            if (canSend) {
                 showRecheckDialog = true
             } else {
                 controller.clear()
             }
-
-            keyboardController?.hide()
-
-            didSend = false
         },
         sheetContent = {
             CommentTextField(
@@ -163,8 +164,6 @@ fun CommentModalBottomSheet(
                 focusRequester = focusRequester,
                 showSendIcon = canSend,
                 onSend = {
-                    didSend = true
-
                     val commentToBeUpdated = controller.commentToBeUpdated
 
                     if (commentToBeUpdated != null) {
