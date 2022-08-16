@@ -173,9 +173,9 @@ fun CommentModalBottomSheet(
                         onCreated(controller.parentId, it)
                     }
 
+                    keyboardController?.hide()
                     coroutineScope.launch {
                         controller.hide()
-                        keyboardController?.hide()
                     }
                 },
                 hint = stringResource(
