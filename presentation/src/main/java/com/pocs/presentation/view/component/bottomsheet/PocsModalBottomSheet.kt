@@ -56,8 +56,9 @@ fun PocsModalBottomSheetLayout(
         val fullHeight = constraints.maxHeight.toFloat()
         val sheetHeightState = remember { mutableStateOf<Float?>(null) }
         val anchorInited = remember { mutableStateOf(false) }
+        val sheetVisible = sheetState.targetValue != ModalBottomSheetValue.Hidden
         val sheetAlpha by animateFloatAsState(
-            targetValue = if (sheetState.targetValue != ModalBottomSheetValue.Hidden) 1f else 0f,
+            targetValue = if (sheetVisible) 1f else 0f,
             animationSpec = TweenSpec(durationMillis = 10)
         )
         LaunchedEffect(Unit) {
@@ -73,7 +74,7 @@ fun PocsModalBottomSheetLayout(
                     onDismiss?.invoke()
                     scope.launch { sheetState.hide() }
                 },
-                visible = sheetState.targetValue != ModalBottomSheetValue.Hidden
+                visible = sheetVisible
             )
         }
         Surface(
