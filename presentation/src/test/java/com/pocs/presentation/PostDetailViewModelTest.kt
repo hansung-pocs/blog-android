@@ -1,5 +1,7 @@
 package com.pocs.presentation
 
+import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
+import com.pocs.domain.usecase.comment.GetCommentsUseCase
 import com.pocs.domain.usecase.post.CanDeletePostUseCase
 import com.pocs.domain.usecase.post.CanEditPostUseCase
 import com.pocs.domain.usecase.post.DeletePostUseCase
@@ -41,7 +43,9 @@ class PostDetailViewModelTest {
         GetPostDetailUseCase(postRepository),
         DeletePostUseCase(postRepository, authRepository),
         CanEditPostUseCase(authRepository),
-        CanDeletePostUseCase(authRepository)
+        CanDeletePostUseCase(authRepository),
+        GetCommentsUseCase(),
+        GetCurrentUserUseCase(authRepository)
     )
 
     @Before
@@ -62,7 +66,7 @@ class PostDetailViewModelTest {
             viewModel.uiState.collect()
         }
 
-        viewModel.fetchPost(mockPostDetail1.id, isDeleted = false)
+        viewModel.fetchPost(mockPostDetail1.id)
 
         assertTrue(viewModel.uiState.value is PostDetailUiState.Success)
 
@@ -78,7 +82,7 @@ class PostDetailViewModelTest {
             viewModel.uiState.collect()
         }
 
-        viewModel.fetchPost(mockPostDetail1.id, isDeleted = false)
+        viewModel.fetchPost(mockPostDetail1.id)
 
         assertTrue(viewModel.uiState.value is PostDetailUiState.Failure)
         assertEquals(
@@ -95,13 +99,13 @@ class PostDetailViewModelTest {
         postRepository.postDetailResult = Result.success(mockPostDetail1)
         postRepository.deletePostResult = Result.failure(exception)
         authRepository.currentUser.value = mockNormalUserDetail.copy(id = mockPostDetail1.writer.id)
-        viewModel.fetchPost(mockPostDetail1.id, isDeleted = false)
+        viewModel.fetchPost(mockPostDetail1.id)
 
         viewModel.requestPostDeleting(1)
 
         assertEquals(
             exception.message,
-            (viewModel.uiState.value as PostDetailUiState.Success).errorMessage
+            (viewModel.uiState.value as PostDetailUiState.Success).userMessage
         )
     }
 
@@ -110,10 +114,10 @@ class PostDetailViewModelTest {
         postRepository.postDetailResult = Result.success(mockPostDetail1)
         postRepository.deletePostResult = Result.success(Unit)
         authRepository.currentUser.value = mockNormalUserDetail.copy(id = mockPostDetail1.writer.id)
-        viewModel.fetchPost(mockPostDetail1.id, isDeleted = false)
+        viewModel.fetchPost(mockPostDetail1.id)
 
         viewModel.requestPostDeleting(1)
 
-        assertEquals(true, (viewModel.uiState.value as PostDetailUiState.Success).isSuccessToDelete)
+        assertEquals(true, (viewModel.uiState.value as PostDetailUiState.Success).isDeleteSuccess)
     }
 }

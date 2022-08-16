@@ -53,7 +53,8 @@
         <activity
             android:name=".view.post.detail.PostDetailActivity"
             android:exported="false"
-            android:theme="@style/Theme.PocsBlog" />
+            android:theme="@style/Theme.PocsBlog"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".view.setting.SettingActivity"
             android:exported="false" />

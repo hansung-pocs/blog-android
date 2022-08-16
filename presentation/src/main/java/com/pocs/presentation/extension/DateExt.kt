@@ -6,6 +6,7 @@ import org.joda.time.format.DateTimeFormat
 
 enum class DatePattern(val value: String) {
     COMPACT("yyyy-MM-dd"),
+    MEDIUM("yyyy-MM-dd HH:mm"),
     FULL("yyyy-MM-dd HH:mm:ss")
 }
 
@@ -30,7 +31,7 @@ fun String.toFormattedDateString(): String {
                     }
                 }
             }
-            if (pattern == DatePattern.FULL) {
+            if (pattern != DatePattern.COMPACT) {
                 result += date.toLocalDateTime().toString(" H:mm")
             }
             return result
@@ -39,4 +40,11 @@ fun String.toFormattedDateString(): String {
         }
     }
     throw IllegalArgumentException("DatePattern들 중에 포함되지 않는 문자열입니다.")
+}
+
+fun createFormattedDateText(createdAt: String, updatedAt: String?): String {
+    if (updatedAt != null) {
+        return "${updatedAt.toFormattedDateString()}(수정됨)"
+    }
+    return createdAt.toFormattedDateString()
 }

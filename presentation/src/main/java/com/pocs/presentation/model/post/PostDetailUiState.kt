@@ -1,5 +1,6 @@
 package com.pocs.presentation.model.post
 
+import com.pocs.presentation.model.comment.CommentsUiState
 import com.pocs.presentation.model.post.item.PostDetailItemUiState
 
 sealed class PostDetailUiState {
@@ -7,9 +8,9 @@ sealed class PostDetailUiState {
         val postDetail: PostDetailItemUiState,
         val canEditPost: Boolean,
         val canDeletePost: Boolean,
-        val isDeleted: Boolean,
-        val isSuccessToDelete: Boolean = false,
-        val errorMessage: String? = null
+        val isDeleteSuccess: Boolean = false,
+        val userMessage: String? = null,
+        val comments: CommentsUiState = CommentsUiState.Loading
     ) : PostDetailUiState()
 
     data class Failure(val message: String?) : PostDetailUiState()

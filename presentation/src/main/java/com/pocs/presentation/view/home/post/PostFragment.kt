@@ -102,8 +102,7 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
     private fun onClickPost(postItemUiState: PostItemUiState) {
         val intent = PostDetailActivity.getIntent(
             requireContext(),
-            id = postItemUiState.id,
-            isDeleted = postItemUiState.isDeleted
+            id = postItemUiState.id
         )
         launcher?.launch(intent)
     }

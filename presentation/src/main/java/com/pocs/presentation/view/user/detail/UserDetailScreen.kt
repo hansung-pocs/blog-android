@@ -29,6 +29,8 @@ import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.component.FailureContent
 import com.pocs.presentation.view.component.LoadingContent
 import com.pocs.presentation.view.component.RecheckDialog
+import com.pocs.presentation.view.component.button.DropdownButton
+import com.pocs.presentation.view.component.button.DropdownOption
 import com.pocs.presentation.view.post.by.user.PostByUserActivity
 import com.pocs.presentation.view.user.edit.UserEditActivity
 import kotlinx.coroutines.launch
@@ -211,50 +213,31 @@ fun UserDetailTopBar(
         navigationIcon = { AppBarBackButton() },
         actions = {
             if (displayActions) {
-                var showDropdownMenu by remember { mutableStateOf(false) }
-                val options = remember(isUserKicked) {
-                    if (isUserKicked) {
-                        listOf(R.string.see_user_post)
-                    } else {
-                        listOf(R.string.see_user_post, R.string.kick)
-                    }
+                val options = mutableListOf(R.string.see_user_post)
+
+                if (!isUserKicked) {
+                    options += R.string.kick
                 }
 
-                IconButton(onClick = { showDropdownMenu = !showDropdownMenu }) {
-                    Icon(
-                        imageVector = Icons.Filled.MoreVert,
-                        contentDescription = stringResource(id = R.string.more_info_button)
-                    )
-                }
-                DropdownMenu(
-                    expanded = showDropdownMenu,
-                    onDismissRequest = { showDropdownMenu = false },
-                ) {
-                    options.forEach { stringResourceId ->
-                        DropdownMenuItem(
+                DropdownButton(
+                    options = options.map { resourceId ->
+                        DropdownOption(
+                            label = stringResource(resourceId),
                             onClick = {
-                                when (stringResourceId) {
+                                when (resourceId) {
                                     R.string.kick -> onKickClick()
                                     R.string.see_user_post -> onSeeUsersPostClick()
                                     else -> throw IllegalArgumentException()
                                 }
-                                showDropdownMenu = false
                             },
-                            text = {
-                                Text(
-                                    text = stringResource(stringResourceId),
-                                    style = MaterialTheme.typography.bodyLarge.copy(
-                                        color = if (stringResourceId == R.string.kick) {
-                                            MaterialTheme.colorScheme.error
-                                        } else {
-                                            MaterialTheme.colorScheme.onSurface
-                                        }
-                                    )
-                                )
+                            labelColor = if (resourceId == R.string.kick) {
+                                MaterialTheme.colorScheme.error
+                            } else {
+                                MaterialTheme.colorScheme.onSurface
                             }
                         )
-                    }
-                }
+                    },
+                )
             }
         }
     )

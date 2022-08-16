@@ -1,12 +1,14 @@
 package com.pocs.presentation
 
 import android.content.Context
+import androidx.annotation.StringRes
+import androidx.compose.ui.test.*
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.launchActivity
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.pocs.domain.model.user.UserType
+import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
+import com.pocs.domain.usecase.comment.GetCommentsUseCase
 import com.pocs.domain.usecase.post.CanDeletePostUseCase
 import com.pocs.domain.usecase.post.CanEditPostUseCase
 import com.pocs.domain.usecase.post.DeletePostUseCase
@@ -20,8 +22,6 @@ import com.pocs.test_library.mock.mockPostDetail1
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import org.hamcrest.Matchers.not
-import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -31,6 +31,9 @@ class PostDetailActivityTest {
 
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 1)
+    val composeRule = createComposeRule()
 
     @BindValue
     val postRepository = FakePostRepositoryImpl()
@@ -43,10 +46,14 @@ class PostDetailActivityTest {
         GetPostDetailUseCase(postRepository),
         DeletePostUseCase(postRepository = postRepository, authRepository = authRepository),
         CanEditPostUseCase(authRepository),
-        CanDeletePostUseCase(authRepository)
+        CanDeletePostUseCase(authRepository),
+        GetCommentsUseCase(),
+        GetCurrentUserUseCase(authRepository)
     )
 
     private lateinit var context: Context
+
+    private fun getString(@StringRes resId: Int) = context.getString(resId)
 
     @Before
     fun setUp() {
@@ -55,46 +62,7 @@ class PostDetailActivityTest {
     }
 
     @Test
-    fun shouldShowDeletedKeyword_WhenPostWasDeleted() {
-        val postDetail = mockPostDetail1
-        postRepository.postDetailResult = Result.success(postDetail)
-
-        val intent = PostDetailActivity.getIntent(context, postDetail.id, isDeleted = true)
-        launchActivity<PostDetailActivity>(intent)
-
-        onView(withText(R.string.deleted)).check(matches(isDisplayed()))
-    }
-
-    @Test
-    fun shouldNotShowDeletedKeyword_WhenPostWasNotDeleted() {
-        val postDetail = mockPostDetail1
-        postRepository.postDetailResult = Result.success(postDetail)
-
-        val intent = PostDetailActivity.getIntent(context, postDetail.id, isDeleted = false)
-        launchActivity<PostDetailActivity>(intent)
-
-        onView(withText(R.string.deleted)).check(matches(not(isDisplayed())))
-    }
-
-    @Test
-    fun shouldNotShowMoreInfoOptionButton_WhenPostWasDeleted() {
-        val postDetail = mockPostDetail1
-        postRepository.postDetailResult = Result.success(postDetail)
-        authRepository.currentUser.value = mockNormalUserDetail.copy(
-            id = postDetail.writer.id,
-            type = UserType.ADMIN
-        )
-
-        val intent = PostDetailActivity.getIntent(context, postDetail.id, isDeleted = true)
-        launchActivity<PostDetailActivity>(intent)
-
-        onView(withContentDescription(R.string.more_info_button)).check { _, noViewFoundException ->
-            assertNotNull(noViewFoundException)
-        }
-    }
-
-    @Test
-    fun shouldNotShowMoreInfoOptionButton_WhenPostWasNotDeleted_AndUserIsNotAdminAndIsNotWriter() {
+    fun shouldNotShowMoreInfoOptionButton_WhenUserIsNotAdminAndIsNotWriter() {
         val postDetail = mockPostDetail1
         postRepository.postDetailResult = Result.success(postDetail)
         authRepository.currentUser.value = mockNormalUserDetail.copy(
@@ -102,64 +70,73 @@ class PostDetailActivityTest {
             type = UserType.MEMBER
         )
 
-        val intent = PostDetailActivity.getIntent(context, postDetail.id, isDeleted = false)
+        val intent = PostDetailActivity.getIntent(context, postDetail.id)
         launchActivity<PostDetailActivity>(intent)
 
-        onView(withContentDescription(R.string.more_info_button)).check { _, noViewFoundException ->
-            assertNotNull(noViewFoundException)
-        }
+        findMoreInfoButton().assertDoesNotExist()
     }
 
     @Test
-    fun shouldShowDeleteOption_WhenPostWasNotDeleted_AndUserIsWriter() {
+    fun shouldShowDeleteOption_WhenUserIsWriter() {
         val postDetail = mockPostDetail1
         postRepository.postDetailResult = Result.success(postDetail)
         authRepository.currentUser.value = mockNormalUserDetail.copy(
             id = postDetail.writer.id,
             type = UserType.MEMBER
         )
+        val intent = PostDetailActivity.getIntent(context, postDetail.id)
+        launchActivity<PostDetailActivity>(intent)
 
-        val intent = PostDetailActivity.getIntent(context, postDetail.id, isDeleted = false)
-        launchActivity<PostDetailActivity>(intent).onActivity {
-            it.openOptionsMenu()
-        }
+        clickMoreInfoButton()
 
-        onView(withText(R.string.delete)).check(matches(isDisplayed()))
+        findDeleteText().assertIsDisplayed()
     }
 
     @Test
-    fun shouldNotShowEditOption_WhenPostWasNotDeleted_AndUserIsNotWriter() {
+    fun shouldNotShowEditOption_WhenUserIsNotWriter() {
         val postDetail = mockPostDetail1
         postRepository.postDetailResult = Result.success(postDetail)
         authRepository.currentUser.value = mockNormalUserDetail.copy(
             id = 96412433,
             type = UserType.ADMIN
         )
+        val intent = PostDetailActivity.getIntent(context, postDetail.id)
+        launchActivity<PostDetailActivity>(intent)
 
-        val intent = PostDetailActivity.getIntent(context, postDetail.id, isDeleted = false)
-        launchActivity<PostDetailActivity>(intent).onActivity {
-            it.openOptionsMenu()
-        }
+        clickMoreInfoButton()
 
-        onView(withText(R.string.edit)).check { _, noViewFoundException ->
-            assertNotNull(noViewFoundException)
-        }
+        findEditText().assertDoesNotExist()
     }
 
     @Test
-    fun shouldShowEditOption_WhenPostWasNotDeleted_AndUserIsWriter() {
+    fun shouldShowEditOption_WhenUserIsWriter() {
         val postDetail = mockPostDetail1
         postRepository.postDetailResult = Result.success(postDetail)
         authRepository.currentUser.value = mockNormalUserDetail.copy(
             id = postDetail.writer.id,
             type = UserType.MEMBER
         )
+        val intent = PostDetailActivity.getIntent(context, postDetail.id)
+        launchActivity<PostDetailActivity>(intent)
 
-        val intent = PostDetailActivity.getIntent(context, postDetail.id, isDeleted = false)
-        launchActivity<PostDetailActivity>(intent).onActivity {
-            it.openOptionsMenu()
-        }
+        clickMoreInfoButton()
 
-        onView(withText(R.string.edit)).check(matches(isDisplayed()))
+        findEditText().assertIsDisplayed()
+    }
+
+    private fun clickMoreInfoButton() {
+        findMoreInfoButton().performClick()
+    }
+
+    private fun findEditText(): SemanticsNodeInteraction {
+        return composeRule.onNodeWithTag(getString(R.string.edit))
+    }
+
+    private fun findDeleteText(): SemanticsNodeInteraction {
+        return composeRule.onNodeWithTag(getString(R.string.delete))
+    }
+
+    private fun findMoreInfoButton(): SemanticsNodeInteraction {
+        return composeRule.onNodeWithContentDescription(getString(R.string.more_info_button))
     }
 }

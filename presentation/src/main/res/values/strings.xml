@@ -7,11 +7,11 @@
     <string name="knowhow">노하우</string>
     <string name="reference">레퍼런스</string>
     <string name="user_list">회원 목록</string>
-    <string name="post_subtitle">%s · %s</string>
-    <string name="middle_dot">\u0020·\u0020</string>
-    <string name="deleted_post_subtitle_prefix">삭제됨 ·\u0020</string>
-    <string name="user_item_subtitle">%s · %s기</string>
-    <string name="kicked_user_item_subtitle">탈퇴됨 · %s · %s기</string>
+    <string name="post_subtitle">%s • %s</string>
+    <string name="middle_dot">\u0020•\u0020</string>
+    <string name="deleted_post_subtitle_prefix">삭제됨 •\u0020</string>
+    <string name="user_item_subtitle">%s • %s기</string>
+    <string name="kicked_user_item_subtitle">탈퇴됨 • %s • %s기</string>
     <string name="fail_to_connect">연결에 실패하였습니다.</string>
     <string name="retry">재시도</string>
     <string name="user_image">회원 사진</string>
@@ -62,6 +62,7 @@
     <string name="hide_password">비밀번호 숨기기</string>
     <string name="failed_to_update">수정에 실패했습니다.</string>
     <string name="more_info_button">더보기 버튼</string>
+    <string name="comment_info_button">댓글 정보 버튼</string>
     <string name="is_kicked">탈퇴됨</string>
     <string name="create_user">회원 생성</string>
     <string name="type">타입</string>
@@ -90,7 +91,19 @@
     <string name="logout_dialog_title">정말로 로그아웃 하시겠습니까?</string>
     <string name="all">전체</string>
     <string name="best">인기</string>
+    <string name="writing_time">작성시간</string>
+    <string name="reply_count">답글 갯수</string>
+    <string name="error_icon">에러 아이콘</string>
     <string name="question_answer">질문답변</string>
+    <string name="failed_to_load_comment">댓글을 불러올 수 없습니다</string>
+    <string name="add_comment">댓글 추가…</string>
+    <string name="add_reply">답글 추가…</string>
+    <string name="send_comment">댓글 제출</string>
+    <string name="stop">그만두기</string>
+    <string name="keep_writing">계속작성</string>
+    <string name="stop_writing">작성을 그만둘까요?</string>
+    <string name="comment_add_button">댓글 추가 버튼</string>
+    <string name="comment_text_field">댓글 입력 창</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>
         <item>회원목록</item>

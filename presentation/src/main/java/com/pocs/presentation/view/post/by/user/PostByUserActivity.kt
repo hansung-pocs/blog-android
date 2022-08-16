@@ -105,8 +105,7 @@ class PostByUserActivity : ViewBindingActivity<ActivityPostByUserBinding>() {
     private fun startPostDetailActivity(postItemUiState: PostItemUiState) {
         val intent = PostDetailActivity.getIntent(
             this,
-            id = postItemUiState.id,
-            isDeleted = postItemUiState.isDeleted
+            id = postItemUiState.id
         )
         launcher?.launch(intent)
     }
