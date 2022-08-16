@@ -2,7 +2,6 @@ package com.pocs.presentation.view.component.bottomsheet
 
 import androidx.activity.compose.BackHandler
 import androidx.annotation.VisibleForTesting
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -87,7 +86,7 @@ fun CommentModalBottomSheet(
 
     val bottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
-        animationSpec = TweenSpec(durationMillis = 75, easing = FastOutSlowInEasing)
+        animationSpec = TweenSpec(durationMillis = 0)
     )
     val textFieldValueState = remember {
         mutableStateOf(TextFieldValue()).also {
