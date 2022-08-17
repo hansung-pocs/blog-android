@@ -34,11 +34,12 @@ class PostDetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<PostDetailUiState>(PostDetailUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    private var fetchJob: Job? = null
+    private var postFetchJob: Job? = null
+    private var commentFetchJob: Job? = null
 
     fun fetchPost(id: Int) {
-        fetchJob?.cancel()
-        fetchJob = viewModelScope.launch {
+        postFetchJob?.cancel()
+        postFetchJob = viewModelScope.launch {
             val result = getPostDetailUseCase(id)
 
             if (result.isSuccess) {
@@ -66,24 +67,26 @@ class PostDetailViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchComments(postId: Int, postDetailUiState: PostDetailUiState.Success) {
-        val result = getCommentsUseCase(postId = postId)
-
-        val comments = if (result.isSuccess) {
-            val currentUser = getCurrentUserUseCase()
-            val comments = result.getOrNull()!!.map {
-                it.toUiState(
-                    currentUserId = currentUser?.id,
-                    isAdmin = currentUser?.type == UserType.ADMIN
-                )
+    private fun fetchComments(postId: Int, postDetailUiState: PostDetailUiState.Success) {
+        commentFetchJob?.cancel()
+        commentFetchJob = viewModelScope.launch {
+            val result = getCommentsUseCase(postId = postId)
+            val comments = if (result.isSuccess) {
+                val currentUser = getCurrentUserUseCase()
+                val comments = result.getOrNull()!!.map {
+                    it.toUiState(
+                        currentUserId = currentUser?.id,
+                        isAdmin = currentUser?.type == UserType.ADMIN
+                    )
+                }
+                CommentsUiState.Success(comments = comments)
+            } else {
+                val errorMessage = result.exceptionOrNull()!!.message
+                CommentsUiState.Failure(message = errorMessage)
             }
-            CommentsUiState.Success(comments = comments)
-        } else {
-            val errorMessage = result.exceptionOrNull()!!.message
-            CommentsUiState.Failure(message = errorMessage)
-        }
 
-        _uiState.update { postDetailUiState.copy(comments = comments) }
+            _uiState.update { postDetailUiState.copy(comments = comments) }
+        }
     }
 
     fun addComment(parentId: Int?, comment: String) {
