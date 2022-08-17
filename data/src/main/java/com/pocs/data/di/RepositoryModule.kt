@@ -1,17 +1,12 @@
 package com.pocs.data.di
 
 import com.pocs.data.api.AdminApi
+import com.pocs.data.api.NonMemberApi
 import com.pocs.data.api.PostApi
 import com.pocs.data.api.UserApi
-import com.pocs.data.repository.AdminRepositoryImpl
-import com.pocs.data.repository.AuthRepositoryImpl
-import com.pocs.data.repository.PostRepositoryImpl
-import com.pocs.data.repository.UserRepositoryImpl
+import com.pocs.data.repository.*
 import com.pocs.data.source.*
-import com.pocs.domain.repository.AdminRepository
-import com.pocs.domain.repository.AuthRepository
-import com.pocs.domain.repository.PostRepository
-import com.pocs.domain.repository.UserRepository
+import com.pocs.domain.repository.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -49,6 +44,16 @@ class RepositoryModule {
         return AuthRepositoryImpl(
             remoteDataSource = remoteDataSource,
             localDataSource = localDataSource
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideNonMemberRepository(
+        dataSource: NonMemberRemoteDataSource
+    ): NonMemberRepository {
+        return NonMemberRepositoryImpl(
+            dataSource = dataSource
         )
     }
 }
