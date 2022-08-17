@@ -7,7 +7,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface NonMemberApi {
-    @POST("admin/users")
+    @POST("users")
     suspend fun createNonMember(
         @Body nonMemberCreateInfoBody: NonMemberCreateInfoBody
     ): Response<ResponseBody<Unit>>
