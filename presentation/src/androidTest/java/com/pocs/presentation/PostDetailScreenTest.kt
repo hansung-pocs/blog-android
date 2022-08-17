@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
@@ -410,11 +411,13 @@ class PostDetailScreenTest {
     }
 
     @Test
-    fun shouldHideCommentBottomSheet_WhenClickSendButton() {
+    fun shouldHideKeyboard_WhenClickSendButton() {
         composeRule.run {
             val controller = CommentModalController()
+            val keyboardHelper = KeyboardHelper(composeRule)
 
             setContent {
+                keyboardHelper.view = LocalView.current
                 val snackbarHostState = remember { SnackbarHostState() }
 
                 PostDetailContent(
@@ -434,8 +437,8 @@ class PostDetailScreenTest {
             onNodeWithContentDescription(getString(R.string.comment_text_field)).performTextInput(text)
             onNodeWithContentDescription(getString(R.string.send_comment)).performClick()
 
-            onNodeWithText(text).assertDoesNotExist()
-            assertTrue(controller.isCleared)
+            keyboardHelper.waitForKeyboardVisibility(false)
+            assertFalse(keyboardHelper.isSoftwareKeyboardShown())
         }
     }
 }
