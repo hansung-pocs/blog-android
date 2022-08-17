@@ -82,7 +82,7 @@
     <string name="sorting_by_created_at_descending">가입일 최근순</string>
     <string name="password">비밀번호</string>
     <string name="id">아이디</string>
-    <string name="brows_as_non_member">비회원으로 둘러보기</string>
+    <string name="brows_as_non_member">비회원으로 시작하기</string>
     <string name="login_title">POCS</string>
     <string name="setting">설정</string>
     <string name="non_member">비회원</string>
