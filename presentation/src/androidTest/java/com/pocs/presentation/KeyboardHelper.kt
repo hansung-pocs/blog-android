@@ -1,6 +1,7 @@
 package com.pocs.presentation
 
 import android.content.Context
+import android.graphics.Rect
 import android.os.Build
 import android.view.View
 import android.view.WindowInsets
@@ -18,7 +19,7 @@ import java.util.concurrent.TimeUnit
  */
 class KeyboardHelper(
     private val composeRule: ComposeTestRule,
-    private val timeout: Long = 15_000L
+    private val timeout: Long = 1_000L
 ) {
     /**
      * The [View] hosting the compose rule's content. Must be set before calling any methods on this
@@ -64,7 +65,7 @@ class KeyboardHelper(
         return if (Build.VERSION.SDK_INT >= 30) {
             isSoftwareKeyboardShownWithInsets()
         } else {
-            isSoftwareKeyboardShownWithImm()
+            isSoftwareKeyboardShownWithScreenHeight()
         }
     }
 
@@ -74,10 +75,17 @@ class KeyboardHelper(
                 view.rootWindowInsets.isVisible(WindowInsets.Type.ime())
     }
 
-    private fun isSoftwareKeyboardShownWithImm(): Boolean {
-        // TODO(b/163742556): This is just a proxy for software keyboard visibility. Find a better
-        //  way to check if the software keyboard is shown.
-        return imm.isAcceptingText
+    private fun isSoftwareKeyboardShownWithScreenHeight(): Boolean {
+        val r = Rect()
+        view.getWindowVisibleDisplayFrame(r)
+        val screenHeight = view.rootView.height
+
+        // r.bottom is the position above soft keypad or device button.
+        // if keypad is shown, the r.bottom is smaller than that before.
+        val keypadHeight = screenHeight - r.bottom
+
+        // 0.15 ratio is perhaps enough to determine keypad height.
+        return keypadHeight > screenHeight * 0.15
     }
 
     private fun hideKeyboardWithImm() {
