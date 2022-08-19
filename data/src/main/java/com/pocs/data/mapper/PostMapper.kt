@@ -8,6 +8,7 @@ fun PostDto.toEntity() = Post(
     writer = writerName,
     title = title,
     content = content,
+    views = views,
     createdAt = createdAt,
     updatedAt = updatedAt,
     canceledAt = canceledAt,
