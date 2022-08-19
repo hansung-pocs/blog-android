@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
+import com.pocs.domain.usecase.comment.AddCommentUseCase
 import com.pocs.domain.usecase.comment.GetCommentsUseCase
 import com.pocs.domain.usecase.post.CanDeletePostUseCase
 import com.pocs.domain.usecase.post.CanEditPostUseCase
@@ -28,6 +29,7 @@ class PostDetailViewModel @Inject constructor(
     private val canEditPostUseCase: CanEditPostUseCase,
     private val canDeletePostUseCase: CanDeletePostUseCase,
     private val getCommentsUseCase: GetCommentsUseCase,
+    private val addCommentUseCase: AddCommentUseCase,
     private val getCurrentUserUseCase: GetCurrentUserUseCase
 ) : ViewModel() {
 
@@ -59,7 +61,7 @@ class PostDetailViewModel @Inject constructor(
 
                 _uiState.update { newUiState }
 
-                fetchComments(postId = id, postDetailUiState = newUiState)
+                fetchComments()
             } else {
                 val errorMessage = result.exceptionOrNull()!!.message
                 _uiState.update { PostDetailUiState.Failure(message = errorMessage) }
@@ -67,10 +69,12 @@ class PostDetailViewModel @Inject constructor(
         }
     }
 
-    private fun fetchComments(postId: Int, postDetailUiState: PostDetailUiState.Success) {
+    private fun fetchComments() {
+        check(_uiState.value is PostDetailUiState.Success)
         commentFetchJob?.cancel()
         commentFetchJob = viewModelScope.launch {
-            val result = getCommentsUseCase(postId = postId)
+            val uiStateValue = (_uiState.value as PostDetailUiState.Success)
+            val result = getCommentsUseCase(postId = uiStateValue.postDetail.id)
             val comments = if (result.isSuccess) {
                 val currentUser = getCurrentUserUseCase()
                 val comments = result.getOrNull()!!.map {
@@ -84,13 +88,27 @@ class PostDetailViewModel @Inject constructor(
                 val errorMessage = result.exceptionOrNull()!!.message
                 CommentsUiState.Failure(message = errorMessage)
             }
-
-            _uiState.update { postDetailUiState.copy(comments = comments) }
+            _uiState.update { (it as PostDetailUiState.Success).copy(comments = comments) }
         }
     }
 
-    fun addComment(parentId: Int?, comment: String) {
-        // TODO: 구현하기
+    fun addComment(parentId: Int?, content: String) {
+        val uiStateValue = uiState.value
+        check(uiStateValue is PostDetailUiState.Success)
+        val postId = uiStateValue.postDetail.id
+        viewModelScope.launch {
+            val result = addCommentUseCase(
+                content = content,
+                postId = postId,
+                parentId = parentId
+            )
+            if (result.isSuccess) {
+                fetchComments()
+                showUserMessage(message = "댓글 추가됨")
+            } else {
+                showUserMessage(message = result.exceptionOrNull()?.message ?: "댓글 추가에 실패함")
+            }
+        }
     }
 
     fun updateComment(id: Int, comment: String) {
@@ -110,7 +128,7 @@ class PostDetailViewModel @Inject constructor(
                     (it as PostDetailUiState.Success).copy(isDeleteSuccess = true)
                 }
             } else {
-                val errorMessage = result.exceptionOrNull()!!.message ?: "삭제에 실패했습니다."
+                val errorMessage = result.exceptionOrNull()!!.message ?: "게시글 삭제에 실패함"
                 showUserMessage(errorMessage)
             }
         }
@@ -118,7 +136,7 @@ class PostDetailViewModel @Inject constructor(
 
     fun showUserMessage(message: String) {
         val uiStateValue = _uiState.value
-        require(uiStateValue is PostDetailUiState.Success)
+        check(uiStateValue is PostDetailUiState.Success)
         _uiState.update {
             uiStateValue.copy(userMessage = message)
         }
@@ -126,7 +144,7 @@ class PostDetailViewModel @Inject constructor(
 
     fun userMessageShown() {
         val uiStateValue = _uiState.value
-        require(uiStateValue is PostDetailUiState.Success)
+        check(uiStateValue is PostDetailUiState.Success)
         _uiState.update {
             uiStateValue.copy(userMessage = null)
         }

@@ -8,6 +8,7 @@ import androidx.test.core.app.launchActivity
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
+import com.pocs.domain.usecase.comment.AddCommentUseCase
 import com.pocs.domain.usecase.comment.GetCommentsUseCase
 import com.pocs.domain.usecase.post.CanDeletePostUseCase
 import com.pocs.domain.usecase.post.CanEditPostUseCase
@@ -17,6 +18,7 @@ import com.pocs.presentation.view.post.detail.PostDetailActivity
 import com.pocs.presentation.view.post.detail.PostDetailViewModel
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakePostRepositoryImpl
+import com.pocs.test_library.fake.source.FakeCommentRepositoryImpl
 import com.pocs.test_library.mock.mockNormalUserDetail
 import com.pocs.test_library.mock.mockPostDetail1
 import dagger.hilt.android.testing.BindValue
@@ -42,12 +44,16 @@ class PostDetailActivityTest {
     val authRepository = FakeAuthRepositoryImpl()
 
     @BindValue
+    val commentRepository = FakeCommentRepositoryImpl()
+
+    @BindValue
     val viewModel = PostDetailViewModel(
         GetPostDetailUseCase(postRepository),
         DeletePostUseCase(postRepository = postRepository, authRepository = authRepository),
         CanEditPostUseCase(authRepository),
         CanDeletePostUseCase(authRepository),
-        GetCommentsUseCase(),
+        GetCommentsUseCase(commentRepository),
+        AddCommentUseCase(commentRepository),
         GetCurrentUserUseCase(authRepository)
     )
 

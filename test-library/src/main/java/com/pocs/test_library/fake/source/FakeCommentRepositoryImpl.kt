@@ -1,0 +1,48 @@
+package com.pocs.test_library.fake.source
+
+import com.pocs.domain.model.comment.Comment
+import com.pocs.domain.model.comment.CommentWriter
+import com.pocs.domain.repository.CommentRepository
+import javax.inject.Inject
+
+class FakeCommentRepositoryImpl @Inject constructor() : CommentRepository {
+
+    private var idCounter = 0
+
+    private val comments = mutableListOf<Comment>()
+
+    var isSuccessToGetAllBy = true
+    var isSuccessToAdd = true
+
+    override suspend fun getAllBy(postId: Int): Result<List<Comment>> {
+        return if (isSuccessToGetAllBy) Result.success(comments) else Result.failure(Exception("ee"))
+    }
+
+    override suspend fun add(content: String, postId: Int, parentId: Int?): Result<Unit> {
+        if (!isSuccessToAdd) {
+            return Result.failure(Exception("error"))
+        }
+        val parentIndex = comments.indexOfFirst { it.id == parentId }
+        val newComment = Comment(
+            id = idCounter++,
+            parentId = parentId,
+            childrenCount = 0,
+            postId = postId,
+            writer = CommentWriter(
+                userId = 1,
+                name = "홍길동"
+            ),
+            content = content,
+            createdAt = "2022-09-02 13:09",
+            updatedAt = null
+        )
+        var index = 0
+        if (parentIndex != -1) {
+            while (comments.size < index && comments[parentIndex + index].parentId == parentId) {
+                ++index
+            }
+        }
+        comments.add(index, newComment)
+        return Result.success(Unit)
+    }
+}
