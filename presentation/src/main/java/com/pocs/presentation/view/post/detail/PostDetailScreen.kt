@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -165,6 +166,7 @@ fun PostDetailContent(
                             )
                         )
                     }
+                    postInfoItems(views = uiState.postDetail.views)
                     item {
                         ThickDivider()
                     }
@@ -276,6 +278,18 @@ private fun LazyListScope.headerItems(title: String, writerName: String, date: S
     }
     item {
         PocsDivider(startIndent = 20.dp)
+    }
+}
+
+private fun LazyListScope.postInfoItems(views: Int) {
+    item {
+        Row(Modifier.padding(horizontal = 4.dp)) {
+            Label(
+                imageVector = Icons.Default.Visibility,
+                label = views.toString(),
+                contentDescription = stringResource(id = R.string.views)
+            )
+        }
     }
 }
 
