@@ -12,8 +12,6 @@ class PostRemoteDataSourceImpl @Inject constructor(
     private val api: PostApi
 ) : PostRemoteDataSource {
 
-    override suspend fun getAll() = api.getAll()
-
     override suspend fun getPostDetail(postId: Int) = api.getPostDetail(postId)
 
     override suspend fun addPost(postAddBody: PostAddBody) = api.addPost(postAddBody)
