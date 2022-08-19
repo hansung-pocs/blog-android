@@ -25,7 +25,7 @@ class PostPagingSource @Inject constructor(
         return try {
             val response = api.getAll(filterType.toDto())
             if (response.isSuccessful) {
-                val posts = response.body()!!.data.posts.map { it.toEntity() }
+                val posts = response.body()!!.data.postsAll.map { it.toEntity() }
                 // TODO: API에서 페이지네이션 구현되면 수정하기
                 val isEnd = true
 
