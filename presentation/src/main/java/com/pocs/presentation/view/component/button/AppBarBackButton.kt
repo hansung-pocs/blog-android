@@ -10,10 +10,18 @@ import androidx.compose.ui.res.stringResource
 import com.pocs.presentation.R
 
 @Composable
-fun AppBarBackButton() {
+fun AppBarBackButton(onBackPressed: (() -> Unit)? = null) {
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
-    IconButton(onClick = { onBackPressedDispatcher?.onBackPressed() }) {
+    IconButton(
+        onClick = {
+            if (onBackPressed == null) {
+                onBackPressedDispatcher?.onBackPressed()
+            } else {
+                onBackPressed.invoke()
+            }
+        }
+    ) {
         Icon(
             imageVector = Icons.Filled.ArrowBack,
             contentDescription = stringResource(R.string.back)

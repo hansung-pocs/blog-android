@@ -4,8 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.compose.ui.res.stringResource
+import com.google.android.material.composethemeadapter3.Mdc3Theme
+import com.pocs.presentation.R
 import com.pocs.presentation.base.ViewBindingActivity
 import com.pocs.presentation.databinding.ActivityUserBinding
+import com.pocs.presentation.view.component.appbar.SearchAppBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,13 +30,11 @@ class UserActivity : ViewBindingActivity<ActivityUserBinding>() {
         initToolBar()
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
-    }
-
     private fun initToolBar() {
-        setSupportActionBar(binding.toolBar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.toolBar.setContent {
+            Mdc3Theme(this) {
+                SearchAppBar(title = stringResource(id = R.string.user_list), onSearch = {})
+            }
+        }
     }
 }
