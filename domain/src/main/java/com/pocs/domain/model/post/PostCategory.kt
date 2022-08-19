@@ -5,5 +5,6 @@ enum class PostCategory {
     STUDY,
     MEMORY,
     KNOWHOW,
-    REFERENCE
+    REFERENCE,
+    QNA
 }
