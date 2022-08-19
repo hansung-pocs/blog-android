@@ -2,6 +2,7 @@ package com.pocs.presentation
 
 import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
 import com.pocs.domain.usecase.comment.AddCommentUseCase
+import com.pocs.domain.usecase.comment.DeleteCommentUseCase
 import com.pocs.domain.usecase.comment.GetCommentsUseCase
 import com.pocs.domain.usecase.post.CanDeletePostUseCase
 import com.pocs.domain.usecase.post.CanEditPostUseCase
@@ -49,6 +50,7 @@ class PostDetailViewModelTest {
         CanDeletePostUseCase(authRepository),
         GetCommentsUseCase(commentRepository),
         AddCommentUseCase(commentRepository),
+        DeleteCommentUseCase(commentRepository),
         GetCurrentUserUseCase(authRepository)
     )
 
@@ -167,13 +169,11 @@ class PostDetailViewModelTest {
         }
         viewModel.fetchPost(mockPostDetail1.id)
 
-        var uiState = viewModel.uiState.value as PostDetailUiState.Success
-        assertEquals(0, (uiState.comments as CommentsUiState.Success).comments.size)
+        assertCommentsSize(0)
 
         viewModel.addComment(null, "test")
 
-        uiState = viewModel.uiState.value as PostDetailUiState.Success
-        assertEquals(1, (uiState.comments as CommentsUiState.Success).comments.size)
+        assertCommentsSize(1)
 
         collectJob.cancel()
     }
@@ -188,13 +188,11 @@ class PostDetailViewModelTest {
         }
         viewModel.fetchPost(mockPostDetail1.id)
 
-        var uiState = viewModel.uiState.value as PostDetailUiState.Success
-        assertEquals(0, (uiState.comments as CommentsUiState.Success).comments.size)
+        assertCommentsSize(0)
 
         viewModel.addComment(null, "test")
 
-        uiState = viewModel.uiState.value as PostDetailUiState.Success
-        assertEquals(0, (uiState.comments as CommentsUiState.Success).comments.size)
+        assertCommentsSize(0)
 
         collectJob.cancel()
     }
@@ -215,5 +213,31 @@ class PostDetailViewModelTest {
         assertNotNull(uiState.userMessage)
 
         collectJob.cancel()
+    }
+
+    @Test
+    fun shouldCommentIsDeleted_WhenSuccessToDelete() = runTest{
+        postRepository.postDetailResult = Result.success(mockPostDetail1)
+        commentRepository.isSuccessToGetAllBy = true
+        commentRepository.isSuccessToAdd = true
+        commentRepository.isSuccessToDelete = true
+        val collectJob = launch(UnconfinedTestDispatcher()) {
+            viewModel.uiState.collect()
+        }
+        viewModel.fetchPost(mockPostDetail1.id)
+        viewModel.addComment(null, "test")
+
+        assertCommentsSize(1)
+
+        viewModel.deleteComment(commentRepository.idCounter - 1)
+
+        assertCommentsSize(0)
+
+        collectJob.cancel()
+    }
+
+    private fun assertCommentsSize(expectedSize: Int) {
+        val uiState = viewModel.uiState.value as PostDetailUiState.Success
+        assertEquals(expectedSize, (uiState.comments as CommentsUiState.Success).comments.size)
     }
 }

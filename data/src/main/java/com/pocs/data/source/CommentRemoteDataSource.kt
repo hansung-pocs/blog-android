@@ -8,4 +8,5 @@ import retrofit2.Response
 interface CommentRemoteDataSource {
     suspend fun getAllBy(postId: Int): Response<ResponseBody<CommentsDto>>
     suspend fun add(commentAddBody: CommentAddBody): Response<ResponseBody<Unit>>
+    suspend fun delete(commentId: Int): Response<ResponseBody<Unit>>
 }

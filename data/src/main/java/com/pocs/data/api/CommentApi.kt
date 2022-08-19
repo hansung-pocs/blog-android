@@ -4,10 +4,7 @@ import com.pocs.data.model.ResponseBody
 import com.pocs.data.model.comment.CommentAddBody
 import com.pocs.data.model.comment.CommentsDto
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface CommentApi {
     @GET("comments/{postId}")
@@ -18,5 +15,10 @@ interface CommentApi {
     @POST("comments")
     suspend fun add(
         @Body commentAddBody: CommentAddBody
+    ): Response<ResponseBody<Unit>>
+
+    @PATCH("comments/{commentId}/delete")
+    suspend fun delete(
+        @Path("commentId") commentId: Int
     ): Response<ResponseBody<Unit>>
 }

@@ -9,6 +9,7 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
 import com.pocs.domain.usecase.comment.AddCommentUseCase
+import com.pocs.domain.usecase.comment.DeleteCommentUseCase
 import com.pocs.domain.usecase.comment.GetCommentsUseCase
 import com.pocs.domain.usecase.post.CanDeletePostUseCase
 import com.pocs.domain.usecase.post.CanEditPostUseCase
@@ -54,6 +55,7 @@ class PostDetailActivityTest {
         CanDeletePostUseCase(authRepository),
         GetCommentsUseCase(commentRepository),
         AddCommentUseCase(commentRepository),
+        DeleteCommentUseCase(commentRepository),
         GetCurrentUserUseCase(authRepository)
     )
 

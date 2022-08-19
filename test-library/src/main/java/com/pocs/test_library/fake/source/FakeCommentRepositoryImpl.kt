@@ -7,12 +7,14 @@ import javax.inject.Inject
 
 class FakeCommentRepositoryImpl @Inject constructor() : CommentRepository {
 
-    private var idCounter = 0
+    var idCounter = 0
+        private set
 
     private val comments = mutableListOf<Comment>()
 
     var isSuccessToGetAllBy = true
     var isSuccessToAdd = true
+    var isSuccessToDelete = true
 
     override suspend fun getAllBy(postId: Int): Result<List<Comment>> {
         return if (isSuccessToGetAllBy) Result.success(comments) else Result.failure(Exception("ee"))
@@ -43,6 +45,14 @@ class FakeCommentRepositoryImpl @Inject constructor() : CommentRepository {
             }
         }
         comments.add(index, newComment)
+        return Result.success(Unit)
+    }
+
+    override suspend fun delete(commentId: Int): Result<Unit> {
+        if (!isSuccessToDelete) {
+            return Result.failure(Exception("ee"))
+        }
+        comments.removeAll { it.id == commentId }
         return Result.success(Unit)
     }
 }

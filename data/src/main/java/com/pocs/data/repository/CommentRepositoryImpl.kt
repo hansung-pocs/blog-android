@@ -43,4 +43,17 @@ class CommentRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
+
+    override suspend fun delete(commentId: Int): Result<Unit> {
+        return try {
+            val response = dataSource.delete(commentId = commentId)
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                throw Exception(response.errorMessage)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

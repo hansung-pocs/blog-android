@@ -92,7 +92,7 @@ fun PostDetailContent(
     snackbarHostState: SnackbarHostState,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    onCommentDelete: (CommentItemUiState) -> Unit,
+    onCommentDelete: (commentId: Int) -> Unit,
     onCommentCreated: CommentCreateCallback,
     onCommentUpdated: CommentUpdateCallback
 ) {
@@ -114,7 +114,7 @@ fun PostDetailContent(
         RecheckDialog(
             title = stringResource(id = R.string.are_you_sure_you_want_to_delete),
             onOkClick = {
-                commentToBeDeleted?.let { onCommentDelete(it) }
+                commentToBeDeleted?.let { onCommentDelete(it.id) }
                 commentToBeDeleted = null
             },
             onDismissRequest = { commentToBeDeleted = null },
