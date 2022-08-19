@@ -14,6 +14,7 @@ class FakeCommentRepositoryImpl @Inject constructor() : CommentRepository {
 
     var isSuccessToGetAllBy = true
     var isSuccessToAdd = true
+    var isSuccessToUpdate = true
     var isSuccessToDelete = true
 
     override suspend fun getAllBy(postId: Int): Result<List<Comment>> {
@@ -45,6 +46,17 @@ class FakeCommentRepositoryImpl @Inject constructor() : CommentRepository {
             }
         }
         comments.add(index, newComment)
+        return Result.success(Unit)
+    }
+
+    override suspend fun update(commentId: Int, content: String): Result<Unit> {
+        if (!isSuccessToUpdate) {
+            return Result.failure(Exception("error"))
+        }
+        val prevComment = comments.first { it.id == commentId }
+        val newComment = prevComment.copy(content = content)
+        val index = comments.indexOf(prevComment)
+        comments[index] = newComment
         return Result.success(Unit)
     }
 

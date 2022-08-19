@@ -11,6 +11,7 @@ import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
 import com.pocs.domain.usecase.comment.AddCommentUseCase
 import com.pocs.domain.usecase.comment.DeleteCommentUseCase
 import com.pocs.domain.usecase.comment.GetCommentsUseCase
+import com.pocs.domain.usecase.comment.UpdateCommentUseCase
 import com.pocs.domain.usecase.post.CanDeletePostUseCase
 import com.pocs.domain.usecase.post.CanEditPostUseCase
 import com.pocs.domain.usecase.post.DeletePostUseCase
@@ -55,6 +56,7 @@ class PostDetailActivityTest {
         CanDeletePostUseCase(authRepository),
         GetCommentsUseCase(commentRepository),
         AddCommentUseCase(commentRepository),
+        UpdateCommentUseCase(commentRepository),
         DeleteCommentUseCase(commentRepository),
         GetCurrentUserUseCase(authRepository)
     )

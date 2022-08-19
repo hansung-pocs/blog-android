@@ -17,6 +17,12 @@ interface CommentApi {
         @Body commentAddBody: CommentAddBody
     ): Response<ResponseBody<Unit>>
 
+    @PATCH("comments/{commentId}")
+    suspend fun update(
+        @Path("commentId") commentId: Int,
+        @Body content: String
+    ): Response<ResponseBody<Unit>>
+
     @PATCH("comments/{commentId}/delete")
     suspend fun delete(
         @Path("commentId") commentId: Int

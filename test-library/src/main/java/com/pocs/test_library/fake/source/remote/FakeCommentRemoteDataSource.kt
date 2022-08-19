@@ -16,6 +16,10 @@ class FakeCommentRemoteDataSource @Inject constructor() : CommentRemoteDataSourc
         TODO("Not yet implemented")
     }
 
+    override suspend fun update(commentId: Int, content: String): Response<ResponseBody<Unit>> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun delete(commentId: Int): Response<ResponseBody<Unit>> {
         TODO("Not yet implemented")
     }

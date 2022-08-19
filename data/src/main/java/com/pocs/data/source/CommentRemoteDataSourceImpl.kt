@@ -7,7 +7,13 @@ import javax.inject.Inject
 class CommentRemoteDataSourceImpl @Inject constructor(
     private val api: CommentApi
 ) : CommentRemoteDataSource {
+
     override suspend fun getAllBy(postId: Int) = api.getAllBy(postId = postId)
+
     override suspend fun add(commentAddBody: CommentAddBody) = api.add(commentAddBody)
+
+    override suspend fun update(commentId: Int, content: String) =
+        api.update(commentId = commentId, content = content)
+
     override suspend fun delete(commentId: Int) = api.delete(commentId = commentId)
 }

@@ -4,6 +4,7 @@ import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
 import com.pocs.domain.usecase.comment.AddCommentUseCase
 import com.pocs.domain.usecase.comment.DeleteCommentUseCase
 import com.pocs.domain.usecase.comment.GetCommentsUseCase
+import com.pocs.domain.usecase.comment.UpdateCommentUseCase
 import com.pocs.domain.usecase.post.CanDeletePostUseCase
 import com.pocs.domain.usecase.post.CanEditPostUseCase
 import com.pocs.domain.usecase.post.DeletePostUseCase
@@ -50,6 +51,7 @@ class PostDetailViewModelTest {
         CanDeletePostUseCase(authRepository),
         GetCommentsUseCase(commentRepository),
         AddCommentUseCase(commentRepository),
+        UpdateCommentUseCase(commentRepository),
         DeleteCommentUseCase(commentRepository),
         GetCurrentUserUseCase(authRepository)
     )
@@ -216,7 +218,7 @@ class PostDetailViewModelTest {
     }
 
     @Test
-    fun shouldCommentIsDeleted_WhenSuccessToDelete() = runTest{
+    fun shouldCommentIsDeleted_WhenSuccessToDelete() = runTest {
         postRepository.postDetailResult = Result.success(mockPostDetail1)
         commentRepository.isSuccessToGetAllBy = true
         commentRepository.isSuccessToAdd = true
@@ -232,6 +234,30 @@ class PostDetailViewModelTest {
         viewModel.deleteComment(commentRepository.idCounter - 1)
 
         assertCommentsSize(0)
+
+        collectJob.cancel()
+    }
+
+    @Test
+    fun shouldCommentIsUpdated_WhenSuccessToUpdate() = runTest {
+        postRepository.postDetailResult = Result.success(mockPostDetail1)
+        commentRepository.isSuccessToGetAllBy = true
+        commentRepository.isSuccessToAdd = true
+        commentRepository.isSuccessToUpdate = true
+        val collectJob = launch(UnconfinedTestDispatcher()) {
+            viewModel.uiState.collect()
+        }
+        viewModel.fetchPost(mockPostDetail1.id)
+        viewModel.addComment(null, "test")
+
+        val newContent = "new!!"
+        viewModel.updateComment(id = commentRepository.idCounter - 1, content = newContent)
+
+        val uiState = viewModel.uiState.value as PostDetailUiState.Success
+        assertEquals(
+            newContent,
+            (uiState.comments as CommentsUiState.Success).comments.first().content,
+        )
 
         collectJob.cancel()
     }

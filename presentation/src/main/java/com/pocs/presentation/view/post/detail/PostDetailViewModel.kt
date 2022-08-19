@@ -7,13 +7,13 @@ import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
 import com.pocs.domain.usecase.comment.AddCommentUseCase
 import com.pocs.domain.usecase.comment.DeleteCommentUseCase
 import com.pocs.domain.usecase.comment.GetCommentsUseCase
+import com.pocs.domain.usecase.comment.UpdateCommentUseCase
 import com.pocs.domain.usecase.post.CanDeletePostUseCase
 import com.pocs.domain.usecase.post.CanEditPostUseCase
 import com.pocs.domain.usecase.post.DeletePostUseCase
 import com.pocs.domain.usecase.post.GetPostDetailUseCase
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.comment.CommentsUiState
-import com.pocs.presentation.model.comment.item.CommentItemUiState
 import com.pocs.presentation.model.post.PostDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -34,6 +34,7 @@ class PostDetailViewModel @Inject constructor(
     // comment
     private val getCommentsUseCase: GetCommentsUseCase,
     private val addCommentUseCase: AddCommentUseCase,
+    private val updateCommentUseCase: UpdateCommentUseCase,
     private val deleteCommentUseCase: DeleteCommentUseCase,
 
     // user
@@ -119,8 +120,18 @@ class PostDetailViewModel @Inject constructor(
         }
     }
 
-    fun updateComment(id: Int, comment: String) {
-        // TODO: 구현하기
+    fun updateComment(id: Int, content: String) {
+        viewModelScope.launch {
+            val result = updateCommentUseCase(commentId = id, content = content)
+            if (result.isSuccess) {
+                fetchComments()
+                // TODO: StringRes로 바꾸기
+                showUserMessage("댓글 수정됨")
+            } else {
+                // TODO: StringRes로 바꾸기
+                showUserMessage(result.exceptionOrNull()?.message ?: "댓글 수정 실패함")
+            }
+        }
     }
 
     fun deleteComment(commentId: Int) {
@@ -132,7 +143,7 @@ class PostDetailViewModel @Inject constructor(
                 showUserMessage("댓글 삭제됨")
             } else {
                 // TODO: StringRes로 바꾸기
-                showUserMessage("댓글 삭제에 실패함")
+                showUserMessage(result.exceptionOrNull()?.message ?: "댓글 삭제에 실패함")
             }
         }
     }
