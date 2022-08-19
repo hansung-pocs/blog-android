@@ -24,11 +24,15 @@ import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun SearchAppBar(title: String, onSearch: (String) -> Unit) {
+fun SearchAppBar(
+    title: String,
+    enabledSearchMode: Boolean,
+    onSearchModeChange: (Boolean) -> Unit,
+    onSearch: (String) -> Unit
+) {
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-    var enabledSearchMode by remember { mutableStateOf(false) }
     var query by remember { mutableStateOf("") }
 
     LaunchedEffect(enabledSearchMode) {
@@ -43,7 +47,7 @@ fun SearchAppBar(title: String, onSearch: (String) -> Unit) {
     }
 
     BackHandler(enabledSearchMode) {
-        enabledSearchMode = false
+        onSearchModeChange(false)
     }
 
     SmallTopAppBar(
@@ -54,7 +58,9 @@ fun SearchAppBar(title: String, onSearch: (String) -> Unit) {
                     focusRequester = focusRequester,
                     onQueryChange = { query = it },
                     onSearch = { query ->
-                        keyboardController?.hide()
+                        if (query.length >= 2) {
+                            keyboardController?.hide()
+                        }
                         onSearch(query)
                     }
                 )
@@ -65,7 +71,7 @@ fun SearchAppBar(title: String, onSearch: (String) -> Unit) {
         navigationIcon = {
             AppBarBackButton(onBackPressed = {
                 if (enabledSearchMode) {
-                    enabledSearchMode = false
+                    onSearchModeChange(false)
                 } else {
                     onBackPressedDispatcher?.onBackPressed()
                 }
@@ -78,7 +84,7 @@ fun SearchAppBar(title: String, onSearch: (String) -> Unit) {
                 }
             } else {
                 IconButton(onClick = {
-                    enabledSearchMode = true
+                    onSearchModeChange(true)
                 }) {
                     Icon(
                         imageVector = Icons.Default.Search,
