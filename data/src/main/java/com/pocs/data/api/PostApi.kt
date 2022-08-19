@@ -8,7 +8,7 @@ import retrofit2.http.*
 interface PostApi {
     @GET("posts")
     suspend fun getAll(
-        @Query("id") id: String
+        @Query("id") id: String?
     ): Response<ResponseBody<PostListDto>>
 
     @GET("posts/{postId}")
