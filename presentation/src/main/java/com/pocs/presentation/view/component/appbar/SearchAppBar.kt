@@ -113,7 +113,10 @@ private fun SearchTextField(
         ),
         value = query,
         maxLength = 40,
-        onValueChange = onQueryChange,
+        onValueChange = {
+            val value = it.filter { char -> char != '\n' }
+            onQueryChange(value)
+        },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(onSearch = { onSearch(query) })
     )
