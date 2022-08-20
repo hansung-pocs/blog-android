@@ -22,7 +22,6 @@ class UserRepositoryImpl @Inject constructor(
 
     override fun getAll(sortingMethod: UserListSortingMethod): Flow<PagingData<User>> {
         return Pager(
-            // TODO: API 페이지네이션 구현되면 페이지 사이즈 수정하기
             config = PagingConfig(pageSize = 30),
             pagingSourceFactory = { UserPagingSource(api, sortingMethod) }
         ).flow

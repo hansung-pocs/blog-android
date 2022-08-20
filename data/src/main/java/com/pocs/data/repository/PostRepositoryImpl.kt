@@ -27,7 +27,6 @@ class PostRepositoryImpl @Inject constructor(
 
     override fun getAll(filterType: PostFilterType): Flow<PagingData<Post>> {
         return Pager(
-            // TODO: API 페이지네이션 구현되면 페이지 사이즈 수정하기
             config = PagingConfig(pageSize = 30),
             pagingSourceFactory = { PostPagingSource(api = api, filterType = filterType) }
         ).flow

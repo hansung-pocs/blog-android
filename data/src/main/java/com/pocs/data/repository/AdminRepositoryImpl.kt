@@ -29,7 +29,6 @@ class AdminRepositoryImpl @Inject constructor(
 
     override fun getAllUsers(): Flow<PagingData<User>> {
         return Pager(
-            // TODO: API 페이지네이션 구현되면 페이지 사이즈 수정하기
             config = PagingConfig(pageSize = 30),
             pagingSourceFactory = { AdminUserPagingSource(api) }
         ).flow
