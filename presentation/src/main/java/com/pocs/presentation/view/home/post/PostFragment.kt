@@ -72,7 +72,7 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
         recyclerView.addDividerDecoration()
 
         loadState.setListeners(adapter, refresh)
-        adapter.registerObserverForScrollToTop(recyclerView)
+        adapter.registerObserverForScrollToTop(recyclerView, whenItemRangeMoved = true)
 
         fab.text = getString(R.string.write_post)
         fab.setOnClickListener { startPostCreateActivity() }

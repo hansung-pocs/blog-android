@@ -4,13 +4,16 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.pocs.data.api.PostApi
 import com.pocs.data.extension.errorMessage
+import com.pocs.data.mapper.toDto
 import com.pocs.data.mapper.toEntity
 import com.pocs.domain.model.post.Post
+import com.pocs.domain.model.post.PostFilterType
 import java.lang.Exception
 import javax.inject.Inject
 
 class PostPagingSource @Inject constructor(
-    private val api: PostApi
+    private val api: PostApi,
+    private val filterType: PostFilterType
 ) : PagingSource<Int, Post>() {
 
     companion object {
@@ -20,9 +23,9 @@ class PostPagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Post> {
         val page = params.key ?: START_PAGE
         return try {
-            val response = api.getAll()
+            val response = api.getAll(filterType.toDto())
             if (response.isSuccessful) {
-                val posts = response.body()!!.data.posts.map { it.toEntity() }
+                val posts = response.body()!!.data.postsAll.map { it.toEntity() }
                 // TODO: API에서 페이지네이션 구현되면 수정하기
                 val isEnd = true
 

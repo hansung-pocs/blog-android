@@ -7,9 +7,6 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class FakePostRemoteDataSource @Inject constructor() : PostRemoteDataSource {
-    override suspend fun getAll(): Response<ResponseBody<PostListDto>> {
-        TODO("Not yet implemented")
-    }
 
     override suspend fun getPostDetail(postId: Int): Response<ResponseBody<PostDetailDto>> {
         TODO("Not yet implemented")
