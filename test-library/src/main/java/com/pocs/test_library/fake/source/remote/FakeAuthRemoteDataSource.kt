@@ -4,7 +4,6 @@ import com.pocs.data.model.ResponseBody
 import com.pocs.data.model.auth.LoginRequestBody
 import com.pocs.data.model.auth.LoginResponseData
 import com.pocs.data.model.auth.SessionValidResponseData
-import com.pocs.data.model.user.UserDto
 import com.pocs.data.source.AuthRemoteDataSource
 import com.pocs.test_library.mock.errorResponse
 import retrofit2.Response
@@ -24,11 +23,11 @@ class FakeAuthRemoteDataSource @Inject constructor() : AuthRemoteDataSource {
         return loginResponse
     }
 
-    override suspend fun logout(token: String): Response<ResponseBody<Unit>> {
+    override suspend fun logout(): Response<ResponseBody<Unit>> {
         return logoutResponse
     }
 
-    override suspend fun isSessionValid(token: String): Response<ResponseBody<SessionValidResponseData>> {
+    override suspend fun isSessionValid(): Response<ResponseBody<SessionValidResponseData>> {
         isSessionValidInnerLambda()
         return isSessionValidResponse
     }

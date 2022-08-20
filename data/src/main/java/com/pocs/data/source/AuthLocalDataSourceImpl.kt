@@ -12,6 +12,10 @@ class AuthLocalDataSourceImpl @Inject constructor(
 
     private var data: AuthLocalData? = null
 
+    override fun hasData(): Boolean {
+        return getData() != null
+    }
+
     override fun getData(): AuthLocalData? {
         // 이미 전에 데이터를 읽어 값이 있는 경우에는 곧바로 데이터를 반환한다.
         if (data != null) {

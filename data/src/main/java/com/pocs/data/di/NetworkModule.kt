@@ -23,8 +23,8 @@ import javax.inject.Singleton
 class NetworkModule {
 
     companion object {
-        const val BASE_URL = BuildConfig.SERVER_URL
-        const val TOKEN_HEADER_KEY = "x-pocs-session-token"
+        private const val BASE_URL = BuildConfig.SERVER_URL
+        private const val TOKEN_HEADER_KEY = "x-pocs-session-token"
     }
 
     @Provides
@@ -39,9 +39,9 @@ class NetworkModule {
             })
             .addInterceptor {
                 val authLocalData = authLocalDataSource.getData()
-                val newRequest = it.request()
+                var newRequest = it.request()
                 if (authLocalData != null) {
-                    newRequest.newBuilder().addHeader(
+                    newRequest = newRequest.newBuilder().addHeader(
                         name = TOKEN_HEADER_KEY,
                         value = authLocalData.sessionToken
                     ).build()
