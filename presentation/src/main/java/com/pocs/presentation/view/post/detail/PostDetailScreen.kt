@@ -41,6 +41,8 @@ import com.pocs.presentation.view.component.button.DropdownButton
 import com.pocs.presentation.view.component.button.DropdownOption
 import kotlinx.coroutines.launch
 
+private const val HEADER_KEY = "header"
+
 @Composable
 fun PostDetailScreen(
     viewModel: PostDetailViewModel,
@@ -146,7 +148,7 @@ fun PostDetailContent(
         ) { optionModalController ->
             val lazyListState = rememberLazyListState()
             val titleAlpha = rememberTitleAlphaFromScrollOffset(
-                key = "header",
+                key = HEADER_KEY,
                 lazyListState = lazyListState
             )
 
@@ -273,7 +275,7 @@ fun PostDetailTopAppBar(
 }
 
 private fun LazyListScope.headerItems(title: String, writerName: String, date: String) {
-    item("header") {
+    item(HEADER_KEY) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
                 text = title,
