@@ -35,7 +35,7 @@ class UserPagingSource @Inject constructor(
         return if (sortingMethod != null) {
             api.getAll(sort = sortingMethod.toDto(), pageSize = PAGE_SIZE, page = page)
         } else if (query != null) {
-            api.search(query = query)
+            api.search(query = query, page = page, pageSize = PAGE_SIZE)
         } else {
             throw IllegalStateException()
         }

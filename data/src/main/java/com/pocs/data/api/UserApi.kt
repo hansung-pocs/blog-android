@@ -18,7 +18,9 @@ interface UserApi {
 
     @GET("users")
     suspend fun search(
-        @Query("search") query: String
+        @Query("search") query: String,
+        @Query("offset") pageSize: Int,
+        @Query("pageNum") page: Int
     ): Response<ResponseBody<UserListDto>>
 
     @GET("users/{userId}")
