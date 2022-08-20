@@ -3,6 +3,7 @@ package com.pocs.presentation
 import com.pocs.domain.model.user.UserListSortingMethod
 import com.pocs.domain.usecase.user.GetAllUsersUseCase
 import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
+import com.pocs.domain.usecase.user.SearchUserUseCase
 import com.pocs.presentation.view.user.UserViewModel
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
@@ -34,6 +35,7 @@ class UserViewModelTest {
         Dispatchers.setMain(dispatcher)
         viewModel = UserViewModel(
             GetAllUsersUseCase(userRepository),
+            SearchUserUseCase(userRepository),
             GetCurrentUserTypeUseCase(authRepository)
         )
     }
