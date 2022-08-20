@@ -11,6 +11,7 @@ import com.pocs.data.model.post.PostAddBody
 import com.pocs.data.model.post.PostDeleteBody
 import com.pocs.data.model.post.PostUpdateBody
 import com.pocs.data.paging.PostPagingSource
+import com.pocs.data.paging.PostPagingSource.Companion.PAGE_SIZE
 import com.pocs.data.source.PostRemoteDataSource
 import com.pocs.domain.model.post.Post
 import com.pocs.domain.model.post.PostCategory
@@ -27,7 +28,7 @@ class PostRepositoryImpl @Inject constructor(
 
     override fun getAll(filterType: PostFilterType): Flow<PagingData<Post>> {
         return Pager(
-            config = PagingConfig(pageSize = 30),
+            config = PagingConfig(PAGE_SIZE),
             pagingSourceFactory = { PostPagingSource(api = api, filterType = filterType) }
         ).flow
     }

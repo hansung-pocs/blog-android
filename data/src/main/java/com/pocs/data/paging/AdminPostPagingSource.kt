@@ -15,13 +15,13 @@ class AdminPostPagingSource @Inject constructor(
 
     companion object {
         private const val START_PAGE = 1
-        private const val PAGING_SIZE = 30
+        const val PAGE_SIZE = 15
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Post> {
         val page = params.key ?: START_PAGE
         return try {
-            val response = api.getAllPosts(PAGING_SIZE, page = page)
+            val response = api.getAllPosts(pageSize = PAGE_SIZE, page = page)
             if (response.isSuccessful) {
                 val users = response.body()!!.data.posts.map { it.toEntity() }
                 val isEnd = users.isEmpty()

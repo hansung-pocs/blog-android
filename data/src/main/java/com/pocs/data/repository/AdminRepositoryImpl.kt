@@ -10,6 +10,7 @@ import com.pocs.data.mapper.toDto
 import com.pocs.data.model.admin.UserKickInfoBody
 import com.pocs.data.paging.AdminPostPagingSource
 import com.pocs.data.paging.AdminPostByUserPagingSource
+import com.pocs.data.paging.AdminPostByUserPagingSource.Companion.PAGE_SIZE
 import com.pocs.data.paging.AdminUserPagingSource
 import com.pocs.data.source.AdminRemoteDataSource
 import com.pocs.domain.model.admin.UserCreateInfo
@@ -29,7 +30,7 @@ class AdminRepositoryImpl @Inject constructor(
 
     override fun getAllUsers(): Flow<PagingData<User>> {
         return Pager(
-            config = PagingConfig(pageSize = 30),
+            config = PagingConfig(PAGE_SIZE),
             pagingSourceFactory = { AdminUserPagingSource(api) }
         ).flow
     }

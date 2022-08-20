@@ -7,6 +7,7 @@ import com.pocs.data.api.UserApi
 import com.pocs.data.extension.errorMessage
 import com.pocs.data.mapper.toDetailEntity
 import com.pocs.data.paging.UserPagingSource
+import com.pocs.data.paging.UserPagingSource.Companion.PAGE_SIZE
 import com.pocs.data.source.UserRemoteDataSource
 import com.pocs.domain.model.user.User
 import com.pocs.domain.model.user.UserDetail
@@ -22,7 +23,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override fun getAll(sortingMethod: UserListSortingMethod): Flow<PagingData<User>> {
         return Pager(
-            config = PagingConfig(pageSize = 30),
+            config = PagingConfig(PAGE_SIZE),
             pagingSourceFactory = { UserPagingSource(api, sortingMethod) }
         ).flow
     }
