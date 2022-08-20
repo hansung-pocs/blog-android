@@ -1,5 +1,6 @@
 package com.pocs.data.api
 
+import com.pocs.data.di.NetworkModule.Companion.TOKEN_HEADER_KEY
 import com.pocs.data.model.ResponseBody
 import com.pocs.data.model.auth.LoginRequestBody
 import com.pocs.data.model.auth.LoginResponseData
@@ -19,11 +20,11 @@ interface AuthApi {
 
     @POST("auth/logout")
     suspend fun logout(
-        @Header("x-pocs-session-token") token: String
+        @Header(TOKEN_HEADER_KEY) token: String
     ): Response<ResponseBody<Unit>>
 
     @POST("auth/validation")
     suspend fun isSessionValid(
-        @Header("x-pocs-session-token") token: String
+        @Header(TOKEN_HEADER_KEY) token: String
     ): Response<ResponseBody<SessionValidResponseData>>
 }
