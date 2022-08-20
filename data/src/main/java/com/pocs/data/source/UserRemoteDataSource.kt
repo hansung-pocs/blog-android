@@ -2,6 +2,7 @@ package com.pocs.data.source
 
 import com.pocs.data.model.ResponseBody
 import com.pocs.data.model.user.UserDto
+import com.pocs.data.model.user.anonymous.AnonymousCreateInfoBody
 import retrofit2.Response
 
 interface UserRemoteDataSource {
@@ -16,4 +17,6 @@ interface UserRemoteDataSource {
         company: String?,
         github: String?
     ): Response<ResponseBody<Unit>>
+
+    suspend fun createAnonymous(AnonymousCreateInfoBody: AnonymousCreateInfoBody): Response<ResponseBody<Unit>>
 }
