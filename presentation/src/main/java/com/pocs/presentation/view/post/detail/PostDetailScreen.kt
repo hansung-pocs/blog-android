@@ -1,8 +1,10 @@
 package com.pocs.presentation.view.post.detail
 
+import androidx.annotation.FloatRange
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -18,8 +20,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pocs.domain.model.post.PostCategory
@@ -36,6 +40,8 @@ import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.component.button.DropdownButton
 import com.pocs.presentation.view.component.button.DropdownOption
 import kotlinx.coroutines.launch
+
+private const val HEADER_KEY = "header"
 
 @Composable
 fun PostDetailScreen(
@@ -140,18 +146,24 @@ fun PostDetailContent(
                 )
             }
         ) { optionModalController ->
+            val lazyListState = rememberLazyListState()
+            val titleAlpha = rememberTitleAlphaFromScrollOffset(
+                key = HEADER_KEY,
+                lazyListState = lazyListState
+            )
 
             Scaffold(
                 snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
                 topBar = {
                     PostDetailTopAppBar(
                         uiState,
+                        titleAlpha = titleAlpha.value,
                         onEditClick = onEditClick,
                         onDeleteClick = { showDeleteDialog = true }
                     )
                 }
             ) { paddingValues ->
-                LazyColumn(Modifier.padding(paddingValues)) {
+                LazyColumn(Modifier.padding(paddingValues), state = lazyListState) {
                     headerItems(
                         title = postDetail.title,
                         writerName = postDetail.writer.name,
@@ -213,6 +225,7 @@ fun PostDetailContent(
 @Composable
 fun PostDetailTopAppBar(
     uiState: PostDetailUiState.Success,
+    @FloatRange(from = 0.0, to = 1.0) titleAlpha: Float,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit
 ) {
@@ -220,7 +233,14 @@ fun PostDetailTopAppBar(
         navigationIcon = {
             AppBarBackButton()
         },
-        title = {},
+        title = {
+            Text(
+                text = uiState.postDetail.title,
+                modifier = Modifier.alpha(titleAlpha),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
         actions = {
             val options = mutableListOf<Int>()
             if (uiState.canEditPost) {
@@ -255,7 +275,7 @@ fun PostDetailTopAppBar(
 }
 
 private fun LazyListScope.headerItems(title: String, writerName: String, date: String) {
-    item {
+    item(HEADER_KEY) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
                 text = title,

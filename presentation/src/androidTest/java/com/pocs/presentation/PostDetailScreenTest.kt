@@ -4,7 +4,10 @@ import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.semantics.SemanticsNode
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
@@ -466,6 +469,49 @@ class PostDetailScreenTest {
             }
 
             onNodeWithText("10").assertIsDisplayed()
+        }
+    }
+
+    @Test
+    fun shouldShowTitleInAppBar_WhenScrollUp() {
+        composeRule.run {
+            val title = "hi"
+
+            setContent {
+                val snackbarHostState = remember { SnackbarHostState() }
+
+                PostDetailContent(
+                    uiState = uiState.copy(
+                        postDetail = mockPostDetail1.copy(
+                            title = title,
+                            content = "t\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nt"
+                        ).toUiState()
+                    ),
+                    snackbarHostState = snackbarHostState,
+                    onEditClick = {},
+                    onDeleteClick = {},
+                    onCommentDelete = {},
+                    onCommentCreated = { _, _ -> },
+                    onCommentUpdated = { _, _ -> }
+                )
+            }
+
+            assertEquals(1,  findVisibleTexts(text = title).size)
+
+            onRoot().performTouchInput{ swipeUp() }
+
+            assertEquals(1,  findVisibleTexts(text = title).size)
+        }
+    }
+
+    @Suppress("SameParameterValue")
+    private fun findVisibleTexts(text: String): List<SemanticsNode> {
+        return composeRule.onAllNodes(hasText(text)).fetchSemanticsNodes().filter { semanticsNode ->
+            // 투명한 자식을 하나도 가지고 있지 않다면 텍스트가 투명하지 않다고 여긴다.
+            val transparentNodes = semanticsNode.layoutInfo.getModifierInfo().filter {
+                it.modifier == Modifier.alpha(0.0f)
+            }
+            transparentNodes.isEmpty()
         }
     }
 }
