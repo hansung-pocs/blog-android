@@ -24,20 +24,16 @@ class AuthRepositoryImpl @Inject constructor(
 
     private val currentUserState: MutableStateFlow<UserDetail?> = MutableStateFlow(null)
 
-    private var token: String? = null
-
     init {
-        val localData = localDataSource.getData()
         MainScope().launch {
-            if (localData != null) {
+            if (localDataSource.hasData()) {
                 try {
-                    val response = remoteDataSource.isSessionValid(localData.sessionToken)
+                    val response = remoteDataSource.isSessionValid()
                     val isSessionValid = response.isSuccessful
 
                     if (isSessionValid) {
                         val userDto = response.body()!!.data.user
                         currentUserState.value = userDto.toDetailEntity()
-                        token = localData.sessionToken
                     } else {
                         localDataSource.clear()
                     }
@@ -52,7 +48,6 @@ class AuthRepositoryImpl @Inject constructor(
     override fun isReady(): Flow<Boolean> = isReady
 
     override suspend fun login(userName: String, password: String): Result<Unit> {
-        assert(token == null) { "이미 로그인한 상태에서 로그인을 시도했습니다." }
         try {
             val response = remoteDataSource.login(
                 LoginRequestBody(username = userName, password = password)
@@ -62,8 +57,7 @@ class AuthRepositoryImpl @Inject constructor(
                 val loginResponseData = response.body()!!.data
 
                 currentUserState.value = loginResponseData.user.toDetailEntity()
-                token = loginResponseData.sessionToken
-                localDataSource.setData(AuthLocalData(sessionToken = token!!))
+                localDataSource.setData(AuthLocalData(sessionToken = loginResponseData.sessionToken))
 
                 return Result.success(Unit)
             } else {
@@ -75,13 +69,11 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun logout(): Result<Unit> {
-        assert(token != null) { "로그인하지 않은 상태로 로그아웃을 시도했습니다." }
         return try {
-            val response = remoteDataSource.logout(token!!)
+            val response = remoteDataSource.logout()
 
             if (response.isSuccessful) {
                 currentUserState.value = null
-                token = null
                 localDataSource.clear()
 
                 Result.success(Unit)

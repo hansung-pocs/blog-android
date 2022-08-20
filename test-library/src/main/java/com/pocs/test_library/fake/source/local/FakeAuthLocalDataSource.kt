@@ -8,6 +8,10 @@ class FakeAuthLocalDataSource @Inject constructor() : AuthLocalDataSource {
 
     var authLocalData: AuthLocalData? = null
 
+    override fun hasData(): Boolean {
+        return getData() != null
+    }
+
     override fun getData(): AuthLocalData? {
         return authLocalData
     }
