@@ -3,6 +3,7 @@ package com.pocs.presentation.view.user
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.pocs.domain.model.user.UserListSortingMethod
@@ -75,7 +76,15 @@ class UserViewModel @Inject constructor(
     }
 
     fun onSearchModeChange(enabled: Boolean) {
-        _uiState.update { it.copy(enabledSearchMode = enabled) }
+        _uiState.update {
+            val searchPagingData = if (!enabled) {
+                // 검색 모드가 종료되면 검색 페이징 데이터를 비운다.
+                PagingData.empty()
+            } else {
+                it.searchPagingData
+            }
+            it.copy(enabledSearchMode = enabled, searchPagingData = searchPagingData)
+        }
     }
 
     fun errorMessageShown() {
