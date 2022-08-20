@@ -12,6 +12,7 @@ val PostCategory.koreanStringResource: Int
             PostCategory.MEMORY -> R.string.memory
             PostCategory.KNOWHOW -> R.string.knowhow
             PostCategory.REFERENCE -> R.string.reference
+            PostCategory.QNA -> R.string.question_answer
         }
     }
 
