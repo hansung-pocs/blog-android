@@ -18,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -158,7 +157,7 @@ fun Comment(
                     .fillMaxWidth()
                     .padding(horizontal = 4.dp)
             ) {
-                CommentLabel(
+                Label(
                     imageVector = Icons.Outlined.Comment,
                     onClick = onReplyIconClick,
                     label = if (uiState.childrenCount == 0) null else uiState.childrenCount.toString(),
@@ -166,46 +165,6 @@ fun Comment(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun CommentLabel(
-    imageVector: ImageVector,
-    label: String?,
-    contentDescription: String,
-    onClick: () -> Unit
-) {
-    val color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
-    val interactionSource = remember { MutableInteractionSource() }
-
-    Box(
-        contentAlignment = Alignment.CenterStart,
-        modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 20.dp)
-    ) {
-        Icon(
-            modifier = Modifier
-                .size(16.dp)
-                .clickable(
-                    onClick = onClick,
-                    interactionSource = interactionSource,
-                    indication = rememberRipple(
-                        bounded = false,
-                        radius = 24.dp
-                    ),
-                    role = Role.Button,
-                ),
-            imageVector = imageVector,
-            contentDescription = contentDescription,
-            tint = color
-        )
-        Text(
-            modifier = Modifier
-                .padding(start = 24.dp)
-                .defaultMinSize(minWidth = 32.dp),
-            text = label ?: "",
-            style = MaterialTheme.typography.bodySmall.copy(color = color)
-        )
     }
 }
 

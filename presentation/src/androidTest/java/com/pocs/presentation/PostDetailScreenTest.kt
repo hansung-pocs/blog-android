@@ -375,7 +375,9 @@ class PostDetailScreenTest {
 
             val text = "hello"
             onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
-            onNodeWithContentDescription(getString(R.string.comment_text_field)).performTextInput(text)
+            onNodeWithContentDescription(getString(R.string.comment_text_field)).performTextInput(
+                text
+            )
             onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
 
             onNodeWithText(text).assertIsNotDisplayed()
@@ -434,11 +436,36 @@ class PostDetailScreenTest {
 
             val text = "hello"
             onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
-            onNodeWithContentDescription(getString(R.string.comment_text_field)).performTextInput(text)
+            onNodeWithContentDescription(getString(R.string.comment_text_field)).performTextInput(
+                text
+            )
             onNodeWithContentDescription(getString(R.string.send_comment)).performClick()
 
             keyboardHelper.waitForKeyboardVisibility(false)
             assertFalse(keyboardHelper.isSoftwareKeyboardShown())
+        }
+    }
+
+    @Test
+    fun shouldShowViews() {
+        composeRule.run {
+            setContent {
+                val snackbarHostState = remember { SnackbarHostState() }
+
+                PostDetailContent(
+                    uiState = uiState.copy(
+                        postDetail = mockPostDetail1.copy(views = 10).toUiState()
+                    ),
+                    snackbarHostState = snackbarHostState,
+                    onEditClick = {},
+                    onDeleteClick = {},
+                    onCommentDelete = {},
+                    onCommentCreated = { _, _ -> },
+                    onCommentUpdated = { _, _ -> }
+                )
+            }
+
+            onNodeWithText("10").assertIsDisplayed()
         }
     }
 }

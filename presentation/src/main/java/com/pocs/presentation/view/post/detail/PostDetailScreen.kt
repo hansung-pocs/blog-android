@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -165,6 +166,7 @@ fun PostDetailContent(
                             )
                         )
                     }
+                    postInfoItems(views = uiState.postDetail.views)
                     item {
                         ThickDivider()
                     }
@@ -279,6 +281,18 @@ private fun LazyListScope.headerItems(title: String, writerName: String, date: S
     }
 }
 
+private fun LazyListScope.postInfoItems(views: Int) {
+    item {
+        Row(Modifier.padding(horizontal = 4.dp)) {
+            Label(
+                imageVector = Icons.Default.Visibility,
+                label = views.toString(),
+                contentDescription = stringResource(id = R.string.views)
+            )
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PostDetailFailureContent(uiState: PostDetailUiState.Failure) {
@@ -351,6 +365,7 @@ private fun PostDetailContentPreview() {
                 content = "내용이 들어가는 자리입니다.",
                 date = "어제",
                 category = PostCategory.NOTICE,
+                views = 10
             ),
             canDeletePost = true,
             canEditPost = true,
