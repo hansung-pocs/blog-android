@@ -11,7 +11,10 @@ import retrofit2.http.*
 
 interface AdminApi {
     @GET("admin/users")
-    suspend fun getAllUsers(): Response<ResponseBody<UserListDto>>
+    suspend fun getAllUsers(
+        @Query("offset") pageSize: Int,
+        @Query("pageNum") page: Int
+    ): Response<ResponseBody<UserListDto>>
 
     @GET("admin/users/{userId}")
     suspend fun getUserDetail(
@@ -30,10 +33,15 @@ interface AdminApi {
     ): Response<ResponseBody<Unit>>
 
     @GET("admin/posts")
-    suspend fun getAllPosts(): Response<ResponseBody<PostListDto>>
+    suspend fun getAllPosts(
+        @Query("offset") pageSize: Int,
+        @Query("pageNum") page: Int
+    ): Response<ResponseBody<PostListDto>>
 
     @GET("admin/posts/{userId}")
     suspend fun getAllPostsByUser(
-        @Path("userId") userId: Int
+        @Path("userId") userId: Int,
+        @Query("offset") pageSize: Int,
+        @Query("pageNum") page: Int
     ): Response<ResponseBody<PostListDto>>
 }
