@@ -6,10 +6,13 @@ import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserListSortingMethod
 import com.pocs.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class FakeUserRepositoryImpl @Inject constructor() : UserRepository {
+
+    var searchResult = emptyFlow<PagingData<User>>()
 
     var userDetailResult: Result<UserDetail> = Result.failure(Exception("Empty"))
 
@@ -25,7 +28,7 @@ class FakeUserRepositoryImpl @Inject constructor() : UserRepository {
         query: String,
         sortingMethod: UserListSortingMethod
     ): Flow<PagingData<User>> {
-        TODO("Not yet implemented")
+        return searchResult
     }
 
     override suspend fun getUserDetail(id: Int) = userDetailResult

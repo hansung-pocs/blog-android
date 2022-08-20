@@ -3,6 +3,7 @@ package com.pocs.test_library.paging
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
 import com.pocs.presentation.model.post.item.PostItemUiState
+import com.pocs.presentation.model.user.item.UserItemUiState
 
 class NoopListCallback : ListUpdateCallback {
     override fun onChanged(position: Int, count: Int, payload: Any?) {}
@@ -17,6 +18,16 @@ class PostItemUiStateDiffCallback : DiffUtil.ItemCallback<PostItemUiState>() {
     }
 
     override fun areContentsTheSame(oldItem: PostItemUiState, newItem: PostItemUiState): Boolean {
+        return oldItem == newItem
+    }
+}
+
+class UserItemUiStateDiffCallback : DiffUtil.ItemCallback<UserItemUiState>() {
+    override fun areItemsTheSame(oldItem: UserItemUiState, newItem: UserItemUiState): Boolean {
+        return oldItem == newItem
+    }
+
+    override fun areContentsTheSame(oldItem: UserItemUiState, newItem: UserItemUiState): Boolean {
         return oldItem == newItem
     }
 }
