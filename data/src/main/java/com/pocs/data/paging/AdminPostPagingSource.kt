@@ -15,20 +15,19 @@ class AdminPostPagingSource @Inject constructor(
 
     companion object {
         private const val START_PAGE = 1
+        const val PAGE_SIZE = 15
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Post> {
         val page = params.key ?: START_PAGE
         return try {
-            val response = api.getAllPosts()
+            val response = api.getAllPosts(pageSize = PAGE_SIZE, page = page)
             if (response.isSuccessful) {
-                val users = response.body()!!.data.postsAll.map { it.toEntity() }
-                // TODO: API에서 페이지네이션 구현되면 수정하기
-                val isEnd = true
+                val users = response.body()!!.data.posts.map { it.toEntity() }
+                val isEnd = users.isEmpty()
 
                 LoadResult.Page(
                     data = users,
-                    // TODO: API에서 페이지네이션 구현되면 수정하기
                     prevKey = if (page == START_PAGE) null else page - 1,
                     nextKey = if (isEnd) null else page + 1
                 )
