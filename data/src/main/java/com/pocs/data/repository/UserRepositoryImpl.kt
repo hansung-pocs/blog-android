@@ -28,10 +28,19 @@ class UserRepositoryImpl @Inject constructor(
         ).flow
     }
 
-    override fun search(query: String): Flow<PagingData<User>> {
+    override fun search(
+        query: String,
+        sortingMethod: UserListSortingMethod
+    ): Flow<PagingData<User>> {
         return Pager(
             config = PagingConfig(pageSize = PAGE_SIZE),
-            pagingSourceFactory = { UserPagingSource(api = api, query = query) }
+            pagingSourceFactory = {
+                UserPagingSource(
+                    api = api,
+                    query = query,
+                    sortingMethod = sortingMethod
+                )
+            }
         ).flow
     }
 

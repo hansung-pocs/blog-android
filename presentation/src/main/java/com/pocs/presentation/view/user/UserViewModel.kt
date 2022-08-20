@@ -58,7 +58,7 @@ class UserViewModel @Inject constructor(
         }
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
-            searchUserUseCase(query = query)
+            searchUserUseCase(query = query, sortingMethod = uiState.value.sortingMethod)
                 .cachedIn(viewModelScope)
                 .map { it.map { user -> user.toUiState() } }
                 .collectLatest { pagingData ->

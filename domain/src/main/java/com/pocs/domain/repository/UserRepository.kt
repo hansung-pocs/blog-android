@@ -10,7 +10,7 @@ interface UserRepository {
 
     fun getAll(sortingMethod: UserListSortingMethod): Flow<PagingData<User>>
 
-    fun search(query: String): Flow<PagingData<User>>
+    fun search(query: String, sortingMethod: UserListSortingMethod): Flow<PagingData<User>>
 
     suspend fun getUserDetail(id: Int): Result<UserDetail>
 

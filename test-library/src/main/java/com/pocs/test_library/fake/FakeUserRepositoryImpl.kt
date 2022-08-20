@@ -21,6 +21,13 @@ class FakeUserRepositoryImpl @Inject constructor() : UserRepository {
         }
     }
 
+    override fun search(
+        query: String,
+        sortingMethod: UserListSortingMethod
+    ): Flow<PagingData<User>> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getUserDetail(id: Int) = userDetailResult
 
     override suspend fun updateUser(

@@ -11,14 +11,8 @@ import retrofit2.http.*
 interface UserApi {
     @GET("users")
     suspend fun getAll(
-        @Query("sort") sort: UserListSortingMethodDto?,
-        @Query("offset") pageSize: Int,
-        @Query("pageNum") page: Int
-    ): Response<ResponseBody<UserListDto>>
-
-    @GET("users")
-    suspend fun search(
-        @Query("search") query: String,
+        @Query("sort") sortingMethod: UserListSortingMethodDto?,
+        @Query("search") query: String?,
         @Query("offset") pageSize: Int,
         @Query("pageNum") page: Int
     ): Response<ResponseBody<UserListDto>>
