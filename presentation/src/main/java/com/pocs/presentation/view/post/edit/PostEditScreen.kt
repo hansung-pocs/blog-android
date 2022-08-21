@@ -1,6 +1,7 @@
 package com.pocs.presentation.view.post.edit
 
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -121,8 +122,11 @@ fun PostEditContent(
                     .semantics { contentDescription = contentContentDescription }
                     .onFocusChanged { showToolBar = it.hasFocus }
             )
-            if (showToolBar) {
-                MarkdownToolBar(textFieldValue = uiState.content, onValueChange = {})
+            AnimatedVisibility(visible = showToolBar) {
+                MarkdownToolBar(
+                    textFieldValue = uiState.content,
+                    onValueChange = uiState.onContentChange
+                )
             }
         }
     }
