@@ -13,7 +13,8 @@ import javax.inject.Inject
 
 class UserPagingSource @Inject constructor(
     private val api: UserApi,
-    private val sortingMethod: UserListSortingMethod
+    private val sortingMethod: UserListSortingMethod,
+    private val query: String? = null
 ) : PagingSource<Int, User>() {
 
     companion object {
@@ -24,7 +25,12 @@ class UserPagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, User> {
         val page = params.key ?: START_PAGE
         return try {
-            val response = api.getAll(sortingMethod.toDto(), pageSize = PAGE_SIZE, page = page)
+            val response = api.getAll(
+                sortingMethod = sortingMethod.toDto(),
+                query = query,
+                page = page,
+                pageSize = PAGE_SIZE
+            )
             if (response.isSuccessful) {
                 val users = response.body()!!.data.users.map { it.toEntity() }
                 val isEnd = users.isEmpty()

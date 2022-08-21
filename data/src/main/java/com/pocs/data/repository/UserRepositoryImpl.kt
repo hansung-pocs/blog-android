@@ -23,8 +23,24 @@ class UserRepositoryImpl @Inject constructor(
 
     override fun getAll(sortingMethod: UserListSortingMethod): Flow<PagingData<User>> {
         return Pager(
-            config = PagingConfig(PAGE_SIZE),
-            pagingSourceFactory = { UserPagingSource(api, sortingMethod) }
+            config = PagingConfig(pageSize = PAGE_SIZE),
+            pagingSourceFactory = { UserPagingSource(api = api, sortingMethod = sortingMethod) }
+        ).flow
+    }
+
+    override fun search(
+        query: String,
+        sortingMethod: UserListSortingMethod
+    ): Flow<PagingData<User>> {
+        return Pager(
+            config = PagingConfig(pageSize = PAGE_SIZE),
+            pagingSourceFactory = {
+                UserPagingSource(
+                    api = api,
+                    query = query,
+                    sortingMethod = sortingMethod
+                )
+            }
         ).flow
     }
 

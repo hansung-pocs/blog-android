@@ -6,6 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -13,6 +14,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 fun SimpleTextField(
     modifier: Modifier,
     hint: String,
+    hintStyle: TextStyle? = null,
     value: String,
     maxLength: Int,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -30,7 +32,7 @@ fun SimpleTextField(
         ),
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
-        placeholder = { Text(hint) },
+        placeholder = { Text(hint, style = hintStyle ?: LocalTextStyle.current) },
         value = value,
         onValueChange = {
             if (it.length <= maxLength) {

@@ -6,12 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".view.user.UserActivity">
 
-    <androidx.appcompat.widget.Toolbar
+    <androidx.compose.ui.platform.ComposeView
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/user_list" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"

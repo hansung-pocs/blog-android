@@ -56,11 +56,11 @@ class UserFragment : ViewBindingFragment<FragmentUserBinding>() {
             )
 
             sortBox.setOnClickListener { showSortingMethodPopUpMenu() }
+        }
 
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.uiState.collect(::updateUi)
-                }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect(::updateUi)
             }
         }
 
@@ -99,13 +99,24 @@ class UserFragment : ViewBindingFragment<FragmentUserBinding>() {
     }
 
     private fun updateUi(uiState: UserUiState) {
-        adapter.submitData(viewLifecycleOwner.lifecycle, uiState.userPagingData)
-        val stringResource = when (uiState.sortingMethod) {
+        val sortTextStringRes = when (uiState.sortingMethod) {
             UserListSortingMethod.CREATED_AT -> R.string.sorting_by_created_at_descending
             UserListSortingMethod.STUDENT_ID -> R.string.sorting_by_student_id_ascending
             UserListSortingMethod.GENERATION -> R.string.sorting_by_generation_descending
         }
-        binding.sortText.text = getString(stringResource)
+        val pagingData = if (uiState.enabledSearchMode) {
+            uiState.searchPagingData
+        } else {
+            uiState.userPagingData
+        }
+
+        binding.sortText.text = getString(sortTextStringRes)
+        adapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+
+        if (uiState.errorMessageRes != null) {
+            showSnackBar(getString(uiState.errorMessageRes))
+            viewModel.errorMessageShown()
+        }
     }
 
     private fun showSnackBar(message: String) {
