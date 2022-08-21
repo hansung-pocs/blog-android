@@ -1,12 +1,12 @@
 package com.pocs.presentation.view.component
 
 import android.content.Context
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.FontRes
 import androidx.annotation.IdRes
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -19,6 +19,8 @@ import androidx.compose.material.LocalContentColor
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.CheckBox
+import androidx.compose.material.icons.outlined.IntegrationInstructions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -29,6 +31,7 @@ import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -165,16 +168,17 @@ class Markdown {
 
 
 // TODO: IMAGE 추가하기
-enum class ToolBarItem(val imageVector: ImageVector) {
+enum class MarkdownTag(val imageVector: ImageVector) {
     BOLD(Icons.Default.FormatBold),
     ITALIC(Icons.Default.FormatItalic),
     LINK(Icons.Default.Link),
     LIST_ITEM(Icons.Default.List),
-    TASK_LIST_ITEM(Icons.Default.Checklist),
+    TASK_LIST_ITEM(Icons.Outlined.CheckBox),
     HEADING(Icons.Default.HMobiledata),
     STRIKETHROUGH(Icons.Default.StrikethroughS),
     QUOTE(Icons.Default.FormatQuote),
-    CODE_HIGHLIGHT(Icons.Default.Code)
+    CODE_HIGHLIGHT(Icons.Default.Code),
+    CODE_BLOCK(Icons.Outlined.IntegrationInstructions)
 }
 
 @Composable
@@ -185,35 +189,138 @@ fun MarkdownToolBar(textFieldValue: TextFieldValue, onValueChange: (TextFieldVal
             .background(color = MaterialTheme.colorScheme.primaryContainer)
             .horizontalScroll(rememberScrollState())
     ) {
-        val items = remember { ToolBarItem.values() }
-        for (item in items) {
-            MarkdownToolBarItem(item) {
-                when (item) {
-                    ToolBarItem.BOLD -> {
-                        Log.e("ee", textFieldValue.selection.toString())
-                    }
-                    ToolBarItem.ITALIC -> TODO()
-                    ToolBarItem.LINK -> TODO()
-                    ToolBarItem.LIST_ITEM -> TODO()
-                    ToolBarItem.TASK_LIST_ITEM -> TODO()
-                    ToolBarItem.HEADING -> TODO()
-                    ToolBarItem.STRIKETHROUGH -> TODO()
-                    ToolBarItem.QUOTE -> TODO()
-                    ToolBarItem.CODE_HIGHLIGHT -> TODO()
-                }
+        val tags = remember { MarkdownTag.values() }
+        for (tag in tags) {
+            MarkdownToolBarItemButton(tag) {
+                onValueChange(textFieldValue.addMarkdownTag(tag))
             }
         }
     }
 }
 
+@VisibleForTesting
+fun TextFieldValue.addMarkdownTag(tag: MarkdownTag): TextFieldValue {
+    val text = this.text
+    val selection = this.selection
+
+    return when (tag) {
+        MarkdownTag.BOLD -> TextFieldValue(
+            text = text.wrapWith("**", selection.start, selection.end),
+            selection = TextRange(selection.end + 2)
+        )
+        MarkdownTag.ITALIC -> TextFieldValue(
+            text = text.wrapWith("_", selection.start, selection.end),
+            selection = TextRange(selection.end + 1)
+        )
+        MarkdownTag.LINK -> TextFieldValue(
+            text = text.wrapWith(
+                prefix = "[",
+                suffix = "]()",
+                selection.start,
+                selection.end
+            ),
+            selection = TextRange(selection.end + 4)
+        )
+        MarkdownTag.LIST_ITEM -> TextFieldValue(
+            text = text.insertAtFrontOfLine("- ", selection.start),
+            selection = TextRange(selection.end + 2)
+        )
+        MarkdownTag.TASK_LIST_ITEM -> {
+            var newText = text.checkIfHasCheckBoxTag(selection.start)
+            var newTextRange = TextRange(selection.end)
+            // 체크박스가 존재하지 않았던 경우 새로 체크박스 태그를 넣어준다.
+            if (newText == text) {
+                newText = text.insertAtFrontOfLine("- [ ] ", selection.start)
+                newTextRange = TextRange(selection.end + 6)
+            }
+            TextFieldValue(
+                text = newText,
+                selection = newTextRange
+            )
+        }
+        MarkdownTag.HEADING -> {
+            val hasHeadingTag = text.hasHeadingTagAtLine(selection.start)
+            val headingTag = if (hasHeadingTag) "#" else "# "
+
+            TextFieldValue(
+                text = text.insertAtFrontOfLine(headingTag, selection.start),
+                selection = TextRange(
+                    index = selection.end + headingTag.length
+                )
+            )
+        }
+        MarkdownTag.STRIKETHROUGH -> TextFieldValue(
+            text = text.wrapWith("~~", selection.start, selection.end),
+            selection = TextRange(selection.end + 2)
+        )
+        MarkdownTag.QUOTE -> TextFieldValue(
+            text = text.insertAtFrontOfLine("> ", selection.start),
+            selection = TextRange(selection.end + 2)
+        )
+        MarkdownTag.CODE_HIGHLIGHT -> TextFieldValue(
+            text = text.wrapWith("`", selection.start, selection.end),
+            selection = TextRange(selection.end + 1)
+        )
+        MarkdownTag.CODE_BLOCK -> TextFieldValue(
+            text = text.wrapWith(
+                prefix = "```\n",
+                suffix = "\n```",
+                selection.start,
+                selection.end
+            ),
+            selection = TextRange(selection.start + 3)
+        )
+    }
+}
+
+private fun String.replaceAt(char: Char, index: Int): String {
+    return substring(0, index) + char + substring(index + 1, length)
+}
+
+private fun String.wrapWith(prefix: String, suffix: String, start: Int, end: Int): String {
+    return substring(0, start) + prefix + substring(start, end) + suffix + substring(end, length)
+}
+
+private fun String.wrapWith(str: String, start: Int, end: Int): String {
+    return wrapWith(str, str, start, end)
+}
+
+private fun String.firstIndexOfLine(cursorPosition: Int): Int {
+    return substring(0, cursorPosition).lastIndexOf('\n') + 1
+}
+
+private fun String.insertAtFrontOfLine(str: String, cursorPosition: Int): String {
+    val targetIndex = firstIndexOfLine(cursorPosition)
+    return substring(0, targetIndex) + str + substring(targetIndex, length)
+}
+
+private fun String.hasHeadingTagAtLine(cursorPosition: Int): Boolean {
+    return this[firstIndexOfLine(cursorPosition)] == '#'
+}
+
+private fun String.checkIfHasCheckBoxTag(cursorPosition: Int): String {
+    val start = firstIndexOfLine(cursorPosition)
+    val end = minOf(start + 6, length)
+    val thisCheckBoxString = substring(start, end)
+    val hasUncheckedBox = thisCheckBoxString == "- [ ] "
+    val hasCheckedBox = thisCheckBoxString == "- [x] " || thisCheckBoxString == "- [X] "
+    return if (hasUncheckedBox) {
+        replaceAt('x', start + 3)
+    } else if (hasCheckedBox) {
+        replaceAt(' ', start + 3)
+    } else {
+        this
+    }
+}
+
 @Composable
-private fun MarkdownToolBarItem(item: ToolBarItem, onClick: () -> Unit) {
+private fun MarkdownToolBarItemButton(tag: MarkdownTag, onClick: () -> Unit) {
     Icon(
         modifier = Modifier
             .clickable(onClick = onClick)
             .padding(8.dp),
-        imageVector = item.imageVector,
-        contentDescription = item.name
+        imageVector = tag.imageVector,
+        contentDescription = tag.name
     )
 }
 
