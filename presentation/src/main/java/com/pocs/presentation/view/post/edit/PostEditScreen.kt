@@ -23,10 +23,10 @@ import com.pocs.presentation.extension.koreanStringResource
 import com.pocs.presentation.model.post.BasePostEditUiState
 import com.pocs.presentation.model.post.PostEditUiState
 import com.pocs.presentation.view.component.HorizontalChips
-import com.pocs.presentation.view.component.MarkdownToolBar
 import com.pocs.presentation.view.component.PocsDivider
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
+import com.pocs.presentation.view.component.markdown.MarkdownToolBar
 import com.pocs.presentation.view.component.textfield.SimpleTextField
 import kotlinx.coroutines.launch
 

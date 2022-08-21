@@ -40,6 +40,7 @@ import com.pocs.presentation.view.component.bottomsheet.*
 import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.component.button.DropdownButton
 import com.pocs.presentation.view.component.button.DropdownOption
+import com.pocs.presentation.view.component.markdown.MarkdownText
 import kotlinx.coroutines.launch
 
 private const val HEADER_KEY = "header"
