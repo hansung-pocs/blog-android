@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pocs.domain.usecase.user.CreateAnonymousUseCase
 import com.pocs.presentation.mapper.toEntity
-import com.pocs.presentation.model.admin.UserCreateInfoUiState
+import com.pocs.presentation.model.user.anonymous.AnonymousCreateInfoUiState
 import com.pocs.presentation.model.user.anonymous.AnonymousCreateUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -27,7 +27,7 @@ class AnonymousCreateViewModel @Inject constructor(
     )
         private set
 
-    private fun updateInfo(info: UserCreateInfoUiState) {
+    private fun updateInfo(info: AnonymousCreateInfoUiState) {
         this.uiState = this.uiState.copy(createInfo = info)
     }
 

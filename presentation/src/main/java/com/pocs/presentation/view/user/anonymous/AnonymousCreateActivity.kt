@@ -7,6 +7,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
+import com.google.android.material.composethemeadapter3.Mdc3Theme
+import com.pocs.presentation.R
+import com.pocs.presentation.extension.setResultRefresh
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,8 +28,16 @@ class AnonymousCreateActivity : AppCompatActivity() {
 
         WindowCompat.setDecorFitsSystemWindows(window, true)
 
-        setContent{
-
+        setContent {
+            Mdc3Theme(this) {
+                AnonymousCreateScreen(
+                    uiState = viewModel.uiState,
+                    navigateUp = ::finish,
+                    onSuccessToCreate = {
+                        setResultRefresh(R.string.brows_as_anonymous)
+                    }
+                )
+            }
         }
     }
 }

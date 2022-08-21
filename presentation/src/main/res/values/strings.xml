@@ -107,8 +107,7 @@
     <string name="search_by_name">이름 검색</string>
     <string name="query_min_length_error">2글자 이상 입력하세요.</string>
     <string name="views">조회수</string>
-    <string name="create_anonymous">비회원 생성</string>
-    <string name="register_as_anonymous">비회원으로 가입하기</string>
+    <string name="create_a_temporary_account">임시계정 생성하기</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>
         <item>회원목록</item>

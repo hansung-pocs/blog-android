@@ -1,23 +1,17 @@
 package com.pocs.presentation.model.user.anonymous
 
-import com.pocs.presentation.model.admin.UserCreateInfoUiState
-
 data class AnonymousCreateUiState(
-    val createInfo: UserCreateInfoUiState = UserCreateInfoUiState(),
+    val createInfo: AnonymousCreateInfoUiState = AnonymousCreateInfoUiState(),
     val isInSaving: Boolean = false,
     val onSave: () -> Unit,
     val isSuccessToSave: Boolean = false,
     val errorMessage: String? = null,
     val shownErrorMessage: () -> Unit,
-    private val onUpdateCreateInfo: (UserCreateInfoUiState) -> Unit,
+    private val onUpdateCreateInfo: (AnonymousCreateInfoUiState) -> Unit,
 ){
-    val canSave
-        get() : Boolean {
-            return createInfo.userName.isNotEmpty()
-                    && createInfo.password.isNotEmpty()
-        }
-
-    fun updateCreateInfo(updater: (UserCreateInfoUiState) -> UserCreateInfoUiState) {
+    fun updateCreateInfo(updater: (AnonymousCreateInfoUiState) -> AnonymousCreateInfoUiState) {
         onUpdateCreateInfo(updater(createInfo))
     }
+
+    val enableCreateButton: Boolean get() = createInfo.userName.isNotEmpty() && createInfo.password.isNotEmpty()
 }
