@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -170,9 +171,11 @@ fun PostDetailContent(
                         date = postDetail.date
                     )
                     item {
-                        Text(
-                            modifier = Modifier.padding(20.dp),
-                            text = postDetail.content,
+                        MarkdownText(
+                            modifier = Modifier
+                                .padding(20.dp)
+                                .fillMaxWidth(),
+                            markdown = postDetail.content,
                             style = MaterialTheme.typography.bodyLarge.copy(
                                 color = MaterialTheme.colorScheme.onBackground
                             )
@@ -280,7 +283,8 @@ private fun LazyListScope.headerItems(title: String, writerName: String, date: S
             Text(
                 text = title,
                 style = MaterialTheme.typography.headlineMedium.copy(
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontWeight = FontWeight.Bold
                 )
             )
             Box(modifier = Modifier.height(8.dp))
