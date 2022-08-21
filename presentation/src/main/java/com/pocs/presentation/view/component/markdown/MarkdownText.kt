@@ -1,6 +1,7 @@
 package com.pocs.presentation.view.component.markdown
 
 import android.content.Context
+import android.text.method.LinkMovementMethod
 import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
@@ -40,7 +41,6 @@ import io.noties.prism4j.annotations.PrismBundle
 import org.commonmark.node.ListItem
 import org.commonmark.node.Paragraph
 
-
 @Composable
 fun MarkdownText(
     markdown: String,
@@ -78,9 +78,6 @@ fun MarkdownText(
         },
         update = { textView ->
             markdownRender.setMarkdown(textView, markdown)
-            if (disableLinkMovementMethod) {
-                textView.movementMethod = null
-            }
         }
     )
 }
@@ -97,7 +94,6 @@ private fun createTextView(
     @IdRes viewId: Int? = null,
     onClick: (() -> Unit)? = null
 ): TextView {
-
     val textColor = color.takeOrElse { style.color.takeOrElse { defaultColor } }
     val mergedStyle = style.merge(
         TextStyle(
@@ -106,11 +102,14 @@ private fun createTextView(
             textAlign = textAlign,
         )
     )
+
     return TextView(context).apply {
         onClick?.let { setOnClickListener { onClick() } }
         setTextColor(textColor.toArgb())
         setMaxLines(maxLines)
         setTextSize(TypedValue.COMPLEX_UNIT_DIP, mergedStyle.fontSize.value)
+        setTextIsSelectable(true)
+        movementMethod = LinkMovementMethod.getInstance()
 
         viewId?.let { id = viewId }
         textAlign?.let { align ->
@@ -152,7 +151,7 @@ private object Markdown {
             .usePlugin(CoilImagesPlugin.create(context, imageLoader))
             .usePlugin(StrikethroughPlugin.create())
             .usePlugin(TablePlugin.create(context))
-            .usePlugin(TaskListPlugin.create(colorOnBackground,colorOnBackground,backgroundColor))
+            .usePlugin(TaskListPlugin.create(colorOnBackground, colorOnBackground, backgroundColor))
             .usePlugin(LinkifyPlugin.create())
             .usePlugin(
                 SyntaxHighlightPlugin.create(
