@@ -1,9 +1,9 @@
 package com.pocs.presentation.view.post.detail
 
-import androidx.annotation.FloatRange
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -148,17 +148,13 @@ fun PostDetailContent(
             }
         ) { optionModalController ->
             val lazyListState = rememberLazyListState()
-            val titleAlpha = rememberTitleAlphaFromScrollOffset(
-                key = HEADER_KEY,
-                lazyListState = lazyListState
-            )
 
             Scaffold(
                 snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
                 topBar = {
                     PostDetailTopAppBar(
                         uiState,
-                        titleAlpha = titleAlpha.value,
+                        lazyListState = lazyListState,
                         onEditClick = onEditClick,
                         onDeleteClick = { showDeleteDialog = true }
                     )
@@ -228,10 +224,15 @@ fun PostDetailContent(
 @Composable
 fun PostDetailTopAppBar(
     uiState: PostDetailUiState.Success,
-    @FloatRange(from = 0.0, to = 1.0) titleAlpha: Float,
+    lazyListState: LazyListState,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit
 ) {
+    val titleAlpha = rememberTitleAlphaFromScrollOffset(
+        key = HEADER_KEY,
+        lazyListState = lazyListState
+    )
+
     SmallTopAppBar(
         navigationIcon = {
             AppBarBackButton()
@@ -239,7 +240,7 @@ fun PostDetailTopAppBar(
         title = {
             Text(
                 text = uiState.postDetail.title,
-                modifier = Modifier.alpha(titleAlpha),
+                modifier = Modifier.alpha(titleAlpha.value),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
