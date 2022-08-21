@@ -1,7 +1,6 @@
 package com.pocs.data.di
 
 import com.pocs.data.api.AdminApi
-import com.pocs.data.api.NonMemberApi
 import com.pocs.data.api.PostApi
 import com.pocs.data.api.UserApi
 import com.pocs.data.repository.*
@@ -44,16 +43,6 @@ class RepositoryModule {
         return AuthRepositoryImpl(
             remoteDataSource = remoteDataSource,
             localDataSource = localDataSource
-        )
-    }
-
-    @Singleton
-    @Provides
-    fun provideNonMemberRepository(
-        dataSource: NonMemberRemoteDataSource
-    ): NonMemberRepository {
-        return NonMemberRepositoryImpl(
-            dataSource = dataSource
         )
     }
 }

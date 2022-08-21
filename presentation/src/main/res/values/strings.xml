@@ -83,10 +83,10 @@
     <string name="sorting_by_created_at_descending">가입일 최근순</string>
     <string name="password">비밀번호</string>
     <string name="id">아이디</string>
-    <string name="brows_as_non_member">비회원으로 시작하기</string>
+    <string name="brows_as_anonymous">비회원으로 시작하기</string>
     <string name="login_title">POCS</string>
     <string name="setting">설정</string>
-    <string name="non_member">비회원</string>
+    <string name="anonymous">비회원</string>
     <string name="logout">로그아웃</string>
     <string name="logout_dialog_title">정말로 로그아웃 하시겠습니까?</string>
     <string name="all">전체</string>
@@ -107,6 +107,8 @@
     <string name="search_by_name">이름 검색</string>
     <string name="query_min_length_error">2글자 이상 입력하세요.</string>
     <string name="views">조회수</string>
+    <string name="create_anonymous">비회원 생성</string>
+    <string name="register_as_anonymous">비회원으로 가입하기</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>
         <item>회원목록</item>

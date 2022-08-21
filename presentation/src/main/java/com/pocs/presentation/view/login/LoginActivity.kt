@@ -15,6 +15,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.composethemeadapter3.Mdc3Theme
 import com.pocs.presentation.model.auth.LoginUiState
 import com.pocs.presentation.view.home.HomeActivity
+import com.pocs.presentation.view.user.anonymous.AnonymousCreateActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -40,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
             Mdc3Theme(this) {
                 LoginScreen(
                     viewModel = viewModel,
-                    onBrowseAsNonMemberClick = ::navigateToHomeActivity
+                    onBrowseAsAnonymousClick = ::navigateToAnonymousCreateActivity
                 )
             }
         }
@@ -80,5 +81,10 @@ class LoginActivity : AppCompatActivity() {
         val intent = HomeActivity.getIntent(this)
         startActivity(intent)
         finish()
+    }
+
+    private fun navigateToAnonymousCreateActivity(){
+        val intent = AnonymousCreateActivity.getIntent(this)
+        startActivity(intent)
     }
 }

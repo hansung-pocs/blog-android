@@ -24,13 +24,13 @@ import com.pocs.presentation.view.component.textfield.PasswordOutlineTextField
 import com.pocs.presentation.view.component.textfield.PocsOutlineTextField
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel, onBrowseAsNonMemberClick: () -> Unit) {
+fun LoginScreen(viewModel: LoginViewModel, onBrowseAsAnonymousClick: () -> Unit) {
     val uiState = viewModel.uiState.collectAsState()
 
     LoginContent(
         uiState = uiState.value,
         onLoginClick = viewModel::login,
-        onBrowseAsNonMemberClick = onBrowseAsNonMemberClick,
+        onBrowseAsAnonymousClick = onBrowseAsAnonymousClick,
         onErrorMessageShown = viewModel::errorMessageShown
     )
 }
@@ -40,7 +40,7 @@ fun LoginScreen(viewModel: LoginViewModel, onBrowseAsNonMemberClick: () -> Unit)
 fun LoginContent(
     uiState: LoginUiState,
     onLoginClick: () -> Unit,
-    onBrowseAsNonMemberClick: () -> Unit,
+    onBrowseAsAnonymousClick: () -> Unit,
     onErrorMessageShown: () -> Unit
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
@@ -100,9 +100,9 @@ fun LoginContent(
                 onClick = onLoginClick
             )
             Box(modifier = Modifier.height(8.dp))
-            TextButton(onClick = onBrowseAsNonMemberClick) {
+            TextButton(onClick = onBrowseAsAnonymousClick) {
                 Text(
-                    text = stringResource(R.string.brows_as_non_member),
+                    text = stringResource(R.string.brows_as_anonymous),
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4F)
                 )
             }
@@ -134,7 +134,7 @@ fun LoginContentPreview() {
             onUpdate = {}
         ),
         onLoginClick = {},
-        onBrowseAsNonMemberClick = {},
+        onBrowseAsAnonymousClick = {},
         onErrorMessageShown = {}
     )
 }

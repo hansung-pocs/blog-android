@@ -140,7 +140,7 @@ fun SettingNonMemberTile(onLoginClick: () -> Unit) {
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .weight(1f),
-            text = stringResource(R.string.non_member),
+            text = stringResource(R.string.anonymous),
             style = MaterialTheme.typography.bodyMedium.copy(
                 color = MaterialTheme.colorScheme.onBackground
             )
