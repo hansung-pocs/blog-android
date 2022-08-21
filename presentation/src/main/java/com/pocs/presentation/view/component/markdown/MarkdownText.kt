@@ -17,13 +17,16 @@ import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.android.InternalPlatformTextApi
+import androidx.compose.ui.text.android.style.LineHeightSpan
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
 import coil.ImageLoader
 import com.google.android.material.color.MaterialColors
-import io.noties.markwon.Markwon
+import io.noties.markwon.*
+import io.noties.markwon.core.MarkwonTheme
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
 import io.noties.markwon.ext.tables.TablePlugin
 import io.noties.markwon.ext.tasklist.TaskListPlugin
@@ -34,6 +37,9 @@ import io.noties.markwon.syntax.Prism4jThemeDefault
 import io.noties.markwon.syntax.SyntaxHighlightPlugin
 import io.noties.prism4j.Prism4j
 import io.noties.prism4j.annotations.PrismBundle
+import org.commonmark.node.ListItem
+import org.commonmark.node.Paragraph
+
 
 @Composable
 fun MarkdownText(
@@ -124,36 +130,29 @@ private fun createTextView(
 
 @PrismBundle(includeAll = true)
 private object Markdown {
+    @OptIn(InternalPlatformTextApi::class)
     fun createMarkdownRender(context: Context): Markwon {
         val imageLoader = ImageLoader.Builder(context)
             .apply {
                 crossfade(true)
             }.build()
+        val colorOnBackground = MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.colorOnBackground,
+            ""
+        )
+        val backgroundColor = MaterialColors.getColor(
+            context,
+            com.google.android.material.R.attr.backgroundColor,
+            ""
+        )
 
         return Markwon.builder(context)
             .usePlugin(HtmlPlugin.create())
             .usePlugin(CoilImagesPlugin.create(context, imageLoader))
             .usePlugin(StrikethroughPlugin.create())
             .usePlugin(TablePlugin.create(context))
-            .usePlugin(
-                TaskListPlugin.create(
-                    MaterialColors.getColor(
-                        context,
-                        com.google.android.material.R.attr.colorPrimary,
-                        ""
-                    ),
-                    MaterialColors.getColor(
-                        context,
-                        com.google.android.material.R.attr.colorOnBackground,
-                        ""
-                    ),
-                    MaterialColors.getColor(
-                        context,
-                        com.google.android.material.R.attr.backgroundColor,
-                        ""
-                    ),
-                )
-            )
+            .usePlugin(TaskListPlugin.create(colorOnBackground,colorOnBackground,backgroundColor))
             .usePlugin(LinkifyPlugin.create())
             .usePlugin(
                 SyntaxHighlightPlugin.create(
@@ -161,6 +160,21 @@ private object Markdown {
                     Prism4jThemeDefault.create()
                 )
             )
+            .usePlugin(object : AbstractMarkwonPlugin() {
+                override fun configureSpansFactory(builder: MarkwonSpansFactory.Builder) {
+                    builder.appendFactory(Paragraph::class.java) { _, _ ->
+                        LineHeightSpan(72f)
+                    }
+                    builder.appendFactory(ListItem::class.java) { _, _ ->
+                        LineHeightSpan(22f)
+                    }
+                }
+            })
+            .usePlugin(object : AbstractMarkwonPlugin() {
+                override fun configureTheme(builder: MarkwonTheme.Builder) {
+                    builder.bulletWidth(20).blockMargin(104)
+                }
+            })
             .build()
     }
 }
