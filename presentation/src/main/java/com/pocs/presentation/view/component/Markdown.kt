@@ -41,9 +41,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
 import coil.ImageLoader
+import com.google.android.material.color.MaterialColors
 import io.noties.markwon.Markwon
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
 import io.noties.markwon.ext.tables.TablePlugin
+import io.noties.markwon.ext.tasklist.TaskListPlugin
 import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.image.coil.CoilImagesPlugin
 import io.noties.markwon.linkify.LinkifyPlugin
@@ -140,29 +142,45 @@ private fun createTextView(
 }
 
 @PrismBundle(includeAll = true)
-class Markdown {
+private object Markdown {
+    fun createMarkdownRender(context: Context): Markwon {
+        val imageLoader = ImageLoader.Builder(context)
+            .apply {
+                crossfade(true)
+            }.build()
 
-    companion object {
-        fun createMarkdownRender(context: Context): Markwon {
-            val imageLoader = ImageLoader.Builder(context)
-                .apply {
-                    crossfade(true)
-                }.build()
-
-            return Markwon.builder(context)
-                .usePlugin(HtmlPlugin.create())
-                .usePlugin(CoilImagesPlugin.create(context, imageLoader))
-                .usePlugin(StrikethroughPlugin.create())
-                .usePlugin(TablePlugin.create(context))
-                .usePlugin(LinkifyPlugin.create())
-                .usePlugin(
-                    SyntaxHighlightPlugin.create(
-                        Prism4j(GrammarLocatorDef()),
-                        Prism4jThemeDefault.create()
-                    )
+        return Markwon.builder(context)
+            .usePlugin(HtmlPlugin.create())
+            .usePlugin(CoilImagesPlugin.create(context, imageLoader))
+            .usePlugin(StrikethroughPlugin.create())
+            .usePlugin(TablePlugin.create(context))
+            .usePlugin(
+                TaskListPlugin.create(
+                    MaterialColors.getColor(
+                        context,
+                        com.google.android.material.R.attr.colorPrimary,
+                        ""
+                    ),
+                    MaterialColors.getColor(
+                        context,
+                        com.google.android.material.R.attr.colorOnBackground,
+                        ""
+                    ),
+                    MaterialColors.getColor(
+                        context,
+                        com.google.android.material.R.attr.backgroundColor,
+                        ""
+                    ),
                 )
-                .build()
-        }
+            )
+            .usePlugin(LinkifyPlugin.create())
+            .usePlugin(
+                SyntaxHighlightPlugin.create(
+                    Prism4j(GrammarLocatorDef()),
+                    Prism4jThemeDefault.create()
+                )
+            )
+            .build()
     }
 }
 
