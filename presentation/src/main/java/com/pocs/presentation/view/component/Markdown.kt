@@ -1,24 +1,40 @@
 package com.pocs.presentation.view.component
 
 import android.content.Context
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.FontRes
 import androidx.annotation.IdRes
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.LocalTextStyle
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
 import coil.ImageLoader
@@ -145,4 +161,64 @@ class Markdown {
                 .build()
         }
     }
+}
+
+
+// TODO: IMAGE 추가하기
+enum class ToolBarItem(val imageVector: ImageVector) {
+    BOLD(Icons.Default.FormatBold),
+    ITALIC(Icons.Default.FormatItalic),
+    LINK(Icons.Default.Link),
+    LIST_ITEM(Icons.Default.List),
+    TASK_LIST_ITEM(Icons.Default.Checklist),
+    HEADING(Icons.Default.HMobiledata),
+    STRIKETHROUGH(Icons.Default.StrikethroughS),
+    QUOTE(Icons.Default.FormatQuote),
+    CODE_HIGHLIGHT(Icons.Default.Code)
+}
+
+@Composable
+fun MarkdownToolBar(textFieldValue: TextFieldValue, onValueChange: (TextFieldValue) -> Unit) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .background(color = MaterialTheme.colorScheme.primaryContainer)
+            .horizontalScroll(rememberScrollState())
+    ) {
+        val items = remember { ToolBarItem.values() }
+        for (item in items) {
+            MarkdownToolBarItem(item) {
+                when (item) {
+                    ToolBarItem.BOLD -> {
+                        Log.e("ee", textFieldValue.selection.toString())
+                    }
+                    ToolBarItem.ITALIC -> TODO()
+                    ToolBarItem.LINK -> TODO()
+                    ToolBarItem.LIST_ITEM -> TODO()
+                    ToolBarItem.TASK_LIST_ITEM -> TODO()
+                    ToolBarItem.HEADING -> TODO()
+                    ToolBarItem.STRIKETHROUGH -> TODO()
+                    ToolBarItem.QUOTE -> TODO()
+                    ToolBarItem.CODE_HIGHLIGHT -> TODO()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun MarkdownToolBarItem(item: ToolBarItem, onClick: () -> Unit) {
+    Icon(
+        modifier = Modifier
+            .clickable(onClick = onClick)
+            .padding(8.dp),
+        imageVector = item.imageVector,
+        contentDescription = item.name
+    )
+}
+
+@Preview
+@Composable
+private fun MarkdownToolBarPreview() {
+    MarkdownToolBar(textFieldValue = TextFieldValue(), onValueChange = {})
 }
