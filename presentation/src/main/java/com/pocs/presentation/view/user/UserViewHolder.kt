@@ -26,7 +26,8 @@ class UserViewHolder(
             uiState.generation.toString()
         )
 
-        val isUnknownUser = currentUserType == UserType.UNKNOWN
+        val isUnknownUser = currentUserType == UserType.비회원
+        //TODO 백엔드에서 바꾸면 바꾸기
         cardView.isClickable = !isUnknownUser
         if (!isUnknownUser) {
             cardView.setOnClickListener {

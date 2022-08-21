@@ -24,7 +24,8 @@ class GetUserDetailUseCase @Inject constructor(
         return when(getCurrentUserTypeUseCase()) {
             UserType.ADMIN -> adminRepository.getUserDetail(id)
             UserType.MEMBER -> userRepository.getUserDetail(id)
-            UserType.UNKNOWN -> Result.failure(Exception("회원만 열람할 수 있습니다."))
+            UserType.비회원 -> Result.failure(Exception("회원만 열람할 수 있습니다."))
+            //TODO : 백엔드에서 바꿔주면 나중에 바꾸기
         }
     }
 }
