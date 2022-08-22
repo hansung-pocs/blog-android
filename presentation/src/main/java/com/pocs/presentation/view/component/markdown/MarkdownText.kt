@@ -18,8 +18,6 @@ import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.android.InternalPlatformTextApi
-import androidx.compose.ui.text.android.style.LineHeightSpan
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.viewinterop.AndroidView
@@ -38,8 +36,6 @@ import io.noties.markwon.syntax.Prism4jThemeDefault
 import io.noties.markwon.syntax.SyntaxHighlightPlugin
 import io.noties.prism4j.Prism4j
 import io.noties.prism4j.annotations.PrismBundle
-import org.commonmark.node.ListItem
-import org.commonmark.node.Paragraph
 
 @Composable
 fun MarkdownText(
@@ -108,6 +104,7 @@ private fun createTextView(
         setTextColor(textColor.toArgb())
         setMaxLines(maxLines)
         setTextSize(TypedValue.COMPLEX_UNIT_DIP, mergedStyle.fontSize.value)
+        // 링크를 클릭했을 때 이동 가능하게 하려면 아래의 selectable을 먼저 true로 설정하고나서 movement를 설정해야한다.
         setTextIsSelectable(true)
         movementMethod = LinkMovementMethod.getInstance()
 
@@ -129,7 +126,6 @@ private fun createTextView(
 
 @PrismBundle(includeAll = true)
 private object Markdown {
-    @OptIn(InternalPlatformTextApi::class)
     fun createMarkdownRender(context: Context): Markwon {
         val imageLoader = ImageLoader.Builder(context)
             .apply {
@@ -159,16 +155,6 @@ private object Markdown {
                     Prism4jThemeDefault.create()
                 )
             )
-            .usePlugin(object : AbstractMarkwonPlugin() {
-                override fun configureSpansFactory(builder: MarkwonSpansFactory.Builder) {
-                    builder.appendFactory(Paragraph::class.java) { _, _ ->
-                        LineHeightSpan(72f)
-                    }
-                    builder.appendFactory(ListItem::class.java) { _, _ ->
-                        LineHeightSpan(22f)
-                    }
-                }
-            })
             .usePlugin(object : AbstractMarkwonPlugin() {
                 override fun configureTheme(builder: MarkwonTheme.Builder) {
                     builder.bulletWidth(20).blockMargin(104)
