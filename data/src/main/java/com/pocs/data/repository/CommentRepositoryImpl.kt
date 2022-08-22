@@ -3,6 +3,7 @@ package com.pocs.data.repository
 import com.pocs.data.extension.errorMessage
 import com.pocs.data.mapper.toEntity
 import com.pocs.data.model.comment.CommentAddBody
+import com.pocs.data.model.comment.CommentUpdateBody
 import com.pocs.data.source.CommentRemoteDataSource
 import com.pocs.domain.model.comment.Comment
 import com.pocs.domain.repository.CommentRepository
@@ -46,7 +47,10 @@ class CommentRepositoryImpl @Inject constructor(
 
     override suspend fun update(commentId: Int, content: String): Result<Unit> {
         return try {
-            val response = dataSource.update(commentId = commentId, content = content)
+            val response = dataSource.update(
+                commentId = commentId,
+                commentUpdateBody = CommentUpdateBody(content = content)
+            )
             if (response.isSuccessful) {
                 Result.success(Unit)
             } else {

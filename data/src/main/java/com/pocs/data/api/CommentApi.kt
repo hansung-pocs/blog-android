@@ -2,6 +2,7 @@ package com.pocs.data.api
 
 import com.pocs.data.model.ResponseBody
 import com.pocs.data.model.comment.CommentAddBody
+import com.pocs.data.model.comment.CommentUpdateBody
 import com.pocs.data.model.comment.CommentsDto
 import retrofit2.Response
 import retrofit2.http.*
@@ -20,7 +21,7 @@ interface CommentApi {
     @PATCH("comments/{commentId}")
     suspend fun update(
         @Path("commentId") commentId: Int,
-        @Body content: String
+        @Body commentUpdateBody: CommentUpdateBody
     ): Response<ResponseBody<Unit>>
 
     @PATCH("comments/{commentId}/delete")
