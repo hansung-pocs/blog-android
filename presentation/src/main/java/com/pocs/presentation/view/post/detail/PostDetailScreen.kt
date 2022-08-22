@@ -64,9 +64,14 @@ fun PostDetailScreen(
             if (uiState.isDeleteSuccess) {
                 onDeleteSuccess()
             }
-            if (uiState.userMessage != null) {
-                LaunchedEffect(uiState.userMessage) {
-                    snackbarHostState.showSnackbar(uiState.userMessage)
+
+            var message = uiState.userMessage
+            if (message == null && uiState.userMessageRes != null) {
+                message = stringResource(id = uiState.userMessageRes)
+            }
+            if (message != null) {
+                LaunchedEffect(message) {
+                    snackbarHostState.showSnackbar(message)
                     viewModel.userMessageShown()
                 }
             }

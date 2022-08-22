@@ -1,5 +1,6 @@
 package com.pocs.presentation.view.post.detail
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pocs.domain.model.user.UserType
@@ -12,6 +13,7 @@ import com.pocs.domain.usecase.post.CanDeletePostUseCase
 import com.pocs.domain.usecase.post.CanEditPostUseCase
 import com.pocs.domain.usecase.post.DeletePostUseCase
 import com.pocs.domain.usecase.post.GetPostDetailUseCase
+import com.pocs.presentation.R
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.comment.CommentsUiState
 import com.pocs.presentation.model.post.PostDetailUiState
@@ -59,12 +61,16 @@ class PostDetailViewModel @Inject constructor(
                 val userMessage = if (previousUiStateValue is PostDetailUiState.Success) {
                     previousUiStateValue.userMessage
                 } else null
+                val userMessageRes = if (previousUiStateValue is PostDetailUiState.Success) {
+                    previousUiStateValue.userMessageRes
+                } else null
 
                 val newUiState = PostDetailUiState.Success(
                     postDetail = postDetail.toUiState(),
                     canEditPost = canEditPostUseCase(postDetail),
                     canDeletePost = canDeletePostUseCase(postDetail),
                     userMessage = userMessage,
+                    userMessageRes = userMessageRes
                 )
 
                 _uiState.update { newUiState }
@@ -112,10 +118,14 @@ class PostDetailViewModel @Inject constructor(
             )
             if (result.isSuccess) {
                 fetchComments()
-                // TODO: StringRes로 바꾸기
-                showUserMessage(message = "댓글 추가됨")
+                showUserMessage(resource = R.string.comment_added)
             } else {
-                showUserMessage(message = result.exceptionOrNull()?.message ?: "댓글 추가에 실패함") // TODO: StringRes로 바꾸기
+                val errorMessage = result.exceptionOrNull()?.message
+                if (errorMessage == null) {
+                    showUserMessage(resource = R.string.failed_to_add_comment)
+                } else {
+                    showUserMessage(message = errorMessage)
+                }
             }
         }
     }
@@ -125,11 +135,14 @@ class PostDetailViewModel @Inject constructor(
             val result = updateCommentUseCase(commentId = id, content = content)
             if (result.isSuccess) {
                 fetchComments()
-                // TODO: StringRes로 바꾸기
-                showUserMessage("댓글 수정됨")
+                showUserMessage(resource = R.string.comment_edited)
             } else {
-                // TODO: StringRes로 바꾸기
-                showUserMessage(result.exceptionOrNull()?.message ?: "댓글 수정 실패함")
+                val errorMessage = result.exceptionOrNull()?.message
+                if (errorMessage == null) {
+                    showUserMessage(resource = R.string.failed_to_edit_comment)
+                } else {
+                    showUserMessage(message = errorMessage)
+                }
             }
         }
     }
@@ -139,11 +152,14 @@ class PostDetailViewModel @Inject constructor(
             val result = deleteCommentUseCase(commentId = commentId)
             if (result.isSuccess) {
                 fetchComments()
-                // TODO: StringRes로 바꾸기
-                showUserMessage("댓글 삭제됨")
+                showUserMessage(resource = R.string.comment_deleted)
             } else {
-                // TODO: StringRes로 바꾸기
-                showUserMessage(result.exceptionOrNull()?.message ?: "댓글 삭제에 실패함")
+                val errorMessage = result.exceptionOrNull()?.message
+                if (errorMessage == null) {
+                    showUserMessage(resource = R.string.failed_to_delete_comment)
+                } else {
+                    showUserMessage(message = errorMessage)
+                }
             }
         }
     }
@@ -157,8 +173,12 @@ class PostDetailViewModel @Inject constructor(
                     (it as PostDetailUiState.Success).copy(isDeleteSuccess = true)
                 }
             } else {
-                val errorMessage = result.exceptionOrNull()!!.message ?: "게시글 삭제에 실패함" // TODO: StringRes로 바꾸기
-                showUserMessage(errorMessage)
+                val errorMessage = result.exceptionOrNull()?.message
+                if (errorMessage == null) {
+                    showUserMessage(resource = R.string.failed_to_delete_post)
+                } else {
+                    showUserMessage(message = errorMessage)
+                }
             }
         }
     }
@@ -171,11 +191,19 @@ class PostDetailViewModel @Inject constructor(
         }
     }
 
+    private fun showUserMessage(@StringRes resource: Int) {
+        val uiStateValue = _uiState.value
+        check(uiStateValue is PostDetailUiState.Success)
+        _uiState.update {
+            uiStateValue.copy(userMessageRes = resource)
+        }
+    }
+
     fun userMessageShown() {
         val uiStateValue = _uiState.value
         check(uiStateValue is PostDetailUiState.Success)
         _uiState.update {
-            uiStateValue.copy(userMessage = null)
+            uiStateValue.copy(userMessage = null, userMessageRes = null)
         }
     }
 }
