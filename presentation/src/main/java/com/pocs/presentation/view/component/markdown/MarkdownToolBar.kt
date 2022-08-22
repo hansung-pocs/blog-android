@@ -24,7 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 // TODO: IMAGE 추가하기
-private enum class MarkdownTag(val imageVector: ImageVector) {
+@VisibleForTesting
+enum class MarkdownTag(val imageVector: ImageVector) {
     BOLD(Icons.Default.FormatBold),
     ITALIC(Icons.Default.FormatItalic),
     LINK(Icons.Default.Link),
@@ -55,7 +56,7 @@ fun MarkdownToolBar(textFieldValue: TextFieldValue, onValueChange: (TextFieldVal
 }
 
 @VisibleForTesting
-private fun TextFieldValue.addMarkdownTag(tag: MarkdownTag): TextFieldValue {
+fun TextFieldValue.addMarkdownTag(tag: MarkdownTag): TextFieldValue {
     val text = this.text
     val selection = this.selection
 
