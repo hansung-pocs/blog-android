@@ -174,8 +174,8 @@ private object Markdown {
             })
             .usePlugin(object : AbstractMarkwonPlugin() {
                 override fun configureTheme(builder: MarkwonTheme.Builder) {
-                    builder.bulletWidth(20)
-                        .blockMargin(104)
+                    builder.bulletWidth(6f.toDp())
+                        .blockMargin(40f.toDp())
                         .codeBackgroundColor(codeBackgroundColor)
                         .codeBlockMargin(16f.toDp())
                 }
