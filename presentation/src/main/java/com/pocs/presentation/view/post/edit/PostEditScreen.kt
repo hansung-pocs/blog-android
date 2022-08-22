@@ -161,8 +161,7 @@ fun PostEditContentEmptyPreview() {
             onTitleChange = {},
             onContentChange = {},
             onCategoryChange = {},
-            onSave = { Result.success(Unit) },
-            showChips = true
+            onSave = { Result.success(Unit) }
         ),
         navigateUp = {},
         onSuccessSave = {}
@@ -183,8 +182,7 @@ fun PostEditContentPreview() {
             onTitleChange = {},
             onContentChange = {},
             onCategoryChange = {},
-            onSave = { Result.success(Unit) },
-            showChips = true
+            onSave = { Result.success(Unit) }
         ),
         navigateUp = {},
         onSuccessSave = {}

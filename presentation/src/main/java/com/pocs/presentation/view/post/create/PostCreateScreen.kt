@@ -16,6 +16,6 @@ fun PostCreateScreen(
         title = stringResource(R.string.write_post),
         uiState = uiState,
         navigateUp = navigateUp,
-        onSuccessSave = onSuccessSave,
+        onSuccessSave = onSuccessSave
     )
 }
