@@ -10,12 +10,14 @@ import com.pocs.presentation.view.post.edit.PostEditContent
 fun PostCreateScreen(
     uiState: PostCreateUiState,
     navigateUp: () -> Unit,
-    onSuccessSave: () -> Unit
+    onSuccessSave: () -> Unit,
+    chipsVisible : Boolean
 ) {
     PostEditContent(
         title = stringResource(R.string.write_post),
         uiState = uiState,
         navigateUp = navigateUp,
-        onSuccessSave = onSuccessSave
+        onSuccessSave = onSuccessSave,
+        chipsVisible = chipsVisible
     )
 }

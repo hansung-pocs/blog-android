@@ -27,12 +27,13 @@ import com.pocs.presentation.view.component.textfield.SimpleTextField
 import kotlinx.coroutines.launch
 
 @Composable
-fun PostEditScreen(uiState: PostEditUiState, navigateUp: () -> Unit, onSuccessSave: () -> Unit) {
+fun PostEditScreen(uiState: PostEditUiState, navigateUp: () -> Unit, onSuccessSave: () -> Unit, chipsVisible: Boolean) {
     PostEditContent(
         title = stringResource(id = R.string.edit_post),
         uiState = uiState,
         navigateUp = navigateUp,
-        onSuccessSave = onSuccessSave
+        onSuccessSave = onSuccessSave,
+        chipsVisible = chipsVisible
     )
 }
 
@@ -42,7 +43,8 @@ fun PostEditContent(
     title: String,
     uiState: BasePostEditUiState,
     navigateUp: () -> Unit,
-    onSuccessSave: () -> Unit
+    onSuccessSave: () -> Unit,
+    chipsVisible : Boolean
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
@@ -90,11 +92,13 @@ fun PostEditContent(
             val titleContentDescription = stringResource(R.string.title_text_field)
             val contentContentDescription = stringResource(R.string.content_text_field)
 
-            PostCategoryChips(
-                isUserAdmin = uiState.isUserAdmin,
-                selectedCategory = uiState.category,
-                onClick = uiState.onCategoryChange
-            )
+            if(chipsVisible) {
+                PostCategoryChips(
+                    isUserAdmin = uiState.isUserAdmin,
+                    selectedCategory = uiState.category,
+                    onClick = uiState.onCategoryChange
+                )
+            }
             SimpleTextField(
                 hint = stringResource(R.string.title),
                 value = uiState.title,
@@ -160,8 +164,10 @@ fun PostEditContentEmptyPreview() {
             onCategoryChange = {},
             onSave = { Result.success(Unit) }
         ),
-        {}
-    ) {}
+        navigateUp = {},
+        onSuccessSave = {},
+        chipsVisible = false
+    )
 }
 
 @Preview
@@ -180,6 +186,8 @@ fun PostEditContentPreview() {
             onCategoryChange = {},
             onSave = { Result.success(Unit) }
         ),
-        {}
-    ) {}
+        navigateUp = {},
+        onSuccessSave = {},
+        chipsVisible = true
+    )
 }

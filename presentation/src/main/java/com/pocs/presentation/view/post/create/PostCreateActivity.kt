@@ -34,6 +34,8 @@ class PostCreateActivity : AppCompatActivity() {
         val category = intent.getSerializableExtra("category") as PostCategory
         viewModel.initUiState(category = category)
 
+        val chipsVisible = category != PostCategory.QNA
+
         setContent {
             Mdc3Theme(this) {
                 PostCreateScreen(
@@ -41,7 +43,8 @@ class PostCreateActivity : AppCompatActivity() {
                     navigateUp = ::finish,
                     onSuccessSave = {
                         setResultRefresh(R.string.post_added)
-                    }
+                    },
+                    chipsVisible = chipsVisible
                 )
             }
         }
