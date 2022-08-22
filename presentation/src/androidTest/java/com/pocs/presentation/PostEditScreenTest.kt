@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -26,7 +27,7 @@ class PostEditScreenTest {
     private val emptyUiState = PostEditUiState(
         postId = 1,
         title = "",
-        content = "",
+        content = TextFieldValue(),
         category = PostCategory.NOTICE,
         isUserAdmin = true,
         onTitleChange = {},
@@ -62,7 +63,7 @@ class PostEditScreenTest {
     fun disableSendButton_IfTitleIsEmpty() {
         val fakeUiState = emptyUiState.copy(
             title = "",
-            content = "hello",
+            content = TextFieldValue("hello"),
         )
         composeTestRule.setContent {
             PostEditScreen(uiState = fakeUiState, {}) {}
@@ -75,7 +76,7 @@ class PostEditScreenTest {
     fun disableSendButton_IfContentIsEmpty() {
         val fakeUiState = emptyUiState.copy(
             title = "title",
-            content = "",
+            content = TextFieldValue(""),
         )
         composeTestRule.setContent {
             PostEditScreen(uiState = fakeUiState, {}) {}
@@ -88,7 +89,7 @@ class PostEditScreenTest {
     fun enableSendButton_IfTitleAndContentAreNotEmpty() {
         val fakeUiState = emptyUiState.copy(
             title = "title",
-            content = "content",
+            content = TextFieldValue("content"),
         )
         composeTestRule.setContent {
             PostEditScreen(uiState = fakeUiState, {}) {}
@@ -101,7 +102,7 @@ class PostEditScreenTest {
     fun showCircularProgressIndicator_IfUiStateIsInSaving() {
         val fakeUiState = emptyUiState.copy(
             title = "title",
-            content = "content",
+            content = TextFieldValue("content"),
             isInSaving = true,
         )
         composeTestRule.setContent {
@@ -117,7 +118,7 @@ class PostEditScreenTest {
         val exception = Exception("fail!!")
         val fakeUiState = emptyUiState.copy(
             title = "title",
-            content = "content",
+            content = TextFieldValue("content"),
             isInSaving = false,
             onSave = { Result.failure(exception) }
         )
@@ -139,7 +140,12 @@ class PostEditScreenTest {
     fun navigateToUp_WhenSuccessSaving() {
         composeTestRule.run {
             setContent {
-                PostEditScreenWithHomeBackStack(emptyUiState.copy(title = "a", content = "a"))
+                PostEditScreenWithHomeBackStack(
+                    emptyUiState.copy(
+                        title = "a",
+                        content = TextFieldValue("a")
+                    )
+                )
             }
 
             onNodeWithContentDescription("저장하기").performClick()
@@ -222,7 +228,8 @@ class PostEditScreenTest {
 
         for (i in 1..4) {
             stringBuilder.append("가")
-            composeTestRule.onNodeWithContentDescription("제목 입력창").performTextInput(stringBuilder.toString())
+            composeTestRule.onNodeWithContentDescription("제목 입력창")
+                .performTextInput(stringBuilder.toString())
         }
     }
 }

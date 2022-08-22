@@ -148,12 +148,12 @@ private object Markdown {
         val colorOnBackground = MaterialColors.getColor(
             context,
             com.google.android.material.R.attr.colorOnBackground,
-            ""
+            0xffffff // 테스트를 위해 아무 의미없이 사용되는 값이다.
         )
         val backgroundColor = MaterialColors.getColor(
             context,
             com.google.android.material.R.attr.backgroundColor,
-            ""
+            0x000000 // 테스트를 위해 아무 의미없이 사용되는 값이다.
         )
         val codeBackgroundColor = ColorUtils.setAlphaComponent(colorOnBackground, 10)
 
