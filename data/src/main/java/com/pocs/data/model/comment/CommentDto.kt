@@ -1,7 +1,7 @@
 package com.pocs.data.model.comment
 
 data class CommentDto(
-    val id: Int,
+    val commentId: Int,
     val parentId: Int?,
     val childrenCount: Int,
     val postId: Int,

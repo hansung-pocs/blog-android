@@ -6,7 +6,7 @@ import com.pocs.domain.model.comment.Comment
 import com.pocs.domain.model.comment.CommentWriter
 
 fun CommentDto.toEntity() = Comment(
-    id = id,
+    id = commentId,
     parentId = parentId,
     childrenCount = childrenCount,
     postId = postId,
