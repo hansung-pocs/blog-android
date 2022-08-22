@@ -26,9 +26,10 @@ class FakeCommentRepositoryImpl @Inject constructor() : CommentRepository {
             return Result.failure(Exception("error"))
         }
         val parentIndex = comments.indexOfFirst { it.id == parentId }
+        val id = idCounter++
         val newComment = Comment(
-            id = idCounter++,
-            parentId = parentId,
+            id = id,
+            parentId = parentId ?: id,
             childrenCount = 0,
             postId = postId,
             writer = CommentWriter(
@@ -41,6 +42,7 @@ class FakeCommentRepositoryImpl @Inject constructor() : CommentRepository {
         )
         var index = 0
         if (parentIndex != -1) {
+            // 답글 목록의 최하단 인덱스로 이동한다.
             while (comments.size < index && comments[parentIndex + index].parentId == parentId) {
                 ++index
             }
