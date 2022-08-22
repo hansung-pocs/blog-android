@@ -11,13 +11,11 @@ fun PostCreateScreen(
     uiState: PostCreateUiState,
     navigateUp: () -> Unit,
     onSuccessSave: () -> Unit,
-    chipsVisible : Boolean
 ) {
     PostEditContent(
         title = stringResource(R.string.write_post),
         uiState = uiState,
         navigateUp = navigateUp,
         onSuccessSave = onSuccessSave,
-        chipsVisible = chipsVisible
     )
 }

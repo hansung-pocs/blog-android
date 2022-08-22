@@ -90,8 +90,8 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override fun syncCurrentUser(
-        name: String?,
-        email: String?,
+        name: String,
+        email: String,
         company: String?,
         github: String?
     ) {

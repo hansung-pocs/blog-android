@@ -33,7 +33,8 @@ class PostEditViewModel @Inject constructor(
                 onTitleChange = ::updateTitle,
                 onContentChange = ::updateContent,
                 onCategoryChange = ::updateCategory,
-                onSave = ::savePost
+                onSave = ::savePost,
+                showChips = category != PostCategory.QNA
             )
         )
     }

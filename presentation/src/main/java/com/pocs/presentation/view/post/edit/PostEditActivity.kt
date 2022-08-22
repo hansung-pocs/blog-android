@@ -40,18 +40,14 @@ class PostEditActivity : AppCompatActivity() {
 
         WindowCompat.setDecorFitsSystemWindows(window, true)
 
-        val category = intent.getSerializableExtra("category") as PostCategory
-
         with(intent) {
             viewModel.initUiState(
                 id = getIntExtra("id", -1),
                 title = getStringExtra("title")!!,
                 content = getStringExtra("content")!!,
-                category = category
+                category = intent.getSerializableExtra("category") as PostCategory
             )
         }
-
-        val chipsVisible = category != PostCategory.QNA
 
         setContent {
             Mdc3Theme(this) {
@@ -60,8 +56,7 @@ class PostEditActivity : AppCompatActivity() {
                     navigateUp = ::finish,
                     onSuccessSave = {
                         setResultRefresh(R.string.post_edited)
-                    },
-                    chipsVisible = chipsVisible
+                    }
                 )
             }
         }

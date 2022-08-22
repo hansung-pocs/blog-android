@@ -27,13 +27,12 @@ import com.pocs.presentation.view.component.textfield.SimpleTextField
 import kotlinx.coroutines.launch
 
 @Composable
-fun PostEditScreen(uiState: PostEditUiState, navigateUp: () -> Unit, onSuccessSave: () -> Unit, chipsVisible: Boolean) {
+fun PostEditScreen(uiState: PostEditUiState, navigateUp: () -> Unit, onSuccessSave: () -> Unit) {
     PostEditContent(
         title = stringResource(id = R.string.edit_post),
         uiState = uiState,
         navigateUp = navigateUp,
-        onSuccessSave = onSuccessSave,
-        chipsVisible = chipsVisible
+        onSuccessSave = onSuccessSave
     )
 }
 
@@ -43,12 +42,12 @@ fun PostEditContent(
     title: String,
     uiState: BasePostEditUiState,
     navigateUp: () -> Unit,
-    onSuccessSave: () -> Unit,
-    chipsVisible : Boolean
+    onSuccessSave: () -> Unit
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    val showChips = uiState.showChips
 
     RecheckHandler(
         navigateUp = navigateUp,
@@ -92,7 +91,7 @@ fun PostEditContent(
             val titleContentDescription = stringResource(R.string.title_text_field)
             val contentContentDescription = stringResource(R.string.content_text_field)
 
-            if(chipsVisible) {
+            if (showChips) {
                 PostCategoryChips(
                     isUserAdmin = uiState.isUserAdmin,
                     selectedCategory = uiState.category,
@@ -162,11 +161,11 @@ fun PostEditContentEmptyPreview() {
             onTitleChange = {},
             onContentChange = {},
             onCategoryChange = {},
-            onSave = { Result.success(Unit) }
+            onSave = { Result.success(Unit) },
+            showChips = true
         ),
         navigateUp = {},
-        onSuccessSave = {},
-        chipsVisible = false
+        onSuccessSave = {}
     )
 }
 
@@ -184,10 +183,10 @@ fun PostEditContentPreview() {
             onTitleChange = {},
             onContentChange = {},
             onCategoryChange = {},
-            onSave = { Result.success(Unit) }
+            onSave = { Result.success(Unit) },
+            showChips = true
         ),
         navigateUp = {},
-        onSuccessSave = {},
-        chipsVisible = true
+        onSuccessSave = {}
     )
 }

@@ -12,6 +12,7 @@ interface BasePostEditUiState {
     val onContentChange: (String) -> Unit
     val onCategoryChange: (PostCategory) -> Unit
     val onSave: suspend () -> Result<Unit>
+    val showChips : Boolean
 
     val canSave get() = title.isNotEmpty() && content.isNotEmpty()
     val isEmpty get() = title.isEmpty() && content.isEmpty()

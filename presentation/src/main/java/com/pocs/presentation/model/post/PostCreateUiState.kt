@@ -11,5 +11,6 @@ data class PostCreateUiState(
     override val onTitleChange: (String) -> Unit,
     override val onContentChange: (String) -> Unit,
     override val onCategoryChange: (PostCategory) -> Unit,
-    override val onSave: suspend () -> Result<Unit>
+    override val onSave: suspend () -> Result<Unit>,
+    override val showChips: Boolean
 ) : BasePostEditUiState

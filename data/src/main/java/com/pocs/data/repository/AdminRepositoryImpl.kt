@@ -79,16 +79,14 @@ class AdminRepositoryImpl @Inject constructor(
 
     override fun getAllPosts(): Flow<PagingData<Post>> {
         return Pager(
-            // TODO: API 페이지네이션 구현되면 페이지 사이즈 수정하기
-            config = PagingConfig(pageSize = 30),
+            config = PagingConfig(PAGE_SIZE),
             pagingSourceFactory = { AdminPostPagingSource(api) }
         ).flow
     }
 
     override fun getAllPostsByUser(userId: Int): Flow<PagingData<Post>> {
         return Pager(
-            // TODO: API 페이지네이션 구현되면 페이지 사이즈 수정하기
-            config = PagingConfig(pageSize = 30),
+            config = PagingConfig(PAGE_SIZE),
             pagingSourceFactory = { AdminPostByUserPagingSource(api, userId = userId) }
         ).flow
     }
