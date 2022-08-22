@@ -22,7 +22,7 @@ fun RecyclerView.addDividerDecoration(@DimenRes horizontalPaddingDimen: Int? = n
 }
 
 fun TextView.syncLineHeight(figmaLineHeight: Float, factor: Float = 1.48f) {
-    val lineSpacingExtra = figmaLineHeight.dp - factor * this.textSize
+    val lineSpacingExtra = figmaLineHeight.toDp() - factor * this.textSize
 
     val padding = lineSpacingExtra
         .takeIf { it != 0.0f }
