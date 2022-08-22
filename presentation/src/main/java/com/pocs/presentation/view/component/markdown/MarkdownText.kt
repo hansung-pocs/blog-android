@@ -29,6 +29,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.ColorUtils
 import coil.ImageLoader
 import com.google.android.material.color.MaterialColors
+import com.pocs.presentation.extension.isDarkMode
 import com.pocs.presentation.extension.toDp
 import com.pocs.presentation.extension.syncLineHeight
 import io.noties.markwon.*
@@ -39,6 +40,7 @@ import io.noties.markwon.ext.tasklist.TaskListPlugin
 import io.noties.markwon.html.HtmlPlugin
 import io.noties.markwon.image.coil.CoilImagesPlugin
 import io.noties.markwon.linkify.LinkifyPlugin
+import io.noties.markwon.syntax.Prism4jThemeDarkula
 import io.noties.markwon.syntax.Prism4jThemeDefault
 import io.noties.markwon.syntax.SyntaxHighlightPlugin
 import io.noties.prism4j.Prism4j
@@ -138,6 +140,7 @@ private fun createTextView(
 private object Markdown {
     @OptIn(InternalPlatformTextApi::class)
     fun createMarkdownRender(context: Context): Markwon {
+        val isDarkTheme = context.isDarkMode
         val imageLoader = ImageLoader.Builder(context)
             .apply {
                 crossfade(true)
@@ -164,7 +167,7 @@ private object Markdown {
             .usePlugin(
                 SyntaxHighlightPlugin.create(
                     Prism4j(GrammarLocatorDef()),
-                    Prism4jThemeDefault.create()
+                    if (isDarkTheme) Prism4jThemeDarkula.create() else Prism4jThemeDefault.create()
                 )
             )
             .usePlugin(object : AbstractMarkwonPlugin() {
