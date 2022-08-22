@@ -1,7 +1,10 @@
 package com.pocs.presentation.view.component.markdown
 
 import android.content.Context
+import android.graphics.Paint
+import android.text.Spanned
 import android.text.method.LinkMovementMethod
+import android.text.style.LineHeightSpan
 import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
@@ -24,6 +27,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
 import coil.ImageLoader
 import com.google.android.material.color.MaterialColors
+import com.pocs.presentation.extension.toDp
 import com.pocs.presentation.extension.syncLineHeight
 import io.noties.markwon.*
 import io.noties.markwon.core.MarkwonTheme
@@ -37,6 +41,7 @@ import io.noties.markwon.syntax.Prism4jThemeDefault
 import io.noties.markwon.syntax.SyntaxHighlightPlugin
 import io.noties.prism4j.Prism4j
 import io.noties.prism4j.annotations.PrismBundle
+import org.commonmark.node.BulletList
 
 @Composable
 fun MarkdownText(
@@ -158,10 +163,55 @@ private object Markdown {
                 )
             )
             .usePlugin(object : AbstractMarkwonPlugin() {
+                override fun configureSpansFactory(builder: MarkwonSpansFactory.Builder) {
+                    builder.appendFactory(BulletList::class.java) { _, _ ->
+                        // https://github.com/noties/Markwon/issues/413 를 해결하기 전에 사용하는 임시 해결책이다.
+                        FirstLineSpacingSpan((-24f).toDp())
+                    }
+                }
+            })
+            .usePlugin(object : AbstractMarkwonPlugin() {
                 override fun configureTheme(builder: MarkwonTheme.Builder) {
                     builder.bulletWidth(20).blockMargin(104)
                 }
             })
             .build()
+    }
+}
+
+class FirstLineSpacingSpan(private val spacing: Int) : LineHeightSpan {
+    private var startAscent = 0
+    private var startTop = 0
+    override fun chooseHeight(
+        text: CharSequence,
+        start: Int,
+        end: Int,
+        spanstartv: Int,
+        v: Int,
+        fm: Paint.FontMetricsInt
+    ) {
+        val spanStart = (text as Spanned).getSpanStart(this)
+        if (start == spanStart) {
+
+            // save these values, we will use them to restore fm state (if other lines are present)
+            // if we do not, then all the subsequent lines will have space at the top
+            startAscent = fm.ascent
+            startTop = fm.top
+
+            // obtain previous spans (if none -> we are first, no need to add spacing)
+            // `-2` because there is a new-line character that won't have list-item span
+            val spans = text.getSpans(
+                start - 2, start,
+                FirstLineSpacingSpan::class.java
+            )
+            if (spans != null && spans.isNotEmpty()) {
+                fm.ascent -= spacing
+                fm.top -= spacing
+            }
+        } else {
+            // reset the values...
+            fm.ascent = startAscent
+            fm.top = startTop
+        }
     }
 }
