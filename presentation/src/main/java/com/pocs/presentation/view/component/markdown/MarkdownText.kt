@@ -173,7 +173,8 @@ private object Markdown {
             .usePlugin(object : AbstractMarkwonPlugin() {
                 override fun configureSpansFactory(builder: MarkwonSpansFactory.Builder) {
                     builder.appendFactory(BulletList::class.java) { _, _ ->
-                        // https://github.com/noties/Markwon/issues/413 를 해결하기 전에 사용하는 임시 해결책이다.
+                        // TODO: https://github.com/noties/Markwon/issues/413 가 해결되면 수정하기. 아래는
+                        //       임시 해결책임
                         FirstLineSpacingSpan((-24f).toDp())
                     }
                     builder.appendFactory(FencedCodeBlock::class.java) { _, _ ->
