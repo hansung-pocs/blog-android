@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.android.InternalPlatformTextApi
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.viewinterop.AndroidView
@@ -43,6 +44,7 @@ import io.noties.markwon.syntax.SyntaxHighlightPlugin
 import io.noties.prism4j.Prism4j
 import io.noties.prism4j.annotations.PrismBundle
 import org.commonmark.node.BulletList
+import org.commonmark.node.FencedCodeBlock
 
 @Composable
 fun MarkdownText(
@@ -134,6 +136,7 @@ private fun createTextView(
 
 @PrismBundle(includeAll = true)
 private object Markdown {
+    @OptIn(InternalPlatformTextApi::class)
     fun createMarkdownRender(context: Context): Markwon {
         val imageLoader = ImageLoader.Builder(context)
             .apply {
@@ -170,12 +173,15 @@ private object Markdown {
                         // https://github.com/noties/Markwon/issues/413 를 해결하기 전에 사용하는 임시 해결책이다.
                         FirstLineSpacingSpan((-24f).toDp())
                     }
+                    builder.appendFactory(FencedCodeBlock::class.java) { _, _ ->
+                        androidx.compose.ui.text.android.style.LineHeightSpan(12f.toDp().toFloat())
+                    }
                 }
             })
             .usePlugin(object : AbstractMarkwonPlugin() {
                 override fun configureTheme(builder: MarkwonTheme.Builder) {
                     builder.bulletWidth(6f.toDp())
-                        .blockMargin(40f.toDp())
+                        .blockMargin(40f.toDp()) // 리스트 블록 마진
                         .codeBackgroundColor(codeBackgroundColor)
                         .codeBlockMargin(16f.toDp())
                 }
@@ -184,9 +190,11 @@ private object Markdown {
     }
 }
 
-class FirstLineSpacingSpan(private val spacing: Int) : LineHeightSpan {
+private class FirstLineSpacingSpan(private val spacing: Int) : LineHeightSpan {
+
     private var startAscent = 0
     private var startTop = 0
+
     override fun chooseHeight(
         text: CharSequence,
         start: Int,
