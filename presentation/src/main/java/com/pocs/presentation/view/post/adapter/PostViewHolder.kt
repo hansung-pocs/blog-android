@@ -15,7 +15,8 @@ class PostViewHolder(
 
     fun bind(uiState: PostItemUiState) = with(binding) {
         title.text = uiState.title
-        // 마크다운 태크를 제거하기 위해서 사용한다.
+        // 마크다운 태그를 제거하기 위해서 사용한다. 게시글 목록에서는 제목을 강조하기 때문에 content는 마크다운 형식 없이
+        // 보여야 한다. 그래서 마크다운 태그를 제거하고 있다.
         markwon.setMarkdown(content, uiState.content)
         content.movementMethod = null
 
