@@ -24,6 +24,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
 import coil.ImageLoader
 import com.google.android.material.color.MaterialColors
+import com.pocs.presentation.extension.syncLineHeight
 import io.noties.markwon.*
 import io.noties.markwon.core.MarkwonTheme
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
@@ -104,6 +105,7 @@ private fun createTextView(
         setTextColor(textColor.toArgb())
         setMaxLines(maxLines)
         setTextSize(TypedValue.COMPLEX_UNIT_DIP, mergedStyle.fontSize.value)
+        syncLineHeight(32f)
         // 링크를 클릭했을 때 이동 가능하게 하려면 아래의 selectable을 먼저 true로 설정하고나서 movement를 설정해야한다.
         setTextIsSelectable(true)
         movementMethod = LinkMovementMethod.getInstance()
