@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.ColorUtils
 import coil.ImageLoader
 import com.google.android.material.color.MaterialColors
 import com.pocs.presentation.extension.toDp
@@ -148,6 +149,7 @@ private object Markdown {
             com.google.android.material.R.attr.backgroundColor,
             ""
         )
+        val codeBackgroundColor = ColorUtils.setAlphaComponent(colorOnBackground, 10)
 
         return Markwon.builder(context)
             .usePlugin(HtmlPlugin.create())
@@ -172,7 +174,10 @@ private object Markdown {
             })
             .usePlugin(object : AbstractMarkwonPlugin() {
                 override fun configureTheme(builder: MarkwonTheme.Builder) {
-                    builder.bulletWidth(20).blockMargin(104)
+                    builder.bulletWidth(20)
+                        .blockMargin(104)
+                        .codeBackgroundColor(codeBackgroundColor)
+                        .codeBlockMargin(16f.toDp())
                 }
             })
             .build()
