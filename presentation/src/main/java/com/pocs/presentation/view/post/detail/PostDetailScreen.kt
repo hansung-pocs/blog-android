@@ -371,7 +371,8 @@ private fun PostDetailContentPreview() {
             name = "홍길동"
         ),
         content = "댓글 내용입니다.",
-        date = "오늘"
+        date = "오늘",
+        isDeleted = false
     )
     val commentsUiState = CommentsUiState.Success(
         comments = listOf(

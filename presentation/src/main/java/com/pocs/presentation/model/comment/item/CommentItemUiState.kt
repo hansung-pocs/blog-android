@@ -9,7 +9,8 @@ data class CommentItemUiState(
     val canEdit: Boolean,
     val canDelete: Boolean,
     val content: String,
-    val date: String
+    val date: String,
+    val isDeleted: Boolean
 ) {
     val isReply: Boolean get() = id != parentId
     val showMoreInfoButton: Boolean get() = canDelete || canEdit

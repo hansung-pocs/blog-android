@@ -501,6 +501,31 @@ class PostDetailScreenTest {
         }
     }
 
+    @Test
+    fun shouldShowDeletedComment_WhenCommentWasDeleted() {
+        composeRule.run {
+            setContent {
+                val snackbarHostState = remember { SnackbarHostState() }
+
+                PostDetailContent(
+                    uiState = uiState.copy(
+                        comments = commentsUiState.copy(
+                            comments = listOf(mockComment.copy(isDeleted = true))
+                        )
+                    ),
+                    snackbarHostState = snackbarHostState,
+                    onEditClick = {},
+                    onDeleteClick = {},
+                    onCommentDelete = {},
+                    onCommentCreated = { _, _ -> },
+                    onCommentUpdated = { _, _ -> }
+                )
+            }
+
+            onNodeWithText(getString(R.string.deleted_comment)).assertIsDisplayed()
+        }
+    }
+
     @Suppress("SameParameterValue")
     private fun findVisibleTexts(text: String): List<SemanticsNode> {
         return composeRule.onAllNodes(hasText(text)).fetchSemanticsNodes().filter { semanticsNode ->

@@ -53,12 +53,16 @@ fun LazyListScope.commentItems(
                 val comment = uiState.comments[index]
 
                 Column {
-                    Comment(
-                        uiState = comment,
-                        onClick = { onCommentClick(comment) },
-                        onReplyIconClick = { onReplyIconClick(comment) },
-                        onMoreButtonClick = { onMoreButtonClick(comment) }
-                    )
+                    if (comment.isDeleted){
+                        DeletedComment()
+                    } else {
+                        Comment(
+                            uiState = comment,
+                            onClick = { onCommentClick(comment) },
+                            onReplyIconClick = { onReplyIconClick(comment) },
+                            onMoreButtonClick = { onMoreButtonClick(comment) }
+                        )
+                    }
                     PocsDivider()
                 }
             }
@@ -167,6 +171,19 @@ fun Comment(
 }
 
 @Composable
+private fun DeletedComment() {
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp),
+        text = stringResource(R.string.deleted_comment),
+        style = MaterialTheme.typography.bodyMedium.copy(
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+        )
+    )
+}
+
+@Composable
 private fun CommentFailureContent() {
     Box(
         Modifier
@@ -187,7 +204,7 @@ private fun CommentFailureContent() {
 fun CommentsPreview() {
     val mockComment = CommentItemUiState(
         id = 10,
-        parentId = null,
+        parentId = 10,
         childrenCount = 0,
         postId = 1,
         canEdit = true,
@@ -197,11 +214,12 @@ fun CommentsPreview() {
             name = "홍길동"
         ),
         content = "댓글 내용입니다.",
-        date = "오늘"
+        date = "오늘",
+        isDeleted = false
     )
     val uiState = CommentsUiState.Success(
         comments = listOf(
-            mockComment,
+            mockComment.copy(isDeleted = true),
             mockComment.copy(childrenCount = 1),
             mockComment.copy(parentId = 10, id = 11),
             mockComment
@@ -234,10 +252,17 @@ fun CommentPreview() {
                 name = "홍길동"
             ),
             content = "댓글 내용입니다.",
-            date = "오늘"
+            date = "오늘",
+            isDeleted = false
         ),
         onClick = {},
         onMoreButtonClick = {},
         onReplyIconClick = {}
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun RemovedCommentPreview() {
+    DeletedComment()
 }
