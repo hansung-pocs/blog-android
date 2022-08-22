@@ -20,7 +20,7 @@ import com.pocs.presentation.view.post.detail.PostDetailActivity
 import com.pocs.presentation.view.post.detail.PostDetailViewModel
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakePostRepositoryImpl
-import com.pocs.test_library.fake.source.FakeCommentRepositoryImpl
+import com.pocs.test_library.fake.FakeCommentRepositoryImpl
 import com.pocs.test_library.mock.mockNormalUserDetail
 import com.pocs.test_library.mock.mockPostDetail1
 import dagger.hilt.android.testing.BindValue

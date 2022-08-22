@@ -6,7 +6,7 @@ import com.pocs.test_library.fake.FakeAdminRepositoryImpl
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakePostRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
-import com.pocs.test_library.fake.source.FakeCommentRepositoryImpl
+import com.pocs.test_library.fake.FakeCommentRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.components.SingletonComponent

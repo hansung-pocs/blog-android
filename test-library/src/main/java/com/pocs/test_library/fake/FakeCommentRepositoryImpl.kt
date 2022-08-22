@@ -1,4 +1,4 @@
-package com.pocs.test_library.fake.source
+package com.pocs.test_library.fake
 
 import com.pocs.domain.model.comment.Comment
 import com.pocs.domain.model.comment.CommentWriter
