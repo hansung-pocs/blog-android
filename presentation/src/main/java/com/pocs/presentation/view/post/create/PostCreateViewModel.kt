@@ -3,6 +3,7 @@ package com.pocs.presentation.view.post.create
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
@@ -40,7 +41,7 @@ class PostCreateViewModel @Inject constructor(
         _uiState!!.value = uiState.value.copy(title = title)
     }
 
-    private fun updateContent(content: String) {
+    private fun updateContent(content: TextFieldValue) {
         _uiState!!.value = uiState.value.copy(content = content)
     }
 
@@ -52,7 +53,7 @@ class PostCreateViewModel @Inject constructor(
         _uiState!!.value = uiState.value.copy(isInSaving = true)
         val result = addPostUseCase(
             title = uiState.value.title,
-            content = uiState.value.content,
+            content = uiState.value.content.text,
             category = uiState.value.category
         )
         _uiState!!.value = uiState.value.copy(isInSaving = false)

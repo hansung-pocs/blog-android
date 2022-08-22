@@ -1,15 +1,18 @@
 package com.pocs.presentation.view.post.edit
 
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pocs.domain.model.post.PostCategory
@@ -23,6 +26,7 @@ import com.pocs.presentation.view.component.HorizontalChips
 import com.pocs.presentation.view.component.PocsDivider
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
+import com.pocs.presentation.view.component.markdown.MarkdownToolBar
 import com.pocs.presentation.view.component.textfield.SimpleTextField
 import kotlinx.coroutines.launch
 
@@ -83,12 +87,11 @@ fun PostEditContent(
         }
     ) { innerPadding ->
         Column(
-            Modifier
-                .padding(innerPadding)
-                .padding(bottom = 16.dp)
+            Modifier.padding(innerPadding)
         ) {
             val titleContentDescription = stringResource(R.string.title_text_field)
             val contentContentDescription = stringResource(R.string.content_text_field)
+            var showToolBar by remember { mutableStateOf(false) }
 
             PostCategoryChips(
                 isUserAdmin = uiState.isUserAdmin,
@@ -115,9 +118,16 @@ fun PostEditContent(
                 onValueChange = uiState.onContentChange,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight()
+                    .weight(1.0f)
                     .semantics { contentDescription = contentContentDescription }
+                    .onFocusChanged { showToolBar = it.hasFocus }
             )
+            AnimatedVisibility(visible = showToolBar) {
+                MarkdownToolBar(
+                    textFieldValue = uiState.content,
+                    onValueChange = uiState.onContentChange
+                )
+            }
         }
     }
 }
@@ -152,7 +162,7 @@ fun PostEditContentEmptyPreview() {
         PostEditUiState(
             postId = 1,
             title = "",
-            content = "",
+            content = TextFieldValue(),
             category = PostCategory.STUDY,
             isUserAdmin = true,
             onTitleChange = {},
@@ -172,7 +182,7 @@ fun PostEditContentPreview() {
         PostEditUiState(
             postId = 1,
             title = "공지입니다.",
-            content = "안녕하세요.",
+            content = TextFieldValue("안녕하세요."),
             category = PostCategory.STUDY,
             isUserAdmin = true,
             onTitleChange = {},

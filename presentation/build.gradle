@@ -41,6 +41,11 @@ android {
     }
 }
 
+// io.noties.markwon:syntax-highlight 사용시 충돌이 발생하여 아래의 코드가 필요함
+configurations.all {
+    exclude group: 'org.jetbrains', module: 'annotations-java5'
+}
+
 dependencies {
     implementation project(":domain")
     testImplementation project(":test-library")
@@ -89,6 +94,17 @@ dependencies {
 
     // joda datetime
     implementation "net.danlew:android.joda:$joda"
+
+    // markdown
+    implementation "io.noties.markwon:core:$markwon_version"
+    implementation "io.noties.markwon:ext-strikethrough:$markwon_version"
+    implementation "io.noties.markwon:ext-tables:$markwon_version"
+    implementation "io.noties.markwon:html:$markwon_version"
+    implementation "io.noties.markwon:image-coil:$markwon_version"
+    implementation "io.noties.markwon:linkify:$markwon_version"
+    implementation "io.noties.markwon:syntax-highlight:$markwon_version"
+    implementation "io.noties.markwon:ext-tasklist:$markwon_version"
+    kapt "io.noties:prism4j-bundler:2.0.0"
 
     implementation "androidx.core:core-ktx:$androidx_core"
     implementation 'androidx.appcompat:appcompat:1.4.2'
