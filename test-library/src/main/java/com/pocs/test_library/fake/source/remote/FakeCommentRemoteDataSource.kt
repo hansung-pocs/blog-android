@@ -2,6 +2,7 @@ package com.pocs.test_library.fake.source.remote
 
 import com.pocs.data.model.ResponseBody
 import com.pocs.data.model.comment.CommentAddBody
+import com.pocs.data.model.comment.CommentUpdateBody
 import com.pocs.data.model.comment.CommentsDto
 import com.pocs.data.source.CommentRemoteDataSource
 import retrofit2.Response
@@ -16,7 +17,10 @@ class FakeCommentRemoteDataSource @Inject constructor() : CommentRemoteDataSourc
         TODO("Not yet implemented")
     }
 
-    override suspend fun update(commentId: Int, content: String): Response<ResponseBody<Unit>> {
+    override suspend fun update(
+        commentId: Int,
+        commentUpdateBody: CommentUpdateBody
+    ): Response<ResponseBody<Unit>> {
         TODO("Not yet implemented")
     }
 
