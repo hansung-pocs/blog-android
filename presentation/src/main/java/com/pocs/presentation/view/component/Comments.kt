@@ -100,8 +100,6 @@ fun Comment(
     onReplyIconClick: () -> Unit,
     onMoreButtonClick: () -> Unit
 ) {
-    val isReply = uiState.parentId != null
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -111,13 +109,13 @@ fun Comment(
                 interactionSource = remember { MutableInteractionSource() }
             )
             .background(
-                color = if (isReply) {
+                color = if (uiState.isReply) {
                     MaterialTheme.colorScheme.onBackground.copy(alpha = 0.03f)
                 } else {
                     MaterialTheme.colorScheme.background
                 }
             )
-            .padding(start = if (isReply) 20.dp else 0.dp)
+            .padding(start = if (uiState.isReply) 20.dp else 0.dp)
     ) {
         Row(
             modifier = Modifier.padding(top = 20.dp, start = 20.dp),
@@ -149,7 +147,7 @@ fun Comment(
                 }
             }
         }
-        if (isReply) {
+        if (uiState.isReply) {
             Box(modifier = Modifier.height(16.dp))
         } else {
             Row(
