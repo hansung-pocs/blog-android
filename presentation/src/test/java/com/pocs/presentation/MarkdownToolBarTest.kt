@@ -111,6 +111,127 @@ class MarkdownToolBarTest {
                         selection = TextRange(6)
                     )
                 ),
+                arrayOf(
+                    MarkdownTag.HEADING,
+                    TextFieldValue(
+                        "",
+                        selection = TextRange(0)
+                    ),
+                    TextFieldValue(
+                        "# ",
+                        selection = TextRange(2)
+                    )
+                ),
+                arrayOf(
+                    MarkdownTag.HEADING,
+                    TextFieldValue(
+                        "# hi nice to meet you",
+                        selection = TextRange(5)
+                    ),
+                    TextFieldValue(
+                        "## hi nice to meet you",
+                        selection = TextRange(6)
+                    )
+                ),
+                arrayOf(
+                    MarkdownTag.HEADING,
+                    TextFieldValue(
+                        "hello\nnice to meet you",
+                        selection = TextRange(10)
+                    ),
+                    TextFieldValue(
+                        "hello\n# nice to meet you",
+                        selection = TextRange(12)
+                    )
+                ),
+                arrayOf(
+                    MarkdownTag.STRIKETHROUGH,
+                    TextFieldValue(
+                        "",
+                        selection = TextRange(0)
+                    ),
+                    TextFieldValue(
+                        "~~~~",
+                        selection = TextRange(2)
+                    )
+                ),
+                arrayOf(
+                    MarkdownTag.STRIKETHROUGH,
+                    TextFieldValue(
+                        "hello nice to meet you",
+                        selection = TextRange(6, 10)
+                    ),
+                    TextFieldValue(
+                        "hello ~~nice~~ to meet you",
+                        selection = TextRange(12)
+                    )
+                ),
+                arrayOf(
+                    MarkdownTag.QUOTE,
+                    TextFieldValue(
+                        "",
+                        selection = TextRange(0)
+                    ),
+                    TextFieldValue(
+                        "> ",
+                        selection = TextRange(2)
+                    )
+                ),
+                arrayOf(
+                    MarkdownTag.QUOTE,
+                    TextFieldValue(
+                        "He said,\nThis is an apple.",
+                        selection = TextRange(10)
+                    ),
+                    TextFieldValue(
+                        "He said,\n> This is an apple.",
+                        selection = TextRange(12)
+                    )
+                ),
+                arrayOf(
+                    MarkdownTag.CODE_HIGHLIGHT,
+                    TextFieldValue(
+                        "",
+                        selection = TextRange(0)
+                    ),
+                    TextFieldValue(
+                        "``",
+                        selection = TextRange(1)
+                    )
+                ),
+                arrayOf(
+                    MarkdownTag.CODE_HIGHLIGHT,
+                    TextFieldValue(
+                        "Use foo, please",
+                        selection = TextRange(4, 7)
+                    ),
+                    TextFieldValue(
+                        "Use `foo`, please",
+                        selection = TextRange(8)
+                    )
+                ),
+                arrayOf(
+                    MarkdownTag.CODE_BLOCK,
+                    TextFieldValue(
+                        "",
+                        selection = TextRange(0)
+                    ),
+                    TextFieldValue(
+                        "```\n\n```",
+                        selection = TextRange(3)
+                    )
+                ),
+                arrayOf(
+                    MarkdownTag.CODE_BLOCK,
+                    TextFieldValue(
+                        "fun main() {\n\tprint(\"hi\")\n}",
+                        selection = TextRange(0, 27)
+                    ),
+                    TextFieldValue(
+                        "```\nfun main() {\n\tprint(\"hi\")\n}\n```",
+                        selection = TextRange(3)
+                    )
+                ),
             )
         }
     }

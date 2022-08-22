@@ -152,6 +152,9 @@ private fun String.insertAtFrontOfLine(str: String, cursorPosition: Int): String
 }
 
 private fun String.hasHeadingTagAtLine(cursorPosition: Int): Boolean {
+    if (isEmpty()) {
+        return false
+    }
     return this[firstIndexOfLine(cursorPosition)] == '#'
 }
 
