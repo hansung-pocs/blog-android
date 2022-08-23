@@ -55,9 +55,9 @@ class FakeCommentRepositoryImpl @Inject constructor() : CommentRepository {
         if (!isSuccessToUpdate) {
             return Result.failure(Exception("error"))
         }
-        val prevComment = comments.first { it.id == commentId }
-        val newComment = prevComment.copy(content = content)
-        val index = comments.indexOf(prevComment)
+        val oldComment = comments.first { it.id == commentId }
+        val newComment = oldComment.copy(content = content)
+        val index = comments.indexOf(oldComment)
         comments[index] = newComment
         return Result.success(Unit)
     }
