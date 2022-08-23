@@ -3,8 +3,8 @@ package com.pocs.domain.usecase.comment
 import com.pocs.domain.repository.CommentRepository
 import javax.inject.Inject
 
-class GetCommentsUseCase @Inject constructor(
+class DeleteCommentUseCase @Inject constructor(
     private val repository: CommentRepository
 ) {
-    suspend operator fun invoke(postId: Int) = repository.getAllBy(postId = postId)
+    suspend operator fun invoke(commentId: Int) = repository.delete(commentId = commentId)
 }

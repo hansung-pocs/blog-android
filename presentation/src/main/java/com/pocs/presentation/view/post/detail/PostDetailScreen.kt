@@ -64,9 +64,14 @@ fun PostDetailScreen(
             if (uiState.isDeleteSuccess) {
                 onDeleteSuccess()
             }
-            if (uiState.userMessage != null) {
-                LaunchedEffect(uiState.userMessage) {
-                    snackbarHostState.showSnackbar(uiState.userMessage)
+
+            var message = uiState.userMessage
+            if (message == null && uiState.userMessageRes != null) {
+                message = stringResource(id = uiState.userMessageRes)
+            }
+            if (message != null) {
+                LaunchedEffect(message) {
+                    snackbarHostState.showSnackbar(message)
                     viewModel.userMessageShown()
                 }
             }
@@ -92,7 +97,7 @@ fun PostDetailContent(
     snackbarHostState: SnackbarHostState,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    onCommentDelete: (CommentItemUiState) -> Unit,
+    onCommentDelete: (commentId: Int) -> Unit,
     onCommentCreated: CommentCreateCallback,
     onCommentUpdated: CommentUpdateCallback
 ) {
@@ -114,7 +119,7 @@ fun PostDetailContent(
         RecheckDialog(
             title = stringResource(id = R.string.are_you_sure_you_want_to_delete),
             onOkClick = {
-                commentToBeDeleted?.let { onCommentDelete(it) }
+                commentToBeDeleted?.let { onCommentDelete(it.id) }
                 commentToBeDeleted = null
             },
             onDismissRequest = { commentToBeDeleted = null },
@@ -361,7 +366,7 @@ private fun PostDetailFailureContent(uiState: PostDetailUiState.Failure) {
 private fun PostDetailContentPreview() {
     val mockComment = CommentItemUiState(
         id = 10,
-        parentId = null,
+        parentId = 10,
         childrenCount = 0,
         postId = 1,
         canEdit = true,
@@ -371,7 +376,8 @@ private fun PostDetailContentPreview() {
             name = "홍길동"
         ),
         content = "댓글 내용입니다.",
-        date = "오늘"
+        date = "오늘",
+        isDeleted = false
     )
     val commentsUiState = CommentsUiState.Success(
         comments = listOf(

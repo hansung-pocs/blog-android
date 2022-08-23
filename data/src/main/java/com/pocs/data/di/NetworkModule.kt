@@ -1,10 +1,7 @@
 package com.pocs.data.di
 
 import com.pocs.data.BuildConfig
-import com.pocs.data.api.AdminApi
-import com.pocs.data.api.AuthApi
-import com.pocs.data.api.PostApi
-import com.pocs.data.api.UserApi
+import com.pocs.data.api.*
 import com.pocs.data.mapper.EnumConverterFactory
 import com.pocs.data.source.AuthLocalDataSource
 import dagger.Module
@@ -67,6 +64,12 @@ class NetworkModule {
     @Singleton
     fun providePostApiService(retrofit: Retrofit): PostApi {
         return retrofit.create(PostApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCommentApiService(retrofit: Retrofit): CommentApi {
+        return retrofit.create(CommentApi::class.java)
     }
 
     @Provides

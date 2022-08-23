@@ -10,7 +10,8 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.platform.app.InstrumentationRegistry
 import com.pocs.presentation.view.component.Comment
-import com.pocs.test_library.mock.mockCommentItemUiState
+import com.pocs.test_library.mock.mockComment
+import com.pocs.test_library.mock.mockReply
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -34,7 +35,7 @@ class CommentTest {
         composeRule.run {
             setContent {
                 Comment(
-                    uiState = mockCommentItemUiState.copy(parentId = null),
+                    uiState = mockComment,
                     onClick = {}, onMoreButtonClick = {}, onReplyIconClick = {}
                 )
             }
@@ -48,7 +49,7 @@ class CommentTest {
         composeRule.run {
             setContent {
                 Comment(
-                    uiState = mockCommentItemUiState.copy(parentId = 2),
+                    uiState = mockReply,
                     onClick = {}, onMoreButtonClick = {}, onReplyIconClick = {}
                 )
             }
@@ -62,7 +63,7 @@ class CommentTest {
         composeRule.run {
             setContent {
                 Comment(
-                    uiState = mockCommentItemUiState.copy(parentId = null, childrenCount = 1),
+                    uiState = mockComment.copy(childrenCount = 1),
                     onClick = {}, onMoreButtonClick = {}, onReplyIconClick = {}
                 )
             }
@@ -76,7 +77,7 @@ class CommentTest {
         composeRule.run {
             setContent {
                 Comment(
-                    uiState = mockCommentItemUiState.copy(parentId = null, childrenCount = 0),
+                    uiState = mockComment.copy(childrenCount = 0),
                     onClick = {}, onMoreButtonClick = {}, onReplyIconClick = {}
                 )
             }
@@ -90,7 +91,7 @@ class CommentTest {
         composeRule.run {
             setContent {
                 Comment(
-                    uiState = mockCommentItemUiState.copy(canEdit = true, canDelete = false),
+                    uiState = mockComment.copy(canEdit = true, canDelete = false),
                     onClick = {}, onMoreButtonClick = {}, onReplyIconClick = {}
                 )
             }
@@ -104,7 +105,7 @@ class CommentTest {
         composeRule.run {
             setContent {
                 Comment(
-                    uiState = mockCommentItemUiState.copy(canEdit = false, canDelete = true),
+                    uiState = mockComment.copy(canEdit = false, canDelete = true),
                     onClick = {}, onMoreButtonClick = {}, onReplyIconClick = {}
                 )
             }
@@ -118,7 +119,7 @@ class CommentTest {
         composeRule.run {
             setContent {
                 Comment(
-                    uiState = mockCommentItemUiState.copy(canEdit = false, canDelete = false),
+                    uiState = mockComment.copy(canEdit = false, canDelete = false),
                     onClick = {}, onMoreButtonClick = {}, onReplyIconClick = {}
                 )
             }
