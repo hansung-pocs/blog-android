@@ -21,7 +21,7 @@ class AnonymousCreateViewModel @Inject constructor(
     var uiState by mutableStateOf(
         AnonymousCreateUiState(
             onUpdateCreateInfo = ::updateInfo,
-            onSave = ::createUser,
+            onCreate = ::createUser,
             shownErrorMessage = ::shownErrorMessage
         )
     )
@@ -33,14 +33,14 @@ class AnonymousCreateViewModel @Inject constructor(
 
     private fun createUser() {
         viewModelScope.launch {
-            uiState = uiState.copy(isInSaving = true)
+            uiState = uiState.copy(isInCreating = true)
             val result = createAnonymousUseCase(uiState.createInfo.toEntity())
-            uiState = uiState.copy(isInSaving = false)
+            uiState = uiState.copy(isInCreating = false)
 
             uiState = if (result.isSuccess) {
-                uiState.copy(isSuccessToSave = true)
+                uiState.copy(isSuccessToCreate = true)
             } else {
-                val message = result.exceptionOrNull()!!.message ?: "저장에 실패했습니다."
+                val message = result.exceptionOrNull()!!.message ?: "생성에 실패했습니다."
                 uiState.copy(errorMessage = message)
             }
         }

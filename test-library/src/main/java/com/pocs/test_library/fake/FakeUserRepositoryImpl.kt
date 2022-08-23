@@ -19,6 +19,8 @@ class FakeUserRepositoryImpl @Inject constructor() : UserRepository {
 
     var updateUserResult = Result.success(Unit)
 
+    var createAnonymousResult = Result.success(Unit)
+
     override fun getAll(sortingMethod: UserListSortingMethod): Flow<PagingData<User>> {
         return flow {
             PagingData.from<User>(listOf())
@@ -46,6 +48,6 @@ class FakeUserRepositoryImpl @Inject constructor() : UserRepository {
     }
 
     override suspend fun createAnonymous(anonymousCreateInfo: AnonymousCreateInfo): Result<Unit> {
-        TODO("Not yet implemented")
+        return createAnonymousResult
     }
 }

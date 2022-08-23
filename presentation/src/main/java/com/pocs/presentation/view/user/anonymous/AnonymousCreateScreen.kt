@@ -34,7 +34,7 @@ fun AnonymousCreateScreen(
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
 
-    if (uiState.isSuccessToSave) {
+    if (uiState.isSuccessToCreate) {
         onSuccessToCreate()
         navigateUp()
     }
@@ -105,7 +105,7 @@ fun AnonymousCreateScreen(
             PocsButton(
                 label = stringResource(R.string.create_a_temporary_account),
                 enabled = uiState.enableCreateButton,
-                onClick = { uiState.onSave() }
+                onClick = { uiState.onCreate() }
             )
             Box(Modifier.height(8.dp))
             // TODO : TEXT 주의사항 추가하기
@@ -122,9 +122,9 @@ fun AnonymousCreateContentPreview() {
                 userName = "ois0886",
                 password = "ㅁㄴㅇㅁㄴㅇ"
             ),
-            isInSaving = true,
-            onSave = {},
-            isSuccessToSave = false,
+            isInCreating = true,
+            onCreate = {},
+            isSuccessToCreate = false,
             errorMessage = "asd",
             shownErrorMessage = {},
             onUpdateCreateInfo = {}
