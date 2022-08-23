@@ -1,7 +1,5 @@
 package com.pocs.presentation
 
-import com.pocs.domain.model.user.UserDetail
-import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.admin.KickUserUseCase
 import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
@@ -12,6 +10,7 @@ import com.pocs.presentation.view.user.detail.UserDetailViewModel
 import com.pocs.test_library.fake.FakeAdminRepositoryImpl
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
+import com.pocs.test_library.mock.mockNormalUserDetail
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -34,18 +33,7 @@ class UserDetailViewModelTest {
 
     private lateinit var viewModel: UserDetailViewModel
 
-    private val mockUserDetail = UserDetail(
-        2,
-        "김민성",
-        "1871034",
-        3,
-        UserType.MEMBER,
-        "google",
-        30,
-        "https://github/jja08111",
-        "",
-        null
-    )
+    private val mockUserDetail = mockNormalUserDetail
 
     @Before
     fun setUp() {

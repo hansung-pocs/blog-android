@@ -5,13 +5,8 @@ import com.pocs.presentation.model.user.item.UserDetailItemUiState
 
 fun UserDetail.toUiState() = UserDetailItemUiState(
     id = id,
-    name = name,
-    email = email,
-    studentId = studentId,
+    defaultInfo = defaultInfo?.toUiState(),
     type = type,
-    company = company,
-    generation = generation,
-    github = github,
     createdAt = createdAt,
     canceledAt = canceledAt
 )

@@ -95,11 +95,16 @@ class AuthRepositoryImpl @Inject constructor(
         company: String?,
         github: String?
     ) {
-        currentUserState.value = currentUserState.value?.copy(
-            name = name,
-            email = email,
-            company = company,
-            github = github
-        )
+        val currentUserStateValue = currentUserState.value
+        if (currentUserStateValue != null) {
+            currentUserState.value = currentUserStateValue.copy(
+                defaultInfo = currentUserStateValue.defaultInfo?.copy(
+                    name = name,
+                    email = email,
+                    company = company,
+                    github = github
+                )
+            )
+        }
     }
 }

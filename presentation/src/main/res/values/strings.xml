@@ -12,6 +12,7 @@
     <string name="deleted_post_subtitle_prefix">삭제됨 •\u0020</string>
     <string name="user_item_subtitle">%s • %s기</string>
     <string name="kicked_user_item_subtitle">탈퇴됨 • %s • %s기</string>
+    <string name="anonymous_name">익명%s</string>
     <string name="fail_to_connect">연결에 실패하였습니다.</string>
     <string name="retry">재시도</string>
     <string name="user_image">회원 사진</string>

@@ -76,7 +76,7 @@ class UserRepositoryImpl @Inject constructor(
                 company = company,
                 github = github
             )
-            if (response.code() == 302) {
+            if (response.isSuccessful) {
                 Result.success(Unit)
             } else {
                 throw Exception(response.errorMessage)

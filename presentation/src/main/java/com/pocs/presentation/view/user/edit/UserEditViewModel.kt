@@ -19,13 +19,14 @@ class UserEditViewModel @Inject constructor(
     val uiState: State<UserEditUiState> get() = _uiState
 
     fun init(userDetail: UserDetailItemUiState) {
+        requireNotNull(userDetail.defaultInfo) { "유저 편집 화면은 유저 정보가 있는 회원만 접근 할 수 있다." }
         _uiState = mutableStateOf(
             UserEditUiState(
                 id = userDetail.id,
-                name = userDetail.name,
-                email = userDetail.email,
-                company = userDetail.company,
-                github = userDetail.github,
+                name = userDetail.defaultInfo.name,
+                email = userDetail.defaultInfo.email,
+                company = userDetail.defaultInfo.company,
+                github = userDetail.defaultInfo.github,
                 onUpdate = ::update,
                 onSave = ::save
             )

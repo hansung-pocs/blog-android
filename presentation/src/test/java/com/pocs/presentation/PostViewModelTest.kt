@@ -58,8 +58,8 @@ class PostViewModelTest {
     }
 
     @Test
-    fun shouldDoNotVisibleFab_WhenCurrentUserIsUnknown() {
-        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.UNKNOWN)
+    fun shouldDoNotVisibleFab_WhenCurrentUserIsAnonymous() {
+        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.ANONYMOUS)
         initViewModel()
 
         assertFalse(viewModel.uiState.value.visiblePostWriteFab)
