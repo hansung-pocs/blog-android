@@ -55,7 +55,7 @@ class GetUserDetailUseCaseTest {
     }
 
     @Test
-    fun returnsFailureResult_WhenCurrentUserTypeIsUnknown() {
+    fun returnsFailureResult_WhenCurrentUserTypeIsAnonymous() {
         authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.ANONYMOUS)
 
         runBlocking {

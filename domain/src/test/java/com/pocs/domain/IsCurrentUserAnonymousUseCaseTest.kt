@@ -18,7 +18,7 @@ class IsCurrentUserAnonymousUseCaseTest {
     )
 
     @Test
-    fun returnsTrue_WhenCurrentUserIsUnknown() {
+    fun returnsTrue_WhenCurrentUserIsAnonymous() {
         authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.ANONYMOUS)
 
         val result = isCurrentUserAnonymousUseCase()
@@ -26,7 +26,7 @@ class IsCurrentUserAnonymousUseCaseTest {
     }
 
     @Test
-    fun returnsFalse_WhenCurrentUserIsNotUnknown() {
+    fun returnsFalse_WhenCurrentUserIsNotAnonymous() {
         authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.MEMBER)
 
         val result = isCurrentUserAnonymousUseCase()

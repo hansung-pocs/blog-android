@@ -50,7 +50,7 @@ class PostViewModelTest {
     }
 
     @Test
-    fun shouldVisibleFab_WhenCurrentUserIsNotUnknown() {
+    fun shouldVisibleFab_WhenCurrentUserIsNotAnonymous() {
         authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.MEMBER)
         initViewModel()
 

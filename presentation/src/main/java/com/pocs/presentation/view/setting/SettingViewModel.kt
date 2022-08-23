@@ -23,9 +23,7 @@ class SettingViewModel @Inject constructor(
 
     var uiState by mutableStateOf(
         SettingUiState(
-            currentUser = requireNotNull(
-                getCurrentUserStateFlowUseCase().value
-            ).toUiState()
+            currentUser = requireNotNull(getCurrentUserStateFlowUseCase().value).toUiState()
         )
     )
         private set
@@ -36,9 +34,7 @@ class SettingViewModel @Inject constructor(
                 // 로그아웃 요청 후 성공 응답을 함수에서 반환하기 전에 currentUserStateFlow가 먼저 null로 바꿘다.
                 // 이 때문에 null값이 Flow를 통해 전달되기 때문에, null일때를 예외한다.
                 if (it != null) {
-                    uiState = uiState.copy(
-                        currentUser = it.toUiState()
-                    )
+                    uiState = uiState.copy(currentUser = it.toUiState())
                 }
             }
         }
