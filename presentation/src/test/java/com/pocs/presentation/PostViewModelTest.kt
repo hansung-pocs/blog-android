@@ -6,7 +6,7 @@ import com.pocs.domain.model.post.PostFilterType
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.post.GetAllPostsUseCase
 import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
-import com.pocs.domain.usecase.auth.IsCurrentUserUnknownUseCase
+import com.pocs.domain.usecase.auth.IsCurrentUserAnonymousUseCase
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.view.home.post.PostViewModel
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
@@ -147,7 +147,7 @@ class PostViewModelTest {
     private fun initViewModel() {
         viewModel = PostViewModel(
             getAllPostsUseCase = GetAllPostsUseCase(postRepository),
-            isCurrentUserUnknownUseCase = IsCurrentUserUnknownUseCase(
+            isCurrentUserAnonymousUseCase = IsCurrentUserAnonymousUseCase(
                 GetCurrentUserTypeUseCase(authRepository)
             )
         )

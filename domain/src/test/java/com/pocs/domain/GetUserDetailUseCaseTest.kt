@@ -56,7 +56,7 @@ class GetUserDetailUseCaseTest {
 
     @Test
     fun returnsFailureResult_WhenCurrentUserTypeIsUnknown() {
-        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.UNKNOWN)
+        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.ANONYMOUS)
 
         runBlocking {
             val result = getUserDetailUseCase(userDetailFromMember.id)

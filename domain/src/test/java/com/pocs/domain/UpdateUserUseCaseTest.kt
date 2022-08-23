@@ -31,11 +31,11 @@ class UpdateUserUseCaseTest {
             id = userDetail.id,
             password = "",
             name = updatedName,
-            email = userDetail.email,
-            company = userDetail.company,
-            github = userDetail.github
+            email = userDetail.defaultInfo!!.email,
+            company = userDetail.defaultInfo!!.company,
+            github = userDetail.defaultInfo!!.github
         )
 
-        assertEquals(updatedName, authRepository.currentUser.value?.name)
+        assertEquals(updatedName, authRepository.currentUser.value?.defaultInfo!!.name)
     }
 }
