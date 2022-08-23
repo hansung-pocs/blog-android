@@ -28,10 +28,6 @@ class SettingActivity : AppCompatActivity() {
             Mdc3Theme(this) {
                 SettingScreen(
                     viewModel = viewModel,
-                    onLoginClick = {
-                        assert(viewModel.uiState.currentUser == null)
-                        startLoginActivityAndClearPrevious()
-                    },
                     onSuccessToLogout = ::startLoginActivityAndClearPrevious
                 )
             }

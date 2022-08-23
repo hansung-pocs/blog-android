@@ -28,7 +28,6 @@ import com.pocs.presentation.view.user.detail.UserDetailActivity
 @Composable
 fun SettingScreen(
     viewModel: SettingViewModel,
-    onLoginClick: () -> Unit,
     onSuccessToLogout: () -> Unit
 ) {
     if (viewModel.uiState.onSuccessToLogout) {
@@ -40,7 +39,6 @@ fun SettingScreen(
         onLogoutClick = {
             viewModel.logout()
         },
-        onLoginClick = onLoginClick,
         onErrorMessageShow = viewModel::errorMessageShown
     )
 }
@@ -50,7 +48,6 @@ fun SettingScreen(
 fun SettingContent(
     uiState: SettingUiState,
     onLogoutClick: () -> Unit,
-    onLoginClick: () -> Unit,
     onErrorMessageShow: () -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -101,7 +98,7 @@ fun SettingContent(
                     }
                 )
             } else {
-                SettingNonMemberTile(onLoginClick = onLoginClick)
+                SettingAnonymousTile(userId = uiState.currentUser.id)
             }
             PocsDivider(startIndent = 20.dp)
             SettingTile(
@@ -121,7 +118,7 @@ fun SettingContent(
 }
 
 @Composable
-fun SettingNonMemberTile(onLoginClick: () -> Unit) {
+fun SettingAnonymousTile(userId : Int) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -138,14 +135,11 @@ fun SettingNonMemberTile(onLoginClick: () -> Unit) {
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .weight(1f),
-            text = stringResource(R.string.anonymous),
+            text = stringResource(R.string.anonymous_name, userId.toString()),
             style = MaterialTheme.typography.bodyMedium.copy(
                 color = MaterialTheme.colorScheme.onBackground
             )
         )
-        TextButton(onClick = onLoginClick) {
-            Text(text = stringResource(id = R.string.navigate_to_login_screen))
-        }
     }
 }
 
@@ -240,7 +234,6 @@ fun SettingScreenNotLoginPreview() {
             )
         ),
         onLogoutClick = {},
-        onLoginClick = {},
         onErrorMessageShow = {}
     )
 }
@@ -266,7 +259,6 @@ fun SettingScreenLoginPreview() {
             )
         ),
         onLogoutClick = {},
-        onLoginClick = {},
         onErrorMessageShow = {}
     )
 }
