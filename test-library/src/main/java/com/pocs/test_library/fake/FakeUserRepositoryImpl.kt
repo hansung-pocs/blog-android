@@ -9,9 +9,12 @@ import com.pocs.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 class FakeUserRepositoryImpl @Inject constructor() : UserRepository {
+
+    var userPagingFlow = flowOf<PagingData<User>>()
 
     var searchResult = emptyFlow<PagingData<User>>()
 
@@ -22,9 +25,7 @@ class FakeUserRepositoryImpl @Inject constructor() : UserRepository {
     var createAnonymousResult = Result.success(Unit)
 
     override fun getAll(sortingMethod: UserListSortingMethod): Flow<PagingData<User>> {
-        return flow {
-            PagingData.from<User>(listOf())
-        }
+        return userPagingFlow
     }
 
     override fun search(

@@ -40,7 +40,7 @@ class UserFragment : ViewBindingFragment<FragmentUserBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _adapter = UserAdapter(viewModel.uiState.value.currentUserType, onClickCard = ::onClickCard)
+        _adapter = UserAdapter(onClickCard = ::onClickCard)
 
         binding.apply {
             recyclerView.adapter = adapter.withLoadStateFooter(
@@ -78,6 +78,10 @@ class UserFragment : ViewBindingFragment<FragmentUserBinding>() {
     }
 
     private fun onClickCard(userId: Int) {
+        if (viewModel.uiState.value.isUserAnonymous) {
+            showSnackBar(getString(R.string.can_see_only_member))
+            return
+        }
         val intent = UserDetailActivity.getIntent(requireContext(), userId)
         launcher?.launch(intent)
     }

@@ -1,14 +1,12 @@
 package com.pocs.presentation.view.user
 
 import androidx.recyclerview.widget.RecyclerView
-import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ItemUserBinding
 import com.pocs.presentation.model.user.item.UserItemUiState
 
 class UserViewHolder(
     private val binding: ItemUserBinding,
-    private val currentUserType: UserType,
     private val onClickCard: (userId: Int) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -30,12 +28,6 @@ class UserViewHolder(
             name.text = context.getString(R.string.anonymous_name, uiState.id.toString())
         }
 
-        val isUnknownUser = currentUserType == UserType.ANONYMOUS
-        cardView.isClickable = !isUnknownUser
-        if (!isUnknownUser) {
-            cardView.setOnClickListener {
-                onClickCard(uiState.id)
-            }
-        }
+        cardView.setOnClickListener { onClickCard(uiState.id) }
     }
 }
