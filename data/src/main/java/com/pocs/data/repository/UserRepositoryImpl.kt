@@ -6,9 +6,11 @@ import androidx.paging.PagingData
 import com.pocs.data.api.UserApi
 import com.pocs.data.extension.errorMessage
 import com.pocs.data.mapper.toDetailEntity
+import com.pocs.data.mapper.toDto
 import com.pocs.data.paging.UserPagingSource
 import com.pocs.data.paging.UserPagingSource.Companion.PAGE_SIZE
 import com.pocs.data.source.UserRemoteDataSource
+import com.pocs.domain.model.user.AnonymousCreateInfo
 import com.pocs.domain.model.user.User
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserListSortingMethod
@@ -74,7 +76,20 @@ class UserRepositoryImpl @Inject constructor(
                 company = company,
                 github = github
             )
-            if (response.code() == 302) {
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                throw Exception(response.errorMessage)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun createAnonymous(anonymousCreateInfo: AnonymousCreateInfo): Result<Unit> {
+        return try {
+            val response = dataSource.createAnonymous(anonymousCreateInfo.toDto())
+            if (response.isSuccessful) {
                 Result.success(Unit)
             } else {
                 throw Exception(response.errorMessage)

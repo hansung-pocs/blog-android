@@ -10,7 +10,7 @@ import com.pocs.domain.usecase.admin.GetAllPostsByUserUseCase
 import com.pocs.presentation.view.post.by.user.PostByUserActivity
 import com.pocs.presentation.view.post.by.user.PostByUserViewModel
 import com.pocs.test_library.fake.FakeAdminRepositoryImpl
-import com.pocs.test_library.mock.mockNormalUserDetail
+import com.pocs.test_library.mock.mockAdminUserDetail
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -45,15 +45,19 @@ class PostByUserActivityTest {
 
     @Test
     fun shouldShowUserName() {
-        val userDetail = mockNormalUserDetail
+        val userDetail = mockAdminUserDetail
+        val name = userDetail.defaultInfo?.name ?: context.getString(
+            R.string.anonymous_name,
+            userDetail.id
+        )
         val intent = PostByUserActivity.getIntent(
             context,
             userId = userDetail.id,
-            userName = userDetail.name
+            name = name
         )
         launchActivity<PostByUserActivity>(intent)
 
-        onView(withText(containsString(userDetail.name))).check { _, noViewFoundException ->
+        onView(withText(containsString(name))).check { _, noViewFoundException ->
             assertNull(noViewFoundException)
         }
     }
@@ -61,10 +65,15 @@ class PostByUserActivityTest {
     @Test
     fun shouldShowEmptyText_WhenThereIsNoPostByUser() {
         repository.postListByUser = emptyList()
+        val userDetail = mockAdminUserDetail
+        val name = userDetail.defaultInfo?.name ?: context.getString(
+            R.string.anonymous_name,
+            userDetail.id
+        )
         val intent = PostByUserActivity.getIntent(
             context,
-            userId = mockNormalUserDetail.id,
-            userName = mockNormalUserDetail.name
+            userId = userDetail.id,
+            name = name
         )
         launchActivity<PostByUserActivity>(intent)
 

@@ -38,6 +38,7 @@ class AuthRepositoryImpl @Inject constructor(
                         localDataSource.clear()
                     }
                 } catch (e: Exception) {
+                    e.printStackTrace()
                     // 인터넷 연결이 끊김 등의 예외는 무시한다.
                 }
             }
@@ -95,11 +96,16 @@ class AuthRepositoryImpl @Inject constructor(
         company: String?,
         github: String?
     ) {
-        currentUserState.value = currentUserState.value?.copy(
-            name = name,
-            email = email,
-            company = company,
-            github = github
-        )
+        val currentUserStateValue = currentUserState.value
+        if (currentUserStateValue != null) {
+            currentUserState.value = currentUserStateValue.copy(
+                defaultInfo = currentUserStateValue.defaultInfo?.copy(
+                    name = name,
+                    email = email,
+                    company = company,
+                    github = github
+                )
+            )
+        }
     }
 }

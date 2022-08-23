@@ -7,5 +7,6 @@ enum class PostFilterType {
     STUDY,
     MEMORY,
     KNOWHOW,
-    REFERENCE
+    REFERENCE,
+    QNA
 }

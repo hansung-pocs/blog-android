@@ -11,7 +11,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.pocs.presentation.extension.RESULT_REFRESH
 import com.pocs.presentation.view.post.create.PostCreateActivity
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
-import com.pocs.test_library.mock.mockNormalUserDetail
+import com.pocs.test_library.mock.mockAdminUserDetail
 import com.pocs.test_library.mock.mockPostDetail2
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -45,7 +45,7 @@ class PostCreateActivityTest {
 
     @Test
     fun shouldSetResultRefresh_AfterSuccessAddingNewPost() {
-        authRepository.currentUser.value = mockNormalUserDetail
+        authRepository.currentUser.value = mockAdminUserDetail
         val post = mockPostDetail2
         val intent = PostCreateActivity.getIntent(context, post.category)
         val scenario = launchActivity<PostCreateActivity>(intent)

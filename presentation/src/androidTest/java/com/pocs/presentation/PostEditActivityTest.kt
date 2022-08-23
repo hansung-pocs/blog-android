@@ -15,7 +15,7 @@ import com.pocs.presentation.view.post.edit.PostEditViewModel
 import com.pocs.presentation.extension.assertSnackBarIsDisplayed
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakePostRepositoryImpl
-import com.pocs.test_library.mock.mockNormalUserDetail
+import com.pocs.test_library.mock.mockAdminUserDetail
 import com.pocs.test_library.mock.mockPostDetail2
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -62,7 +62,7 @@ class PostEditActivityTest {
     @Test
     fun shouldReturnResultOk_AfterSuccessSavingEditedPost() {
         val post = mockPostDetail2
-        authRepository.currentUser.value = mockNormalUserDetail.copy(id = post.writer.id)
+        authRepository.currentUser.value = mockAdminUserDetail.copy(id = post.writer.id)
         val intent = PostEditActivity.getIntent(
             context, post.id, post.title, post.content, post.category
         )
@@ -77,7 +77,7 @@ class PostEditActivityTest {
     fun shouldShowErrorMessage_AfterFailedToEditedPost() {
         val post = mockPostDetail2
         val errorMessage = "ERROR"
-        authRepository.currentUser.value = mockNormalUserDetail.copy(id = post.writer.id)
+        authRepository.currentUser.value = mockAdminUserDetail.copy(id = post.writer.id)
         postRepository.updatePostResult = Result.failure(Exception(errorMessage))
         val intent = PostEditActivity.getIntent(
             context, post.id, post.title, post.content, post.category

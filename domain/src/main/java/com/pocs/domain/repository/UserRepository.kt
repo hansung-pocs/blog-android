@@ -1,6 +1,7 @@
 package com.pocs.domain.repository
 
 import androidx.paging.PagingData
+import com.pocs.domain.model.user.AnonymousCreateInfo
 import com.pocs.domain.model.user.User
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserListSortingMethod
@@ -22,4 +23,6 @@ interface UserRepository {
         company: String?,
         github: String?
     ): Result<Unit>
+
+    suspend fun createAnonymous(anonymousCreateInfo: AnonymousCreateInfo): Result<Unit>
 }

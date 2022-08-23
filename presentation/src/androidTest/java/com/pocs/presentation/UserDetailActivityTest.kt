@@ -9,7 +9,6 @@ import androidx.compose.ui.test.performClick
 import androidx.test.core.app.launchActivity
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.admin.KickUserUseCase
 import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
@@ -22,7 +21,8 @@ import com.pocs.presentation.view.user.detail.UserDetailViewModel
 import com.pocs.test_library.fake.FakeAdminRepositoryImpl
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
-import com.pocs.test_library.mock.mockNormalUserDetail
+import com.pocs.test_library.mock.mockAdminUserDetail
+import com.pocs.test_library.mock.mockMemberUserDetail
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -65,18 +65,7 @@ class UserDetailActivityTest {
 
     private lateinit var context: Context
 
-    private val userDetail = UserDetail(
-        id = 1,
-        name = "박민석",
-        email = "hello@gmiad.com",
-        studentId = 18294012,
-        type = UserType.MEMBER,
-        company = "google",
-        generation = 10,
-        github = "https://github.com/",
-        createdAt = "",
-        canceledAt = null
-    )
+    private val userDetail = mockMemberUserDetail
 
     @Before
     fun setUp() {
@@ -98,7 +87,7 @@ class UserDetailActivityTest {
     @Test
     fun shouldShowErrorSnackBar_WhenFailedToKickUser() {
         val errorMessage = "ERROR!!@!"
-        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.ADMIN)
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.ADMIN)
         adminRepository.userDetailResult = Result.success(userDetail)
         adminRepository.kickUserResult = Result.failure(Exception(errorMessage))
         val intent = UserDetailActivity.getIntent(context, userDetail.id)
@@ -113,7 +102,7 @@ class UserDetailActivityTest {
 
     @Test
     fun shouldFetchUserDetail_WhenSuccessToKickUser() {
-        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.ADMIN)
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.ADMIN)
         adminRepository.userDetailResult = Result.success(userDetail.copy(canceledAt = null))
         adminRepository.kickUserResult = Result.success(Unit)
         val intent = UserDetailActivity.getIntent(context, userDetail.id)
@@ -134,7 +123,7 @@ class UserDetailActivityTest {
 
     @Test
     fun shouldNotShowKickButton_WhenUserHasBeenKicked() {
-        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.ADMIN)
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.ADMIN)
         adminRepository.userDetailResult = Result.success(userDetail.copy(canceledAt = null))
         adminRepository.kickUserResult = Result.success(Unit)
         val intent = UserDetailActivity.getIntent(context, userDetail.id)

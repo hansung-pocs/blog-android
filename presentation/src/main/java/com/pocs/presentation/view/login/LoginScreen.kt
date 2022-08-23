@@ -24,14 +24,14 @@ import com.pocs.presentation.view.component.textfield.PasswordOutlineTextField
 import com.pocs.presentation.view.component.textfield.PocsOutlineTextField
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel, onBrowseAsNonMemberClick: () -> Unit) {
+fun LoginScreen(viewModel: LoginViewModel, onBrowseAsAnonymousClick: () -> Unit) {
     val uiState = viewModel.uiState.collectAsState()
 
     LoginContent(
         uiState = uiState.value,
         onLoginClick = viewModel::login,
-        onBrowseAsNonMemberClick = onBrowseAsNonMemberClick,
-        onErrorMessageShown = viewModel::errorMessageShown
+        onBrowseAsAnonymousClick = onBrowseAsAnonymousClick,
+        onUserMessageShown = viewModel::userMessageShown
     )
 }
 
@@ -40,16 +40,16 @@ fun LoginScreen(viewModel: LoginViewModel, onBrowseAsNonMemberClick: () -> Unit)
 fun LoginContent(
     uiState: LoginUiState,
     onLoginClick: () -> Unit,
-    onBrowseAsNonMemberClick: () -> Unit,
-    onErrorMessageShown: () -> Unit
+    onBrowseAsAnonymousClick: () -> Unit,
+    onUserMessageShown: () -> Unit
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
-    val errorMessage = uiState.errorMessage
+    val userMessage = uiState.userMessage
 
-    if (errorMessage != null) {
-        LaunchedEffect(errorMessage) {
-            snackBarHostState.showSnackbar(message = errorMessage)
-            onErrorMessageShown()
+    if (userMessage != null) {
+        LaunchedEffect(userMessage) {
+            snackBarHostState.showSnackbar(message = userMessage)
+            onUserMessageShown()
         }
     }
 
@@ -100,9 +100,9 @@ fun LoginContent(
                 onClick = onLoginClick
             )
             Box(modifier = Modifier.height(8.dp))
-            TextButton(onClick = onBrowseAsNonMemberClick) {
+            TextButton(onClick = onBrowseAsAnonymousClick) {
                 Text(
-                    text = stringResource(R.string.brows_as_non_member),
+                    text = stringResource(R.string.sign_up_as_anonymous),
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4F)
                 )
             }
@@ -128,13 +128,13 @@ fun LoginContentPreview() {
     LoginContent(
         uiState = LoginUiState(
             isLoggedIn = false,
-            errorMessage = null,
+            userMessage = null,
             userName = "",
             password = "",
             onUpdate = {}
         ),
         onLoginClick = {},
-        onBrowseAsNonMemberClick = {},
-        onErrorMessageShown = {}
+        onBrowseAsAnonymousClick = {},
+        onUserMessageShown = {}
     )
 }

@@ -6,7 +6,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.pocs.domain.model.post.PostFilterType
 import com.pocs.domain.usecase.post.GetAllPostsUseCase
-import com.pocs.domain.usecase.auth.IsCurrentUserUnknownUseCase
+import com.pocs.domain.usecase.auth.IsCurrentUserAnonymousUseCase
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.study.StudyUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,11 +19,11 @@ import javax.inject.Inject
 @HiltViewModel
 class StudyViewModel @Inject constructor(
     private val getAllPostsUseCase: GetAllPostsUseCase,
-    isCurrentUserUnknownUseCase: IsCurrentUserUnknownUseCase
+    isCurrentUserAnonymousUseCase: IsCurrentUserAnonymousUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
-        StudyUiState(visiblePostWriteFab = !isCurrentUserUnknownUseCase())
+        StudyUiState(visiblePostWriteFab = !isCurrentUserAnonymousUseCase())
     )
     val uiState = _uiState.asStateFlow()
 

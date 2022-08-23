@@ -7,5 +7,5 @@ import javax.inject.Inject
 class GetCurrentUserTypeUseCase @Inject constructor(
     private val authRepository: AuthRepository
 ) {
-    operator fun invoke() = authRepository.getCurrentUser().value?.type ?: UserType.UNKNOWN
+    operator fun invoke() = authRepository.getCurrentUser().value?.type ?: UserType.ANONYMOUS
 }

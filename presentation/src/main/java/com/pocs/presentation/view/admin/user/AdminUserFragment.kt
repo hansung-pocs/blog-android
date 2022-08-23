@@ -39,7 +39,7 @@ class AdminUserFragment : ViewBindingFragment<FragmentAdminUserBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _adapter = UserAdapter(viewModel.uiState.value.currentUserType, onClickCard = ::onClickCard)
+        _adapter = UserAdapter(onClickCard = ::onClickCard)
 
         binding.apply {
             recyclerView.adapter = adapter.withLoadStateFooter(

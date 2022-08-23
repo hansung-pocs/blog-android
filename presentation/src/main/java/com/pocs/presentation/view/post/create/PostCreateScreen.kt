@@ -10,7 +10,7 @@ import com.pocs.presentation.view.post.edit.PostEditContent
 fun PostCreateScreen(
     uiState: PostCreateUiState,
     navigateUp: () -> Unit,
-    onSuccessSave: () -> Unit
+    onSuccessSave: () -> Unit,
 ) {
     PostEditContent(
         title = stringResource(R.string.write_post),

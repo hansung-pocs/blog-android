@@ -51,6 +51,7 @@ fun PostEditContent(
     val snackBarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    val showChips = uiState.showChips
 
     RecheckHandler(
         navigateUp = navigateUp,
@@ -93,11 +94,13 @@ fun PostEditContent(
             val contentContentDescription = stringResource(R.string.content_text_field)
             var showToolBar by remember { mutableStateOf(false) }
 
-            PostCategoryChips(
-                isUserAdmin = uiState.isUserAdmin,
-                selectedCategory = uiState.category,
-                onClick = uiState.onCategoryChange
-            )
+            if (showChips) {
+                PostCategoryChips(
+                    isUserAdmin = uiState.isUserAdmin,
+                    selectedCategory = uiState.category,
+                    onClick = uiState.onCategoryChange
+                )
+            }
             SimpleTextField(
                 hint = stringResource(R.string.title),
                 value = uiState.title,
@@ -170,8 +173,9 @@ fun PostEditContentEmptyPreview() {
             onCategoryChange = {},
             onSave = { Result.success(Unit) }
         ),
-        {}
-    ) {}
+        navigateUp = {},
+        onSuccessSave = {}
+    )
 }
 
 @Preview
@@ -190,6 +194,7 @@ fun PostEditContentPreview() {
             onCategoryChange = {},
             onSave = { Result.success(Unit) }
         ),
-        {}
-    ) {}
+        navigateUp = {},
+        onSuccessSave = {}
+    )
 }

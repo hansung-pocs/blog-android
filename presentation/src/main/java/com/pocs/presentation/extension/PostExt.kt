@@ -26,5 +26,6 @@ val PostFilterType.koreanStringResource: Int
             PostFilterType.MEMORY -> R.string.memory
             PostFilterType.KNOWHOW -> R.string.knowhow
             PostFilterType.REFERENCE -> R.string.reference
+            PostFilterType.QNA -> R.string.question_answer
         }
     }

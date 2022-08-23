@@ -1,9 +1,9 @@
 package com.pocs.presentation.model.setting
 
-import com.pocs.domain.model.user.UserDetail
+import com.pocs.presentation.model.user.item.UserDetailItemUiState
 
 data class SettingUiState(
-    val currentUser: UserDetail? = null,
+    val currentUser: UserDetailItemUiState,
     val errorMessage: String? = null,
     val onSuccessToLogout: Boolean = false
 )

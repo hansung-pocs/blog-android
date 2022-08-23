@@ -4,7 +4,6 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.pocs.domain.usecase.admin.GetAllUsersAsAdminUseCase
-import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import com.pocs.presentation.view.admin.user.AdminUserFragment
 import com.pocs.presentation.view.admin.user.AdminUserViewModel
 import com.pocs.test_library.extension.launchFragmentInHiltContainer
@@ -49,8 +48,7 @@ class AdminUserFragmentTest {
 
     private fun initViewModel() {
         viewModel = AdminUserViewModel(
-            GetAllUsersAsAdminUseCase(adminRepository),
-            GetCurrentUserTypeUseCase(authRepository)
+            GetAllUsersAsAdminUseCase(adminRepository)
         )
     }
 
@@ -61,9 +59,10 @@ class AdminUserFragmentTest {
 
         launchFragmentInHiltContainer<AdminUserFragment>(themeResId = R.style.Theme_PocsBlog)
 
-        onView(withText(mockNormalUser.name)).check(matches(isDisplayed()))
-        onView(withSubstring(mockNormalUser.studentId.toString())).check(matches(isDisplayed()))
-        onView(withSubstring(mockNormalUser.generation.toString())).check(matches(isDisplayed()))
+        val defaultInfo = mockNormalUser.defaultInfo!!
+        onView(withText(defaultInfo.name)).check(matches(isDisplayed()))
+        onView(withSubstring(defaultInfo.studentId.toString())).check(matches(isDisplayed()))
+        onView(withSubstring(defaultInfo.generation.toString())).check(matches(isDisplayed()))
     }
 
     @Test

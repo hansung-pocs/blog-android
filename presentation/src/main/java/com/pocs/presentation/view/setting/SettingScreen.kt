@@ -15,10 +15,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.R
 import com.pocs.presentation.model.setting.SettingUiState
+import com.pocs.presentation.model.user.item.UserDefaultInfoUiState
+import com.pocs.presentation.model.user.item.UserDetailItemUiState
 import com.pocs.presentation.view.component.PocsDivider
 import com.pocs.presentation.view.component.RecheckDialog
 import com.pocs.presentation.view.component.button.AppBarBackButton
@@ -27,7 +28,6 @@ import com.pocs.presentation.view.user.detail.UserDetailActivity
 @Composable
 fun SettingScreen(
     viewModel: SettingViewModel,
-    onLoginClick: () -> Unit,
     onSuccessToLogout: () -> Unit
 ) {
     if (viewModel.uiState.onSuccessToLogout) {
@@ -37,10 +37,8 @@ fun SettingScreen(
     SettingContent(
         uiState = viewModel.uiState,
         onLogoutClick = {
-            assert(viewModel.uiState.currentUser != null)
             viewModel.logout()
         },
-        onLoginClick = onLoginClick,
         onErrorMessageShow = viewModel::errorMessageShown
     )
 }
@@ -50,7 +48,6 @@ fun SettingScreen(
 fun SettingContent(
     uiState: SettingUiState,
     onLogoutClick: () -> Unit,
-    onLoginClick: () -> Unit,
     onErrorMessageShow: () -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -88,42 +85,40 @@ fun SettingContent(
                 .padding(innerPadding)
                 .verticalScroll(scrollState)
         ) {
-            val isLoggedIn = uiState.currentUser != null
             val context = LocalContext.current
+            val userDefaultInfo = uiState.currentUser.defaultInfo
 
-            if (isLoggedIn) {
+            if (userDefaultInfo != null) {
                 SettingUserTile(
-                    name = uiState.currentUser!!.name,
-                    studentId = uiState.currentUser.studentId.toString(),
+                    name = userDefaultInfo.name,
+                    studentId = userDefaultInfo.studentId.toString(),
                     onClick = {
                         val intent = UserDetailActivity.getIntent(context, uiState.currentUser.id)
                         context.startActivity(intent)
                     }
                 )
             } else {
-                SettingNonMemberTile(onLoginClick = onLoginClick)
+                SettingAnonymousTile(userId = uiState.currentUser.id)
             }
             PocsDivider(startIndent = 20.dp)
-            if (isLoggedIn) {
-                SettingTile(
-                    title = stringResource(R.string.logout),
-                    titleColor = MaterialTheme.colorScheme.error,
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Logout,
-                            contentDescription = stringResource(id = R.string.logout),
-                            tint = MaterialTheme.colorScheme.error
-                        )
-                    },
-                    onClick = { showLogoutDialog = true }
-                )
-            }
+            SettingTile(
+                title = stringResource(R.string.logout),
+                titleColor = MaterialTheme.colorScheme.error,
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Logout,
+                        contentDescription = stringResource(id = R.string.logout),
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                },
+                onClick = { showLogoutDialog = true }
+            )
         }
     }
 }
 
 @Composable
-fun SettingNonMemberTile(onLoginClick: () -> Unit) {
+fun SettingAnonymousTile(userId : Int) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -140,14 +135,11 @@ fun SettingNonMemberTile(onLoginClick: () -> Unit) {
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .weight(1f),
-            text = stringResource(R.string.non_member),
+            text = stringResource(R.string.anonymous_name, userId.toString()),
             style = MaterialTheme.typography.bodyMedium.copy(
                 color = MaterialTheme.colorScheme.onBackground
             )
         )
-        TextButton(onClick = onLoginClick) {
-            Text(text = stringResource(id = R.string.navigate_to_login_screen))
-        }
     }
 }
 
@@ -224,7 +216,26 @@ fun SettingTile(
 @Composable
 @Preview
 fun SettingScreenNotLoginPreview() {
-    SettingContent(SettingUiState(), onLogoutClick = {}, onLoginClick = {}, onErrorMessageShow = {})
+    SettingContent(
+        SettingUiState(
+            currentUser = UserDetailItemUiState(
+                2,
+                defaultInfo = UserDefaultInfoUiState(
+                    name = "권김정",
+                    email = "abc@google.com",
+                    studentId = 1971034,
+                    company = null,
+                    generation = 30,
+                    github = "https://github.com/"
+                ),
+                type = UserType.ADMIN,
+                createdAt = "2021-02-12",
+                canceledAt = null
+            )
+        ),
+        onLogoutClick = {},
+        onErrorMessageShow = {}
+    )
 }
 
 @Composable
@@ -232,21 +243,22 @@ fun SettingScreenNotLoginPreview() {
 fun SettingScreenLoginPreview() {
     SettingContent(
         SettingUiState(
-            currentUser = UserDetail(
+            currentUser = UserDetailItemUiState(
                 2,
-                "권김정",
-                "abc@google.com",
-                1971034,
-                UserType.ADMIN,
-                null,
-                30,
-                "https://github.com/",
-                "2021-02-12",
-                null,
+                defaultInfo = UserDefaultInfoUiState(
+                    name = "권김정",
+                    email = "abc@google.com",
+                    studentId = 1971034,
+                    company = null,
+                    generation = 30,
+                    github = "https://github.com/"
+                ),
+                type = UserType.ADMIN,
+                createdAt = "2021-02-12",
+                canceledAt = null
             )
         ),
         onLogoutClick = {},
-        onLoginClick = {},
         onErrorMessageShow = {}
     )
 }

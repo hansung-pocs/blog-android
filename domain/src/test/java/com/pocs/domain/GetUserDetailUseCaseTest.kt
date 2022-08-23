@@ -7,7 +7,7 @@ import com.pocs.test_library.fake.FakeAdminRepositoryImpl
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
 import com.pocs.test_library.mock.mockKickedUserDetail
-import com.pocs.test_library.mock.mockNormalUserDetail
+import com.pocs.test_library.mock.mockAdminUserDetail
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.junit.Assert.*
@@ -25,7 +25,7 @@ class GetUserDetailUseCaseTest {
         getCurrentUserTypeUseCase = GetCurrentUserTypeUseCase(authRepository)
     )
 
-    private val userDetailFromMember = mockNormalUserDetail
+    private val userDetailFromMember = mockAdminUserDetail
     private val userDetailFromAdmin = mockKickedUserDetail
 
     @Before
@@ -36,7 +36,7 @@ class GetUserDetailUseCaseTest {
 
     @Test
     fun returnsUserDetailFromAdmin_WhenCurrentUserTypeIsAdmin() {
-        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.ADMIN)
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.ADMIN)
 
         runBlocking {
             val result = getUserDetailUseCase(userDetailFromAdmin.id)
@@ -46,7 +46,7 @@ class GetUserDetailUseCaseTest {
 
     @Test
     fun returnsUserDetailFromMember_WhenCurrentUserTypeIsMember() {
-        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.MEMBER)
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.MEMBER)
 
         runBlocking {
             val result = getUserDetailUseCase(userDetailFromMember.id)
@@ -55,8 +55,8 @@ class GetUserDetailUseCaseTest {
     }
 
     @Test
-    fun returnsFailureResult_WhenCurrentUserTypeIsUnknown() {
-        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.UNKNOWN)
+    fun returnsFailureResult_WhenCurrentUserTypeIsAnonymous() {
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.ANONYMOUS)
 
         runBlocking {
             val result = getUserDetailUseCase(userDetailFromMember.id)

@@ -25,6 +25,7 @@ import com.pocs.presentation.R
 import com.pocs.presentation.extension.RefreshStateContract
 import com.pocs.presentation.model.user.item.UserDetailItemUiState
 import com.pocs.presentation.model.user.UserDetailUiState
+import com.pocs.presentation.model.user.item.UserDefaultInfoUiState
 import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.component.FailureContent
 import com.pocs.presentation.view.component.LoadingContent
@@ -81,6 +82,8 @@ fun UserDetailContent(
     onEdited: () -> Unit,
     isCurrentUserAdmin: Boolean
 ) {
+    val userDefaultInfo = userDetail.defaultInfo
+    val name = userDefaultInfo?.name ?: stringResource(id = R.string.anonymous_name, userDetail.id)
     var showKickRecheckDialog by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     val userEditActivityResult = rememberLauncherForActivityResult(
@@ -100,7 +103,7 @@ fun UserDetailContent(
     if (showKickRecheckDialog) {
         RecheckDialog(
             title = stringResource(R.string.kick_user_recheck_dialog_title),
-            text = stringResource(R.string.kick_user_recheck_dialog_text, userDetail.name),
+            text = stringResource(R.string.kick_user_recheck_dialog_text, name),
             confirmText = stringResource(id = R.string.kick),
             onOkClick = {
                 onConfirmToKick()
@@ -116,7 +119,7 @@ fun UserDetailContent(
             val context = LocalContext.current
 
             UserDetailTopBar(
-                name = userDetail.name,
+                name = name,
                 isUserKicked = userDetail.isKicked,
                 displayActions = isCurrentUserAdmin,
                 onKickClick = { showKickRecheckDialog = true },
@@ -124,7 +127,7 @@ fun UserDetailContent(
                     val intent = PostByUserActivity.getIntent(
                         context,
                         userId = userDetail.id,
-                        userName = userDetail.name
+                        name = name
                     )
                     context.startActivity(intent)
                 }
@@ -148,52 +151,24 @@ fun UserDetailContent(
                 }
             }
         }
-    ) {
-        LazyColumn(
-            modifier = Modifier
-                .padding(it)
-                .padding(horizontal = 24.dp)
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            item {
-                UserAvatar(name = userDetail.name, isKicked = userDetail.isKicked)
-            }
-            item {
-                UserInfo(
-                    stringResource(R.string.generation),
-                    userDetail.generation.toString()
+    ) { innerPadding ->
+        if (userDefaultInfo != null) { // 회원인 경우
+            MemberUserInfoList(
+                modifier = Modifier.padding(innerPadding),
+                isKicked = userDetail.isKicked,
+                userDefaultInfo = userDefaultInfo
+            )
+        } else { // 비회원인 경우
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Text(
+                    stringResource(R.string.anonymous_user),
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                    )
                 )
-            }
-            item {
-                UserInfo(
-                    stringResource(R.string.student_id),
-                    userDetail.studentId.toString()
-                )
-            }
-            item {
-                UserInfo(
-                    stringResource(R.string.company),
-                    userDetail.company ?: stringResource(R.string.empty_label)
-                )
-            }
-            item {
-                val github = userDetail.github ?: stringResource(R.string.empty_label)
-                UserInfo(
-                    label = stringResource(R.string.github),
-                    link = github,
-                    annotation = github
-                )
-            }
-            item {
-                UserInfo(
-                    label = stringResource(R.string.email),
-                    link = userDetail.email,
-                    annotation = stringResource(R.string.mailto_scheme, userDetail.email)
-                )
-            }
-            item {
-                Box(modifier = Modifier.height(dimensionResource(id = R.dimen.fab_height)))
             }
         }
     }
@@ -265,6 +240,60 @@ fun UserAvatar(name: String, isKicked: Boolean) {
                     color = MaterialTheme.colorScheme.error
                 )
             )
+        }
+    }
+}
+
+@Composable
+fun MemberUserInfoList(
+    modifier: Modifier = Modifier,
+    isKicked: Boolean,
+    userDefaultInfo: UserDefaultInfoUiState
+) {
+    LazyColumn(
+        modifier = modifier
+            .padding(horizontal = 24.dp)
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        item {
+            UserAvatar(name = userDefaultInfo.name, isKicked = isKicked)
+        }
+        item {
+            UserInfo(
+                stringResource(R.string.generation),
+                userDefaultInfo.generation.toString()
+            )
+        }
+        item {
+            UserInfo(
+                stringResource(R.string.student_id),
+                userDefaultInfo.studentId.toString()
+            )
+        }
+        item {
+            UserInfo(
+                stringResource(R.string.company),
+                userDefaultInfo.company ?: stringResource(R.string.empty_label)
+            )
+        }
+        item {
+            val github = userDefaultInfo.github ?: stringResource(R.string.empty_label)
+            UserInfo(
+                label = stringResource(R.string.github),
+                link = github,
+                annotation = github
+            )
+        }
+        item {
+            UserInfo(
+                label = stringResource(R.string.email),
+                link = userDefaultInfo.email,
+                annotation = stringResource(R.string.mailto_scheme, userDefaultInfo.email)
+            )
+        }
+        item {
+            Box(modifier = Modifier.height(dimensionResource(id = R.dimen.fab_height)))
         }
     }
 }
@@ -348,16 +377,18 @@ fun UserDetailFailureContent(message: String, onRetryClick: () -> Unit) {
 fun UserDetailContentPreview() {
     UserDetailContent(
         userDetail = UserDetailItemUiState(
-            1,
-            "김민성",
-            "jja08111@gmail.com",
-            1234528,
-            UserType.MEMBER,
-            "Hello",
-            30,
-            "https://github/jja08111",
-            "2022-04-04",
-            "-"
+            2,
+            defaultInfo = UserDefaultInfoUiState(
+                name = "권김정",
+                email = "abc@google.com",
+                studentId = 1971034,
+                company = null,
+                generation = 30,
+                github = "https://github.com/"
+            ),
+            type = UserType.ADMIN,
+            createdAt = "2021-02-12",
+            canceledAt = null
         ),
         isMyInfo = true,
         snackBarHostState = SnackbarHostState(),
@@ -372,16 +403,18 @@ fun UserDetailContentPreview() {
 fun KickedUserDetailContentPreview() {
     UserDetailContent(
         userDetail = UserDetailItemUiState(
-            1,
-            "김민성",
-            "jja08111@gmail.com",
-            1234528,
-            UserType.MEMBER,
-            "Hello",
-            30,
-            "https://github/jja08111",
-            "2022-04-04",
-            "2022-04-04",
+            id = 2,
+            defaultInfo = UserDefaultInfoUiState(
+                name = "권김정",
+                email = "abc@google.com",
+                studentId = 1971034,
+                company = null,
+                generation = 30,
+                github = "https://github.com/"
+            ),
+            type = UserType.ADMIN,
+            createdAt = "2021-02-12",
+            canceledAt = null
         ),
         isMyInfo = true,
         snackBarHostState = SnackbarHostState(),

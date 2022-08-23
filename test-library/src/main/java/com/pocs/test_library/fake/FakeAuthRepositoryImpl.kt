@@ -39,11 +39,16 @@ class FakeAuthRepositoryImpl @Inject constructor() : AuthRepository {
         company: String?,
         github: String?
     ) {
-        currentUser.value = currentUser.value?.copy(
-            name = name,
-            email = email,
-            company = company,
-            github = github
-        )
+        val currentUserStateValue = currentUser.value
+        if (currentUserStateValue != null) {
+            currentUser.value = currentUserStateValue.copy(
+                defaultInfo = currentUserStateValue.defaultInfo?.copy(
+                    name = name,
+                    email = email,
+                    company = company,
+                    github = github
+                )
+            )
+        }
     }
 }

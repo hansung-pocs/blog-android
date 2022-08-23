@@ -4,7 +4,7 @@ import com.pocs.domain.usecase.auth.GetCurrentUserStateFlowUseCase
 import com.pocs.domain.usecase.auth.LogoutUseCase
 import com.pocs.presentation.view.setting.SettingViewModel
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
-import com.pocs.test_library.mock.mockNormalUserDetail
+import com.pocs.test_library.mock.mockAdminUserDetail
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -35,7 +35,7 @@ class SettingViewModelTest {
 
     @Test
     fun shouldOnSuccessToLogoutIsTrue_WhenLogoutSuccess() {
-        authRepository.currentUser.value = mockNormalUserDetail
+        authRepository.currentUser.value = mockAdminUserDetail
         authRepository.logoutResult = Result.success(Unit)
         initViewModel()
 
@@ -47,7 +47,7 @@ class SettingViewModelTest {
     @Test
     fun shouldExistErrorMessage_WhenLogoutFailure() {
         val errorMessage = "error"
-        authRepository.currentUser.value = mockNormalUserDetail
+        authRepository.currentUser.value = mockAdminUserDetail
         authRepository.logoutResult = Result.failure(Exception(errorMessage))
         initViewModel()
 

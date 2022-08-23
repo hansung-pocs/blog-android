@@ -1,6 +1,7 @@
 package com.pocs.data.api
 
 import com.pocs.data.model.ResponseBody
+import com.pocs.data.model.user.anonymous.AnonymousCreateInfoBody
 import com.pocs.data.model.user.UserDto
 import com.pocs.data.model.user.UserListDto
 import com.pocs.data.model.user.UserListSortingMethodDto
@@ -26,5 +27,10 @@ interface UserApi {
     suspend fun updateUser(
         @Path("userId") userId: Int,
         @Body userUpdateBody: UserUpdateBody
+    ): Response<ResponseBody<Unit>>
+
+    @POST("users")
+    suspend fun createAnonymous(
+        @Body anonymousCreateInfoBody: AnonymousCreateInfoBody
     ): Response<ResponseBody<Unit>>
 }

@@ -11,6 +11,8 @@ data class UserUiState(
     val userPagingData: PagingData<UserItemUiState> = PagingData.empty(),
     val enabledSearchMode: Boolean = false,
     val searchPagingData: PagingData<UserItemUiState> = PagingData.empty(),
-    val currentUserType: UserType,
+    private val currentUserType: UserType,
     @StringRes val errorMessageRes: Int? = null
-)
+) {
+    val isUserAnonymous get() = currentUserType == UserType.ANONYMOUS
+}

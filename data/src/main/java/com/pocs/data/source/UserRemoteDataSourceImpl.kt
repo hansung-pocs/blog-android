@@ -1,7 +1,10 @@
 package com.pocs.data.source
 
 import com.pocs.data.api.UserApi
+import com.pocs.data.model.ResponseBody
 import com.pocs.data.model.user.UserUpdateBody
+import com.pocs.data.model.user.anonymous.AnonymousCreateInfoBody
+import retrofit2.Response
 import javax.inject.Inject
 
 class UserRemoteDataSourceImpl @Inject constructor(
@@ -27,4 +30,10 @@ class UserRemoteDataSourceImpl @Inject constructor(
             company = company
         )
     )
+
+    override suspend fun createAnonymous(
+        AnonymousCreateInfoBody: AnonymousCreateInfoBody
+    ): Response<ResponseBody<Unit>> {
+        return api.createAnonymous(AnonymousCreateInfoBody)
+    }
 }

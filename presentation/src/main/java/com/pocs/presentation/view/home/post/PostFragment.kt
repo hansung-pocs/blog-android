@@ -96,10 +96,14 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
 
     private fun updateUi(uiState: PostUiState, adapter: PostAdapter) {
         adapter.submitData(viewLifecycleOwner.lifecycle, uiState.pagingData)
-        binding.fab.isVisible = uiState.visiblePostWriteFab
+        binding.fab.isVisible = uiState.isUserAnonymous
     }
 
     private fun onClickPost(postItemUiState: PostItemUiState) {
+        if (viewModel.uiState.value.isUserAnonymous) {
+            showSnackBar(getString(R.string.can_see_only_member))
+            return
+        }
         val intent = PostDetailActivity.getIntent(
             requireContext(),
             id = postItemUiState.id

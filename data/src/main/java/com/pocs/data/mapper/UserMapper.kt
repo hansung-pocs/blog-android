@@ -6,21 +6,14 @@ import com.pocs.domain.model.user.UserDetail
 
 fun UserDto.toEntity() = User(
     id = id,
-    name = name,
-    studentId = studentId,
-    generation = generation,
+    defaultInfo = defaultInfo?.toEntity(),
     canceledAt = canceledAt
 )
 
 fun UserDto.toDetailEntity() = UserDetail(
     id = id,
-    name = name,
-    email = email,
-    studentId = studentId,
     type = type.toUserType(),
-    company = company,
-    generation = generation,
-    github = github,
     createdAt = createdAt,
-    canceledAt = canceledAt
+    canceledAt = canceledAt,
+    defaultInfo = defaultInfo?.toEntity()
 )

@@ -45,7 +45,7 @@ class PostEditActivity : AppCompatActivity() {
                 id = getIntExtra("id", -1),
                 title = getStringExtra("title")!!,
                 content = getStringExtra("content")!!,
-                category = getSerializableExtra("category") as PostCategory
+                category = intent.getSerializableExtra("category") as PostCategory
             )
         }
 

@@ -71,7 +71,7 @@ class QuestionFragment : ViewBindingFragment<FragmentQuestionBinding>() {
         adapter.registerObserverForScrollToTop(recyclerView)
 
         fab.text = getString(R.string.write_question)
-        fab.setOnClickListener { startPostCreateActivity() }
+        fab.setOnClickListener { startQuestionCreateActivity() }
     }
 
     private fun onClickPost(postItemUiState: PostItemUiState) {
@@ -92,9 +92,8 @@ class QuestionFragment : ViewBindingFragment<FragmentQuestionBinding>() {
         }.show()
     }
 
-    private fun startPostCreateActivity() {
-        // TODO: 아래는 임시로 전달하는 enum임. 추후 질문 타입이 생기면 수정필요
-        val intent = PostCreateActivity.getIntent(requireContext(), PostCategory.MEMORY)
+    private fun startQuestionCreateActivity() {
+        val intent = PostCreateActivity.getIntent(requireContext(), PostCategory.QNA)
         launcher?.launch(intent)
     }
 }

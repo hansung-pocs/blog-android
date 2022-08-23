@@ -26,8 +26,8 @@ class LoginScreenTest {
                 LoginContent(
                     uiState = uiState,
                     onLoginClick = {},
-                    onBrowseAsNonMemberClick = {},
-                    onErrorMessageShown = {}
+                    onBrowseAsAnonymousClick = {},
+                    onUserMessageShown = {}
                 )
             }
 
@@ -47,8 +47,8 @@ class LoginScreenTest {
                 LoginContent(
                     uiState = uiState,
                     onLoginClick = {},
-                    onBrowseAsNonMemberClick = {},
-                    onErrorMessageShown = {}
+                    onBrowseAsAnonymousClick = {},
+                    onUserMessageShown = {}
                 )
             }
 
@@ -68,8 +68,8 @@ class LoginScreenTest {
                 LoginContent(
                     uiState = uiState,
                     onLoginClick = {},
-                    onBrowseAsNonMemberClick = {},
-                    onErrorMessageShown = {}
+                    onBrowseAsAnonymousClick = {},
+                    onUserMessageShown = {}
                 )
             }
 

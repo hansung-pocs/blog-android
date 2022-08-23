@@ -3,10 +3,10 @@ package com.pocs.domain
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.model.post.PostDetail
 import com.pocs.domain.model.post.PostWriter
-import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.post.CanEditPostUseCase
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
+import com.pocs.test_library.mock.mockAdminUserDetail
 import com.pocs.test_library.mock.mockPostWriter1
 import org.junit.Assert.*
 import org.junit.Test
@@ -18,18 +18,7 @@ class CanEditPostUseCaseTest {
     private val useCase = CanEditPostUseCase(authRepository)
 
     private val postDetail = PostDetail(1, "", mockPostWriter1, 1, "", "", "", PostCategory.NOTICE)
-    private val userDetail = UserDetail(
-        2,
-        "권김정",
-        "abc@google.com",
-        1971034,
-        UserType.ADMIN,
-        null,
-        30,
-        "https://github.com/",
-        "2021-02-12",
-        null,
-    )
+    private val userDetail = mockAdminUserDetail
 
     @Test
     fun shouldReturnTrue_WhenSamePostWriterIdAndCurrentUserId() {
@@ -39,8 +28,8 @@ class CanEditPostUseCaseTest {
             postDetail = postDetail.copy(
                 writer = PostWriter(
                     id = userDetail.id,
-                    name = userDetail.name,
-                    email = userDetail.email,
+                    name = userDetail.defaultInfo!!.name,
+                    email = userDetail.defaultInfo!!.email,
                     type = userDetail.type
                 )
             )
