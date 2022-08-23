@@ -40,7 +40,9 @@ fun LazyListScope.commentItems(
     when (uiState) {
         is CommentsUiState.Failure -> {
             item {
-                CommentFailureContent()
+                CommentFailureContent(
+                    uiState.message ?: stringResource(R.string.failed_to_load_comment)
+                )
             }
         }
         CommentsUiState.Loading -> {
@@ -53,7 +55,7 @@ fun LazyListScope.commentItems(
                 val comment = uiState.comments[index]
 
                 Column {
-                    if (comment.isDeleted){
+                    if (comment.isDeleted) {
                         DeletedComment()
                     } else {
                         Comment(
@@ -184,14 +186,14 @@ private fun DeletedComment() {
 }
 
 @Composable
-private fun CommentFailureContent() {
+private fun CommentFailureContent(errorMessage: String) {
     Box(
         Modifier
             .fillMaxSize()
             .padding(20.dp)
     ) {
         Text(
-            text = stringResource(R.string.failed_to_load_comment),
+            text = errorMessage,
             style = MaterialTheme.typography.bodyLarge.copy(
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f)
             )
