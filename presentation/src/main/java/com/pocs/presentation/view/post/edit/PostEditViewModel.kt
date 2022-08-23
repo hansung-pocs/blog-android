@@ -1,6 +1,7 @@
 package com.pocs.presentation.view.post.edit
 
 import androidx.compose.runtime.*
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
@@ -27,7 +28,7 @@ class PostEditViewModel @Inject constructor(
             PostEditUiState(
                 postId = id,
                 title = title,
-                content = content,
+                content = TextFieldValue(content),
                 category = category,
                 isUserAdmin = isCurrentUserAdminUseCase(),
                 onTitleChange = ::updateTitle,
@@ -42,7 +43,7 @@ class PostEditViewModel @Inject constructor(
         _uiState!!.value = uiState.value.copy(title = title)
     }
 
-    private fun updateContent(content: String) {
+    private fun updateContent(content: TextFieldValue) {
         _uiState!!.value = uiState.value.copy(content = content)
     }
 
@@ -55,7 +56,7 @@ class PostEditViewModel @Inject constructor(
         val result = updatePostUseCase(
             id = uiState.value.postId,
             title = uiState.value.title,
-            content = uiState.value.content,
+            content = uiState.value.content.text,
             category = uiState.value.category
         )
         if (result.isFailure) {

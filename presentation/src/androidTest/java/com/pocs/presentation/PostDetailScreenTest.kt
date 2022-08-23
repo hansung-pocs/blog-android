@@ -484,7 +484,7 @@ class PostDetailScreenTest {
                     uiState = uiState.copy(
                         postDetail = mockPostDetail1.copy(
                             title = title,
-                            content = "t\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nt"
+                            content = "t\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt"
                         ).toUiState()
                     ),
                     snackbarHostState = snackbarHostState,

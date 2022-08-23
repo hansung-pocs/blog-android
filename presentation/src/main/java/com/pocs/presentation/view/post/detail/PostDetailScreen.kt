@@ -1,9 +1,9 @@
 package com.pocs.presentation.view.post.detail
 
-import androidx.annotation.FloatRange
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,6 +40,7 @@ import com.pocs.presentation.view.component.bottomsheet.*
 import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.component.button.DropdownButton
 import com.pocs.presentation.view.component.button.DropdownOption
+import com.pocs.presentation.view.component.markdown.MarkdownText
 import kotlinx.coroutines.launch
 
 private const val HEADER_KEY = "header"
@@ -147,17 +149,13 @@ fun PostDetailContent(
             }
         ) { optionModalController ->
             val lazyListState = rememberLazyListState()
-            val titleAlpha = rememberTitleAlphaFromScrollOffset(
-                key = HEADER_KEY,
-                lazyListState = lazyListState
-            )
 
             Scaffold(
                 snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
                 topBar = {
                     PostDetailTopAppBar(
                         uiState,
-                        titleAlpha = titleAlpha.value,
+                        lazyListState = lazyListState,
                         onEditClick = onEditClick,
                         onDeleteClick = { showDeleteDialog = true }
                     )
@@ -170,9 +168,11 @@ fun PostDetailContent(
                         date = postDetail.date
                     )
                     item {
-                        Text(
-                            modifier = Modifier.padding(20.dp),
-                            text = postDetail.content,
+                        MarkdownText(
+                            modifier = Modifier
+                                .padding(20.dp)
+                                .fillMaxWidth(),
+                            markdown = postDetail.content,
                             style = MaterialTheme.typography.bodyLarge.copy(
                                 color = MaterialTheme.colorScheme.onBackground
                             )
@@ -225,10 +225,15 @@ fun PostDetailContent(
 @Composable
 fun PostDetailTopAppBar(
     uiState: PostDetailUiState.Success,
-    @FloatRange(from = 0.0, to = 1.0) titleAlpha: Float,
+    lazyListState: LazyListState,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit
 ) {
+    val titleAlpha = rememberTitleAlphaFromScrollOffset(
+        key = HEADER_KEY,
+        lazyListState = lazyListState
+    )
+
     SmallTopAppBar(
         navigationIcon = {
             AppBarBackButton()
@@ -236,7 +241,7 @@ fun PostDetailTopAppBar(
         title = {
             Text(
                 text = uiState.postDetail.title,
-                modifier = Modifier.alpha(titleAlpha),
+                modifier = Modifier.alpha(titleAlpha.value),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -280,7 +285,8 @@ private fun LazyListScope.headerItems(title: String, writerName: String, date: S
             Text(
                 text = title,
                 style = MaterialTheme.typography.headlineMedium.copy(
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontWeight = FontWeight.Bold
                 )
             )
             Box(modifier = Modifier.height(8.dp))
