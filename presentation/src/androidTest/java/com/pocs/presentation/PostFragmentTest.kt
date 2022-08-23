@@ -24,6 +24,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
@@ -44,12 +45,7 @@ class PostFragmentTest {
     val authRepository = FakeAuthRepositoryImpl()
 
     @BindValue
-    val viewModel = PostViewModel(
-        getAllPostsUseCase = GetAllPostsUseCase(postRepository),
-        isCurrentUserAnonymousUseCase = IsCurrentUserAnonymousUseCase(
-            getCurrentUserTypeUseCase = GetCurrentUserTypeUseCase(authRepository)
-        )
-    )
+    lateinit var viewModel: PostViewModel
 
     @Before
     fun setUp() {
@@ -58,15 +54,17 @@ class PostFragmentTest {
     }
 
     @After
-    fun tearDown(){
+    fun tearDown() {
         Dispatchers.resetMain()
     }
 
     @Test
-    fun shouldShowNoPermissionSnackBar_WhenAnonymousClickPost() {
+    fun shouldShowNoPermissionSnackBar_WhenAnonymousClickPost() = runTest {
         val post = mockPost
+        val pagingData = PagingData.from(listOf(post))
         authRepository.currentUser.value = mockAnonymousUser
-        postRepository.postPagingDataFlow = MutableStateFlow(PagingData.from(listOf(post)))
+        postRepository.postPagingDataFlow = MutableStateFlow(pagingData)
+        initViewModel()
         launchFragmentInHiltContainer<PostFragment>(themeResId = R.style.Theme_PocsBlog)
 
         onView(withText(post.title)).perform(click())
@@ -74,4 +72,12 @@ class PostFragmentTest {
         onView(withText(R.string.can_see_only_member)).check(matches(isDisplayed()))
     }
 
+    private fun initViewModel() {
+        viewModel = PostViewModel(
+            getAllPostsUseCase = GetAllPostsUseCase(postRepository),
+            isCurrentUserAnonymousUseCase = IsCurrentUserAnonymousUseCase(
+                getCurrentUserTypeUseCase = GetCurrentUserTypeUseCase(authRepository)
+            )
+        )
+    }
 }

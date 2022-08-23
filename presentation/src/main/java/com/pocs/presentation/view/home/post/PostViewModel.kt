@@ -22,7 +22,7 @@ class PostViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
-        PostUiState(isUserAnonymous = !isCurrentUserAnonymousUseCase())
+        PostUiState(isUserAnonymous = isCurrentUserAnonymousUseCase())
     )
     val uiState = _uiState.asStateFlow()
 
