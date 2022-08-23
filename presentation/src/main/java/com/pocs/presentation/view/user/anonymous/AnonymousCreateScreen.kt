@@ -56,7 +56,7 @@ fun AnonymousCreateScreen(
                 },
                 title = {
                     Text(
-                        text = stringResource(id = R.string.brows_as_anonymous),
+                        text = stringResource(id = R.string.sign_up_as_anonymous),
                         maxLines = 1
                     )
                 }

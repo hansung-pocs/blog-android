@@ -34,7 +34,7 @@ class AnonymousCreateActivity : AppCompatActivity() {
                     uiState = viewModel.uiState,
                     navigateUp = ::finish,
                     onSuccessToCreate = {
-                        setResultRefresh(R.string.brows_as_anonymous)
+                        setResultRefresh(R.string.sign_up_as_anonymous)
                     }
                 )
             }

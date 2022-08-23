@@ -102,7 +102,7 @@ fun LoginContent(
             Box(modifier = Modifier.height(8.dp))
             TextButton(onClick = onBrowseAsAnonymousClick) {
                 Text(
-                    text = stringResource(R.string.brows_as_anonymous),
+                    text = stringResource(R.string.sign_up_as_anonymous),
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4F)
                 )
             }
