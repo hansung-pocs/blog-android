@@ -50,19 +50,19 @@ class PostViewModelTest {
     }
 
     @Test
-    fun shouldVisibleFab_WhenCurrentUserIsNotAnonymous() {
+    fun shouldIsUserAnonymousIsFalse_WhenCurrentUserIsNotAnonymous() {
         authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.MEMBER)
         initViewModel()
 
-        assertTrue(viewModel.uiState.value.isUserAnonymous)
+        assertFalse(viewModel.uiState.value.isUserAnonymous)
     }
 
     @Test
-    fun shouldDoNotVisibleFab_WhenCurrentUserIsAnonymous() {
+    fun shouldIsUserAnonymousIsTrue_WhenCurrentUserIsAnonymous() {
         authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.ANONYMOUS)
         initViewModel()
 
-        assertFalse(viewModel.uiState.value.isUserAnonymous)
+        assertTrue(viewModel.uiState.value.isUserAnonymous)
     }
 
     @Test
