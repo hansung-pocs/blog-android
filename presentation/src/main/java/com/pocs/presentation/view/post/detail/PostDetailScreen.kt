@@ -166,10 +166,11 @@ fun PostDetailContent(
                     )
                 }
             ) { paddingValues ->
+                val anonymousString = stringResource(id = R.string.anonymous)
                 LazyColumn(Modifier.padding(paddingValues), state = lazyListState) {
                     headerItems(
                         title = postDetail.title,
-                        writerName = postDetail.writer.name,
+                        writerName = postDetail.writer.name ?: anonymousString,
                         date = postDetail.date
                     )
                     item {
