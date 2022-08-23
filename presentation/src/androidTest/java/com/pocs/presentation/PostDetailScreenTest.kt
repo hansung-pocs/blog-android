@@ -96,7 +96,7 @@ class PostDetailScreenTest {
     @Test
     fun shouldShowReplyCommentBottomSheet_WhenClickReplyComment() {
         composeRule.run {
-            val comment = mockReply
+            val reply = mockReply
 
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
@@ -104,7 +104,7 @@ class PostDetailScreenTest {
                 PostDetailContent(
                     uiState = uiState.copy(
                         comments = commentsUiState.copy(
-                            comments = listOf(comment)
+                            comments = listOf(reply)
                         )
                     ),
                     snackbarHostState = snackbarHostState,
@@ -116,7 +116,7 @@ class PostDetailScreenTest {
                 )
             }
 
-            onNodeWithText(comment.content).performClick()
+            onNodeWithText(reply.content).performClick()
 
             onNodeWithText(getString(R.string.add_reply)).assertIsDisplayed()
         }
@@ -510,7 +510,7 @@ class PostDetailScreenTest {
                 PostDetailContent(
                     uiState = uiState.copy(
                         comments = commentsUiState.copy(
-                            comments = listOf(mockComment.copy(isDeleted = true))
+                            comments = listOf(mockComment.copy(isDeleted = true, childrenCount = 2))
                         )
                     ),
                     snackbarHostState = snackbarHostState,
