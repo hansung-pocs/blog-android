@@ -14,6 +14,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.comment.CommentsUiState
 import com.pocs.presentation.model.post.PostDetailUiState
+import com.pocs.presentation.model.post.item.PostWriterUiState
 import com.pocs.presentation.view.component.bottomsheet.CommentModalController
 import com.pocs.presentation.view.post.detail.PostDetailContent
 import com.pocs.test_library.mock.mockComment
@@ -493,11 +494,11 @@ class PostDetailScreenTest {
                 )
             }
 
-            assertEquals(1,  findVisibleTexts(text = title).size)
+            assertEquals(1, findVisibleTexts(text = title).size)
 
-            onRoot().performTouchInput{ swipeUp() }
+            onRoot().performTouchInput { swipeUp() }
 
-            assertEquals(1,  findVisibleTexts(text = title).size)
+            assertEquals(1, findVisibleTexts(text = title).size)
         }
     }
 
@@ -523,6 +524,34 @@ class PostDetailScreenTest {
             }
 
             onNodeWithText(getString(R.string.deleted_comment)).assertIsDisplayed()
+        }
+    }
+
+    @Test
+    fun shouldShowAnonymousAsName_WhenNameIsNull() {
+        composeRule.run {
+            setContent {
+                val snackbarHostState = remember { SnackbarHostState() }
+
+                PostDetailContent(
+                    uiState = uiState.copy(
+                        postDetail = mockPostDetail1.toUiState().copy(
+                            writer = PostWriterUiState(
+                                name = null,
+                                id = 1
+                            )
+                        )
+                    ),
+                    snackbarHostState = snackbarHostState,
+                    onEditClick = {},
+                    onDeleteClick = {},
+                    onCommentDelete = {},
+                    onCommentCreated = { _, _ -> },
+                    onCommentUpdated = { _, _ -> }
+                )
+            }
+
+            onNodeWithText(getString(R.string.anonymous), substring = true).assertIsDisplayed()
         }
     }
 
