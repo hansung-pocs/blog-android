@@ -83,7 +83,7 @@ fun UserDetailContent(
     isCurrentUserAdmin: Boolean
 ) {
     val userDefaultInfo = userDetail.defaultInfo
-    requireNotNull(userDefaultInfo) { "유저 정보화면은 회원만 가능하기때문에 유저 정보가 널이 아니다." }
+    val name = userDefaultInfo?.name ?: stringResource(id = R.string.anonymous_name, userDetail.id)
     var showKickRecheckDialog by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     val userEditActivityResult = rememberLauncherForActivityResult(
@@ -103,7 +103,7 @@ fun UserDetailContent(
     if (showKickRecheckDialog) {
         RecheckDialog(
             title = stringResource(R.string.kick_user_recheck_dialog_title),
-            text = stringResource(R.string.kick_user_recheck_dialog_text, userDefaultInfo.name),
+            text = stringResource(R.string.kick_user_recheck_dialog_text, name),
             confirmText = stringResource(id = R.string.kick),
             onOkClick = {
                 onConfirmToKick()
@@ -119,7 +119,7 @@ fun UserDetailContent(
             val context = LocalContext.current
 
             UserDetailTopBar(
-                name = userDefaultInfo.name,
+                name = name,
                 isUserKicked = userDetail.isKicked,
                 displayActions = isCurrentUserAdmin,
                 onKickClick = { showKickRecheckDialog = true },
@@ -127,7 +127,7 @@ fun UserDetailContent(
                     val intent = PostByUserActivity.getIntent(
                         context,
                         userId = userDetail.id,
-                        userName = userDefaultInfo.name
+                        name = name
                     )
                     context.startActivity(intent)
                 }
@@ -151,52 +151,24 @@ fun UserDetailContent(
                 }
             }
         }
-    ) {
-        LazyColumn(
-            modifier = Modifier
-                .padding(it)
-                .padding(horizontal = 24.dp)
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            item {
-                UserAvatar(name = userDefaultInfo.name, isKicked = userDetail.isKicked)
-            }
-            item {
-                UserInfo(
-                    stringResource(R.string.generation),
-                    userDefaultInfo.generation.toString()
+    ) { innerPadding ->
+        if (userDefaultInfo != null) { // 회원인 경우
+            MemberUserInfoList(
+                modifier = Modifier.padding(innerPadding),
+                isKicked = userDetail.isKicked,
+                userDefaultInfo = userDefaultInfo
+            )
+        } else { // 비회원인 경우
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Text(
+                    stringResource(R.string.anonymous_user),
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                    )
                 )
-            }
-            item {
-                UserInfo(
-                    stringResource(R.string.student_id),
-                    userDefaultInfo.studentId.toString()
-                )
-            }
-            item {
-                UserInfo(
-                    stringResource(R.string.company),
-                    userDefaultInfo.company ?: stringResource(R.string.empty_label)
-                )
-            }
-            item {
-                val github = userDefaultInfo.github ?: stringResource(R.string.empty_label)
-                UserInfo(
-                    label = stringResource(R.string.github),
-                    link = github,
-                    annotation = github
-                )
-            }
-            item {
-                UserInfo(
-                    label = stringResource(R.string.email),
-                    link = userDefaultInfo.email,
-                    annotation = stringResource(R.string.mailto_scheme, userDefaultInfo.email)
-                )
-            }
-            item {
-                Box(modifier = Modifier.height(dimensionResource(id = R.dimen.fab_height)))
             }
         }
     }
@@ -268,6 +240,60 @@ fun UserAvatar(name: String, isKicked: Boolean) {
                     color = MaterialTheme.colorScheme.error
                 )
             )
+        }
+    }
+}
+
+@Composable
+fun MemberUserInfoList(
+    modifier: Modifier = Modifier,
+    isKicked: Boolean,
+    userDefaultInfo: UserDefaultInfoUiState
+) {
+    LazyColumn(
+        modifier = modifier
+            .padding(horizontal = 24.dp)
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        item {
+            UserAvatar(name = userDefaultInfo.name, isKicked = isKicked)
+        }
+        item {
+            UserInfo(
+                stringResource(R.string.generation),
+                userDefaultInfo.generation.toString()
+            )
+        }
+        item {
+            UserInfo(
+                stringResource(R.string.student_id),
+                userDefaultInfo.studentId.toString()
+            )
+        }
+        item {
+            UserInfo(
+                stringResource(R.string.company),
+                userDefaultInfo.company ?: stringResource(R.string.empty_label)
+            )
+        }
+        item {
+            val github = userDefaultInfo.github ?: stringResource(R.string.empty_label)
+            UserInfo(
+                label = stringResource(R.string.github),
+                link = github,
+                annotation = github
+            )
+        }
+        item {
+            UserInfo(
+                label = stringResource(R.string.email),
+                link = userDefaultInfo.email,
+                annotation = stringResource(R.string.mailto_scheme, userDefaultInfo.email)
+            )
+        }
+        item {
+            Box(modifier = Modifier.height(dimensionResource(id = R.dimen.fab_height)))
         }
     }
 }
