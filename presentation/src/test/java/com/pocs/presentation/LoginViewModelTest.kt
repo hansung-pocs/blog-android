@@ -85,7 +85,7 @@ class LoginViewModelTest {
 
         viewModel.login()
 
-        assertEquals(errorMessage, viewModel.uiState.value.errorMessage)
+        assertEquals(errorMessage, viewModel.uiState.value.userMessage)
     }
 
     @Test

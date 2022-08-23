@@ -27,7 +27,7 @@ class LoginScreenTest {
                     uiState = uiState,
                     onLoginClick = {},
                     onBrowseAsAnonymousClick = {},
-                    onErrorMessageShown = {}
+                    onUserMessageShown = {}
                 )
             }
 
@@ -48,7 +48,7 @@ class LoginScreenTest {
                     uiState = uiState,
                     onLoginClick = {},
                     onBrowseAsAnonymousClick = {},
-                    onErrorMessageShown = {}
+                    onUserMessageShown = {}
                 )
             }
 
@@ -69,7 +69,7 @@ class LoginScreenTest {
                     uiState = uiState,
                     onLoginClick = {},
                     onBrowseAsAnonymousClick = {},
-                    onErrorMessageShown = {}
+                    onUserMessageShown = {}
                 )
             }
 

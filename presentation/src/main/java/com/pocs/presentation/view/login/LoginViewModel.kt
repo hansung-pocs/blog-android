@@ -59,14 +59,16 @@ class LoginViewModel @Inject constructor(
                 }
             } else {
                 val errorMessage = result.exceptionOrNull()!!.message
-                _uiState.update {
-                    it.copy(errorMessage = errorMessage)
-                }
+                showUserMessage(errorMessage ?: "로그인에 실패했습니다.")
             }
         }
     }
 
-    fun errorMessageShown() {
-        _uiState.update { it.copy(errorMessage = null) }
+    fun showUserMessage(message: String) {
+        _uiState.update { it.copy(userMessage = message) }
+    }
+
+    fun userMessageShown() {
+        _uiState.update { it.copy(userMessage = null) }
     }
 }

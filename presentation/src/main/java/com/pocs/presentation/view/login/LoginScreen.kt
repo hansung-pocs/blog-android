@@ -31,7 +31,7 @@ fun LoginScreen(viewModel: LoginViewModel, onBrowseAsAnonymousClick: () -> Unit)
         uiState = uiState.value,
         onLoginClick = viewModel::login,
         onBrowseAsAnonymousClick = onBrowseAsAnonymousClick,
-        onErrorMessageShown = viewModel::errorMessageShown
+        onUserMessageShown = viewModel::userMessageShown
     )
 }
 
@@ -41,15 +41,15 @@ fun LoginContent(
     uiState: LoginUiState,
     onLoginClick: () -> Unit,
     onBrowseAsAnonymousClick: () -> Unit,
-    onErrorMessageShown: () -> Unit
+    onUserMessageShown: () -> Unit
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
-    val errorMessage = uiState.errorMessage
+    val userMessage = uiState.userMessage
 
-    if (errorMessage != null) {
-        LaunchedEffect(errorMessage) {
-            snackBarHostState.showSnackbar(message = errorMessage)
-            onErrorMessageShown()
+    if (userMessage != null) {
+        LaunchedEffect(userMessage) {
+            snackBarHostState.showSnackbar(message = userMessage)
+            onUserMessageShown()
         }
     }
 
@@ -128,13 +128,13 @@ fun LoginContentPreview() {
     LoginContent(
         uiState = LoginUiState(
             isLoggedIn = false,
-            errorMessage = null,
+            userMessage = null,
             userName = "",
             password = "",
             onUpdate = {}
         ),
         onLoginClick = {},
         onBrowseAsAnonymousClick = {},
-        onErrorMessageShown = {}
+        onUserMessageShown = {}
     )
 }

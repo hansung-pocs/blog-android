@@ -38,6 +38,7 @@ class AuthRepositoryImpl @Inject constructor(
                         localDataSource.clear()
                     }
                 } catch (e: Exception) {
+                    e.printStackTrace()
                     // 인터넷 연결이 끊김 등의 예외는 무시한다.
                 }
             }

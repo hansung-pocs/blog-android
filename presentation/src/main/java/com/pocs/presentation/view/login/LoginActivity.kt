@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -13,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.composethemeadapter3.Mdc3Theme
+import com.pocs.presentation.extension.RefreshStateContract
 import com.pocs.presentation.model.auth.LoginUiState
 import com.pocs.presentation.view.home.HomeActivity
 import com.pocs.presentation.view.user.anonymous.AnonymousCreateActivity
@@ -23,6 +25,8 @@ import kotlinx.coroutines.launch
 class LoginActivity : AppCompatActivity() {
 
     private val viewModel: LoginViewModel by viewModels()
+
+    private var launcher: ActivityResultLauncher<Intent>? = null
 
     companion object {
         fun getIntent(context: Context): Intent {
@@ -49,6 +53,14 @@ class LoginActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect(::updateUi)
+            }
+        }
+
+        launcher = registerForActivityResult(RefreshStateContract()) {
+            if (it != null) {
+                it.message?.let { message ->
+                    viewModel.showUserMessage(message)
+                }
             }
         }
     }
@@ -85,6 +97,6 @@ class LoginActivity : AppCompatActivity() {
 
     private fun navigateToAnonymousCreateActivity(){
         val intent = AnonymousCreateActivity.getIntent(this)
-        startActivity(intent)
+        launcher?.launch(intent)
     }
 }
