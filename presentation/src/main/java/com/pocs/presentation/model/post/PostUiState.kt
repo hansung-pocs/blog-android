@@ -6,7 +6,7 @@ import com.pocs.presentation.model.post.item.PostItemUiState
 
 data class PostUiState(
     val pagingData: PagingData<PostItemUiState> = PagingData.empty(),
-    val visiblePostWriteFab: Boolean,
+    val isUserAnonymous: Boolean,
     val selectedPostFilterType: PostFilterType = PostFilterType.ALL
 ) {
     val visiblePostCategory: Boolean

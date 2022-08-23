@@ -54,7 +54,7 @@ class PostViewModelTest {
         authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.MEMBER)
         initViewModel()
 
-        assertTrue(viewModel.uiState.value.visiblePostWriteFab)
+        assertTrue(viewModel.uiState.value.isUserAnonymous)
     }
 
     @Test
@@ -62,7 +62,7 @@ class PostViewModelTest {
         authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.ANONYMOUS)
         initViewModel()
 
-        assertFalse(viewModel.uiState.value.visiblePostWriteFab)
+        assertFalse(viewModel.uiState.value.isUserAnonymous)
     }
 
     @Test

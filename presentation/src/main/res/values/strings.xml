@@ -110,6 +110,7 @@
     <string name="views">조회수</string>
     <string name="create_a_temporary_account">임시계정 생성하기</string>
     <string name="anonymous_user">익명 회원</string>
+    <string name="can_see_only_member">회원만 열람할 수 있습니다.</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>
         <item>회원목록</item>
