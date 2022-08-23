@@ -10,7 +10,7 @@ import com.pocs.presentation.view.user.detail.UserDetailViewModel
 import com.pocs.test_library.fake.FakeAdminRepositoryImpl
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
-import com.pocs.test_library.mock.mockNormalUserDetail
+import com.pocs.test_library.mock.mockMemberUserDetail
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -33,7 +33,7 @@ class UserDetailViewModelTest {
 
     private lateinit var viewModel: UserDetailViewModel
 
-    private val mockUserDetail = mockNormalUserDetail
+    private val mockUserDetail = mockMemberUserDetail
 
     @Before
     fun setUp() {

@@ -8,7 +8,7 @@ import androidx.compose.ui.test.performClick
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.user.UserDetailUiState
 import com.pocs.presentation.view.user.detail.UserDetailScreen
-import com.pocs.test_library.mock.mockNormalUserDetail
+import com.pocs.test_library.mock.mockAdminUserDetail
 import org.junit.Rule
 import org.junit.Test
 
@@ -17,7 +17,7 @@ class UserDetailScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private val userDetail = mockNormalUserDetail.toUiState()
+    private val userDetail = mockAdminUserDetail.toUiState()
 
     @Test
     fun showUserDetailContent_WhenUiStateIsSuccess() {

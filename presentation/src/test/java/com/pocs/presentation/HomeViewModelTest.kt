@@ -5,7 +5,7 @@ import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
 import com.pocs.presentation.view.home.HomeViewModel
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
-import com.pocs.test_library.mock.mockNormalUserDetail
+import com.pocs.test_library.mock.mockAdminUserDetail
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -18,7 +18,7 @@ class HomeViewModelTest {
 
     @Test
     fun shouldIsCurrentUserAdminIsTrue_WhenCurrentUserIsAdmin() {
-        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.ADMIN)
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.ADMIN)
         initViewModel()
 
         assertTrue(viewModel.uiState.value.isCurrentUserAdmin)
@@ -26,7 +26,7 @@ class HomeViewModelTest {
 
     @Test
     fun shouldIsCurrentUserAdminIsFalse_WhenCurrentUserIsNotAdmin() {
-        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.MEMBER)
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.MEMBER)
         initViewModel()
 
         assertFalse(viewModel.uiState.value.isCurrentUserAdmin)

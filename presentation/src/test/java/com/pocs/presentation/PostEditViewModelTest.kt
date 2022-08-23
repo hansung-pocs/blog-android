@@ -8,7 +8,7 @@ import com.pocs.domain.usecase.post.UpdatePostUseCase
 import com.pocs.presentation.view.post.edit.PostEditViewModel
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakePostRepositoryImpl
-import com.pocs.test_library.mock.mockNormalUserDetail
+import com.pocs.test_library.mock.mockAdminUserDetail
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -27,7 +27,7 @@ class PostEditViewModelTest {
 
     @Test
     fun shouldIsUserAdminIsTrue_WhenCurrentUserIsAdmin() {
-        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.ADMIN)
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.ADMIN)
 
         viewModel.initUiState(1, "", "", PostCategory.NOTICE)
 
@@ -36,7 +36,7 @@ class PostEditViewModelTest {
 
     @Test
     fun shouldIsUserAdminIsFalse_WhenCurrentUserIsNotAdmin() {
-        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.MEMBER)
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.MEMBER)
 
         viewModel.initUiState(1, "", "", PostCategory.KNOWHOW)
 

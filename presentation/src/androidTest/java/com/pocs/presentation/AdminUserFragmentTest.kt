@@ -61,9 +61,10 @@ class AdminUserFragmentTest {
 
         launchFragmentInHiltContainer<AdminUserFragment>(themeResId = R.style.Theme_PocsBlog)
 
-        onView(withText(mockNormalUser.name)).check(matches(isDisplayed()))
-        onView(withSubstring(mockNormalUser.studentId.toString())).check(matches(isDisplayed()))
-        onView(withSubstring(mockNormalUser.generation.toString())).check(matches(isDisplayed()))
+        val defaultInfo = mockNormalUser.defaultInfo!!
+        onView(withText(defaultInfo.name)).check(matches(isDisplayed()))
+        onView(withSubstring(defaultInfo.studentId.toString())).check(matches(isDisplayed()))
+        onView(withSubstring(defaultInfo.generation.toString())).check(matches(isDisplayed()))
     }
 
     @Test

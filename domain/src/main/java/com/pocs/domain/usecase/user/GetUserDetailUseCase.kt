@@ -18,14 +18,13 @@ class GetUserDetailUseCase @Inject constructor(
      * 현재 로그인한 유저의 권한에 따라 다른 값이 반환된다.
      * - [UserType.ADMIN]: 탈퇴 여부까지 포함된 유저의 자세한 결과
      * - [UserType.MEMBER]: 탈퇴 여부를 제외한 유저의 자세한 결과
-     * - [UserType.UNKNOWN]: 열람할 권한이 없어 [Result.failure]를 반환한다.
+     * - [UserType.ANONYMOUS]: 열람할 권한이 없어 [Result.failure]를 반환한다.
      */
     suspend operator fun invoke(id: Int): Result<UserDetail> {
         return when(getCurrentUserTypeUseCase()) {
             UserType.ADMIN -> adminRepository.getUserDetail(id)
             UserType.MEMBER -> userRepository.getUserDetail(id)
             UserType.ANONYMOUS -> Result.failure(Exception("회원만 열람할 수 있습니다."))
-            //TODO : 백엔드에서 바꿔주면 나중에 바꾸기
         }
     }
 }

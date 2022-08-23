@@ -17,7 +17,7 @@ import com.pocs.presentation.view.post.detail.PostDetailActivity
 import com.pocs.presentation.view.post.detail.PostDetailViewModel
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakePostRepositoryImpl
-import com.pocs.test_library.mock.mockNormalUserDetail
+import com.pocs.test_library.mock.mockAdminUserDetail
 import com.pocs.test_library.mock.mockPostDetail1
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -65,7 +65,7 @@ class PostDetailActivityTest {
     fun shouldNotShowMoreInfoOptionButton_WhenUserIsNotAdminAndIsNotWriter() {
         val postDetail = mockPostDetail1
         postRepository.postDetailResult = Result.success(postDetail)
-        authRepository.currentUser.value = mockNormalUserDetail.copy(
+        authRepository.currentUser.value = mockAdminUserDetail.copy(
             id = 98765341,
             type = UserType.MEMBER
         )
@@ -80,7 +80,7 @@ class PostDetailActivityTest {
     fun shouldShowDeleteOption_WhenUserIsWriter() {
         val postDetail = mockPostDetail1
         postRepository.postDetailResult = Result.success(postDetail)
-        authRepository.currentUser.value = mockNormalUserDetail.copy(
+        authRepository.currentUser.value = mockAdminUserDetail.copy(
             id = postDetail.writer.id,
             type = UserType.MEMBER
         )
@@ -96,7 +96,7 @@ class PostDetailActivityTest {
     fun shouldNotShowEditOption_WhenUserIsNotWriter() {
         val postDetail = mockPostDetail1
         postRepository.postDetailResult = Result.success(postDetail)
-        authRepository.currentUser.value = mockNormalUserDetail.copy(
+        authRepository.currentUser.value = mockAdminUserDetail.copy(
             id = 96412433,
             type = UserType.ADMIN
         )
@@ -112,7 +112,7 @@ class PostDetailActivityTest {
     fun shouldShowEditOption_WhenUserIsWriter() {
         val postDetail = mockPostDetail1
         postRepository.postDetailResult = Result.success(postDetail)
-        authRepository.currentUser.value = mockNormalUserDetail.copy(
+        authRepository.currentUser.value = mockAdminUserDetail.copy(
             id = postDetail.writer.id,
             type = UserType.MEMBER
         )

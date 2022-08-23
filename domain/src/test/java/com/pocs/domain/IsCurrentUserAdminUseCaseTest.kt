@@ -4,7 +4,7 @@ import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
-import com.pocs.test_library.mock.mockNormalUserDetail
+import com.pocs.test_library.mock.mockAdminUserDetail
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -19,7 +19,7 @@ class IsCurrentUserAdminUseCaseTest {
 
     @Test
     fun returnsTrue_WhenCurrentUserIsAdmin() {
-        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.ADMIN)
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.ADMIN)
 
         val result = isCurrentUserAdminUseCase()
         assertTrue(result)
@@ -27,7 +27,7 @@ class IsCurrentUserAdminUseCaseTest {
 
     @Test
     fun returnsFalse_WhenCurrentUserIsNotAdmin() {
-        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.MEMBER)
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.MEMBER)
 
         val result = isCurrentUserAdminUseCase()
         assertFalse(result)

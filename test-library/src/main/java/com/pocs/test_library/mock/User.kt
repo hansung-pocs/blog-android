@@ -35,7 +35,7 @@ val mockKickedUser = User(
     canceledAt = "2021-02-12"
 )
 
-val mockNormalUserDetail = UserDetail(
+val mockAdminUserDetail = UserDetail(
     id = 2,
     defaultInfo = UserDefaultInfo(
         name = "권김정",
@@ -49,6 +49,22 @@ val mockNormalUserDetail = UserDetail(
     createdAt = "2021-02-12",
     canceledAt = null
 )
+
+val mockMemberUserDetail = UserDetail(
+    id = 2,
+    defaultInfo = UserDefaultInfo(
+        name = "권김정",
+        email = "abc@google.com",
+        studentId = 1971034,
+        company = null,
+        generation = 30,
+        github = "https://github.com/"
+    ),
+    type = UserType.MEMBER,
+    createdAt = "2021-02-12",
+    canceledAt = null
+)
+
 val mockKickedUserDetail = UserDetail(
     id = 2,
     defaultInfo = UserDefaultInfo(

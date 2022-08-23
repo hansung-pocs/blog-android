@@ -36,10 +36,10 @@ class PostByUserActivity : ViewBindingActivity<ActivityPostByUserBinding>() {
     private val viewModel: PostByUserViewModel by viewModels()
 
     companion object {
-        fun getIntent(context: Context, userId: Int, userName: String): Intent {
+        fun getIntent(context: Context, userId: Int, name: String): Intent {
             return Intent(context, PostByUserActivity::class.java).apply {
                 putExtra("userId", userId)
-                putExtra("userName", userName)
+                putExtra("name", name)
             }
         }
     }
@@ -92,7 +92,7 @@ class PostByUserActivity : ViewBindingActivity<ActivityPostByUserBinding>() {
     }
 
     private fun initToolBar() {
-        val name = intent.getStringExtra("userName") ?: throw Exception("유저 이름이 전달되지 않음")
+        val name = intent.getStringExtra("name") ?: throw Exception("유저 이름이 전달되지 않음")
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.post_by_user_title, name)

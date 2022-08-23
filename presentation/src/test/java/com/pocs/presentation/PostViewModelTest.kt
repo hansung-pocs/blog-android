@@ -11,7 +11,7 @@ import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.view.home.post.PostViewModel
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakePostRepositoryImpl
-import com.pocs.test_library.mock.mockNormalUserDetail
+import com.pocs.test_library.mock.mockAdminUserDetail
 import com.pocs.test_library.mock.mockPost
 import com.pocs.test_library.paging.PostItemUiStateDiffCallback
 import com.pocs.test_library.paging.NoopListCallback
@@ -51,7 +51,7 @@ class PostViewModelTest {
 
     @Test
     fun shouldVisibleFab_WhenCurrentUserIsNotUnknown() {
-        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.MEMBER)
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.MEMBER)
         initViewModel()
 
         assertTrue(viewModel.uiState.value.visiblePostWriteFab)
@@ -59,7 +59,7 @@ class PostViewModelTest {
 
     @Test
     fun shouldDoNotVisibleFab_WhenCurrentUserIsAnonymous() {
-        authRepository.currentUser.value = mockNormalUserDetail.copy(type = UserType.ANONYMOUS)
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.ANONYMOUS)
         initViewModel()
 
         assertFalse(viewModel.uiState.value.visiblePostWriteFab)

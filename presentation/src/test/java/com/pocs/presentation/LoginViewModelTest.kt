@@ -5,7 +5,7 @@ import com.pocs.domain.usecase.auth.IsAuthReadyUseCase
 import com.pocs.domain.usecase.auth.LoginUseCase
 import com.pocs.presentation.view.login.LoginViewModel
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
-import com.pocs.test_library.mock.mockNormalUserDetail
+import com.pocs.test_library.mock.mockAdminUserDetail
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -36,7 +36,7 @@ class LoginViewModelTest {
 
     @Test
     fun shouldIsLoggedInIsTrue_WhenUserAlreadyLoggedIn() = runTest {
-        authRepository.currentUser.value = mockNormalUserDetail
+        authRepository.currentUser.value = mockAdminUserDetail
         initViewModel()
 
         authRepository.emit(isReady = true)
@@ -102,7 +102,7 @@ class LoginViewModelTest {
     fun shouldHideSplashScreenIsFalse_WhenCurrentUserExistsAndThenAuthIsReady() = runTest {
         initViewModel()
 
-        authRepository.currentUser.value = mockNormalUserDetail
+        authRepository.currentUser.value = mockAdminUserDetail
         authRepository.emit(isReady = true)
 
         assertFalse(viewModel.uiState.value.hideSplashScreen)

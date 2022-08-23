@@ -109,6 +109,7 @@
     <string name="query_min_length_error">2글자 이상 입력하세요.</string>
     <string name="views">조회수</string>
     <string name="create_a_temporary_account">임시계정 생성하기</string>
+    <string name="anonymous_user">익명 회원</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>
         <item>회원목록</item>
