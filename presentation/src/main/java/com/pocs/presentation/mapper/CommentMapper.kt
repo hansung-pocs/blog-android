@@ -16,6 +16,7 @@ fun Comment.toUiState(currentUserId: Int?, isAdmin: Boolean): CommentItemUiState
         canEdit = isMine,
         canDelete = isMine || isAdmin,
         content = content,
-        date = createFormattedDateText(createdAt, updatedAt)
+        date = createFormattedDateText(createdAt, updatedAt),
+        isDeleted = canceledAt != null
     )
 }

@@ -40,7 +40,9 @@ fun LazyListScope.commentItems(
     when (uiState) {
         is CommentsUiState.Failure -> {
             item {
-                CommentFailureContent()
+                CommentFailureContent(
+                    uiState.message ?: stringResource(R.string.failed_to_load_comment)
+                )
             }
         }
         CommentsUiState.Loading -> {
@@ -53,12 +55,16 @@ fun LazyListScope.commentItems(
                 val comment = uiState.comments[index]
 
                 Column {
-                    Comment(
-                        uiState = comment,
-                        onClick = { onCommentClick(comment) },
-                        onReplyIconClick = { onReplyIconClick(comment) },
-                        onMoreButtonClick = { onMoreButtonClick(comment) }
-                    )
+                    if (comment.isDeleted) {
+                        DeletedComment()
+                    } else {
+                        Comment(
+                            uiState = comment,
+                            onClick = { onCommentClick(comment) },
+                            onReplyIconClick = { onReplyIconClick(comment) },
+                            onMoreButtonClick = { onMoreButtonClick(comment) }
+                        )
+                    }
                     PocsDivider()
                 }
             }
@@ -100,8 +106,6 @@ fun Comment(
     onReplyIconClick: () -> Unit,
     onMoreButtonClick: () -> Unit
 ) {
-    val isReply = uiState.parentId != null
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -111,13 +115,13 @@ fun Comment(
                 interactionSource = remember { MutableInteractionSource() }
             )
             .background(
-                color = if (isReply) {
+                color = if (uiState.isReply) {
                     MaterialTheme.colorScheme.onBackground.copy(alpha = 0.03f)
                 } else {
                     MaterialTheme.colorScheme.background
                 }
             )
-            .padding(start = if (isReply) 20.dp else 0.dp)
+            .padding(start = if (uiState.isReply) 20.dp else 0.dp)
     ) {
         Row(
             modifier = Modifier.padding(top = 20.dp, start = 20.dp),
@@ -149,7 +153,7 @@ fun Comment(
                 }
             }
         }
-        if (isReply) {
+        if (uiState.isReply) {
             Box(modifier = Modifier.height(16.dp))
         } else {
             Row(
@@ -169,14 +173,27 @@ fun Comment(
 }
 
 @Composable
-private fun CommentFailureContent() {
+private fun DeletedComment() {
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp),
+        text = stringResource(R.string.deleted_comment),
+        style = MaterialTheme.typography.bodyMedium.copy(
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+        )
+    )
+}
+
+@Composable
+private fun CommentFailureContent(errorMessage: String) {
     Box(
         Modifier
             .fillMaxSize()
             .padding(20.dp)
     ) {
         Text(
-            text = stringResource(R.string.failed_to_load_comment),
+            text = errorMessage,
             style = MaterialTheme.typography.bodyLarge.copy(
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f)
             )
@@ -189,7 +206,7 @@ private fun CommentFailureContent() {
 fun CommentsPreview() {
     val mockComment = CommentItemUiState(
         id = 10,
-        parentId = null,
+        parentId = 10,
         childrenCount = 0,
         postId = 1,
         canEdit = true,
@@ -199,11 +216,12 @@ fun CommentsPreview() {
             name = "홍길동"
         ),
         content = "댓글 내용입니다.",
-        date = "오늘"
+        date = "오늘",
+        isDeleted = false
     )
     val uiState = CommentsUiState.Success(
         comments = listOf(
-            mockComment,
+            mockComment.copy(isDeleted = true),
             mockComment.copy(childrenCount = 1),
             mockComment.copy(parentId = 10, id = 11),
             mockComment
@@ -226,7 +244,7 @@ fun CommentPreview() {
     Comment(
         uiState = CommentItemUiState(
             id = 10,
-            parentId = null,
+            parentId = 10,
             childrenCount = 2,
             postId = 1,
             canEdit = true,
@@ -236,10 +254,17 @@ fun CommentPreview() {
                 name = "홍길동"
             ),
             content = "댓글 내용입니다.",
-            date = "오늘"
+            date = "오늘",
+            isDeleted = false
         ),
         onClick = {},
         onMoreButtonClick = {},
         onReplyIconClick = {}
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun RemovedCommentPreview() {
+    DeletedComment()
 }

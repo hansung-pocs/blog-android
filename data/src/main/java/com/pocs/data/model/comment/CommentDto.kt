@@ -1,11 +1,11 @@
-package com.pocs.domain.model.comment
+package com.pocs.data.model.comment
 
-data class Comment(
-    val id: Int,
+data class CommentDto(
+    val commentId: Int,
     val parentId: Int,
     val childrenCount: Int,
     val postId: Int,
-    val writer: CommentWriter,
+    val writer: CommentWriterDto,
     val content: String,
     val createdAt: String,
     val updatedAt: String? = null,

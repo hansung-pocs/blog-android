@@ -1,14 +1,8 @@
 package com.pocs.test_library.di
 
 import com.pocs.data.di.RemoteModule
-import com.pocs.data.source.AdminRemoteDataSource
-import com.pocs.data.source.AuthRemoteDataSource
-import com.pocs.data.source.PostRemoteDataSource
-import com.pocs.data.source.UserRemoteDataSource
-import com.pocs.test_library.fake.source.remote.FakeAdminRemoteDataSource
-import com.pocs.test_library.fake.source.remote.FakeAuthRemoteDataSource
-import com.pocs.test_library.fake.source.remote.FakePostRemoteDataSource
-import com.pocs.test_library.fake.source.remote.FakeUserRemoteDataSource
+import com.pocs.data.source.*
+import com.pocs.test_library.fake.source.remote.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.components.SingletonComponent
@@ -25,6 +19,10 @@ abstract class FakeRemoteModule {
     @Singleton
     @Binds
     abstract fun providePostRemoteDataSource(fakePostRemoteDataSource: FakePostRemoteDataSource): PostRemoteDataSource
+
+    @Singleton
+    @Binds
+    abstract fun provideCommentRemoteDataSource(fakeCommentRemoteDataSource: FakeCommentRemoteDataSource): CommentRemoteDataSource
 
     @Singleton
     @Binds

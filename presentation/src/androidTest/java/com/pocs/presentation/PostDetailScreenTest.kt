@@ -16,8 +16,9 @@ import com.pocs.presentation.model.comment.CommentsUiState
 import com.pocs.presentation.model.post.PostDetailUiState
 import com.pocs.presentation.view.component.bottomsheet.CommentModalController
 import com.pocs.presentation.view.post.detail.PostDetailContent
-import com.pocs.test_library.mock.mockCommentItemUiState
+import com.pocs.test_library.mock.mockComment
 import com.pocs.test_library.mock.mockPostDetail1
+import com.pocs.test_library.mock.mockReply
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -28,9 +29,7 @@ class PostDetailScreenTest {
     @get:Rule(order = 0)
     val composeRule = createComposeRule()
 
-    private val commentItem = mockCommentItemUiState
-
-    private val commentsUiState = CommentsUiState.Success(listOf(commentItem))
+    private val commentsUiState = CommentsUiState.Success(listOf(mockComment))
 
     private val uiState = PostDetailUiState.Success(
         postDetail = mockPostDetail1.toUiState(),
@@ -65,7 +64,7 @@ class PostDetailScreenTest {
                 )
             }
 
-            onNodeWithText(commentItem.content).performClick()
+            onNodeWithText(mockComment.content).performClick()
 
             onNodeWithText(getString(R.string.add_reply)).assertIsDisplayed()
         }
@@ -94,11 +93,10 @@ class PostDetailScreenTest {
         }
     }
 
-
     @Test
     fun shouldShowReplyCommentBottomSheet_WhenClickReplyComment() {
         composeRule.run {
-            val comment = commentItem.copy(parentId = 2)
+            val reply = mockReply
 
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
@@ -106,7 +104,7 @@ class PostDetailScreenTest {
                 PostDetailContent(
                     uiState = uiState.copy(
                         comments = commentsUiState.copy(
-                            comments = listOf(comment)
+                            comments = listOf(reply)
                         )
                     ),
                     snackbarHostState = snackbarHostState,
@@ -118,7 +116,7 @@ class PostDetailScreenTest {
                 )
             }
 
-            onNodeWithText(comment.content).performClick()
+            onNodeWithText(reply.content).performClick()
 
             onNodeWithText(getString(R.string.add_reply)).assertIsDisplayed()
         }
@@ -182,7 +180,7 @@ class PostDetailScreenTest {
     fun shouldExistControllerParentId_WhenClickComment() {
         composeRule.run {
             val commentModalController = CommentModalController()
-            val comment = commentItem.copy(parentId = null)
+            val comment = mockComment
 
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
@@ -213,8 +211,7 @@ class PostDetailScreenTest {
     fun replyParentIdIsSameWithControllerParentId_WhenClickReplyComment() {
         composeRule.run {
             val commentModalController = CommentModalController()
-            val parentId = 23
-            val replyComment = commentItem.copy(parentId = parentId)
+            val replyComment = mockReply
 
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
@@ -501,6 +498,31 @@ class PostDetailScreenTest {
             onRoot().performTouchInput{ swipeUp() }
 
             assertEquals(1,  findVisibleTexts(text = title).size)
+        }
+    }
+
+    @Test
+    fun shouldShowDeletedComment_WhenCommentWasDeleted() {
+        composeRule.run {
+            setContent {
+                val snackbarHostState = remember { SnackbarHostState() }
+
+                PostDetailContent(
+                    uiState = uiState.copy(
+                        comments = commentsUiState.copy(
+                            comments = listOf(mockComment.copy(isDeleted = true, childrenCount = 2))
+                        )
+                    ),
+                    snackbarHostState = snackbarHostState,
+                    onEditClick = {},
+                    onDeleteClick = {},
+                    onCommentDelete = {},
+                    onCommentCreated = { _, _ -> },
+                    onCommentUpdated = { _, _ -> }
+                )
+            }
+
+            onNodeWithText(getString(R.string.deleted_comment)).assertIsDisplayed()
         }
     }
 

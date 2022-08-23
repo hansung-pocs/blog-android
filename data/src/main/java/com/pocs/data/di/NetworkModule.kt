@@ -68,6 +68,12 @@ class NetworkModule {
 
     @Provides
     @Singleton
+    fun provideCommentApiService(retrofit: Retrofit): CommentApi {
+        return retrofit.create(CommentApi::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideUserApiService(retrofit: Retrofit): UserApi {
         return retrofit.create(UserApi::class.java)
     }

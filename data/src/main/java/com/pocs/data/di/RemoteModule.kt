@@ -20,6 +20,12 @@ class RemoteModule {
 
     @Singleton
     @Provides
+    fun provideCommentRemoteDataSource(api: CommentApi): CommentRemoteDataSource {
+        return CommentRemoteDataSourceImpl(api)
+    }
+
+    @Singleton
+    @Provides
     fun provideUserRemoteDataSource(api: UserApi): UserRemoteDataSource {
         return UserRemoteDataSourceImpl(api)
     }

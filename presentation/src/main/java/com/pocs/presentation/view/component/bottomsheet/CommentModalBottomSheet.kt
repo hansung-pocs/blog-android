@@ -99,11 +99,13 @@ fun CommentModalBottomSheet(
     }
 
     var showRecheckDialog by remember { mutableStateOf(false) }
+
+    val isNotEmpty = textFieldValueState.value.text.isNotEmpty()
     val canSend by rememberUpdatedState(
         if (controller.isUpdate) {
-            textFieldValueState.value.text != controller.commentToBeUpdated!!.content
+            isNotEmpty && textFieldValueState.value.text != controller.commentToBeUpdated!!.content
         } else {
-            textFieldValueState.value.text.isNotEmpty()
+            isNotEmpty
         }
     )
 

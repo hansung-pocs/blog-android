@@ -24,6 +24,12 @@ class RepositoryModule {
 
     @Singleton
     @Provides
+    fun provideCommentRepository(dataSource: CommentRemoteDataSource): CommentRepository {
+        return CommentRepositoryImpl(dataSource = dataSource)
+    }
+
+    @Singleton
+    @Provides
     fun provideUserRepository(api: UserApi, dataSource: UserRemoteDataSource): UserRepository {
         return UserRepositoryImpl(api = api, dataSource = dataSource)
     }
