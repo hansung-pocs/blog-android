@@ -366,7 +366,7 @@ private fun PostDetailFailureContent(uiState: PostDetailUiState.Failure) {
 private fun PostDetailContentPreview() {
     val mockComment = CommentItemUiState(
         id = 10,
-        parentId = null,
+        parentId = 10,
         childrenCount = 0,
         postId = 1,
         canEdit = true,

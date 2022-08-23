@@ -242,7 +242,7 @@ fun CommentPreview() {
     Comment(
         uiState = CommentItemUiState(
             id = 10,
-            parentId = null,
+            parentId = 10,
             childrenCount = 2,
             postId = 1,
             canEdit = true,
