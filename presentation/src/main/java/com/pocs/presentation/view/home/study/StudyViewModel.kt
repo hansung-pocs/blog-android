@@ -23,7 +23,7 @@ class StudyViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
-        StudyUiState(visiblePostWriteFab = !isCurrentUserAnonymousUseCase())
+        StudyUiState(isUserAnonymous = isCurrentUserAnonymousUseCase())
     )
     val uiState = _uiState.asStateFlow()
 

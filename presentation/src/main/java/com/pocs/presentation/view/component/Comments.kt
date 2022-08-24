@@ -128,10 +128,11 @@ fun Comment(
             verticalAlignment = Alignment.Top
         ) {
             val onBackgroundColor = MaterialTheme.colorScheme.onBackground
+            val name = uiState.writer.name ?: stringResource(id = R.string.anonymous)
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = uiState.writer.name + stringResource(R.string.middle_dot) + uiState.date,
+                    text = name + stringResource(R.string.middle_dot) + uiState.date,
                     style = MaterialTheme.typography.bodySmall.copy(
                         color = onBackgroundColor.copy(alpha = 0.5f)
                     )

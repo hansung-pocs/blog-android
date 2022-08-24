@@ -1,10 +1,7 @@
 package com.pocs.presentation.view.component.markdown
 
 import android.content.Context
-import android.graphics.Paint
-import android.text.Spanned
 import android.text.method.LinkMovementMethod
-import android.text.style.LineHeightSpan
 import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
@@ -45,7 +42,6 @@ import io.noties.markwon.syntax.Prism4jThemeDefault
 import io.noties.markwon.syntax.SyntaxHighlightPlugin
 import io.noties.prism4j.Prism4j
 import io.noties.prism4j.annotations.PrismBundle
-import org.commonmark.node.BulletList
 import org.commonmark.node.FencedCodeBlock
 
 @Composable
@@ -172,11 +168,6 @@ private object Markdown {
             )
             .usePlugin(object : AbstractMarkwonPlugin() {
                 override fun configureSpansFactory(builder: MarkwonSpansFactory.Builder) {
-                    builder.appendFactory(BulletList::class.java) { _, _ ->
-                        // TODO: https://github.com/noties/Markwon/issues/413 가 해결되면 수정하기. 아래는
-                        //       임시 해결책임
-                        FirstLineSpacingSpan((-24f).toDp())
-                    }
                     builder.appendFactory(FencedCodeBlock::class.java) { _, _ ->
                         androidx.compose.ui.text.android.style.LineHeightSpan(12f.toDp().toFloat())
                     }
@@ -191,44 +182,5 @@ private object Markdown {
                 }
             })
             .build()
-    }
-}
-
-private class FirstLineSpacingSpan(private val spacing: Int) : LineHeightSpan {
-
-    private var startAscent = 0
-    private var startTop = 0
-
-    override fun chooseHeight(
-        text: CharSequence,
-        start: Int,
-        end: Int,
-        spanstartv: Int,
-        v: Int,
-        fm: Paint.FontMetricsInt
-    ) {
-        val spanStart = (text as Spanned).getSpanStart(this)
-        if (start == spanStart) {
-
-            // save these values, we will use them to restore fm state (if other lines are present)
-            // if we do not, then all the subsequent lines will have space at the top
-            startAscent = fm.ascent
-            startTop = fm.top
-
-            // obtain previous spans (if none -> we are first, no need to add spacing)
-            // `-2` because there is a new-line character that won't have list-item span
-            val spans = text.getSpans(
-                start - 2, start,
-                FirstLineSpacingSpan::class.java
-            )
-            if (spans != null && spans.isNotEmpty()) {
-                fm.ascent -= spacing
-                fm.top -= spacing
-            }
-        } else {
-            // reset the values...
-            fm.ascent = startAscent
-            fm.top = startTop
-        }
     }
 }

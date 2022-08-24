@@ -79,7 +79,10 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
     }
 
     private fun initChips() {
-        val items = PostFilterType.values().toList()
+        val items = PostFilterType.values().toMutableList().apply {
+            // 스터디와 질문답변은 따로 탭이 있으니 칩에 보이지 않는다.
+            removeAll(listOf(PostFilterType.STUDY, PostFilterType.QNA))
+        }
         binding.chips.setContent {
             Mdc3Theme {
                 val uiState = viewModel.uiState.collectAsState()
@@ -96,11 +99,11 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
 
     private fun updateUi(uiState: PostUiState, adapter: PostAdapter) {
         adapter.submitData(viewLifecycleOwner.lifecycle, uiState.pagingData)
-        binding.fab.isVisible = uiState.isUserAnonymous
+        binding.fab.isVisible = !uiState.isUserAnonymous
     }
 
     private fun onClickPost(postItemUiState: PostItemUiState) {
-        if (viewModel.uiState.value.isUserAnonymous) {
+        if (viewModel.uiState.value.isUserAnonymous && postItemUiState.category?.canAnonymousSee == false) {
             showSnackBar(getString(R.string.can_see_only_member))
             return
         }
@@ -113,7 +116,7 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
 
     private fun showSnackBar(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
-            anchorView = binding.fab
+            anchorView = if (binding.fab.isVisible) binding.fab else null
         }.show()
     }
 

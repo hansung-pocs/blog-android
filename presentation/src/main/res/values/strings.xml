@@ -87,7 +87,7 @@
     <string name="sign_up_as_anonymous">익명으로 시작하기</string>
     <string name="login_title">POCS</string>
     <string name="setting">설정</string>
-    <string name="anonymous">비회원</string>
+    <string name="anonymous">익명</string>
     <string name="logout">로그아웃</string>
     <string name="logout_dialog_title">정말로 로그아웃 하시겠습니까?</string>
     <string name="all">전체</string>
