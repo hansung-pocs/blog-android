@@ -96,7 +96,7 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
 
     private fun updateUi(uiState: PostUiState, adapter: PostAdapter) {
         adapter.submitData(viewLifecycleOwner.lifecycle, uiState.pagingData)
-        binding.fab.isVisible = uiState.isUserAnonymous
+        binding.fab.isVisible = !uiState.isUserAnonymous
     }
 
     private fun onClickPost(postItemUiState: PostItemUiState) {
