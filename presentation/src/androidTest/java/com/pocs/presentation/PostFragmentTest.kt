@@ -6,6 +6,7 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.auth.IsCurrentUserAnonymousUseCase
 import com.pocs.domain.usecase.post.GetAllPostsUseCase
@@ -59,9 +60,9 @@ class PostFragmentTest {
     }
 
     @Test
-    fun shouldShowNoPermissionSnackBar_WhenAnonymousClickPost() = runTest {
+    fun shouldShowNoPermissionSnackBar_WhenAnonymousClickNonQnaPost() = runTest {
         val post = mockPost
-        val pagingData = PagingData.from(listOf(post))
+        val pagingData = PagingData.from(listOf(post.copy(category = PostCategory.NOTICE)))
         authRepository.currentUser.value = mockAnonymousUser
         postRepository.postPagingDataFlow = MutableStateFlow(pagingData)
         initViewModel()
