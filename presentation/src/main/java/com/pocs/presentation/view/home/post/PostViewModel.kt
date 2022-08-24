@@ -38,7 +38,7 @@ class PostViewModel @Inject constructor(
             getAllPostsUseCase(uiState.value.selectedPostFilterType).cachedIn(viewModelScope)
                 .map {
                     it.map { post ->
-                        post.toUiState(showCategory = uiState.value.visiblePostCategory)
+                        post.toUiState(displayCategory = uiState.value.visiblePostCategory)
                     }
                 }
                 .collectLatest { pagingData ->
