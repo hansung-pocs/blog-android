@@ -94,6 +94,7 @@ fun PostDetailScreen(
 fun PostDetailContent(
     uiState: PostDetailUiState.Success,
     commentModalController: CommentModalController = remember { CommentModalController() },
+    optionModalController: OptionModalController = remember { OptionModalController() },
     snackbarHostState: SnackbarHostState,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
@@ -134,9 +135,11 @@ fun PostDetailContent(
         onUpdated = onCommentUpdated
     ) {
         OptionModalBottomSheet(
-            options = remember {
-                listOf(
-                    Option(
+            controller = optionModalController,
+            optionBuilder = { comment ->
+                val options = mutableListOf<Option>()
+                if (comment?.canEdit == true) {
+                    options.add(Option(
                         imageVector = Icons.Default.Edit,
                         stringResId = R.string.edit,
                         onClick = {
@@ -144,15 +147,18 @@ fun PostDetailContent(
                                 commentModalController.showForUpdate(it)
                             }
                         }
-                    ),
-                    Option(
+                    ))
+                }
+                if (comment?.canDelete == true) {
+                    options.add(Option(
                         imageVector = Icons.Default.Delete,
                         stringResId = R.string.delete,
                         onClick = { commentToBeDeleted = it }
-                    )
-                )
+                    ))
+                }
+                return@OptionModalBottomSheet options
             }
-        ) { optionModalController ->
+        ) {
             val lazyListState = rememberLazyListState()
 
             Scaffold(

@@ -1,5 +1,6 @@
 package com.pocs.presentation.view.component.bottomsheet
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
@@ -15,6 +16,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.dismiss
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
@@ -23,6 +25,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.max
 import kotlin.math.roundToInt
+
+@VisibleForTesting
+const val MODAL_BOTTOM_SHEET_CONTENT_TAG = "ModalBottomSheetContent"
 
 /**
  * [ModalBottomSheetLayout]로 원하는 구현을 할 수 없어서 복사한 컴포즈 함수이다.
@@ -79,6 +84,7 @@ fun PocsModalBottomSheetLayout(
         }
         Surface(
             Modifier
+                .testTag(MODAL_BOTTOM_SHEET_CONTENT_TAG)
                 .fillMaxWidth()
                 .alpha(sheetAlpha)
                 .offset {
