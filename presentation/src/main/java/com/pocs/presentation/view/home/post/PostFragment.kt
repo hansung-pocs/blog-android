@@ -26,6 +26,7 @@ import com.pocs.presentation.model.post.PostUiState
 import com.pocs.presentation.model.post.item.PostItemUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
 import com.pocs.presentation.view.component.HorizontalChips
+import com.pocs.presentation.view.home.HomeViewModel
 import com.pocs.presentation.view.post.adapter.PostAdapter
 import com.pocs.presentation.view.post.create.PostCreateActivity
 import com.pocs.presentation.view.post.detail.PostDetailActivity
@@ -36,7 +37,8 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentPostBinding
         get() = FragmentPostBinding::inflate
 
-    private val viewModel: PostViewModel by activityViewModels()
+    private val postViewModel: PostViewModel by activityViewModels()
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
     private var launcher: ActivityResultLauncher<Intent>? = null
 
@@ -50,7 +52,7 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect {
+                postViewModel.uiState.collect {
                     updateUi(it, adapter)
                 }
             }
@@ -85,13 +87,13 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
         }
         binding.chips.setContent {
             Mdc3Theme {
-                val uiState = viewModel.uiState.collectAsState()
+                val uiState = postViewModel.uiState.collectAsState()
 
                 HorizontalChips(
                     items = items,
                     itemLabelBuilder = { stringResource(id = it.koreanStringResource) },
                     selectedItem = uiState.value.selectedPostFilterType,
-                    onItemClick = viewModel::updatePostFilterType
+                    onItemClick = postViewModel::updatePostFilterType
                 )
             }
         }
@@ -103,7 +105,7 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
     }
 
     private fun onClickPost(postItemUiState: PostItemUiState) {
-        if (viewModel.uiState.value.isUserAnonymous && !postItemUiState.category.canAnonymousSee) {
+        if (postViewModel.uiState.value.isUserAnonymous && !postItemUiState.category.canAnonymousSee) {
             showSnackBar(getString(R.string.can_see_only_member))
             return
         }
@@ -115,9 +117,14 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
     }
 
     private fun showSnackBar(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
-            anchorView = if (binding.fab.isVisible) binding.fab else null
-        }.show()
+        // floating 버튼이 보일때는 버튼위에 띄우 안보일때는 bottom nav bar 위에 띄운다.
+        if (binding.fab.isVisible) {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
+                anchorView = binding.fab
+            }.show()
+        } else {
+            homeViewModel.showUserMessage(message)
+        }
     }
 
     private fun startPostCreateActivity() {

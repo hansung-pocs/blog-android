@@ -8,19 +8,25 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.snackbar.Snackbar
 import com.pocs.presentation.R
 import com.pocs.presentation.base.ViewBindingActivity
 import com.pocs.presentation.databinding.ActivityHomeBinding
+import com.pocs.presentation.model.post.HomeUiState
 import com.pocs.presentation.view.admin.AdminActivity
 import com.pocs.presentation.view.setting.SettingActivity
 import com.pocs.presentation.view.user.UserActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
@@ -46,6 +52,12 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
 
         initNavigationView()
         initBottomNavigationView()
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect(::updateUi)
+            }
+        }
     }
 
     private fun initNavigationView() {
@@ -101,5 +113,18 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    private fun updateUi(homeUiState: HomeUiState) {
+        if (homeUiState.userMessage != null) {
+            showSnackBar(homeUiState.userMessage)
+            viewModel.userMessageShown()
+        }
+    }
+
+    private fun showSnackBar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
+            anchorView = binding.bottomNav
+        }.show()
     }
 }
