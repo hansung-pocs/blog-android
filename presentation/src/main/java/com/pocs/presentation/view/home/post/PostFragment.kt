@@ -79,7 +79,10 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
     }
 
     private fun initChips() {
-        val items = PostFilterType.values().toList()
+        val items = PostFilterType.values().toMutableList().apply {
+            // 스터디와 질문답변은 따로 탭이 있으니 칩에 보이지 않는다.
+            removeAll(listOf(PostFilterType.STUDY, PostFilterType.QNA))
+        }
         binding.chips.setContent {
             Mdc3Theme {
                 val uiState = viewModel.uiState.collectAsState()
