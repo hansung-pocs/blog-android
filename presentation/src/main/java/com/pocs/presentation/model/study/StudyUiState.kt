@@ -5,5 +5,5 @@ import com.pocs.presentation.model.post.item.PostItemUiState
 
 data class StudyUiState(
     val pagingData: PagingData<PostItemUiState> = PagingData.empty(),
-    val visiblePostWriteFab: Boolean
+    val isUserAnonymous: Boolean
 )
