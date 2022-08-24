@@ -22,14 +22,14 @@ import com.pocs.presentation.model.comment.item.CommentItemUiState
 import kotlinx.coroutines.launch
 
 @Immutable
-data class Option(
+data class Option<T>(
     val imageVector: ImageVector,
     @StringRes val stringResId: Int,
-    val onClick: (CommentItemUiState) -> Unit
+    val onClick: (onClickCallBackData: T) -> Unit
 )
 
 @Composable
-private fun OptionBottomSheet(controller: OptionModalController) {
+private fun <T> OptionBottomSheet(controller: OptionModalController<T>) {
     val options = controller.options
 
     if (options == null || options.isEmpty()) {
@@ -46,7 +46,7 @@ private fun OptionBottomSheet(controller: OptionModalController) {
 }
 
 @Composable
-fun OptionBottomSheetItem(option: Option, controller: OptionModalController) {
+fun <T> OptionBottomSheetItem(option: Option<T>, controller: OptionModalController<T>) {
     val coroutineScope = rememberCoroutineScope()
     val interactionSource = remember { MutableInteractionSource() }
     val label = stringResource(id = option.stringResId)
@@ -60,7 +60,7 @@ fun OptionBottomSheetItem(option: Option, controller: OptionModalController) {
                 indication = rememberRipple(bounded = true),
                 role = Role.Button,
                 onClick = {
-                    option.onClick(requireNotNull(controller.comment))
+                    option.onClick(requireNotNull(controller.onClickCallBackData))
                     coroutineScope.launch {
                         controller.hide()
                     }
@@ -83,9 +83,9 @@ fun OptionBottomSheetItem(option: Option, controller: OptionModalController) {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun OptionModalBottomSheet(
-    optionBuilder: (CommentItemUiState?) -> List<Option>,
-    controller: OptionModalController,
+fun <T> OptionModalBottomSheet(
+    optionBuilder: (T?) -> List<Option<T>>,
+    controller: OptionModalController<T>,
     content: @Composable () -> Unit
 ) {
     val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
@@ -111,22 +111,22 @@ fun OptionModalBottomSheet(
 }
 
 @OptIn(ExperimentalMaterialApi::class)
-class OptionModalController {
+class OptionModalController<T> {
 
     private lateinit var modalBottomSheetState: ModalBottomSheetState
-    private lateinit var optionBuilder: (CommentItemUiState?) -> List<Option>
+    private lateinit var optionBuilder: (T?) -> List<Option<T>>
 
     private var inited: Boolean = false
 
-    private var _comment: CommentItemUiState? = null
-    val comment get() = _comment
+    private var _onClickCallBackData: T? = null
+    val onClickCallBackData get() = _onClickCallBackData
 
-    var options by mutableStateOf<List<Option>?>(null)
+    var options by mutableStateOf<List<Option<T>>?>(null)
         private set
 
     fun init(
         modalBottomSheetState: ModalBottomSheetState,
-        optionBuilder: (CommentItemUiState?) -> List<Option>
+        optionBuilder: (T?) -> List<Option<T>>
     ) {
         check(!inited) { "이미 초기화되었습니다." }
         inited = true
@@ -134,16 +134,16 @@ class OptionModalController {
         this.optionBuilder = optionBuilder
     }
 
-    suspend fun show(comment: CommentItemUiState) {
-        options = optionBuilder(comment)
-        _comment = comment
+    suspend fun show(onClickCallBackData: T) {
+        options = optionBuilder(onClickCallBackData)
+        _onClickCallBackData = onClickCallBackData
         modalBottomSheetState.show()
     }
 
     suspend fun hide() {
         modalBottomSheetState.hide()
         options = null
-        _comment = null
+        _onClickCallBackData = null
     }
 }
 
@@ -151,7 +151,11 @@ class OptionModalController {
 @Composable
 private fun OptionBottomSheetItemPreview() {
     OptionBottomSheetItem(
-        Option(imageVector = Icons.Default.Edit, stringResId = R.string.edit, onClick = {}),
-        controller = OptionModalController()
+        Option(
+            imageVector = Icons.Default.Edit,
+            stringResId = R.string.edit,
+            onClick = {}
+        ),
+        controller = OptionModalController<CommentItemUiState>()
     )
 }

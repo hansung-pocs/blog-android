@@ -94,7 +94,7 @@ fun PostDetailScreen(
 fun PostDetailContent(
     uiState: PostDetailUiState.Success,
     commentModalController: CommentModalController = remember { CommentModalController() },
-    optionModalController: OptionModalController = remember { OptionModalController() },
+    optionModalController: OptionModalController<CommentItemUiState> = remember { OptionModalController() },
     snackbarHostState: SnackbarHostState,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
@@ -137,7 +137,7 @@ fun PostDetailContent(
         OptionModalBottomSheet(
             controller = optionModalController,
             optionBuilder = { comment ->
-                val options = mutableListOf<Option>()
+                val options = mutableListOf<Option<CommentItemUiState>>()
                 if (comment?.canEdit == true) {
                     options.add(Option(
                         imageVector = Icons.Default.Edit,
@@ -210,7 +210,7 @@ fun PostDetailContent(
                         uiState = uiState.comments,
                         onMoreButtonClick = {
                             coroutineScope.launch {
-                                optionModalController.show(comment = it)
+                                optionModalController.show(onClickCallBackData = it)
                             }
                         },
                         onReplyIconClick = {
