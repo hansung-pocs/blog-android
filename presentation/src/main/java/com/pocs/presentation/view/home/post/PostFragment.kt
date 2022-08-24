@@ -113,7 +113,7 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
 
     private fun showSnackBar(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
-            anchorView = binding.fab
+            anchorView = if (binding.fab.isVisible) binding.fab else null
         }.show()
     }
 
