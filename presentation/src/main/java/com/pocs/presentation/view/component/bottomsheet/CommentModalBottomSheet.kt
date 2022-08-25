@@ -89,14 +89,7 @@ fun CommentModalBottomSheet(
         initialValue = ModalBottomSheetValue.Hidden,
         animationSpec = TweenSpec(durationMillis = 0)
     )
-    val textFieldValueState = remember {
-        mutableStateOf(TextFieldValue()).also {
-            controller.init(
-                textFieldValueState = it,
-                bottomSheetState = bottomSheetState
-            )
-        }
-    }
+    val textFieldValueState = remember { mutableStateOf(TextFieldValue()) }
 
     var showRecheckDialog by remember { mutableStateOf(false) }
 
@@ -136,6 +129,13 @@ fun CommentModalBottomSheet(
                 controller.clear()
             }
         }
+    }
+
+    LaunchedEffect(controller) {
+        controller.init(
+            textFieldValueState = textFieldValueState,
+            bottomSheetState = bottomSheetState
+        )
     }
 
     LaunchedEffect(Unit) {
