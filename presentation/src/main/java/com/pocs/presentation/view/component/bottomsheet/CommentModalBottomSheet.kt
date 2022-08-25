@@ -176,12 +176,11 @@ fun CommentModalBottomSheet(
                     }
 
                     coroutineScope.launch {
-                        controller.hide()
-                        // 댓글 추가 후 키보드를 숨기는 함수 호출 때문인지 가끔씩 입력한 텍스트 필드 값이 남아있는 버그가 존재한다.
+                        // 키보드를 숨기는 함수 호출 때문인지 가끔씩 입력한 텍스트 필드 그대로 값이 남아있는 버그가 존재한다.
+                        // 따라서 아래의 키보드를 숨기는 함수가 suspend 함수가 아니어도 이 코루틴 스코프 내에 위치해야 한다.
                         // https://github.com/hansung-pocs/blog-android/issues/177
-                        // 이는 아래와 같이 조금의 딜레이를 통해 해결할 수 있다.
-                        delay(10)
                         keyboardController?.hide()
+                        controller.hide()
                     }
                 },
                 hint = stringResource(
