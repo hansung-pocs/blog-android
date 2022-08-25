@@ -73,7 +73,7 @@ fun AnonymousCreateScreen(
         ) {
             Box(Modifier.height(8.dp))
             Text(
-                stringResource(R.string.anonymous_precautions),
+                stringResource(R.string.anonymous_guideline),
                 fontSize = 12.sp,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
