@@ -106,7 +106,7 @@ class PostViewModelTest {
     }
 
     @Test
-    fun shouldExistCategory_WhenPostFilterTypeIsAllOrBest() = runTest {
+    fun displayCategoryIsTrue_WhenPostFilterTypeIsAllOrBest() = runTest {
         val differ = AsyncPagingDataDiffer(
             diffCallback = PostItemUiStateDiffCallback(),
             updateCallback = NoopListCallback(),
@@ -120,13 +120,12 @@ class PostViewModelTest {
         differ.submitData(viewModel.uiState.value.pagingData)
         advanceUntilIdle()
         differ.snapshot().items.forEach {
-            assertNotNull(it.category)
+            assertTrue(it.displayCategory)
         }
     }
 
-
     @Test
-    fun shouldCategoryIsNull_WhenPostFilterTypeIsNotAllOrBest() = runTest {
+    fun displayCategoryIsFalse_WhenPostFilterTypeIsNotAllOrBest() = runTest {
         val differ = AsyncPagingDataDiffer(
             diffCallback = PostItemUiStateDiffCallback(),
             updateCallback = NoopListCallback(),
@@ -140,7 +139,7 @@ class PostViewModelTest {
         differ.submitData(viewModel.uiState.value.pagingData)
         advanceUntilIdle()
         differ.snapshot().items.forEach {
-            assertNull(it.category)
+            assertFalse(it.displayCategory)
         }
     }
 

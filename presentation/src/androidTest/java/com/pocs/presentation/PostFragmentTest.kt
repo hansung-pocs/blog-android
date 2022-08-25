@@ -7,6 +7,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.pocs.domain.model.post.PostCategory
+import com.pocs.domain.model.post.PostFilterType
 import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.auth.IsCurrentUserAnonymousUseCase
 import com.pocs.domain.usecase.post.GetAllPostsUseCase
@@ -66,6 +67,21 @@ class PostFragmentTest {
         authRepository.currentUser.value = mockAnonymousUser
         postRepository.postPagingDataFlow = MutableStateFlow(pagingData)
         initViewModel()
+        launchFragmentInHiltContainer<PostFragment>(themeResId = R.style.Theme_PocsBlog)
+
+        onView(withText(post.title)).perform(click())
+
+        onView(withText(R.string.can_see_only_member)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun shouldShowNoPermissionSnackBar_WhenAnonymousClickPost_WhenSelectedChipIsNotice() = runTest {
+        val post = mockPost
+        val pagingData = PagingData.from(listOf(post.copy(category = PostCategory.NOTICE)))
+        authRepository.currentUser.value = mockAnonymousUser
+        postRepository.postPagingDataFlow = MutableStateFlow(pagingData)
+        initViewModel()
+        viewModel.updatePostFilterType(PostFilterType.NOTICE)
         launchFragmentInHiltContainer<PostFragment>(themeResId = R.style.Theme_PocsBlog)
 
         onView(withText(post.title)).perform(click())

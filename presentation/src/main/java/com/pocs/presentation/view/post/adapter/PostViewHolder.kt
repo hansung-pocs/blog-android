@@ -29,10 +29,9 @@ class PostViewHolder(
         if (uiState.writer != null) {
             subtitleText += middleDot + uiState.writer
         }
-        if (uiState.category != null) {
+        if (uiState.displayCategory) {
             subtitleText += middleDot + root.context.getString(uiState.category.koreanStringResource)
         }
-
         subtitle.text = subtitleText
 
         root.setOnClickListener { onClickItem(uiState) }
