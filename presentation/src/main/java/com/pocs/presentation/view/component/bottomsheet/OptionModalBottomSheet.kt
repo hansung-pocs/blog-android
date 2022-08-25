@@ -22,14 +22,22 @@ import com.pocs.presentation.model.comment.item.CommentItemUiState
 import kotlinx.coroutines.launch
 
 @Immutable
-data class Option(
+data class Option<T>(
     val imageVector: ImageVector,
     @StringRes val stringResId: Int,
-    val onClick: (CommentItemUiState) -> Unit
+    val onClick: (onClickCallBackData: T) -> Unit
 )
 
 @Composable
-private fun OptionBottomSheet(options: List<Option>, controller: OptionModalController) {
+private fun <T> OptionBottomSheet(controller: OptionModalController<T>) {
+    val options = controller.options
+
+    if (options == null || options.isEmpty()) {
+        // ModalBottomSheet의 Anchor는 조금이라도 높이가 존재해야지만 작동하기 때문에 의미없는 작은 높이 값을 넣어준다.
+        Box(Modifier.height(1.dp))
+        return
+    }
+
     Column {
         for (option in options) {
             OptionBottomSheetItem(option, controller)
@@ -38,7 +46,7 @@ private fun OptionBottomSheet(options: List<Option>, controller: OptionModalCont
 }
 
 @Composable
-fun OptionBottomSheetItem(option: Option, controller: OptionModalController) {
+fun <T> OptionBottomSheetItem(option: Option<T>, controller: OptionModalController<T>) {
     val coroutineScope = rememberCoroutineScope()
     val interactionSource = remember { MutableInteractionSource() }
     val label = stringResource(id = option.stringResId)
@@ -52,7 +60,7 @@ fun OptionBottomSheetItem(option: Option, controller: OptionModalController) {
                 indication = rememberRipple(bounded = true),
                 role = Role.Button,
                 onClick = {
-                    option.onClick(requireNotNull(controller.comment))
+                    option.onClick(requireNotNull(controller.onClickCallBackData))
                     coroutineScope.launch {
                         controller.hide()
                     }
@@ -75,15 +83,17 @@ fun OptionBottomSheetItem(option: Option, controller: OptionModalController) {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun OptionModalBottomSheet(
-    options: List<Option>,
-    content: @Composable (OptionModalController) -> Unit
+fun <T> OptionModalBottomSheet(
+    optionBuilder: (T?) -> List<Option<T>>,
+    controller: OptionModalController<T>,
+    content: @Composable () -> Unit
 ) {
-    val bottomSheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden
-    )
-    val controller = remember { OptionModalController(bottomSheetState) }
+    val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(controller) {
+        controller.init(bottomSheetState, optionBuilder)
+    }
 
     BackHandler(bottomSheetState.isVisible) {
         coroutineScope.launch {
@@ -94,39 +104,58 @@ fun OptionModalBottomSheet(
     PocsModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetBackgroundColor = MaterialTheme.colorScheme.surface,
-        sheetContent = { OptionBottomSheet(options, controller) },
+        sheetContent = { OptionBottomSheet(controller) },
     ) {
-        content(controller)
+        content()
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
-class OptionModalController(
-    private val modalBottomSheetState: ModalBottomSheetState
-) {
-    private var _comment: CommentItemUiState? = null
-    val comment get() = _comment
+class OptionModalController<T> {
 
-    suspend fun show(comment: CommentItemUiState) {
-        _comment = comment
+    private lateinit var modalBottomSheetState: ModalBottomSheetState
+    private lateinit var optionBuilder: (T?) -> List<Option<T>>
+
+    private var inited: Boolean = false
+
+    private var _onClickCallBackData: T? = null
+    val onClickCallBackData get() = _onClickCallBackData
+
+    var options by mutableStateOf<List<Option<T>>?>(null)
+        private set
+
+    fun init(
+        modalBottomSheetState: ModalBottomSheetState,
+        optionBuilder: (T?) -> List<Option<T>>
+    ) {
+        check(!inited) { "이미 초기화되었습니다." }
+        inited = true
+        this.modalBottomSheetState = modalBottomSheetState
+        this.optionBuilder = optionBuilder
+    }
+
+    suspend fun show(onClickCallBackData: T) {
+        options = optionBuilder(onClickCallBackData)
+        _onClickCallBackData = onClickCallBackData
         modalBottomSheetState.show()
     }
 
     suspend fun hide() {
-        _comment = null
         modalBottomSheetState.hide()
+        options = null
+        _onClickCallBackData = null
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Preview(showBackground = true)
 @Composable
 private fun OptionBottomSheetItemPreview() {
-    val bottomSheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden
-    )
     OptionBottomSheetItem(
-        Option(imageVector = Icons.Default.Edit, stringResId = R.string.edit, onClick = {}),
-        controller = OptionModalController(bottomSheetState)
+        Option(
+            imageVector = Icons.Default.Edit,
+            stringResId = R.string.edit,
+            onClick = {}
+        ),
+        controller = OptionModalController<CommentItemUiState>()
     )
 }

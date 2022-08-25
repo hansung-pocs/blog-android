@@ -16,6 +16,7 @@ import com.pocs.presentation.model.comment.CommentsUiState
 import com.pocs.presentation.model.post.PostDetailUiState
 import com.pocs.presentation.model.post.item.PostWriterUiState
 import com.pocs.presentation.view.component.bottomsheet.CommentModalController
+import com.pocs.presentation.view.component.bottomsheet.MODAL_BOTTOM_SHEET_CONTENT_TAG
 import com.pocs.presentation.view.post.detail.PostDetailContent
 import com.pocs.test_library.mock.mockComment
 import com.pocs.test_library.mock.mockPostDetail1
@@ -555,10 +556,72 @@ class PostDetailScreenTest {
         }
     }
 
+    @Test
+    fun shouldNotShowEditButton_WhenCanNotEditComment() {
+        composeRule.run {
+            val comment = mockComment.copy(
+                canDelete = true,
+                canEdit = false
+            )
+            setContent {
+                val snackbarHostState = remember { SnackbarHostState() }
+
+                PostDetailContent(
+                    uiState = uiState.copy(
+                        comments = CommentsUiState.Success(comments = listOf(comment))
+                    ),
+                    snackbarHostState = snackbarHostState,
+                    onEditClick = {},
+                    onDeleteClick = {},
+                    onCommentDelete = {},
+                    onCommentCreated = { _, _ -> },
+                    onCommentUpdated = { _, _ -> }
+                )
+            }
+
+            onNodeWithContentDescription(getString(R.string.comment_info_button)).performClick()
+
+            onNodeWithText(getString(R.string.edit)).assertDoesNotExist()
+            onNodeWithText(getString(R.string.delete)).assertIsDisplayed()
+        }
+    }
+
+    @Test
+    fun shouldHideOptionModalBottomSheet_WhenClickDeleteButton() {
+        composeRule.run {
+            val comment = mockComment.copy(canDelete = true)
+            setContent {
+                val snackbarHostState = remember { SnackbarHostState() }
+
+                PostDetailContent(
+                    uiState = uiState.copy(
+                        comments = CommentsUiState.Success(comments = listOf(comment))
+                    ),
+                    snackbarHostState = snackbarHostState,
+                    onEditClick = {},
+                    onDeleteClick = {},
+                    onCommentDelete = {},
+                    onCommentCreated = { _, _ -> },
+                    onCommentUpdated = { _, _ -> }
+                )
+            }
+
+            onNodeWithContentDescription(getString(R.string.comment_info_button)).performClick()
+            onNodeWithText(getString(R.string.delete)).performClick()
+
+            val visibleBottomSheetList = findVisibleNode(hasTestTag(MODAL_BOTTOM_SHEET_CONTENT_TAG))
+            assertEquals(0, visibleBottomSheetList.size)
+        }
+    }
+
     @Suppress("SameParameterValue")
     private fun findVisibleTexts(text: String): List<SemanticsNode> {
-        return composeRule.onAllNodes(hasText(text)).fetchSemanticsNodes().filter { semanticsNode ->
-            // 투명한 자식을 하나도 가지고 있지 않다면 텍스트가 투명하지 않다고 여긴다.
+        return findVisibleNode(hasText(text))
+    }
+
+    @Suppress("SameParameterValue")
+    private fun findVisibleNode(matcher: SemanticsMatcher): List<SemanticsNode> {
+        return composeRule.onAllNodes(matcher).fetchSemanticsNodes().filter { semanticsNode ->
             val transparentNodes = semanticsNode.layoutInfo.getModifierInfo().filter {
                 it.modifier == Modifier.alpha(0.0f)
             }
