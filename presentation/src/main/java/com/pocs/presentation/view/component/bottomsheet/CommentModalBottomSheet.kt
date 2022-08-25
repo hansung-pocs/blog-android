@@ -224,7 +224,7 @@ class CommentModalController {
 
     suspend fun showForCreate(parentComment: CommentItemUiState? = null) {
         if (parentComment != null) {
-            parentId = parentComment.parentId ?: parentComment.id
+            parentId = parentComment.parentId
         }
         show()
     }
