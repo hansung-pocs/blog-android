@@ -48,6 +48,7 @@ class PostRepositoryImpl @Inject constructor(
 
     override suspend fun addPost(
         title: String,
+        onlyMember: Boolean,
         content: String,
         userId: Int,
         category: PostCategory
@@ -56,6 +57,7 @@ class PostRepositoryImpl @Inject constructor(
             val response = dataSource.addPost(
                 PostAddBody(
                     title = title,
+                    onlyMember = onlyMember,
                     content = content,
                     userId = userId,
                     category = category.toDto()
