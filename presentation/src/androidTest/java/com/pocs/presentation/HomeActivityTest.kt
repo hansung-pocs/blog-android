@@ -1,19 +1,21 @@
 package com.pocs.presentation
 
 import androidx.paging.PagingData
+import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.model.post.PostFilterType
 import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
+import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
 import com.pocs.domain.usecase.auth.IsCurrentUserAnonymousUseCase
 import com.pocs.domain.usecase.post.GetAllPostsUseCase
-import com.pocs.presentation.view.home.post.PostFragment
+import com.pocs.presentation.view.home.HomeActivity
+import com.pocs.presentation.view.home.HomeViewModel
 import com.pocs.presentation.view.home.post.PostViewModel
-import com.pocs.test_library.extension.launchFragmentInHiltContainer
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakePostRepositoryImpl
 import com.pocs.test_library.mock.mockAnonymousUser
@@ -35,8 +37,7 @@ import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
-class PostFragmentTest {
-
+class HomeActivityTest {
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
 
@@ -47,7 +48,10 @@ class PostFragmentTest {
     val authRepository = FakeAuthRepositoryImpl()
 
     @BindValue
-    lateinit var viewModel: PostViewModel
+    lateinit var homeViewModel: HomeViewModel
+
+    @BindValue
+    lateinit var postViewModel: PostViewModel
 
     @Before
     fun setUp() {
@@ -66,12 +70,12 @@ class PostFragmentTest {
         val pagingData = PagingData.from(listOf(post.copy(category = PostCategory.NOTICE)))
         authRepository.currentUser.value = mockAnonymousUser
         postRepository.postPagingDataFlow = MutableStateFlow(pagingData)
-        initViewModel()
-        launchFragmentInHiltContainer<PostFragment>(themeResId = R.style.Theme_PocsBlog)
+        initViewModels()
+        launchActivity<HomeActivity>()
 
         onView(withText(post.title)).perform(click())
 
-        onView(withText(R.string.can_see_only_member)).check(matches(isDisplayed()))
+        onView(withText(R.string.can_see_only_member)).check(ViewAssertions.matches(isDisplayed()))
     }
 
     @Test
@@ -80,17 +84,20 @@ class PostFragmentTest {
         val pagingData = PagingData.from(listOf(post.copy(category = PostCategory.NOTICE)))
         authRepository.currentUser.value = mockAnonymousUser
         postRepository.postPagingDataFlow = MutableStateFlow(pagingData)
-        initViewModel()
-        viewModel.updatePostFilterType(PostFilterType.NOTICE)
-        launchFragmentInHiltContainer<PostFragment>(themeResId = R.style.Theme_PocsBlog)
+        initViewModels()
+        postViewModel.updatePostFilterType(PostFilterType.NOTICE)
+        launchActivity<HomeActivity>()
 
         onView(withText(post.title)).perform(click())
 
-        onView(withText(R.string.can_see_only_member)).check(matches(isDisplayed()))
+        onView(withText(R.string.can_see_only_member)).check(ViewAssertions.matches(isDisplayed()))
     }
 
-    private fun initViewModel() {
-        viewModel = PostViewModel(
+    private fun initViewModels() {
+        homeViewModel = HomeViewModel(
+            IsCurrentUserAdminUseCase(GetCurrentUserTypeUseCase(authRepository))
+        )
+        postViewModel = PostViewModel(
             getAllPostsUseCase = GetAllPostsUseCase(postRepository),
             isCurrentUserAnonymousUseCase = IsCurrentUserAnonymousUseCase(
                 getCurrentUserTypeUseCase = GetCurrentUserTypeUseCase(authRepository)

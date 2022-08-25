@@ -24,7 +24,8 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".view.home.HomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Base.Theme.PocsBlog" />
         <activity
             android:name=".view.post.by.user.PostByUserActivity"
             android:exported="false"

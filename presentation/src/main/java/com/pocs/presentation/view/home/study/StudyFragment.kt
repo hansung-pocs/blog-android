@@ -21,6 +21,7 @@ import com.pocs.presentation.extension.*
 import com.pocs.presentation.model.post.item.PostItemUiState
 import com.pocs.presentation.model.study.StudyUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
+import com.pocs.presentation.view.home.HomeViewModel
 import com.pocs.presentation.view.post.adapter.PostAdapter
 import com.pocs.presentation.view.post.create.PostCreateActivity
 import com.pocs.presentation.view.post.detail.PostDetailActivity
@@ -32,7 +33,8 @@ class StudyFragment : ViewBindingFragment<FragmentPostBinding>() {
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentPostBinding
         get() = FragmentPostBinding::inflate
 
-    private val viewModel: StudyViewModel by activityViewModels()
+    private val studyViewModel: StudyViewModel by activityViewModels()
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
     private var launcher: ActivityResultLauncher<Intent>? = null
 
@@ -45,7 +47,7 @@ class StudyFragment : ViewBindingFragment<FragmentPostBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect {
+                studyViewModel.uiState.collect {
                     updateUi(it, adapter)
                 }
             }
@@ -79,7 +81,7 @@ class StudyFragment : ViewBindingFragment<FragmentPostBinding>() {
     }
 
     private fun onClickPost(postItemUiState: PostItemUiState) {
-        if (viewModel.uiState.value.isUserAnonymous) {
+        if (studyViewModel.uiState.value.isUserAnonymous) {
             showSnackBar(getString(R.string.can_see_only_member))
             return
         }
@@ -91,9 +93,14 @@ class StudyFragment : ViewBindingFragment<FragmentPostBinding>() {
     }
 
     private fun showSnackBar(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
-            anchorView = if (binding.fab.isVisible) binding.fab else null
-        }.show()
+        // floating 버튼이 보일때는 버튼위에 띄우 안보일때는 bottom nav bar 위에 띄운다.
+        if (binding.fab.isVisible) {
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
+                anchorView = binding.fab
+            }.show()
+        } else {
+            homeViewModel.showUserMessage(message)
+        }
     }
 
     private fun startPostCreateActivity() {
