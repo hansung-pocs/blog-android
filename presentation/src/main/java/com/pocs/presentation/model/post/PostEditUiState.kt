@@ -9,7 +9,7 @@ data class PostEditUiState(
     override val content: TextFieldValue,
     override val category: PostCategory,
     override val isUserAdmin: Boolean,
-    override val onlyMember: Boolean = true,
+    override val onlyMember: Boolean,
     override val isInSaving: Boolean = false,
     override val onTitleChange: (String) -> Unit,
     override val onContentChange: (TextFieldValue) -> Unit,
