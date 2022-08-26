@@ -54,7 +54,8 @@ class PostCreateViewModel @Inject constructor(
         val result = addPostUseCase(
             title = uiState.value.title,
             content = uiState.value.content.text,
-            category = uiState.value.category
+            category = uiState.value.category,
+            onlyMember = uiState.value.onlyMember
         )
         _uiState!!.value = uiState.value.copy(isInSaving = false)
         return result

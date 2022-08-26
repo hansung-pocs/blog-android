@@ -34,7 +34,9 @@ class PostEditViewModel @Inject constructor(
                 onTitleChange = ::updateTitle,
                 onContentChange = ::updateContent,
                 onCategoryChange = ::updateCategory,
-                onSave = ::savePost
+                onSave = ::savePost,
+                // TODO : 게시글 편집시에는 체크박스에 따라 편집이 가능하여야 함, 임시 변수 설정
+                onlyMember = true
             )
         )
     }
