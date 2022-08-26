@@ -6,23 +6,20 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.pocs.presentation.R
 import com.pocs.presentation.constant.MAX_USER_ID_LEN
-import com.pocs.presentation.constant.MAX_USER_PASSWORD_LEN
 import com.pocs.presentation.model.user.anonymous.AnonymousCreateInfoUiState
 import com.pocs.presentation.model.user.anonymous.AnonymousCreateUiState
-import com.pocs.presentation.view.admin.user.create.EditGroupLabel
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.component.button.PocsButton
+import com.pocs.presentation.view.component.textfield.PasswordOutlineTextField
 import com.pocs.presentation.view.component.textfield.PocsOutlineTextField
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -73,7 +70,16 @@ fun AnonymousCreateScreen(
                 .verticalScroll(scrollState)
                 .fillMaxWidth()
         ) {
-            EditGroupLabel("필수")
+            Box(Modifier.height(8.dp))
+            Text(
+                stringResource(R.string.anonymous_guideline),
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                ),
+                lineHeight = 24.sp,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Box(Modifier.height(8.dp))
             PocsOutlineTextField(
                 value = createInfo.userName,
                 label = stringResource(R.string.id),
@@ -86,20 +92,15 @@ fun AnonymousCreateScreen(
                     uiState.updateCreateInfo { it.copy(userName = "") }
                 }
             )
-            PocsOutlineTextField(
-                value = createInfo.password,
-                label = stringResource(R.string.password),
-                maxLength = MAX_USER_PASSWORD_LEN,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Next
-                ),
-                onValueChange = { password ->
+            PasswordOutlineTextField(
+                password = createInfo.password,
+                onPasswordChange = { password ->
                     uiState.updateCreateInfo { it.copy(password = password) }
                 },
                 onClearClick = {
                     uiState.updateCreateInfo { it.copy(password = "") }
-                }
+                },
+                onSend = { uiState.onCreate() }
             )
             Box(modifier = Modifier.height(16.dp))
             PocsButton(
@@ -108,7 +109,6 @@ fun AnonymousCreateScreen(
                 onClick = { uiState.onCreate() }
             )
             Box(Modifier.height(8.dp))
-            // TODO : TEXT 주의사항 추가하기
         }
     }
 }
