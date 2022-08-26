@@ -78,10 +78,6 @@ class UserFragment : ViewBindingFragment<FragmentUserBinding>() {
     }
 
     private fun onClickCard(userId: Int) {
-        if (viewModel.uiState.value.isUserAnonymous) {
-            showSnackBar(getString(R.string.can_see_only_member))
-            return
-        }
         val intent = UserDetailActivity.getIntent(requireContext(), userId)
         launcher?.launch(intent)
     }

@@ -4,13 +4,12 @@ import androidx.paging.PagingData
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.DrawerActions
+import androidx.test.espresso.matcher.ViewMatchers.*
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.model.post.PostFilterType
 import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
-import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
 import com.pocs.domain.usecase.auth.IsCurrentUserAnonymousUseCase
 import com.pocs.domain.usecase.post.GetAllPostsUseCase
 import com.pocs.presentation.view.home.HomeActivity
@@ -19,6 +18,7 @@ import com.pocs.presentation.view.home.post.PostViewModel
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakePostRepositoryImpl
 import com.pocs.test_library.mock.mockAnonymousUser
+import com.pocs.test_library.mock.mockMemberUserDetail
 import com.pocs.test_library.mock.mockPost
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -30,6 +30,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -75,7 +76,7 @@ class HomeActivityTest {
 
         onView(withText(post.title)).perform(click())
 
-        onView(withText(R.string.can_see_only_member)).check(ViewAssertions.matches(isDisplayed()))
+        onView(withText(R.string.can_see_only_member)).check(matches(isDisplayed()))
     }
 
     @Test
@@ -90,13 +91,34 @@ class HomeActivityTest {
 
         onView(withText(post.title)).perform(click())
 
-        onView(withText(R.string.can_see_only_member)).check(ViewAssertions.matches(isDisplayed()))
+        onView(withText(R.string.can_see_only_member)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun shouldDisableUserListButtonAtDrawer_WhenCurrentUserIsAnonymous() {
+        authRepository.currentUser.value = mockAnonymousUser
+        initViewModels()
+        launchActivity<HomeActivity>()
+
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open())
+
+        onView(withId(R.id.action_user_list)).check(matches(not(isEnabled())))
+        onView(withText(R.string.user_list_only_member)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun shouldEnableUserListButtonAtDrawer_WhenCurrentUserIsMember() {
+        authRepository.currentUser.value = mockMemberUserDetail
+        initViewModels()
+        launchActivity<HomeActivity>()
+
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open())
+
+        onView(withId(R.id.action_user_list)).check(matches(isEnabled()))
     }
 
     private fun initViewModels() {
-        homeViewModel = HomeViewModel(
-            IsCurrentUserAdminUseCase(GetCurrentUserTypeUseCase(authRepository))
-        )
+        homeViewModel = HomeViewModel(GetCurrentUserTypeUseCase(authRepository))
         postViewModel = PostViewModel(
             getAllPostsUseCase = GetAllPostsUseCase(postRepository),
             isCurrentUserAnonymousUseCase = IsCurrentUserAnonymousUseCase(

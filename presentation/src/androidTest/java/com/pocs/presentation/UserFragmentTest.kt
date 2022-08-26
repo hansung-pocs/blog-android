@@ -1,11 +1,15 @@
 package com.pocs.presentation
 
+import android.content.Context
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.junit4.createEmptyComposeRule
+import androidx.compose.ui.test.onNodeWithText
 import androidx.paging.PagingData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.platform.app.InstrumentationRegistry
+import com.pocs.domain.model.user.UserDefaultInfo
 import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.user.GetAllUsersUseCase
 import com.pocs.domain.usecase.user.SearchUserUseCase
@@ -14,7 +18,7 @@ import com.pocs.presentation.view.user.UserViewModel
 import com.pocs.test_library.extension.launchFragmentInHiltContainer
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
-import com.pocs.test_library.mock.mockAnonymousUser
+import com.pocs.test_library.mock.mockMemberUserDetail
 import com.pocs.test_library.mock.mockNormalUser
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -38,6 +42,9 @@ class UserFragmentTest {
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
 
+    @get:Rule(order = 1)
+    val composeRule = createEmptyComposeRule()
+
     @BindValue
     val userRepository = FakeUserRepositoryImpl()
 
@@ -47,10 +54,13 @@ class UserFragmentTest {
     @BindValue
     lateinit var viewModel: UserViewModel
 
+    private lateinit var context: Context
+
     @Before
     fun setUp() {
         hiltRule.inject()
         Dispatchers.setMain(UnconfinedTestDispatcher())
+        context = InstrumentationRegistry.getInstrumentation().targetContext
     }
 
     @After
@@ -59,17 +69,30 @@ class UserFragmentTest {
     }
 
     @Test
-    fun shouldShowNoPermissionSnackBar_WhenAnonymousClickUserCard() = runTest {
-        val user = mockNormalUser
-        val pagingData = PagingData.from(listOf(user))
-        authRepository.currentUser.value = mockAnonymousUser
+    fun shouldNavigateUserDetailActivity_WhenClickUserCard() = runTest {
+        val userData = mockNormalUser.copy(
+            defaultInfo = UserDefaultInfo(
+                name = "foobar",
+                email = "",
+                studentId = 1,
+                generation = 1
+            )
+        )
+        val userDetailData = mockMemberUserDetail.copy(defaultInfo = userData.defaultInfo)
+        val pagingData = PagingData.from(listOf(userData))
+        authRepository.currentUser.value = mockMemberUserDetail
         userRepository.userPagingFlow = MutableStateFlow(pagingData)
+        userRepository.userDetailResult = Result.success(userDetailData)
         initViewModel()
         launchFragmentInHiltContainer<UserFragment>(themeResId = R.style.Theme_PocsBlog)
 
-        onView(withText(user.defaultInfo!!.name)).perform(click())
+        onView(withText(userData.defaultInfo!!.name)).perform(click())
 
-        onView(withText(R.string.can_see_only_member)).check(matches(isDisplayed()))
+        val userDetailScreenTitle = context.getString(
+            R.string.user_info_title,
+            userData.defaultInfo!!.name
+        )
+        composeRule.onNodeWithText(userDetailScreenTitle).assertIsDisplayed()
     }
 
     private fun initViewModel() {
