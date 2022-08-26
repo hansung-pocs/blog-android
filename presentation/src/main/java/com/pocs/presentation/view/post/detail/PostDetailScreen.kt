@@ -196,6 +196,7 @@ fun PostDetailContent(
                     }
                     item {
                         CommentAddButton(
+                            enabled = uiState.canAddComment,
                             onClick = {
                                 coroutineScope.launch {
                                     commentModalController.showForCreate()
@@ -408,6 +409,7 @@ private fun PostDetailContentPreview() {
             ),
             canDeletePost = true,
             canEditPost = true,
+            canAddComment = true,
             isDeleteSuccess = false,
             userMessage = null,
             comments = commentsUiState

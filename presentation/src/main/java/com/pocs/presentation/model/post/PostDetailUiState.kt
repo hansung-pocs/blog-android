@@ -9,6 +9,7 @@ sealed class PostDetailUiState {
         val postDetail: PostDetailItemUiState,
         val canEditPost: Boolean,
         val canDeletePost: Boolean,
+        val canAddComment: Boolean,
         val isDeleteSuccess: Boolean = false,
         val userMessage: String? = null,
         @StringRes val userMessageRes: Int? = null,

@@ -3,6 +3,7 @@ package com.pocs.presentation.view.post.detail
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
 import com.pocs.domain.usecase.comment.AddCommentUseCase
@@ -56,6 +57,15 @@ class PostDetailViewModel @Inject constructor(
 
             if (result.isSuccess) {
                 val postDetail = result.getOrNull()!!
+                val currentUser = getCurrentUserUseCase()
+                val canAddComment = when (currentUser?.type) {
+                    UserType.ADMIN -> true
+                    UserType.MEMBER -> true
+                    // 익명 회원은 본인이 작성한 QnA 게시글에서만 댓글을 작성할 수 있다.
+                    UserType.ANONYMOUS -> postDetail.writer.id == currentUser.id
+                            && postDetail.category == PostCategory.QNA
+                    null -> false
+                }
                 val previousUiStateValue = uiState.value
 
                 val userMessage = if (previousUiStateValue is PostDetailUiState.Success) {
@@ -69,6 +79,7 @@ class PostDetailViewModel @Inject constructor(
                     postDetail = postDetail.toUiState(),
                     canEditPost = canEditPostUseCase(postDetail),
                     canDeletePost = canDeletePostUseCase(postDetail),
+                    canAddComment = canAddComment,
                     userMessage = userMessage,
                     userMessageRes = userMessageRes
                 )

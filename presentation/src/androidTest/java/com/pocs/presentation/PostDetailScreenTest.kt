@@ -37,6 +37,7 @@ class PostDetailScreenTest {
         postDetail = mockPostDetail1.toUiState(),
         canEditPost = true,
         canDeletePost = true,
+        canAddComment = true,
         comments = commentsUiState
     )
 
@@ -615,6 +616,27 @@ class PostDetailScreenTest {
 
             val visibleBottomSheetList = findVisibleNode(hasTestTag(MODAL_BOTTOM_SHEET_CONTENT_TAG))
             assertEquals(0, visibleBottomSheetList.size)
+        }
+    }
+
+    @Test
+    fun shouldDisableCommentAddButton_WhenCanAddCommentIsFalse() {
+        composeRule.run {
+            setContent {
+                val snackbarHostState = remember { SnackbarHostState() }
+
+                PostDetailContent(
+                    uiState = uiState.copy(canAddComment = false),
+                    snackbarHostState = snackbarHostState,
+                    onEditClick = {},
+                    onDeleteClick = {},
+                    onCommentDelete = {},
+                    onCommentCreated = { _, _ -> },
+                    onCommentUpdated = { _, _ -> }
+                )
+            }
+
+            onNodeWithContentDescription(getString(R.string.comment_add_button)).assertIsNotEnabled()
         }
     }
 

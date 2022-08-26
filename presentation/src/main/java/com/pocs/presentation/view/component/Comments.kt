@@ -73,8 +73,9 @@ fun LazyListScope.commentItems(
 }
 
 @Composable
-fun CommentAddButton(onClick: () -> Unit) {
+fun CommentAddButton(enabled: Boolean, onClick: () -> Unit) {
     val commentAddButtonDescription = stringResource(id = R.string.comment_add_button)
+    val labelResource = if (enabled) R.string.add_comment else R.string.can_add_comment_only_member
 
     Box(
         modifier = Modifier
@@ -83,6 +84,7 @@ fun CommentAddButton(onClick: () -> Unit) {
                 onClick = onClick,
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(bounded = true),
+                enabled = enabled,
                 role = Role.Button,
             )
             .padding(horizontal = 20.dp, vertical = 16.dp)
@@ -91,7 +93,7 @@ fun CommentAddButton(onClick: () -> Unit) {
             }
     ) {
         Text(
-            text = stringResource(id = R.string.add_comment),
+            text = stringResource(id = labelResource),
             style = MaterialTheme.typography.bodyMedium.copy(
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
             )
