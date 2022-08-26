@@ -31,13 +31,12 @@ class PostDetailScreenTest {
     @get:Rule(order = 0)
     val composeRule = createComposeRule()
 
-    private val commentsUiState = CommentsUiState.Success(listOf(mockComment))
+    private val commentsUiState = CommentsUiState.Success(listOf(mockComment), canAddComment = true)
 
     private val uiState = PostDetailUiState.Success(
         postDetail = mockPostDetail1.toUiState(),
         canEditPost = true,
         canDeletePost = true,
-        canAddComment = true,
         comments = commentsUiState
     )
 
@@ -573,7 +572,10 @@ class PostDetailScreenTest {
 
                 PostDetailContent(
                     uiState = uiState.copy(
-                        comments = CommentsUiState.Success(comments = listOf(comment))
+                        comments = CommentsUiState.Success(
+                            comments = listOf(comment),
+                            canAddComment = true
+                        )
                     ),
                     snackbarHostState = snackbarHostState,
                     onEditClick = {},
@@ -600,7 +602,10 @@ class PostDetailScreenTest {
 
                 PostDetailContent(
                     uiState = uiState.copy(
-                        comments = CommentsUiState.Success(comments = listOf(comment))
+                        comments = CommentsUiState.Success(
+                            comments = listOf(comment),
+                            canAddComment = true
+                        )
                     ),
                     snackbarHostState = snackbarHostState,
                     onEditClick = {},
@@ -626,7 +631,12 @@ class PostDetailScreenTest {
                 val snackbarHostState = remember { SnackbarHostState() }
 
                 PostDetailContent(
-                    uiState = uiState.copy(canAddComment = false),
+                    uiState = uiState.copy(
+                        comments = CommentsUiState.Success(
+                            comments = emptyList(),
+                            canAddComment = false
+                        )
+                    ),
                     snackbarHostState = snackbarHostState,
                     onEditClick = {},
                     onDeleteClick = {},
@@ -637,6 +647,33 @@ class PostDetailScreenTest {
             }
 
             onNodeWithContentDescription(getString(R.string.comment_add_button)).assertIsNotEnabled()
+        }
+    }
+
+    @Test
+    fun shouldDisableAddingReply_WhenCanAddCommentIsFalse() {
+        composeRule.run {
+            val comment = mockComment.copy(canDelete = true)
+            setContent {
+                val snackbarHostState = remember { SnackbarHostState() }
+
+                PostDetailContent(
+                    uiState = uiState.copy(
+                        comments = CommentsUiState.Success(
+                            comments = listOf(comment),
+                            canAddComment = false
+                        )
+                    ),
+                    snackbarHostState = snackbarHostState,
+                    onEditClick = {},
+                    onDeleteClick = {},
+                    onCommentDelete = {},
+                    onCommentCreated = { _, _ -> },
+                    onCommentUpdated = { _, _ -> }
+                )
+            }
+
+            onNodeWithText(comment.content).assertIsNotEnabled()
         }
     }
 

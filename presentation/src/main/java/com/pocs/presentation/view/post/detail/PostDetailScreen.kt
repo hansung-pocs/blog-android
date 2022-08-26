@@ -196,7 +196,7 @@ fun PostDetailContent(
                     }
                     item {
                         CommentAddButton(
-                            enabled = uiState.canAddComment,
+                            enabled = (uiState.comments as? CommentsUiState.Success)?.canAddComment == true,
                             onClick = {
                                 coroutineScope.launch {
                                     commentModalController.showForCreate()
@@ -393,7 +393,8 @@ private fun PostDetailContentPreview() {
             mockComment.copy(childrenCount = 1),
             mockComment.copy(parentId = 10, id = 11),
             mockComment
-        )
+        ),
+        canAddComment = true
     )
 
     PostDetailContent(
@@ -409,7 +410,6 @@ private fun PostDetailContentPreview() {
             ),
             canDeletePost = true,
             canEditPost = true,
-            canAddComment = true,
             isDeleteSuccess = false,
             userMessage = null,
             comments = commentsUiState

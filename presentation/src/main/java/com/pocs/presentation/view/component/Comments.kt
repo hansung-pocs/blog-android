@@ -60,6 +60,7 @@ fun LazyListScope.commentItems(
                     } else {
                         Comment(
                             uiState = comment,
+                            canAddReply = uiState.canAddComment,
                             onClick = { onCommentClick(comment) },
                             onReplyIconClick = { onReplyIconClick(comment) },
                             onMoreButtonClick = { onMoreButtonClick(comment) }
@@ -104,6 +105,7 @@ fun CommentAddButton(enabled: Boolean, onClick: () -> Unit) {
 @Composable
 fun Comment(
     uiState: CommentItemUiState,
+    canAddReply: Boolean,
     onClick: () -> Unit,
     onReplyIconClick: () -> Unit,
     onMoreButtonClick: () -> Unit
@@ -113,6 +115,7 @@ fun Comment(
             .fillMaxWidth()
             .clickable(
                 onClick = onClick,
+                enabled = canAddReply,
                 indication = rememberRipple(bounded = true),
                 interactionSource = remember { MutableInteractionSource() }
             )
@@ -166,7 +169,7 @@ fun Comment(
             ) {
                 Label(
                     imageVector = Icons.Outlined.Comment,
-                    onClick = onReplyIconClick,
+                    onClick = if (canAddReply) onReplyIconClick else null,
                     label = if (uiState.childrenCount == 0) null else uiState.childrenCount.toString(),
                     contentDescription = stringResource(R.string.reply_count)
                 )
@@ -228,7 +231,8 @@ fun CommentsPreview() {
             mockComment.copy(childrenCount = 1),
             mockComment.copy(parentId = 10, id = 11),
             mockComment
-        )
+        ),
+        canAddComment = true
     )
 
     LazyColumn {
@@ -262,7 +266,8 @@ fun CommentPreview() {
         ),
         onClick = {},
         onMoreButtonClick = {},
-        onReplyIconClick = {}
+        onReplyIconClick = {},
+        canAddReply = true
     )
 }
 
