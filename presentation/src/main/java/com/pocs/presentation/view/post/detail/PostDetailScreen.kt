@@ -197,7 +197,7 @@ fun PostDetailContent(
                     if (uiState.comments is CommentsUiState.Success) {
                         item {
                             CommentAddButton(
-                                enabled = (uiState.comments as? CommentsUiState.Success)?.canAddComment == true,
+                                enabled = uiState.comments.canAddComment,
                                 onClick = {
                                     coroutineScope.launch {
                                         commentModalController.showForCreate()
