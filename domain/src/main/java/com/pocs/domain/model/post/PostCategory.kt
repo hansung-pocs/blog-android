@@ -1,10 +1,10 @@
 package com.pocs.domain.model.post
 
-enum class PostCategory(val canAnonymousSee: Boolean = false) {
+enum class PostCategory {
     NOTICE,
     STUDY,
     MEMORY,
     KNOWHOW,
     REFERENCE,
-    QNA(canAnonymousSee = true),
+    QNA,
 }
