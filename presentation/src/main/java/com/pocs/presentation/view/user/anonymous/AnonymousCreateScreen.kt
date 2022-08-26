@@ -74,9 +74,10 @@ fun AnonymousCreateScreen(
             Box(Modifier.height(8.dp))
             Text(
                 stringResource(R.string.anonymous_guideline),
-                fontSize = 12.sp,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
+                style = MaterialTheme.typography.bodySmall.copy(
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                ),
+                modifier = Modifier.fillMaxWidth()
             )
             Box(Modifier.height(8.dp))
             PocsOutlineTextField(
