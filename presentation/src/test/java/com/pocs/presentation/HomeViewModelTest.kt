@@ -2,7 +2,6 @@ package com.pocs.presentation
 
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
-import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
 import com.pocs.presentation.view.home.HomeViewModel
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.mock.mockAdminUserDetail
@@ -33,8 +32,6 @@ class HomeViewModelTest {
     }
 
     private fun initViewModel() {
-        viewModel = HomeViewModel(
-            IsCurrentUserAdminUseCase(GetCurrentUserTypeUseCase(authRepository))
-        )
+        viewModel = HomeViewModel(GetCurrentUserTypeUseCase(authRepository))
     }
 }
