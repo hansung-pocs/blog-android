@@ -9,6 +9,7 @@ fun PostDetail.toUiState() = PostDetailItemUiState(
     title = title,
     content = content,
     views = views,
+    onlyMember = true,
     writer = writer.toUiState(),
     date = createFormattedDateText(createdAt, updatedAt),
     category = category

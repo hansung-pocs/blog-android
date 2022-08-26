@@ -8,6 +8,7 @@ interface BasePostEditUiState {
     val content: TextFieldValue
     val category: PostCategory
     val isUserAdmin: Boolean
+    val onlyMember: Boolean
     val isInSaving: Boolean
     val onTitleChange: (String) -> Unit
     val onContentChange: (TextFieldValue) -> Unit

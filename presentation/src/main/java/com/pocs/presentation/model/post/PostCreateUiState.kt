@@ -8,6 +8,7 @@ data class PostCreateUiState(
     override val content: TextFieldValue = TextFieldValue(),
     override val category: PostCategory,
     override val isUserAdmin: Boolean,
+    override val onlyMember: Boolean = true,
     override val isInSaving: Boolean = false,
     override val onTitleChange: (String) -> Unit,
     override val onContentChange: (TextFieldValue) -> Unit,

@@ -7,6 +7,7 @@ data class PostDetailItemUiState(
     val title: String,
     val content: String,
     val views: Int,
+    val onlyMember: Boolean,
     val writer: PostWriterUiState,
     val date: String,
     val category: PostCategory
