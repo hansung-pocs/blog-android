@@ -2,7 +2,7 @@ package com.pocs.presentation
 
 import android.content.Context
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createEmptyComposeRule
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.paging.PagingData
 import androidx.test.espresso.Espresso.onView
@@ -43,7 +43,7 @@ class UserFragmentTest {
     val hiltRule = HiltAndroidRule(this)
 
     @get:Rule(order = 1)
-    val composeRule = createEmptyComposeRule()
+    val composeRule = createComposeRule()
 
     @BindValue
     val userRepository = FakeUserRepositoryImpl()

@@ -81,10 +81,6 @@ class StudyFragment : ViewBindingFragment<FragmentPostBinding>() {
     }
 
     private fun onClickPost(postItemUiState: PostItemUiState) {
-        if (studyViewModel.uiState.value.isUserAnonymous) {
-            showSnackBar(getString(R.string.can_see_only_member))
-            return
-        }
         val intent = PostDetailActivity.getIntent(
             requireContext(),
             id = postItemUiState.id
