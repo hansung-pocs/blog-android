@@ -442,8 +442,12 @@ class PostDetailScreenTest {
                 text
             )
             onNodeWithContentDescription(getString(R.string.send_comment)).performClick()
+            mainClock.autoAdvance = false
+            mainClock.advanceTimeByFrame() // trigger recomposition
+            waitForIdle() // await layout pass to set up animation
+            mainClock.advanceTimeByFrame() // give animation a start time
+            mainClock.advanceTimeBy(10)
 
-            keyboardHelper.waitForKeyboardVisibility(false)
             assertFalse(keyboardHelper.isSoftwareKeyboardShown())
         }
     }

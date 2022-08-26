@@ -89,14 +89,7 @@ fun CommentModalBottomSheet(
         initialValue = ModalBottomSheetValue.Hidden,
         animationSpec = TweenSpec(durationMillis = 0)
     )
-    val textFieldValueState = remember {
-        mutableStateOf(TextFieldValue()).also {
-            controller.init(
-                textFieldValueState = it,
-                bottomSheetState = bottomSheetState
-            )
-        }
-    }
+    val textFieldValueState = remember { mutableStateOf(TextFieldValue()) }
 
     var showRecheckDialog by remember { mutableStateOf(false) }
 
@@ -138,6 +131,13 @@ fun CommentModalBottomSheet(
         }
     }
 
+    LaunchedEffect(controller) {
+        controller.init(
+            textFieldValueState = textFieldValueState,
+            bottomSheetState = bottomSheetState
+        )
+    }
+
     LaunchedEffect(Unit) {
         snapshotFlow { bottomSheetState.currentValue }
             .filter { it == ModalBottomSheetValue.Expanded }
@@ -175,8 +175,11 @@ fun CommentModalBottomSheet(
                         onCreated(controller.parentId, it)
                     }
 
-                    keyboardController?.hide()
                     coroutineScope.launch {
+                        // 키보드를 숨기는 함수 호출 때문인지 가끔씩 입력한 텍스트 필드 그대로 값이 남아있는 버그가 존재한다.
+                        // 따라서 아래의 키보드를 숨기는 함수가 suspend 함수가 아니어도 이 코루틴 스코프 내에 위치해야 한다.
+                        // https://github.com/hansung-pocs/blog-android/issues/177
+                        keyboardController?.hide()
                         controller.hide()
                     }
                 },
@@ -224,7 +227,7 @@ class CommentModalController {
 
     suspend fun showForCreate(parentComment: CommentItemUiState? = null) {
         if (parentComment != null) {
-            parentId = parentComment.parentId ?: parentComment.id
+            parentId = parentComment.parentId
         }
         show()
     }
