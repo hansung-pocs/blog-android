@@ -119,6 +119,7 @@
     <string name="comment_deleted">댓글 삭제됨</string>
     <string name="failed_to_delete_comment">댓글 삭제에 실패함</string>
     <string name="failed_to_delete_post">게시글 삭제에 실패함</string>
+    <string name="user_list_only_member">유저 목록(회원 전용)</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>
         <item>회원목록</item>

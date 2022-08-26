@@ -62,8 +62,18 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
 
     private fun initNavigationView() {
         with(binding) {
-            val adminMenu = navigationView.menu.findItem(R.id.action_admin)
-            adminMenu.isVisible = viewModel.uiState.value.isCurrentUserAdmin
+            val uiState = viewModel.uiState.value
+
+            navigationView.menu.findItem(R.id.action_admin).apply {
+                isVisible = uiState.isCurrentUserAdmin
+            }
+            if (uiState.isCurrentUserAnonymous) {
+                navigationView.menu.findItem(R.id.action_user_list).apply {
+                    title = getString(R.string.user_list_only_member)
+                    isEnabled = false
+                }
+            }
+
             navigationView.setNavigationItemSelectedListener(::onSelectNavigationItem)
         }
     }
