@@ -27,6 +27,7 @@ class FakePostRepositoryImpl @Inject constructor() : PostRepository {
 
     override suspend fun addPost(
         title: String,
+        onlyMember: Boolean,
         content: String,
         userId: Int,
         category: PostCategory

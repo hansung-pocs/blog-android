@@ -10,6 +10,7 @@ val mockPostDetail2 = PostDetail(
     "hello",
     mockPostWriter1,
     views = 2,
+    true,
     "hi",
     "2022-08-03",
     null,
