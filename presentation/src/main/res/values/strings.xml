@@ -121,7 +121,6 @@
     <string name="anonymous_guideline">임시 계정은 조회할 수 있는 게시글에 제한이 있어요. 또한 임시 계정으로는 질문 답변 게시글만 작성 가능해요.</string>
     <string name="user_list_only_member">유저 목록(회원 전용)</string>
     <string name="can_see_only_member">회원 전용</string>
-    <string name="can_see_only_member">회원 전용</string>
     <string name="can_add_comment_only_member">이곳에 댓글은 회원만 작성할 수 있어요.</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>
