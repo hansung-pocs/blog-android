@@ -303,10 +303,6 @@ private fun LazyListScope.headerItems(
 ) {
     item(HEADER_KEY) {
         Column(modifier = Modifier.padding(20.dp)) {
-            val subtitleStyle = MaterialTheme.typography.bodyMedium.copy(
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
-            )
-
             Text(
                 text = title,
                 style = MaterialTheme.typography.headlineMedium.copy(
@@ -321,7 +317,9 @@ private fun LazyListScope.headerItems(
                     writerName,
                     date
                 ),
-                style = subtitleStyle
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                )
             )
             if (onlyMember) {
                 Box(modifier = Modifier.height(8.dp))
