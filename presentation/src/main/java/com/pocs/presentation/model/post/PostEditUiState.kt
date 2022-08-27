@@ -2,13 +2,14 @@ package com.pocs.presentation.model.post
 
 import androidx.compose.ui.text.input.TextFieldValue
 import com.pocs.domain.model.post.PostCategory
+import com.pocs.domain.model.user.UserType
 
 data class PostEditUiState(
     val postId: Int,
     override val title: String,
     override val content: TextFieldValue,
     override val category: PostCategory,
-    override val isUserAdmin: Boolean,
+    override val currentUserType: UserType,
     override val onlyMember: Boolean,
     override val isInSaving: Boolean = false,
     override val onTitleChange: (String) -> Unit,

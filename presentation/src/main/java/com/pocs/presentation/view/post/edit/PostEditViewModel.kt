@@ -4,7 +4,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import com.pocs.domain.model.post.PostCategory
-import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
+import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.post.UpdatePostUseCase
 import com.pocs.presentation.model.post.PostEditUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PostEditViewModel @Inject constructor(
     private val updatePostUseCase: UpdatePostUseCase,
-    private val isCurrentUserAdminUseCase: IsCurrentUserAdminUseCase
+    private val getCurrentUserTypeUseCase: GetCurrentUserTypeUseCase
 ) : ViewModel() {
 
     private var _uiState: MutableState<PostEditUiState>? = null
@@ -37,7 +37,7 @@ class PostEditViewModel @Inject constructor(
                 content = TextFieldValue(content),
                 category = category,
                 onlyMember = onlyMember,
-                isUserAdmin = isCurrentUserAdminUseCase(),
+                currentUserType = getCurrentUserTypeUseCase(),
                 onTitleChange = ::updateTitle,
                 onContentChange = ::updateContent,
                 onCategoryChange = ::updateCategory,
@@ -59,7 +59,7 @@ class PostEditViewModel @Inject constructor(
         _uiState!!.value = uiState.value.copy(category = category)
     }
 
-    private fun updateOnlyMember(onlyMember: Boolean){
+    private fun updateOnlyMember(onlyMember: Boolean) {
         _uiState!!.value = uiState.value.copy(onlyMember = onlyMember)
     }
 
