@@ -76,6 +76,7 @@ class PostRepositoryImpl @Inject constructor(
     override suspend fun updatePost(
         postId: Int,
         title: String,
+        onlyMember: Boolean,
         content: String,
         userId: Int,
         category: PostCategory
@@ -85,6 +86,7 @@ class PostRepositoryImpl @Inject constructor(
                 postId = postId,
                 postUpdateBody = PostUpdateBody(
                     title = title,
+                    onlyMember = onlyMember,
                     content = content,
                     userId = userId,
                     category = category.toDto()

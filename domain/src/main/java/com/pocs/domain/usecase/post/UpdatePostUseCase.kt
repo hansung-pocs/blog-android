@@ -12,6 +12,7 @@ class UpdatePostUseCase @Inject constructor(
     suspend operator fun invoke(
         id: Int,
         title: String,
+        onlyMember: Boolean,
         content: String,
         category: PostCategory
     ): Result<Unit> {
@@ -21,6 +22,7 @@ class UpdatePostUseCase @Inject constructor(
         return postRepository.updatePost(
             postId = id,
             title = title,
+            onlyMember = onlyMember,
             content = content,
             userId = userId,
             category = category

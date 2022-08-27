@@ -24,6 +24,7 @@ interface PostRepository {
     suspend fun updatePost(
         postId: Int,
         title: String,
+        onlyMember: Boolean,
         content: String,
         userId: Int,
         category: PostCategory
