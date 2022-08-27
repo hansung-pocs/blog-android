@@ -58,10 +58,6 @@ class PostEditViewModel @Inject constructor(
         _uiState!!.value = uiState.value.copy(category = category)
     }
 
-    private fun updateOnlyMember(onlyMember: Boolean) {
-        _uiState!!.value = uiState.value.copy(onlyMember = onlyMember)
-    }
-
     private suspend fun savePost(): Result<Unit> {
         _uiState!!.value = uiState.value.copy(isInSaving = true)
         val result = updatePostUseCase(
