@@ -1,11 +1,9 @@
 package com.pocs.presentation.view.component.checkbox
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Checkbox
-import androidx.compose.material.CheckboxColors
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,7 +29,7 @@ fun PocsCheckBox(
             colors = CheckboxDefaults.colors(MaterialTheme.colorScheme.primary)
         )
         Text(
-            text = stringResource(R.string.can_see_onlymember),
+            text = stringResource(R.string.can_see_only_member),
             style = MaterialTheme.typography.bodyMedium.copy(
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
             ),
