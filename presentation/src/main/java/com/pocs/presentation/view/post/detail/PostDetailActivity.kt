@@ -77,7 +77,8 @@ class PostDetailActivity : AppCompatActivity() {
             postDetail.id,
             postDetail.title,
             postDetail.content,
-            postDetail.category
+            postDetail.category,
+            postDetail.onlyMember
         )
         launcher?.launch(intent)
     }

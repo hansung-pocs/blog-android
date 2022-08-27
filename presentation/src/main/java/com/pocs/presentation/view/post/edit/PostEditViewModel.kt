@@ -19,7 +19,13 @@ class PostEditViewModel @Inject constructor(
     private var _uiState: MutableState<PostEditUiState>? = null
     val uiState: State<PostEditUiState> get() = requireNotNull(_uiState)
 
-    fun initUiState(id: Int, title: String, content: String, category: PostCategory) {
+    fun initUiState(
+        id: Int,
+        title: String,
+        content: String,
+        category: PostCategory,
+        onlyMember: Boolean
+    ) {
         assert(id > 0)
         if (_uiState != null) {
             return
@@ -35,8 +41,7 @@ class PostEditViewModel @Inject constructor(
                 onContentChange = ::updateContent,
                 onCategoryChange = ::updateCategory,
                 onSave = ::savePost,
-                // TODO : 게시글 편집시에는 체크박스에 따라 편집이 가능하여야 함, 임시 변수 설정
-                onlyMember = true
+                onlyMember = onlyMember
             )
         )
     }
@@ -51,6 +56,10 @@ class PostEditViewModel @Inject constructor(
 
     private fun updateCategory(category: PostCategory) {
         _uiState!!.value = uiState.value.copy(category = category)
+    }
+
+    private fun updateOnlyMember(onlyMember: Boolean){
+        _uiState!!.value = uiState.value.copy(onlyMember = onlyMember)
     }
 
     private suspend fun savePost(): Result<Unit> {

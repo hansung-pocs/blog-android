@@ -25,12 +25,14 @@ class PostEditActivity : AppCompatActivity() {
             title: String,
             content: String,
             category: PostCategory,
+            onlyMember: Boolean,
         ): Intent {
             return Intent(context, PostEditActivity::class.java).apply {
                 putExtra("id", id)
                 putExtra("title", title)
                 putExtra("content", content)
                 putExtra("category", category)
+                putExtra("isMember", onlyMember)
             }
         }
     }
@@ -45,7 +47,8 @@ class PostEditActivity : AppCompatActivity() {
                 id = getIntExtra("id", -1),
                 title = getStringExtra("title")!!,
                 content = getStringExtra("content")!!,
-                category = intent.getSerializableExtra("category") as PostCategory
+                category = intent.getSerializableExtra("category") as PostCategory,
+                onlyMember = getBooleanExtra("isMember", true)
             )
         }
 

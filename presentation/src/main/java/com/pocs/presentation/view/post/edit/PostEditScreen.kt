@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
@@ -15,6 +16,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
 import com.pocs.presentation.constant.MAX_POST_CONTENT_LEN
@@ -26,6 +28,7 @@ import com.pocs.presentation.view.component.HorizontalChips
 import com.pocs.presentation.view.component.PocsDivider
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
+import com.pocs.presentation.view.component.checkbox.PocsCheckBox
 import com.pocs.presentation.view.component.markdown.MarkdownToolBar
 import com.pocs.presentation.view.component.textfield.SimpleTextField
 import kotlinx.coroutines.launch
@@ -101,6 +104,7 @@ fun PostEditContent(
                     onClick = uiState.onCategoryChange
                 )
             }
+            PocsCheckBox(modifier = Modifier, isMember = uiState.onlyMember)
             SimpleTextField(
                 hint = stringResource(R.string.title),
                 value = uiState.title,
