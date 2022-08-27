@@ -32,7 +32,8 @@ class PostCreateViewModel @Inject constructor(
                 onTitleChange = ::updateTitle,
                 onContentChange = ::updateContent,
                 onCategoryChange = ::updateCategory,
-                onSave = ::savePost
+                onSave = ::savePost,
+                onOnlyMemberChange = ::updateOnlyMember
             )
         )
     }
@@ -47,6 +48,10 @@ class PostCreateViewModel @Inject constructor(
 
     private fun updateCategory(category: PostCategory) {
         _uiState!!.value = uiState.value.copy(category = category)
+    }
+
+    private fun updateOnlyMember(onlyMember: Boolean){
+        _uiState!!.value = uiState.value.copy(onlyMember = onlyMember)
     }
 
     private suspend fun savePost(): Result<Unit> {

@@ -13,5 +13,6 @@ data class PostCreateUiState(
     override val onTitleChange: (String) -> Unit,
     override val onContentChange: (TextFieldValue) -> Unit,
     override val onCategoryChange: (PostCategory) -> Unit,
+    override val onOnlyMemberChange: (Boolean) -> Unit,
     override val onSave: suspend () -> Result<Unit>
 ) : BasePostEditUiState

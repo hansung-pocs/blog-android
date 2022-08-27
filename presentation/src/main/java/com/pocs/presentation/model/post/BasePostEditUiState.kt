@@ -13,6 +13,7 @@ interface BasePostEditUiState {
     val onTitleChange: (String) -> Unit
     val onContentChange: (TextFieldValue) -> Unit
     val onCategoryChange: (PostCategory) -> Unit
+    val onOnlyMemberChange: (Boolean) -> Unit
     val onSave: suspend () -> Result<Unit>
 
     val showChips get() = category != PostCategory.QNA

@@ -36,12 +36,13 @@ class PostEditViewModel @Inject constructor(
                 title = title,
                 content = TextFieldValue(content),
                 category = category,
+                onlyMember = onlyMember,
                 isUserAdmin = isCurrentUserAdminUseCase(),
                 onTitleChange = ::updateTitle,
                 onContentChange = ::updateContent,
                 onCategoryChange = ::updateCategory,
                 onSave = ::savePost,
-                onlyMember = onlyMember
+                onOnlyMemberChange = ::updateOnlyMember
             )
         )
     }
@@ -56,6 +57,10 @@ class PostEditViewModel @Inject constructor(
 
     private fun updateCategory(category: PostCategory) {
         _uiState!!.value = uiState.value.copy(category = category)
+    }
+
+    private fun updateOnlyMember(onlyMember: Boolean){
+        _uiState!!.value = uiState.value.copy(onlyMember = onlyMember)
     }
 
     private suspend fun savePost(): Result<Unit> {

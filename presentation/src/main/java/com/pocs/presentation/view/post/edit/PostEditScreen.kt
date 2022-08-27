@@ -26,7 +26,7 @@ import com.pocs.presentation.view.component.HorizontalChips
 import com.pocs.presentation.view.component.PocsDivider
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
-import com.pocs.presentation.view.component.checkbox.PocsCheckBox
+import com.pocs.presentation.view.component.checkbox.LabeledCheckBox
 import com.pocs.presentation.view.component.markdown.MarkdownToolBar
 import com.pocs.presentation.view.component.textfield.SimpleTextField
 import kotlinx.coroutines.launch
@@ -102,7 +102,12 @@ fun PostEditContent(
                     onClick = uiState.onCategoryChange
                 )
             }
-            PocsCheckBox(modifier = Modifier, isMember = uiState.onlyMember)
+            LabeledCheckBox(
+                modifier = Modifier.padding(horizontal = 6.dp, vertical = 4.dp),
+                checked = uiState.onlyMember,
+                onCheckedChange = uiState.onOnlyMemberChange,
+                label = stringResource(id = R.string.can_see_only_member)
+            )
             SimpleTextField(
                 hint = stringResource(R.string.title),
                 value = uiState.title,
@@ -174,7 +179,8 @@ fun PostEditContentEmptyPreview() {
             onContentChange = {},
             onCategoryChange = {},
             onSave = { Result.success(Unit) },
-            onlyMember = true
+            onlyMember = true,
+            onOnlyMemberChange = {}
         ),
         navigateUp = {},
         onSuccessSave = {}
@@ -196,7 +202,8 @@ fun PostEditContentPreview() {
             onContentChange = {},
             onCategoryChange = {},
             onSave = { Result.success(Unit) },
-            onlyMember = true
+            onlyMember = true,
+            onOnlyMemberChange = {}
         ),
         navigateUp = {},
         onSuccessSave = {}
