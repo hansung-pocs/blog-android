@@ -6,6 +6,7 @@ data class Post(
     val content: String,
     val writer: String? = null,
     val views: Int,
+    val onlyMember: Boolean,
     val createdAt: String,
     val updatedAt: String? = null,
     val canceledAt: String? = null,
