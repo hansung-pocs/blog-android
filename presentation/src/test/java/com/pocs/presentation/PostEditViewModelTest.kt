@@ -29,7 +29,7 @@ class PostEditViewModelTest {
     fun shouldIsUserAdminIsTrue_WhenCurrentUserIsAdmin() {
         authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.ADMIN)
 
-        viewModel.initUiState(1, "", "", PostCategory.NOTICE)
+        viewModel.initUiState(1, "", "", PostCategory.NOTICE, true)
 
         assertTrue(viewModel.uiState.value.isUserAdmin)
     }
@@ -38,7 +38,7 @@ class PostEditViewModelTest {
     fun shouldIsUserAdminIsFalse_WhenCurrentUserIsNotAdmin() {
         authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.MEMBER)
 
-        viewModel.initUiState(1, "", "", PostCategory.KNOWHOW)
+        viewModel.initUiState(1, "", "", PostCategory.KNOWHOW, true)
 
         assertFalse(viewModel.uiState.value.isUserAdmin)
     }
