@@ -58,7 +58,7 @@ class PostEditViewModel @Inject constructor(
         _uiState!!.value = uiState.value.copy(category = category)
     }
 
-    private fun updateOnlyMember(onlyMember: Boolean){
+    private fun updateOnlyMember(onlyMember: Boolean) {
         _uiState!!.value = uiState.value.copy(onlyMember = onlyMember)
     }
 
@@ -68,7 +68,8 @@ class PostEditViewModel @Inject constructor(
             id = uiState.value.postId,
             title = uiState.value.title,
             content = uiState.value.content.text,
-            category = uiState.value.category
+            category = uiState.value.category,
+            onlyMember = uiState.value.onlyMember
         )
         if (result.isFailure) {
             _uiState!!.value = uiState.value.copy(isInSaving = false)
