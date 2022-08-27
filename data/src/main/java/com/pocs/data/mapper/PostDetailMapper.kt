@@ -8,7 +8,6 @@ fun PostDetailDto.toEntity(id: Int) = PostDetail(
     title = title,
     content = content,
     views = views,
-    onlyMember = onlyMember,
     createdAt = createdAt,
     updatedAt = updatedAt,
     category = category.toPostCategory(),

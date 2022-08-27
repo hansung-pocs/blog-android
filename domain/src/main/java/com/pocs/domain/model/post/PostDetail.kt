@@ -5,7 +5,6 @@ data class PostDetail(
     val title: String,
     val writer: PostWriter,
     val views: Int,
-    val onlyMember: Boolean,
     val content: String,
     val createdAt: String,
     val updatedAt: String? = null,
