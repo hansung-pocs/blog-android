@@ -33,8 +33,7 @@ fun PocsCheckBox(
             style = MaterialTheme.typography.bodyMedium.copy(
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
             ),
-            lineHeight = 24.sp,
-            modifier = Modifier.fillMaxWidth()
+            lineHeight = 24.sp
         )
     }
 }
