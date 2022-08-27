@@ -100,7 +100,7 @@ class StudyFragment : ViewBindingFragment<FragmentPostBinding>() {
     }
 
     private fun startPostCreateActivity() {
-        val intent = PostCreateActivity.getIntent(requireContext(), PostCategory.MEMORY)
+        val intent = PostCreateActivity.getIntent(requireContext(), PostCategory.STUDY)
         launcher?.launch(intent)
     }
 }
