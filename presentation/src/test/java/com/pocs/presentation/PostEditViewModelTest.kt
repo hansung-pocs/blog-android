@@ -3,7 +3,6 @@ package com.pocs.presentation
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
-import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
 import com.pocs.domain.usecase.post.UpdatePostUseCase
 import com.pocs.presentation.view.post.edit.PostEditViewModel
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
@@ -20,9 +19,7 @@ class PostEditViewModelTest {
 
     private val viewModel = PostEditViewModel(
         updatePostUseCase = UpdatePostUseCase(postRepository, authRepository),
-        isCurrentUserAdminUseCase = IsCurrentUserAdminUseCase(
-            GetCurrentUserTypeUseCase(authRepository)
-        )
+        getCurrentUserTypeUseCase = GetCurrentUserTypeUseCase(authRepository)
     )
 
     @Test
@@ -41,5 +38,23 @@ class PostEditViewModelTest {
         viewModel.initUiState(1, "", "", PostCategory.KNOWHOW, true)
 
         assertFalse(viewModel.uiState.value.isUserAdmin)
+    }
+
+    @Test
+    fun shouldShowOnlyMemberButtonIsFalse_WhenCurrentUserIsAnonymous() {
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.ANONYMOUS)
+
+        viewModel.initUiState(1, "", "", PostCategory.QNA, false)
+
+        assertFalse(viewModel.uiState.value.showOnlyMemberButton)
+    }
+
+    @Test
+    fun shouldShowOnlyMemberButtonIsTrue_WhenCurrentUserIsMember() {
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.MEMBER)
+
+        viewModel.initUiState(1, "", "", PostCategory.QNA, false)
+
+        assertTrue(viewModel.uiState.value.showOnlyMemberButton)
     }
 }

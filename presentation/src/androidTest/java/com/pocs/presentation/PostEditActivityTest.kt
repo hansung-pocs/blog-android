@@ -7,7 +7,6 @@ import androidx.test.core.app.launchActivity
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
-import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
 import com.pocs.domain.usecase.post.UpdatePostUseCase
 import com.pocs.presentation.extension.RESULT_REFRESH
 import com.pocs.presentation.view.post.edit.PostEditActivity
@@ -48,7 +47,7 @@ class PostEditActivityTest {
             postRepository = postRepository,
             authRepository = authRepository
         ),
-        IsCurrentUserAdminUseCase(GetCurrentUserTypeUseCase(authRepository))
+        GetCurrentUserTypeUseCase(authRepository)
     )
 
     private lateinit var context: Context
@@ -64,7 +63,7 @@ class PostEditActivityTest {
         val post = mockPostDetail2
         authRepository.currentUser.value = mockAdminUserDetail.copy(id = post.writer.id)
         val intent = PostEditActivity.getIntent(
-            context, post.id, post.title, post.content, post.category
+            context, post.id, post.title, post.content, post.category, post.onlyMember
         )
         val scenario = launchActivity<PostEditActivity>(intent)
 
@@ -80,7 +79,7 @@ class PostEditActivityTest {
         authRepository.currentUser.value = mockAdminUserDetail.copy(id = post.writer.id)
         postRepository.updatePostResult = Result.failure(Exception(errorMessage))
         val intent = PostEditActivity.getIntent(
-            context, post.id, post.title, post.content, post.category
+            context, post.id, post.title, post.content, post.category, post.onlyMember
         )
         launchActivity<PostEditActivity>(intent)
 
