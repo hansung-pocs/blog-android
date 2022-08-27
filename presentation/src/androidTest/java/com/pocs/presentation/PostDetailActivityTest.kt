@@ -6,6 +6,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.launchActivity
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
 import com.pocs.domain.usecase.comment.AddCommentUseCase
@@ -22,6 +23,7 @@ import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakePostRepositoryImpl
 import com.pocs.test_library.mock.mockAdminUserDetail
 import com.pocs.test_library.fake.FakeCommentRepositoryImpl
+import com.pocs.test_library.mock.mockAnonymousUser
 import com.pocs.test_library.mock.mockPostDetail1
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -134,6 +136,74 @@ class PostDetailActivityTest {
         findEditText().assertIsDisplayed()
     }
 
+    @Test
+    fun shouldDisableCommentAddButton_WhenCurrentUserIsAnonymousAndPostTypeIsNotQna() {
+        val postDetail = mockPostDetail1.copy(category = PostCategory.MEMORY)
+        postRepository.postDetailResult = Result.success(postDetail)
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.ANONYMOUS)
+        val intent = PostDetailActivity.getIntent(context, postDetail.id)
+
+        launchActivity<PostDetailActivity>(intent)
+
+        findCommentAddButton().assertIsNotEnabled()
+    }
+
+    @Test
+    fun shouldDisableCommentAddButton_WhenCurrentUserIsAnonymousAndPostTypeIsQna_ButUserIsNotWriter() {
+        val anonymousUser = mockAnonymousUser
+        val postDetail = mockPostDetail1.copy(
+            category = PostCategory.QNA,
+            writer = mockPostDetail1.writer.copy(id = anonymousUser.id + 100)
+        )
+        authRepository.currentUser.value = anonymousUser
+        postRepository.postDetailResult = Result.success(postDetail)
+        val intent = PostDetailActivity.getIntent(context, postDetail.id)
+
+        launchActivity<PostDetailActivity>(intent)
+
+        findCommentAddButton().assertIsNotEnabled()
+    }
+
+    @Test
+    fun shouldEnableCommentAddButton_WhenCurrentUserIsAnonymousAndPostWriter_WhenPostTypeIsQna() {
+        val anonymousUser = mockAnonymousUser
+        val postDetail = mockPostDetail1.copy(
+            category = PostCategory.QNA,
+            writer = mockPostDetail1.writer.copy(id = anonymousUser.id)
+        )
+        authRepository.currentUser.value = anonymousUser
+        postRepository.postDetailResult = Result.success(postDetail)
+        val intent = PostDetailActivity.getIntent(context, postDetail.id)
+
+        launchActivity<PostDetailActivity>(intent)
+
+        findCommentAddButton().assertIsEnabled()
+    }
+
+    @Test
+    fun shouldEnableCommentAddButton_WhenCurrentUserIsMember() {
+        val postDetail = mockPostDetail1.copy(category = PostCategory.NOTICE)
+        postRepository.postDetailResult = Result.success(postDetail)
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.MEMBER)
+        val intent = PostDetailActivity.getIntent(context, postDetail.id)
+
+        launchActivity<PostDetailActivity>(intent)
+
+        findCommentAddButton().assertIsEnabled()
+    }
+
+    @Test
+    fun shouldEnableCommentAddButton_WhenCurrentUserIsAdmin() {
+        val postDetail = mockPostDetail1.copy(category = PostCategory.NOTICE)
+        postRepository.postDetailResult = Result.success(postDetail)
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.ADMIN)
+        val intent = PostDetailActivity.getIntent(context, postDetail.id)
+
+        launchActivity<PostDetailActivity>(intent)
+
+        findCommentAddButton().assertIsEnabled()
+    }
+
     private fun clickMoreInfoButton() {
         findMoreInfoButton().performClick()
     }
@@ -148,5 +218,9 @@ class PostDetailActivityTest {
 
     private fun findMoreInfoButton(): SemanticsNodeInteraction {
         return composeRule.onNodeWithContentDescription(getString(R.string.more_info_button))
+    }
+
+    private fun findCommentAddButton(): SemanticsNodeInteraction {
+        return composeRule.onNodeWithContentDescription(getString(R.string.comment_add_button))
     }
 }

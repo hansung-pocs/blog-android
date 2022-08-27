@@ -194,17 +194,20 @@ fun PostDetailContent(
                     item {
                         ThickDivider()
                     }
-                    item {
-                        CommentAddButton(
-                            onClick = {
-                                coroutineScope.launch {
-                                    commentModalController.showForCreate()
+                    if (uiState.comments is CommentsUiState.Success) {
+                        item {
+                            CommentAddButton(
+                                enabled = uiState.comments.canAddComment,
+                                onClick = {
+                                    coroutineScope.launch {
+                                        commentModalController.showForCreate()
+                                    }
                                 }
-                            }
-                        )
-                    }
-                    item {
-                        PocsDivider()
+                            )
+                        }
+                        item {
+                            PocsDivider()
+                        }
                     }
                     commentItems(
                         uiState = uiState.comments,
@@ -392,7 +395,8 @@ private fun PostDetailContentPreview() {
             mockComment.copy(childrenCount = 1),
             mockComment.copy(parentId = 10, id = 11),
             mockComment
-        )
+        ),
+        canAddComment = true
     )
 
     PostDetailContent(

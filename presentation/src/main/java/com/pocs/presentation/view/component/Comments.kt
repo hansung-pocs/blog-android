@@ -60,6 +60,7 @@ fun LazyListScope.commentItems(
                     } else {
                         Comment(
                             uiState = comment,
+                            canAddReply = uiState.canAddComment,
                             onClick = { onCommentClick(comment) },
                             onReplyIconClick = { onReplyIconClick(comment) },
                             onMoreButtonClick = { onMoreButtonClick(comment) }
@@ -73,8 +74,9 @@ fun LazyListScope.commentItems(
 }
 
 @Composable
-fun CommentAddButton(onClick: () -> Unit) {
+fun CommentAddButton(enabled: Boolean, onClick: () -> Unit) {
     val commentAddButtonDescription = stringResource(id = R.string.comment_add_button)
+    val labelResource = if (enabled) R.string.add_comment else R.string.can_add_comment_only_member
 
     Box(
         modifier = Modifier
@@ -83,6 +85,7 @@ fun CommentAddButton(onClick: () -> Unit) {
                 onClick = onClick,
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(bounded = true),
+                enabled = enabled,
                 role = Role.Button,
             )
             .padding(horizontal = 20.dp, vertical = 16.dp)
@@ -91,7 +94,7 @@ fun CommentAddButton(onClick: () -> Unit) {
             }
     ) {
         Text(
-            text = stringResource(id = R.string.add_comment),
+            text = stringResource(id = labelResource),
             style = MaterialTheme.typography.bodyMedium.copy(
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
             )
@@ -102,6 +105,7 @@ fun CommentAddButton(onClick: () -> Unit) {
 @Composable
 fun Comment(
     uiState: CommentItemUiState,
+    canAddReply: Boolean,
     onClick: () -> Unit,
     onReplyIconClick: () -> Unit,
     onMoreButtonClick: () -> Unit
@@ -111,6 +115,7 @@ fun Comment(
             .fillMaxWidth()
             .clickable(
                 onClick = onClick,
+                enabled = canAddReply,
                 indication = rememberRipple(bounded = true),
                 interactionSource = remember { MutableInteractionSource() }
             )
@@ -164,7 +169,7 @@ fun Comment(
             ) {
                 Label(
                     imageVector = Icons.Outlined.Comment,
-                    onClick = onReplyIconClick,
+                    onClick = if (canAddReply) onReplyIconClick else null,
                     label = if (uiState.childrenCount == 0) null else uiState.childrenCount.toString(),
                     contentDescription = stringResource(R.string.reply_count)
                 )
@@ -226,7 +231,8 @@ fun CommentsPreview() {
             mockComment.copy(childrenCount = 1),
             mockComment.copy(parentId = 10, id = 11),
             mockComment
-        )
+        ),
+        canAddComment = true
     )
 
     LazyColumn {
@@ -260,7 +266,8 @@ fun CommentPreview() {
         ),
         onClick = {},
         onMoreButtonClick = {},
-        onReplyIconClick = {}
+        onReplyIconClick = {},
+        canAddReply = true
     )
 }
 

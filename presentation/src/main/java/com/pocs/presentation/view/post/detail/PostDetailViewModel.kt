@@ -3,6 +3,7 @@ package com.pocs.presentation.view.post.detail
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
 import com.pocs.domain.usecase.comment.AddCommentUseCase
@@ -84,20 +85,29 @@ class PostDetailViewModel @Inject constructor(
     }
 
     private fun fetchComments() {
-        check(_uiState.value is PostDetailUiState.Success)
+        val uiStateValue = _uiState.value
+        check(uiStateValue is PostDetailUiState.Success)
         commentFetchJob?.cancel()
         commentFetchJob = viewModelScope.launch {
-            val uiStateValue = (_uiState.value as PostDetailUiState.Success)
             val result = getCommentsUseCase(postId = uiStateValue.postDetail.id)
             val comments = if (result.isSuccess) {
                 val currentUser = getCurrentUserUseCase()
+                val postDetail = uiStateValue.postDetail
+                val canAddComment = when (currentUser?.type) {
+                    UserType.ADMIN -> true
+                    UserType.MEMBER -> true
+                    // 익명 회원은 본인이 작성한 QnA 게시글에서만 댓글을 작성할 수 있다.
+                    UserType.ANONYMOUS -> postDetail.writer.id == currentUser.id
+                            && postDetail.category == PostCategory.QNA
+                    null -> false
+                }
                 val comments = result.getOrNull()!!.map {
                     it.toUiState(
                         currentUserId = currentUser?.id,
                         isAdmin = currentUser?.type == UserType.ADMIN
                     )
                 }
-                CommentsUiState.Success(comments = comments)
+                CommentsUiState.Success(comments = comments, canAddComment = canAddComment)
             } else {
                 val errorMessage = result.exceptionOrNull()!!.message
                 CommentsUiState.Failure(message = errorMessage)

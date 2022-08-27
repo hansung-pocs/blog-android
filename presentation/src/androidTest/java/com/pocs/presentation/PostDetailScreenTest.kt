@@ -31,7 +31,7 @@ class PostDetailScreenTest {
     @get:Rule(order = 0)
     val composeRule = createComposeRule()
 
-    private val commentsUiState = CommentsUiState.Success(listOf(mockComment))
+    private val commentsUiState = CommentsUiState.Success(listOf(mockComment), canAddComment = true)
 
     private val uiState = PostDetailUiState.Success(
         postDetail = mockPostDetail1.toUiState(),
@@ -572,7 +572,10 @@ class PostDetailScreenTest {
 
                 PostDetailContent(
                     uiState = uiState.copy(
-                        comments = CommentsUiState.Success(comments = listOf(comment))
+                        comments = CommentsUiState.Success(
+                            comments = listOf(comment),
+                            canAddComment = true
+                        )
                     ),
                     snackbarHostState = snackbarHostState,
                     onEditClick = {},
@@ -599,7 +602,10 @@ class PostDetailScreenTest {
 
                 PostDetailContent(
                     uiState = uiState.copy(
-                        comments = CommentsUiState.Success(comments = listOf(comment))
+                        comments = CommentsUiState.Success(
+                            comments = listOf(comment),
+                            canAddComment = true
+                        )
                     ),
                     snackbarHostState = snackbarHostState,
                     onEditClick = {},
@@ -615,6 +621,59 @@ class PostDetailScreenTest {
 
             val visibleBottomSheetList = findVisibleNode(hasTestTag(MODAL_BOTTOM_SHEET_CONTENT_TAG))
             assertEquals(0, visibleBottomSheetList.size)
+        }
+    }
+
+    @Test
+    fun shouldDisableCommentAddButton_WhenCanAddCommentIsFalse() {
+        composeRule.run {
+            setContent {
+                val snackbarHostState = remember { SnackbarHostState() }
+
+                PostDetailContent(
+                    uiState = uiState.copy(
+                        comments = CommentsUiState.Success(
+                            comments = emptyList(),
+                            canAddComment = false
+                        )
+                    ),
+                    snackbarHostState = snackbarHostState,
+                    onEditClick = {},
+                    onDeleteClick = {},
+                    onCommentDelete = {},
+                    onCommentCreated = { _, _ -> },
+                    onCommentUpdated = { _, _ -> }
+                )
+            }
+
+            onNodeWithContentDescription(getString(R.string.comment_add_button)).assertIsNotEnabled()
+        }
+    }
+
+    @Test
+    fun shouldDisableAddingReply_WhenCanAddCommentIsFalse() {
+        composeRule.run {
+            val comment = mockComment.copy(canDelete = true)
+            setContent {
+                val snackbarHostState = remember { SnackbarHostState() }
+
+                PostDetailContent(
+                    uiState = uiState.copy(
+                        comments = CommentsUiState.Success(
+                            comments = listOf(comment),
+                            canAddComment = false
+                        )
+                    ),
+                    snackbarHostState = snackbarHostState,
+                    onEditClick = {},
+                    onDeleteClick = {},
+                    onCommentDelete = {},
+                    onCommentCreated = { _, _ -> },
+                    onCommentUpdated = { _, _ -> }
+                )
+            }
+
+            onNodeWithText(comment.content).assertIsNotEnabled()
         }
     }
 
