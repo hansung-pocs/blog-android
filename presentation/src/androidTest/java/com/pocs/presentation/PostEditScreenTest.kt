@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.pocs.domain.model.post.PostCategory
+import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.constant.MAX_POST_TITLE_LEN
 import com.pocs.presentation.model.post.PostEditUiState
 import com.pocs.presentation.view.post.edit.PostEditScreen
@@ -29,11 +30,13 @@ class PostEditScreenTest {
         title = "",
         content = TextFieldValue(),
         category = PostCategory.NOTICE,
-        isUserAdmin = true,
+        currentUserType = UserType.ADMIN,
+        onlyMember = true,
         onTitleChange = {},
         onContentChange = {},
         onCategoryChange = {},
-        onSave = { Result.success(Unit) }
+        onSave = { Result.success(Unit) },
+        onOnlyMemberChange = {}
     )
 
     companion object {

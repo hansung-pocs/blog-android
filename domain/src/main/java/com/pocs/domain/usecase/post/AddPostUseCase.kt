@@ -12,10 +12,12 @@ class AddPostUseCase @Inject constructor(
     suspend operator fun invoke(
         title: String,
         content: String,
+        onlyMember: Boolean,
         category: PostCategory
     ): Result<Unit> {
         return repository.addPost(
             title = title,
+            onlyMember = onlyMember,
             content = content,
             userId = requireNotNull(getCurrentUserUseCase()?.id),
             category = category

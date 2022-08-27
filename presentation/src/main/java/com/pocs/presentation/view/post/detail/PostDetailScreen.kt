@@ -408,7 +408,8 @@ private fun PostDetailContentPreview() {
                 content = "내용이 들어가는 자리입니다.",
                 date = "어제",
                 category = PostCategory.NOTICE,
-                views = 10
+                views = 10,
+                onlyMember = true
             ),
             canDeletePost = true,
             canEditPost = true,

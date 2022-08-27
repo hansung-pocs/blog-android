@@ -16,6 +16,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pocs.domain.model.post.PostCategory
+import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.R
 import com.pocs.presentation.constant.MAX_POST_CONTENT_LEN
 import com.pocs.presentation.constant.MAX_POST_TITLE_LEN
@@ -26,6 +27,7 @@ import com.pocs.presentation.view.component.HorizontalChips
 import com.pocs.presentation.view.component.PocsDivider
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
+import com.pocs.presentation.view.component.checkbox.LabeledCheckBox
 import com.pocs.presentation.view.component.markdown.MarkdownToolBar
 import com.pocs.presentation.view.component.textfield.SimpleTextField
 import kotlinx.coroutines.launch
@@ -101,6 +103,14 @@ fun PostEditContent(
                     onClick = uiState.onCategoryChange
                 )
             }
+            if (uiState.showOnlyMemberButton) {
+                LabeledCheckBox(
+                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 4.dp),
+                    checked = uiState.onlyMember,
+                    onCheckedChange = uiState.onOnlyMemberChange,
+                    label = stringResource(id = R.string.can_see_only_member)
+                )
+            }
             SimpleTextField(
                 hint = stringResource(R.string.title),
                 value = uiState.title,
@@ -167,11 +177,13 @@ fun PostEditContentEmptyPreview() {
             title = "",
             content = TextFieldValue(),
             category = PostCategory.STUDY,
-            isUserAdmin = true,
+            currentUserType = UserType.ADMIN,
             onTitleChange = {},
             onContentChange = {},
             onCategoryChange = {},
-            onSave = { Result.success(Unit) }
+            onSave = { Result.success(Unit) },
+            onlyMember = true,
+            onOnlyMemberChange = {}
         ),
         navigateUp = {},
         onSuccessSave = {}
@@ -188,11 +200,13 @@ fun PostEditContentPreview() {
             title = "공지입니다.",
             content = TextFieldValue("안녕하세요."),
             category = PostCategory.STUDY,
-            isUserAdmin = true,
+            currentUserType = UserType.ADMIN,
             onTitleChange = {},
             onContentChange = {},
             onCategoryChange = {},
-            onSave = { Result.success(Unit) }
+            onSave = { Result.success(Unit) },
+            onlyMember = true,
+            onOnlyMemberChange = {}
         ),
         navigateUp = {},
         onSuccessSave = {}

@@ -4,7 +4,6 @@ import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
-import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
 import com.pocs.domain.usecase.post.AddPostUseCase
 import com.pocs.presentation.view.post.create.PostCreateViewModel
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
@@ -21,9 +20,7 @@ class PostCreateViewModelTest {
 
     private val viewModel = PostCreateViewModel(
         addPostUseCase = AddPostUseCase(postRepository, GetCurrentUserUseCase(authRepository)),
-        isCurrentUserAdminUseCase = IsCurrentUserAdminUseCase(
-            GetCurrentUserTypeUseCase(authRepository)
-        )
+        getCurrentUserTypeUseCase = GetCurrentUserTypeUseCase(authRepository)
     )
 
     @Test
@@ -42,5 +39,41 @@ class PostCreateViewModelTest {
         viewModel.initUiState(PostCategory.KNOWHOW)
 
         assertFalse(viewModel.uiState.value.isUserAdmin)
+    }
+
+    @Test
+    fun shouldOnlyMemberIsFalse_WhenCurrentUserIsAnonymous() {
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.ANONYMOUS)
+
+        viewModel.initUiState(PostCategory.QNA)
+
+        assertFalse(viewModel.uiState.value.onlyMember)
+    }
+
+    @Test
+    fun shouldOnlyMemberIsTrue_WhenCurrentUserIsMember() {
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.MEMBER)
+
+        viewModel.initUiState(PostCategory.QNA)
+
+        assertTrue(viewModel.uiState.value.onlyMember)
+    }
+
+    @Test
+    fun shouldShowOnlyMemberButtonIsFalse_WhenCurrentUserIsAnonymous() {
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.ANONYMOUS)
+
+        viewModel.initUiState(PostCategory.QNA)
+
+        assertFalse(viewModel.uiState.value.showOnlyMemberButton)
+    }
+
+    @Test
+    fun shouldShowOnlyMemberButtonIsTrue_WhenCurrentUserIsMember() {
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.MEMBER)
+
+        viewModel.initUiState(PostCategory.QNA)
+
+        assertTrue(viewModel.uiState.value.showOnlyMemberButton)
     }
 }

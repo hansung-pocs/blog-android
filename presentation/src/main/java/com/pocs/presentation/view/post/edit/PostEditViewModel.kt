@@ -4,7 +4,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import com.pocs.domain.model.post.PostCategory
-import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
+import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.post.UpdatePostUseCase
 import com.pocs.presentation.model.post.PostEditUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,13 +13,19 @@ import javax.inject.Inject
 @HiltViewModel
 class PostEditViewModel @Inject constructor(
     private val updatePostUseCase: UpdatePostUseCase,
-    private val isCurrentUserAdminUseCase: IsCurrentUserAdminUseCase
+    private val getCurrentUserTypeUseCase: GetCurrentUserTypeUseCase
 ) : ViewModel() {
 
     private var _uiState: MutableState<PostEditUiState>? = null
     val uiState: State<PostEditUiState> get() = requireNotNull(_uiState)
 
-    fun initUiState(id: Int, title: String, content: String, category: PostCategory) {
+    fun initUiState(
+        id: Int,
+        title: String,
+        content: String,
+        category: PostCategory,
+        onlyMember: Boolean
+    ) {
         assert(id > 0)
         if (_uiState != null) {
             return
@@ -30,11 +36,13 @@ class PostEditViewModel @Inject constructor(
                 title = title,
                 content = TextFieldValue(content),
                 category = category,
-                isUserAdmin = isCurrentUserAdminUseCase(),
+                onlyMember = onlyMember,
+                currentUserType = getCurrentUserTypeUseCase(),
                 onTitleChange = ::updateTitle,
                 onContentChange = ::updateContent,
                 onCategoryChange = ::updateCategory,
-                onSave = ::savePost
+                onSave = ::savePost,
+                onOnlyMemberChange = ::updateOnlyMember
             )
         )
     }
@@ -51,13 +59,18 @@ class PostEditViewModel @Inject constructor(
         _uiState!!.value = uiState.value.copy(category = category)
     }
 
+    private fun updateOnlyMember(onlyMember: Boolean) {
+        _uiState!!.value = uiState.value.copy(onlyMember = onlyMember)
+    }
+
     private suspend fun savePost(): Result<Unit> {
         _uiState!!.value = uiState.value.copy(isInSaving = true)
         val result = updatePostUseCase(
             id = uiState.value.postId,
             title = uiState.value.title,
             content = uiState.value.content.text,
-            category = uiState.value.category
+            category = uiState.value.category,
+            onlyMember = uiState.value.onlyMember
         )
         if (result.isFailure) {
             _uiState!!.value = uiState.value.copy(isInSaving = false)

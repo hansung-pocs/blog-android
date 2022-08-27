@@ -9,6 +9,7 @@ fun PostDto.toEntity() = Post(
     title = title,
     content = content,
     views = views,
+    onlyMember = onlyMember,
     createdAt = createdAt,
     updatedAt = updatedAt,
     canceledAt = canceledAt,

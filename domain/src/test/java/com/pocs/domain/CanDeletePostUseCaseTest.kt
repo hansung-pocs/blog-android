@@ -17,7 +17,8 @@ class CanDeletePostUseCaseTest {
 
     private val useCase = CanDeletePostUseCase(authRepository)
 
-    private val postDetail = PostDetail(1, "", mockPostWriter1, 1, "", "", "", PostCategory.NOTICE)
+    private val postDetail =
+        PostDetail(1, "", mockPostWriter1, 1, true, "", "", "", PostCategory.NOTICE)
     private val userDetail = mockAdminUserDetail
 
     @Test
