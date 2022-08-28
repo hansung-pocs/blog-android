@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun <T> HorizontalChips(
+    modifier: Modifier = Modifier,
     items: List<T>,
     itemLabelBuilder: @Composable (T) -> String,
     selectedItem: T,
@@ -22,7 +23,7 @@ fun <T> HorizontalChips(
     val scrollState = rememberScrollState()
 
     Row(
-        Modifier
+        modifier
             .horizontalScroll(scrollState)
             .padding(horizontal = 12.dp)
     ) {
