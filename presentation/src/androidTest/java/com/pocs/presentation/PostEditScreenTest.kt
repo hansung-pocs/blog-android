@@ -235,4 +235,32 @@ class PostEditScreenTest {
                 .performTextInput(stringBuilder.toString())
         }
     }
+
+    @Test
+    fun shouldNotShowChips_WhenCurrentUserTypeIsAnonymous() {
+        composeTestRule.setContent {
+            PostEditScreen(uiState = emptyUiState.copy(currentUserType = UserType.ANONYMOUS), {}) {}
+        }
+
+        composeTestRule.onNodeWithTag("PostCategoryChips").assertDoesNotExist()
+    }
+
+    @Test
+    fun shouldShowChips_WhenCurrentUserTypeIsAdmin() {
+        composeTestRule.setContent {
+            PostEditScreen(uiState = emptyUiState.copy(currentUserType = UserType.ADMIN), {}) {}
+        }
+
+        composeTestRule.onNodeWithTag("PostCategoryChips").assertIsDisplayed()
+    }
+
+    @Test
+    fun shouldNotShowNoticeChip_WhenCurrentUserTypeIsMember() {
+        composeTestRule.setContent {
+            PostEditScreen(uiState = emptyUiState.copy(currentUserType = UserType.MEMBER), {}) {}
+        }
+
+        composeTestRule.onNodeWithText("공지사항").assertDoesNotExist()
+        composeTestRule.onNodeWithTag("PostCategoryChips").assertIsDisplayed()
+    }
 }

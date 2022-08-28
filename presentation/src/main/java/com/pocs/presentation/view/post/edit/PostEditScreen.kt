@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -53,7 +54,6 @@ fun PostEditContent(
     val snackBarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-    val showChips = uiState.showChips
 
     RecheckHandler(
         navigateUp = navigateUp,
@@ -96,7 +96,7 @@ fun PostEditContent(
             val contentContentDescription = stringResource(R.string.content_text_field)
             var showToolBar by remember { mutableStateOf(false) }
 
-            if (showChips) {
+            if (uiState.showChips) {
                 PostCategoryChips(
                     isUserAdmin = uiState.isUserAdmin,
                     selectedCategory = uiState.category,
@@ -160,6 +160,7 @@ fun PostCategoryChips(
     }
 
     HorizontalChips(
+        modifier = Modifier.testTag("PostCategoryChips"),
         items = categories,
         itemLabelBuilder = { stringResource(id = it.koreanStringResource) },
         selectedItem = selectedCategory,

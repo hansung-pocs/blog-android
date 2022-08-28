@@ -17,9 +17,9 @@ interface BasePostEditUiState {
     val onOnlyMemberChange: (Boolean) -> Unit
     val onSave: suspend () -> Result<Unit>
 
-    val showChips get() = category != PostCategory.QNA
-    val isUserAdmin get() = currentUserType == UserType.ADMIN
+    val showChips get() = currentUserType != UserType.ANONYMOUS
     val showOnlyMemberButton get() = currentUserType != UserType.ANONYMOUS
+    val isUserAdmin get() = currentUserType == UserType.ADMIN
     val canSave get() = title.isNotEmpty() && content.text.isNotEmpty()
     val isEmpty get() = title.isEmpty() && content.text.isEmpty()
 }
