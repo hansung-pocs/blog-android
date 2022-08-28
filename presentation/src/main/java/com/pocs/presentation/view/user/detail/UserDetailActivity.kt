@@ -35,6 +35,9 @@ class UserDetailActivity : AppCompatActivity() {
                     onEdited = {
                         fetchUserDetail()
                         setResultRefresh()
+                    },
+                    onSuccessToKick = {
+                        setResultRefresh()
                     }
                 )
             }

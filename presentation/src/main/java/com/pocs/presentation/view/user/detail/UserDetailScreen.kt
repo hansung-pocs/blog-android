@@ -39,7 +39,11 @@ import kotlinx.coroutines.launch
 private const val URL_TAG = "url"
 
 @Composable
-fun UserDetailScreen(uiState: UserDetailUiState, onEdited: () -> Unit) {
+fun UserDetailScreen(
+    uiState: UserDetailUiState,
+    onEdited: () -> Unit,
+    onSuccessToKick: () -> Unit
+) {
     when (uiState) {
         is UserDetailUiState.Loading -> {
             LoadingContent()
@@ -51,6 +55,12 @@ fun UserDetailScreen(uiState: UserDetailUiState, onEdited: () -> Unit) {
                 LaunchedEffect(uiState.errorMessage) {
                     snackBarHostState.showSnackbar(uiState.errorMessage)
                     uiState.shownErrorMessage()
+                }
+            }
+
+            if (uiState.successToKick) {
+                LaunchedEffect(uiState.successToKick) {
+                    onSuccessToKick()
                 }
             }
 

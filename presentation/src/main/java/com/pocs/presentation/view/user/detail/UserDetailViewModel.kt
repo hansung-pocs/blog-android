@@ -40,7 +40,8 @@ class UserDetailViewModel @Inject constructor(
                     isCurrentUserAdmin = isCurrentUserAdminUseCase(),
                     isMyInfo = getCurrentUserUseCase()?.id == id,
                     shownErrorMessage = ::shownErrorMessage,
-                    onKickClick = ::kickUser
+                    onKickClick = ::kickUser,
+                    successToKick = (uiState as? UserDetailUiState.Success)?.successToKick ?: false
                 )
             } else {
                 UserDetailUiState.Failure(
@@ -58,6 +59,7 @@ class UserDetailViewModel @Inject constructor(
             viewModelScope.launch {
                 val result = kickUserUseCase(uiState.userDetail.id)
                 if (result.isSuccess) {
+                    this@UserDetailViewModel.uiState = uiState.copy(successToKick = true)
                     fetchUserInfo(uiState.userDetail.id)
                 } else {
                     val errorMessage = result.exceptionOrNull()?.message ?: "강퇴에 실패했습니다."
