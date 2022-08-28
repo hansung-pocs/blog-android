@@ -177,7 +177,8 @@ fun PostDetailContent(
                     headerItems(
                         title = postDetail.title,
                         writerName = postDetail.writer.name ?: anonymousString,
-                        date = postDetail.date
+                        date = postDetail.date,
+                        onlyMember = postDetail.onlyMember
                     )
                     item {
                         MarkdownText(
@@ -294,7 +295,12 @@ fun PostDetailTopAppBar(
     )
 }
 
-private fun LazyListScope.headerItems(title: String, writerName: String, date: String) {
+private fun LazyListScope.headerItems(
+    title: String,
+    writerName: String,
+    date: String,
+    onlyMember: Boolean
+) {
     item(HEADER_KEY) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
@@ -315,6 +321,15 @@ private fun LazyListScope.headerItems(title: String, writerName: String, date: S
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                 )
             )
+            if (onlyMember) {
+                Box(modifier = Modifier.height(8.dp))
+                Text(
+                    text = stringResource(id = R.string.can_see_only_member),
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
+                    )
+                )
+            }
         }
     }
     item {

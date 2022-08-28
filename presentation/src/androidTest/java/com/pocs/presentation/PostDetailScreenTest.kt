@@ -677,6 +677,52 @@ class PostDetailScreenTest {
         }
     }
 
+    @Test
+    fun shouldShowOnlyMemberText_WhenPostIsForOnlyMember() {
+        composeRule.run {
+            setContent {
+                val snackbarHostState = remember { SnackbarHostState() }
+
+                PostDetailContent(
+                    uiState = uiState.copy(
+                        postDetail = mockPostDetail1.copy(onlyMember = true).toUiState()
+                    ),
+                    snackbarHostState = snackbarHostState,
+                    onEditClick = {},
+                    onDeleteClick = {},
+                    onCommentDelete = {},
+                    onCommentCreated = { _, _ -> },
+                    onCommentUpdated = { _, _ -> }
+                )
+            }
+
+            onNodeWithText(getString(R.string.can_see_only_member)).assertIsDisplayed()
+        }
+    }
+
+    @Test
+    fun shouldNotShowOnlyMemberText_WhenPostIsForOnlyMember() {
+        composeRule.run {
+            setContent {
+                val snackbarHostState = remember { SnackbarHostState() }
+
+                PostDetailContent(
+                    uiState = uiState.copy(
+                        postDetail = mockPostDetail1.copy(onlyMember = false).toUiState()
+                    ),
+                    snackbarHostState = snackbarHostState,
+                    onEditClick = {},
+                    onDeleteClick = {},
+                    onCommentDelete = {},
+                    onCommentCreated = { _, _ -> },
+                    onCommentUpdated = { _, _ -> }
+                )
+            }
+
+            onNodeWithText(getString(R.string.can_see_only_member)).assertDoesNotExist()
+        }
+    }
+
     @Suppress("SameParameterValue")
     private fun findVisibleTexts(text: String): List<SemanticsNode> {
         return findVisibleNode(hasText(text))
