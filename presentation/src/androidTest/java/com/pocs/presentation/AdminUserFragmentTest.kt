@@ -1,6 +1,8 @@
 package com.pocs.presentation
 
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.swipeDown
+import androidx.test.espresso.action.ViewActions.swipeUp
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.pocs.domain.usecase.admin.GetAllUsersAsAdminUseCase
@@ -10,6 +12,7 @@ import com.pocs.test_library.extension.launchFragmentInHiltContainer
 import com.pocs.test_library.fake.FakeAdminRepositoryImpl
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
+import com.pocs.test_library.mock.mockAnonymousUser
 import com.pocs.test_library.mock.mockKickedUser
 import com.pocs.test_library.mock.mockNormalUser
 import dagger.hilt.android.testing.BindValue
@@ -85,5 +88,27 @@ class AdminUserFragmentTest {
         onView(withSubstring("탈퇴됨")).check { _, noViewFoundException ->
             assertNotNull(noViewFoundException)
         }
+    }
+
+    @Test
+    fun shouldShowAnonymousUserSubtitleCorrectly_WhenSwipeUpAndDown() = runTest {
+        val userList = mutableListOf(mockAnonymousUser.copy(canceledAt = "2022-08-02"))
+        for (i in 1..100){
+            userList.add(mockNormalUser)
+        }
+        adminRepository.userList = userList
+        initViewModel()
+        launchFragmentInHiltContainer<AdminUserFragment>(themeResId = R.style.Theme_PocsBlog)
+        onView(withSubstring("탈퇴됨")).check(matches(isDisplayed()))
+
+        onView(withId(R.id.recyclerView)).perform(swipeUp())
+
+        onView(withSubstring("탈퇴됨")).check { _, noViewFoundException ->
+            assertNotNull(noViewFoundException)
+        }
+
+        onView(withId(R.id.recyclerView)).perform(swipeDown())
+
+        onView(withSubstring("탈퇴됨")).check(matches(isDisplayed()))
     }
 }
