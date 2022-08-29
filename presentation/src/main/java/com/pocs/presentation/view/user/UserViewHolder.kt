@@ -1,5 +1,6 @@
 package com.pocs.presentation.view.user
 
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ItemUserBinding
@@ -15,6 +16,7 @@ class UserViewHolder(
         val defaultInfo = uiState.defaultInfo
         if (defaultInfo != null) { // 동아리 회원인 경우
             name.text = defaultInfo.name
+            subtitle.isVisible = true
             subtitle.text = context.getString(
                 if (uiState.isKicked) {
                     R.string.kicked_user_item_subtitle
@@ -26,6 +28,12 @@ class UserViewHolder(
             )
         } else { // 익명 로그인 경우
             name.text = context.getString(R.string.anonymous_name, uiState.id.toString())
+            if (uiState.isKicked) {
+                subtitle.text = context.getString(R.string.is_kicked)
+                subtitle.isVisible = true
+            } else {
+                subtitle.isVisible = false
+            }
         }
 
         cardView.setOnClickListener { onClickCard(uiState.id) }

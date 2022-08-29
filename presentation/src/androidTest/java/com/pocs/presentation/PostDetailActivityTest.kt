@@ -23,7 +23,7 @@ import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakePostRepositoryImpl
 import com.pocs.test_library.mock.mockAdminUserDetail
 import com.pocs.test_library.fake.FakeCommentRepositoryImpl
-import com.pocs.test_library.mock.mockAnonymousUser
+import com.pocs.test_library.mock.mockAnonymousUserDetail
 import com.pocs.test_library.mock.mockPostDetail1
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -150,7 +150,7 @@ class PostDetailActivityTest {
 
     @Test
     fun shouldDisableCommentAddButton_WhenCurrentUserIsAnonymousAndPostTypeIsQna_ButUserIsNotWriter() {
-        val anonymousUser = mockAnonymousUser
+        val anonymousUser = mockAnonymousUserDetail
         val postDetail = mockPostDetail1.copy(
             category = PostCategory.QNA,
             writer = mockPostDetail1.writer.copy(id = anonymousUser.id + 100)
@@ -166,7 +166,7 @@ class PostDetailActivityTest {
 
     @Test
     fun shouldEnableCommentAddButton_WhenCurrentUserIsAnonymousAndPostWriter_WhenPostTypeIsQna() {
-        val anonymousUser = mockAnonymousUser
+        val anonymousUser = mockAnonymousUserDetail
         val postDetail = mockPostDetail1.copy(
             category = PostCategory.QNA,
             writer = mockPostDetail1.writer.copy(id = anonymousUser.id)

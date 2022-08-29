@@ -36,6 +36,12 @@ val mockKickedUser = User(
     canceledAt = "2021-02-12"
 )
 
+val mockAnonymousUser = User(
+    id = 4,
+    defaultInfo = null,
+    canceledAt = null
+)
+
 val mockAdminUserDetail = UserDetail(
     id = 2,
     defaultInfo = UserDefaultInfo(
@@ -66,7 +72,7 @@ val mockMemberUserDetail = UserDetail(
     canceledAt = null
 )
 
-val mockAnonymousUser = UserDetail(
+val mockAnonymousUserDetail = UserDetail(
     id = 2,
     defaultInfo = UserDefaultInfo(
         name = "권김정",

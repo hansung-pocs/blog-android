@@ -13,7 +13,7 @@ import com.pocs.presentation.view.home.HomeViewModel
 import com.pocs.presentation.view.home.post.PostViewModel
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakePostRepositoryImpl
-import com.pocs.test_library.mock.mockAnonymousUser
+import com.pocs.test_library.mock.mockAnonymousUserDetail
 import com.pocs.test_library.mock.mockMemberUserDetail
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -60,7 +60,7 @@ class HomeActivityTest {
 
     @Test
     fun shouldDisableUserListButtonAtDrawer_WhenCurrentUserIsAnonymous() {
-        authRepository.currentUser.value = mockAnonymousUser
+        authRepository.currentUser.value = mockAnonymousUserDetail
         initViewModels()
         launchActivity<HomeActivity>()
 
