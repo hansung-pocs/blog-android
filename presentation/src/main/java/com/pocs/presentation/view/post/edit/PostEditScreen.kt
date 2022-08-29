@@ -42,9 +42,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun PostEditScreen(uiState: PostEditUiState, navigateUp: () -> Unit, onSuccessSave: () -> Unit) {
-    val title = when (uiState.category) {
-        PostCategory.QNA -> stringResource(R.string.edit_question)
-        else -> stringResource(R.string.edit_post)
+    val title = when (uiState.onlyMember) {
+        true -> stringResource(R.string.edit_post)
+        else -> stringResource(R.string.edit_question)
     }
     PostEditContent(
         title = title,
