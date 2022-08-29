@@ -10,6 +10,7 @@ sealed class UserDetailUiState {
         val errorMessage: String? = null,
         val shownErrorMessage: () -> Unit,
         val onKickClick: () -> Unit,
+        val successToKick: Boolean
     ) : UserDetailUiState()
 
     class Failure(val e: Throwable, val onRetryClick: () -> Unit) : UserDetailUiState()

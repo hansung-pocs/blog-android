@@ -39,7 +39,11 @@ import kotlinx.coroutines.launch
 private const val URL_TAG = "url"
 
 @Composable
-fun UserDetailScreen(uiState: UserDetailUiState, onEdited: () -> Unit) {
+fun UserDetailScreen(
+    uiState: UserDetailUiState,
+    onEdited: () -> Unit,
+    onSuccessToKick: () -> Unit
+) {
     when (uiState) {
         is UserDetailUiState.Loading -> {
             LoadingContent()
@@ -51,6 +55,12 @@ fun UserDetailScreen(uiState: UserDetailUiState, onEdited: () -> Unit) {
                 LaunchedEffect(uiState.errorMessage) {
                     snackBarHostState.showSnackbar(uiState.errorMessage)
                     uiState.shownErrorMessage()
+                }
+            }
+
+            if (uiState.successToKick) {
+                LaunchedEffect(uiState.successToKick) {
+                    onSuccessToKick()
                 }
             }
 
@@ -163,12 +173,25 @@ fun UserDetailContent(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.fillMaxSize()
             ) {
-                Text(
-                    stringResource(R.string.anonymous_user),
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        stringResource(R.string.anonymous_user),
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                        )
                     )
-                )
+                    if (userDetail.isKicked) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            stringResource(R.string.is_kicked),
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                color = MaterialTheme.colorScheme.error.copy(alpha = 0.8f)
+                            )
+                        )
+                    }
+                }
             }
         }
     }

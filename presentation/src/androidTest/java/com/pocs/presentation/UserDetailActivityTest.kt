@@ -15,6 +15,7 @@ import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
 import com.pocs.domain.usecase.user.GetUserDetailUseCase
 import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
+import com.pocs.presentation.extension.RESULT_REFRESH
 import com.pocs.presentation.model.user.UserDetailUiState
 import com.pocs.presentation.view.user.detail.UserDetailActivity
 import com.pocs.presentation.view.user.detail.UserDetailViewModel
@@ -140,5 +141,27 @@ class UserDetailActivityTest {
         composeRule.onNodeWithContentDescription("더보기 버튼").performClick()
 
         composeRule.onNodeWithText("강퇴하기").assertDoesNotExist()
+    }
+
+    @Test
+    fun shouldSetRefreshResult_WhenKickedUser() {
+        authRepository.currentUser.value = mockAdminUserDetail.copy(type = UserType.ADMIN)
+        adminRepository.userDetailResult = Result.success(userDetail.copy(canceledAt = null))
+        adminRepository.kickUserResult = Result.success(Unit)
+        val intent = UserDetailActivity.getIntent(context, userDetail.id)
+        val scenario = launchActivity<UserDetailActivity>(intent)
+
+        adminRepository.userDetailResult = Result.success(
+            userDetail.copy(canceledAt = "2022-08-09")
+        )
+        with (composeRule) {
+            onNodeWithContentDescription("더보기 버튼").performClick()
+            onNodeWithText("강퇴하기").performClick()
+            onNodeWithText("강퇴하기").performClick()
+            onNodeWithText("탈퇴됨").assertIsDisplayed()
+        }
+        scenario.onActivity { it.finish() }
+
+        assertEquals(RESULT_REFRESH, scenario.result.resultCode)
     }
 }

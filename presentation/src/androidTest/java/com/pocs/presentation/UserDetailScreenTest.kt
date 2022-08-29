@@ -26,9 +26,16 @@ class UserDetailScreenTest {
             isCurrentUserAdmin = false,
             shownErrorMessage = {},
             isMyInfo = true,
+            successToKick = false,
             onKickClick = {}
         )
-        composeTestRule.setContent { UserDetailScreen(uiState = uiState, onEdited = {}) }
+        composeTestRule.setContent {
+            UserDetailScreen(
+                uiState = uiState,
+                onEdited = {},
+                onSuccessToKick = {}
+            )
+        }
 
         composeTestRule.onNodeWithText(userDetail.defaultInfo!!.email).assertIsDisplayed()
     }
@@ -37,7 +44,13 @@ class UserDetailScreenTest {
     fun showFailureContent_WhenUiStateIsFailure() {
         val exception = Exception("에러")
         val uiState = UserDetailUiState.Failure(exception, onRetryClick = {})
-        composeTestRule.setContent { UserDetailScreen(uiState = uiState, onEdited = {}) }
+        composeTestRule.setContent {
+            UserDetailScreen(
+                uiState = uiState,
+                onEdited = {},
+                onSuccessToKick = {}
+            )
+        }
 
         composeTestRule.onNodeWithText(userDetail.defaultInfo!!.email).assertDoesNotExist()
         composeTestRule.onNodeWithText(exception.message!!).assertIsDisplayed()
@@ -50,11 +63,12 @@ class UserDetailScreenTest {
             isCurrentUserAdmin = true,
             shownErrorMessage = {},
             isMyInfo = true,
+            successToKick = false,
             onKickClick = {}
         )
 
         composeTestRule.run {
-            setContent { UserDetailScreen(uiState = uiState, onEdited = {}) }
+            setContent { UserDetailScreen(uiState = uiState, onEdited = {}, onSuccessToKick = {}) }
 
             onNodeWithContentDescription("더보기 버튼").assertIsDisplayed()
         }
@@ -67,11 +81,12 @@ class UserDetailScreenTest {
             isCurrentUserAdmin = false,
             shownErrorMessage = {},
             isMyInfo = true,
+            successToKick = false,
             onKickClick = {}
         )
 
         composeTestRule.run {
-            setContent { UserDetailScreen(uiState = uiState, onEdited = {}) }
+            setContent { UserDetailScreen(uiState = uiState, onEdited = {}, onSuccessToKick = {}) }
 
             onNodeWithContentDescription("더보기 버튼").assertDoesNotExist()
         }
@@ -84,11 +99,12 @@ class UserDetailScreenTest {
             isCurrentUserAdmin = true,
             shownErrorMessage = {},
             isMyInfo = true,
+            successToKick = false,
             onKickClick = {}
         )
 
         composeTestRule.run {
-            setContent { UserDetailScreen(uiState = uiState, onEdited = {}) }
+            setContent { UserDetailScreen(uiState = uiState, onEdited = {}, onSuccessToKick = {}) }
 
             onNodeWithContentDescription("더보기 버튼").performClick()
             onNodeWithText("강퇴하기").performClick()
@@ -106,11 +122,12 @@ class UserDetailScreenTest {
             errorMessage = errorMessage,
             shownErrorMessage = {},
             isMyInfo = true,
+            successToKick = false,
             onKickClick = {}
         )
 
         composeTestRule.run {
-            setContent { UserDetailScreen(uiState = uiState, onEdited = {}) }
+            setContent { UserDetailScreen(uiState = uiState, onEdited = {}, onSuccessToKick = {}) }
 
             onNodeWithText(errorMessage).assertIsDisplayed()
         }
