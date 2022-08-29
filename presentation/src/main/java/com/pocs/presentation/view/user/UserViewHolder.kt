@@ -32,6 +32,7 @@ class UserViewHolder(
                 subtitle.text = context.getString(R.string.is_kicked)
                 subtitle.isVisible = true
             } else {
+                subtitle.text = null
                 subtitle.isVisible = false
             }
         }

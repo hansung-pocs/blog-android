@@ -2,6 +2,7 @@ package com.pocs.presentation
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.swipeUp
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.pocs.domain.usecase.admin.GetAllUsersAsAdminUseCase
@@ -19,7 +20,6 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.hamcrest.Matchers.not
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
@@ -102,6 +102,6 @@ class AdminUserFragmentTest {
 
         onView(withId(R.id.recyclerView)).perform(swipeUp())
 
-        onView(withSubstring(normalUserStudentId)).check(matches(not(isDisplayed())))
+        onView(withSubstring(normalUserStudentId)).check(doesNotExist())
     }
 }
