@@ -10,6 +10,7 @@ interface BasePostEditUiState {
     val category: PostCategory
     val currentUserType: UserType
     val onlyMember: Boolean
+    val isUserAnonymous : Boolean
     val isInSaving: Boolean
     val onTitleChange: (String) -> Unit
     val onContentChange: (TextFieldValue) -> Unit
