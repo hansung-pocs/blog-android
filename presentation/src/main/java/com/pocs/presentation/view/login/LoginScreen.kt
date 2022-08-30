@@ -117,7 +117,10 @@ fun LoginContent(
                         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5F)
                     )
                 )
-                TextButton(onClick = onBrowseAsAnonymousClick) {
+                TextButton(
+                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+                    onClick = onBrowseAsAnonymousClick
+                ) {
                     Text(
                         text = stringResource(R.string.sign_up_as_anonymous),
                         style = MaterialTheme.typography.labelLarge.copy(
