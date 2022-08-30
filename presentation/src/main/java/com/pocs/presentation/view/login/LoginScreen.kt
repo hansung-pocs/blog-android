@@ -27,13 +27,13 @@ import com.pocs.presentation.view.component.textfield.PasswordOutlineTextField
 import com.pocs.presentation.view.component.textfield.PocsOutlineTextField
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel, onBrowseAsAnonymousClick: () -> Unit) {
+fun LoginScreen(viewModel: LoginViewModel, onClickCreateAnonymous: () -> Unit) {
     val uiState = viewModel.uiState.collectAsState()
 
     LoginContent(
         uiState = uiState.value,
         onLoginClick = viewModel::login,
-        onBrowseAsAnonymousClick = onBrowseAsAnonymousClick,
+        onClickCreateAnonymous = onClickCreateAnonymous,
         onUserMessageShown = viewModel::userMessageShown
     )
 }
@@ -43,7 +43,7 @@ fun LoginScreen(viewModel: LoginViewModel, onBrowseAsAnonymousClick: () -> Unit)
 fun LoginContent(
     uiState: LoginUiState,
     onLoginClick: () -> Unit,
-    onBrowseAsAnonymousClick: () -> Unit,
+    onClickCreateAnonymous: () -> Unit,
     onUserMessageShown: () -> Unit
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
@@ -119,7 +119,7 @@ fun LoginContent(
                 )
                 TextButton(
                     contentPadding = PaddingValues(vertical = 8.dp),
-                    onClick = onBrowseAsAnonymousClick
+                    onClick = onClickCreateAnonymous
                 ) {
                     Text(
                         text = stringResource(R.string.sign_up_as_anonymous),
@@ -157,7 +157,7 @@ fun LoginContentPreview() {
             onUpdate = {}
         ),
         onLoginClick = {},
-        onBrowseAsAnonymousClick = {},
+        onClickCreateAnonymous = {},
         onUserMessageShown = {}
     )
 }
