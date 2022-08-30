@@ -11,7 +11,6 @@ data class PostEditUiState(
     override val category: PostCategory,
     override val currentUserType: UserType,
     override val onlyMember: Boolean,
-    override val isUserAnonymous: Boolean = currentUserType == UserType.ANONYMOUS,
     override val isInSaving: Boolean = false,
     override val onTitleChange: (String) -> Unit,
     override val onContentChange: (TextFieldValue) -> Unit,

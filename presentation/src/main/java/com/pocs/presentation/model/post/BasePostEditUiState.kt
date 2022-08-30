@@ -10,7 +10,6 @@ interface BasePostEditUiState {
     val category: PostCategory
     val currentUserType: UserType
     val onlyMember: Boolean
-    val isUserAnonymous : Boolean
     val isInSaving: Boolean
     val onTitleChange: (String) -> Unit
     val onContentChange: (TextFieldValue) -> Unit
@@ -20,6 +19,7 @@ interface BasePostEditUiState {
 
     val showChips get() = currentUserType != UserType.ANONYMOUS
     val showOnlyMemberButton get() = currentUserType != UserType.ANONYMOUS
+    val isUserAnonymous get() = currentUserType == UserType.ANONYMOUS
     val isUserAdmin get() = currentUserType == UserType.ADMIN
     val canSave get() = title.isNotEmpty() && content.text.isNotEmpty()
     val isEmpty get() = title.isEmpty() && content.text.isEmpty()

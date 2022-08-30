@@ -9,7 +9,6 @@ data class PostCreateUiState(
     override val content: TextFieldValue = TextFieldValue(),
     override val category: PostCategory,
     override val currentUserType: UserType,
-    override val isUserAnonymous: Boolean = currentUserType == UserType.ANONYMOUS,
     override val onlyMember: Boolean = currentUserType != UserType.ANONYMOUS,
     override val isInSaving: Boolean = false,
     override val onTitleChange: (String) -> Unit,
