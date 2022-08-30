@@ -45,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
             Mdc3Theme(this) {
                 LoginScreen(
                     viewModel = viewModel,
-                    onBrowseAsAnonymousClick = ::navigateToAnonymousCreateActivity
+                    onClickCreateAnonymous = ::navigateToAnonymousCreateActivity
                 )
             }
         }

@@ -2,6 +2,7 @@ package com.pocs.presentation.view.login
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -11,6 +12,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -24,13 +27,13 @@ import com.pocs.presentation.view.component.textfield.PasswordOutlineTextField
 import com.pocs.presentation.view.component.textfield.PocsOutlineTextField
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel, onBrowseAsAnonymousClick: () -> Unit) {
+fun LoginScreen(viewModel: LoginViewModel, onClickCreateAnonymous: () -> Unit) {
     val uiState = viewModel.uiState.collectAsState()
 
     LoginContent(
         uiState = uiState.value,
         onLoginClick = viewModel::login,
-        onBrowseAsAnonymousClick = onBrowseAsAnonymousClick,
+        onClickCreateAnonymous = onClickCreateAnonymous,
         onUserMessageShown = viewModel::userMessageShown
     )
 }
@@ -40,7 +43,7 @@ fun LoginScreen(viewModel: LoginViewModel, onBrowseAsAnonymousClick: () -> Unit)
 fun LoginContent(
     uiState: LoginUiState,
     onLoginClick: () -> Unit,
-    onBrowseAsAnonymousClick: () -> Unit,
+    onClickCreateAnonymous: () -> Unit,
     onUserMessageShown: () -> Unit
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
@@ -57,6 +60,7 @@ fun LoginContent(
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
     ) { innerPadding ->
         val scrollState = rememberScrollState()
+        val passwordFocusRequester = remember { FocusRequester() }
 
         Column(
             Modifier
@@ -81,9 +85,13 @@ fun LoginContent(
                 maxLength = MAX_USER_ID_LEN,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { passwordFocusRequester.requestFocus() }
                 )
             )
             PasswordOutlineTextField(
+                modifier = Modifier.focusRequester(passwordFocusRequester),
                 password = uiState.password,
                 onPasswordChange = { password ->
                     uiState.update { it.copy(password = password) }
@@ -100,11 +108,26 @@ fun LoginContent(
                 onClick = onLoginClick
             )
             Box(modifier = Modifier.height(8.dp))
-            TextButton(onClick = onBrowseAsAnonymousClick) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(
-                    text = stringResource(R.string.sign_up_as_anonymous),
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4F)
+                    text = stringResource(id = R.string.are_not_you_member) + " ",
+                    style = MaterialTheme.typography.labelLarge.copy(
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5F)
+                    )
                 )
+                TextButton(
+                    contentPadding = PaddingValues(vertical = 8.dp),
+                    onClick = onClickCreateAnonymous
+                ) {
+                    Text(
+                        text = stringResource(R.string.sign_up_as_anonymous),
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.6F)
+                        )
+                    )
+                }
             }
         }
     }
@@ -134,7 +157,7 @@ fun LoginContentPreview() {
             onUpdate = {}
         ),
         onLoginClick = {},
-        onBrowseAsAnonymousClick = {},
+        onClickCreateAnonymous = {},
         onUserMessageShown = {}
     )
 }

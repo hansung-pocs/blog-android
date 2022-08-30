@@ -104,7 +104,7 @@ fun AnonymousCreateScreen(
             )
             Box(modifier = Modifier.height(16.dp))
             PocsButton(
-                label = stringResource(R.string.create_a_temporary_account),
+                label = stringResource(R.string.create),
                 enabled = uiState.enableCreateButton,
                 onClick = { uiState.onCreate() }
             )

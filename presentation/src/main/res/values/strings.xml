@@ -84,7 +84,8 @@
     <string name="sorting_by_created_at_descending">가입일 최근순</string>
     <string name="password">비밀번호</string>
     <string name="id">아이디</string>
-    <string name="sign_up_as_anonymous">익명으로 시작하기</string>
+    <string name="are_not_you_member">동아리원이 아니신가요?</string>
+    <string name="sign_up_as_anonymous">임시 계정 생성</string>
     <string name="login_title">POCS</string>
     <string name="setting">설정</string>
     <string name="anonymous">익명</string>
@@ -108,7 +109,7 @@
     <string name="search_by_name">이름 검색</string>
     <string name="query_min_length_error">2글자 이상 입력하세요.</string>
     <string name="views">조회수</string>
-    <string name="create_a_temporary_account">임시계정 생성하기</string>
+    <string name="create">생성하기</string>
     <string name="anonymous_user">익명 회원</string>
     <string name="deleted_comment">삭제된 댓글입니다.</string>
     <string name="comment_added">댓글 추가됨</string>
