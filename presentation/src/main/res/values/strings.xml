@@ -123,6 +123,7 @@
     <string name="user_list_only_member">유저 목록(회원 전용)</string>
     <string name="can_see_only_member">회원 전용</string>
     <string name="can_add_comment_only_member">이곳에 댓글은 회원만 작성할 수 있어요.</string>
+    <string name="edit_question">질문 수정</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>
         <item>회원목록</item>
