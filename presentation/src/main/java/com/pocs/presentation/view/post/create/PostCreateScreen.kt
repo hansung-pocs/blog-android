@@ -11,11 +11,12 @@ import com.pocs.presentation.view.post.edit.PostEditContent
 fun PostCreateScreen(
     uiState: PostCreateUiState,
     navigateUp: () -> Unit,
-    onSuccessSave: () -> Unit,
+    onSuccessSave: () -> Unit
 ) {
-    val title = when(uiState.onlyMember){
-        true -> stringResource(R.string.write_post)
-        else -> stringResource(R.string.write_question)
+    val title = if (uiState.category == PostCategory.QNA && uiState.isUserAnonymous) {
+        stringResource(R.string.write_question)
+    } else {
+        stringResource(R.string.write_post)
     }
     PostEditContent(
         title = title,
