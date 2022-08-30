@@ -100,11 +100,23 @@ fun LoginContent(
                 onClick = onLoginClick
             )
             Box(modifier = Modifier.height(8.dp))
-            TextButton(onClick = onBrowseAsAnonymousClick) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(
-                    text = stringResource(R.string.sign_up_as_anonymous),
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4F)
+                    text = stringResource(id = R.string.are_not_you_member),
+                    style = MaterialTheme.typography.labelLarge.copy(
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5F)
+                    )
                 )
+                TextButton(onClick = onBrowseAsAnonymousClick) {
+                    Text(
+                        text = stringResource(R.string.sign_up_as_anonymous),
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.6F)
+                        )
+                    )
+                }
             }
         }
     }
