@@ -2,6 +2,7 @@ package com.pocs.presentation.view.login
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -11,6 +12,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -57,6 +60,7 @@ fun LoginContent(
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
     ) { innerPadding ->
         val scrollState = rememberScrollState()
+        val passwordFocusRequester = remember { FocusRequester() }
 
         Column(
             Modifier
@@ -81,9 +85,13 @@ fun LoginContent(
                 maxLength = MAX_USER_ID_LEN,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { passwordFocusRequester.requestFocus() }
                 )
             )
             PasswordOutlineTextField(
+                modifier = Modifier.focusRequester(passwordFocusRequester),
                 password = uiState.password,
                 onPasswordChange = { password ->
                     uiState.update { it.copy(password = password) }
