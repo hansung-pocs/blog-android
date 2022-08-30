@@ -22,6 +22,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.foundy.markdown_toolbar.MarkdownToolBar
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.R
@@ -35,7 +36,6 @@ import com.pocs.presentation.view.component.PocsDivider
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
 import com.pocs.presentation.view.component.checkbox.LabeledCheckBox
-import com.pocs.presentation.view.component.markdown.MarkdownToolBar
 import com.pocs.presentation.view.component.textfield.SimpleTextField
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -167,7 +167,7 @@ fun PostEditContent(
             }
             AnimatedVisibility(visible = showToolBar) {
                 MarkdownToolBar(
-                    textFieldValue = uiState.content,
+                    value = uiState.content,
                     onValueChange = uiState.onContentChange
                 )
             }

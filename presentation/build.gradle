@@ -106,6 +106,9 @@ dependencies {
     implementation "io.noties.markwon:ext-tasklist:$markwon_version"
     kapt "io.noties:prism4j-bundler:2.0.0"
 
+    // markdown toolbar
+    implementation 'io.github.jja08111:markdown-toolbar-compose:0.0.1'
+
     implementation "androidx.core:core-ktx:$androidx_core"
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.7.0-alpha03'
