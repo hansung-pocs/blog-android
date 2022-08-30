@@ -112,13 +112,13 @@ fun LoginContent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(id = R.string.are_not_you_member),
+                    text = stringResource(id = R.string.are_not_you_member) + " ",
                     style = MaterialTheme.typography.labelLarge.copy(
                         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5F)
                     )
                 )
                 TextButton(
-                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+                    contentPadding = PaddingValues(vertical = 8.dp),
                     onClick = onBrowseAsAnonymousClick
                 ) {
                     Text(
