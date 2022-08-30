@@ -1,5 +1,7 @@
 package com.pocs.presentation
 
+import android.content.Context
+import androidx.annotation.StringRes
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
@@ -9,6 +11,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.test.platform.app.InstrumentationRegistry
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.constant.MAX_POST_TITLE_LEN
@@ -17,6 +20,7 @@ import com.pocs.presentation.view.post.edit.PostEditScreen
 import com.pocs.presentation.extension.assertSnackBarIsDisplayed
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -24,6 +28,15 @@ class PostEditScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
+
+    private lateinit var context: Context
+
+    private fun getString(@StringRes resId: Int) = context.getString(resId)
+
+    @Before
+    fun setUp() {
+        context = InstrumentationRegistry.getInstrumentation().targetContext
+    }
 
     private val emptyUiState = PostEditUiState(
         postId = 1,
@@ -262,5 +275,40 @@ class PostEditScreenTest {
 
         composeTestRule.onNodeWithText("공지사항").assertDoesNotExist()
         composeTestRule.onNodeWithTag("PostCategoryChips").assertIsDisplayed()
+    }
+
+    @Test
+    fun shouldShowQuestionEditTitle_WhenCurrentUserIsAnonymousAndPostCategoryIsQna() {
+        composeTestRule.run {
+            val uiState = emptyUiState.copy(
+                currentUserType = UserType.ANONYMOUS,
+                category = PostCategory.QNA
+            )
+            setContent {
+                PostEditScreen(
+                    uiState = uiState,
+                    navigateUp = {},
+                    onSuccessSave = {}
+                )
+            }
+
+            onNodeWithText(getString(R.string.edit_question)).assertIsDisplayed()
+        }
+    }
+
+    @Test
+    fun shouldShowDefaultEditPostTitle_WhenCurrentUserIsMember() {
+        composeTestRule.run {
+            val uiState = emptyUiState.copy(currentUserType = UserType.MEMBER)
+            setContent {
+                PostEditScreen(
+                    uiState = uiState,
+                    navigateUp = {},
+                    onSuccessSave = {}
+                )
+            }
+
+            onNodeWithText(getString(R.string.edit_post)).assertIsDisplayed()
+        }
     }
 }
