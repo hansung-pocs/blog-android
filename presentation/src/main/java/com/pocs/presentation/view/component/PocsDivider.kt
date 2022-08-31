@@ -9,10 +9,10 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun PocsDivider(startIndent: Dp = 0.dp, thickness: Dp = 1.dp) {
-    Divider(startIndent = startIndent, modifier = Modifier.alpha(0.2f), thickness = thickness)
+    Divider(startIndent = startIndent, thickness = thickness)
 }
 
 @Composable
 fun ThickDivider() {
-    Divider(modifier = Modifier.alpha(0.1f), thickness = 16.dp)
+    Divider(modifier = Modifier.alpha(0.5f), thickness = 16.dp)
 }
