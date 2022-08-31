@@ -2,6 +2,7 @@ package com.pocs.presentation.view.component.appbar
 
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.text.BasicTextField
@@ -17,6 +18,8 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -101,6 +104,12 @@ fun SearchAppBar(
     )
 }
 
+@VisibleForTesting
+const val searchDebounceDelay = 500L
+
+@VisibleForTesting
+const val searchTextFieldContentDescription = "SearchTextField"
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchTextField(
@@ -116,12 +125,14 @@ private fun SearchTextField(
         if (query.isBlank() || query.length < MIN_USER_NAME_SEARCH_LEN) {
             return@LaunchedEffect
         }
-        delay(500)
+        delay(searchDebounceDelay)
         onDebounce(query)
     }
 
     BasicTextField(
-        modifier = Modifier.focusRequester(focusRequester),
+        modifier = Modifier
+            .focusRequester(focusRequester)
+            .semantics { contentDescription = searchTextFieldContentDescription },
         textStyle = textStyle,
         value = query,
         onValueChange = {
