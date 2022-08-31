@@ -2,6 +2,9 @@ package com.pocs.presentation.view.component.appbar
 
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -15,11 +18,11 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import com.pocs.presentation.R
 import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.component.button.ClearButton
-import com.pocs.presentation.view.component.textfield.SimpleTextField
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
@@ -96,6 +99,7 @@ fun SearchAppBar(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchTextField(
     query: String,
@@ -103,22 +107,40 @@ private fun SearchTextField(
     onQueryChange: (String) -> Unit,
     onSearch: (String) -> Unit
 ) {
-    SimpleTextField(
+    val textStyle = MaterialTheme.typography.titleLarge
+
+    BasicTextField(
         modifier = Modifier.focusRequester(focusRequester),
-        hint = stringResource(R.string.search_by_name),
-        hintStyle = MaterialTheme.typography.titleLarge.copy(
-            color = MaterialTheme.colorScheme.onBackground.copy(
-                alpha = 0.4f
-            )
-        ),
+        textStyle = textStyle,
         value = query,
-        maxLength = 40,
         onValueChange = {
+            if (it.length >= 40) {
+                return@BasicTextField
+            }
             val value = it.filter { char -> char != '\n' }
             onQueryChange(value)
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(onSearch = { onSearch(query) })
+        keyboardActions = KeyboardActions(onSearch = { onSearch(query) }),
+        decorationBox = { innerTextField ->
+            TextFieldDefaults.TextFieldDecorationBox(
+                value = query,
+                innerTextField = innerTextField,
+                enabled = true,
+                singleLine = true,
+                visualTransformation = VisualTransformation.None,
+                interactionSource = remember { MutableInteractionSource() },
+                contentPadding = PaddingValues(),
+                placeholder = {
+                    Text(
+                        text = stringResource(R.string.search_by_name),
+                        style = textStyle.copy(
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
+                        )
+                    )
+                }
+            )
+        }
     )
 }
 
