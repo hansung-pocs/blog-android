@@ -28,11 +28,8 @@ fun <PA : PagingDataAdapter<T, VH>, T, VH> ContentLoadStateBinding.setListeners(
         val shouldShowEmptyText =
             refreshLoadState is LoadState.NotLoading && adapter.getItemCount() < 1
 
-        if (refreshLoadState is LoadState.NotLoading) {
-            swipeToRefresh.isRefreshing = false
-        }
         emptyText.isVisible = shouldShowEmptyText
-        progressBar.isVisible = refreshLoadState is LoadState.Loading
+        swipeToRefresh.isRefreshing = refreshLoadState is LoadState.Loading
         retryButton.isVisible = isError
         errorMsg.isVisible = isError
         if (refreshLoadState is LoadState.Error) {
