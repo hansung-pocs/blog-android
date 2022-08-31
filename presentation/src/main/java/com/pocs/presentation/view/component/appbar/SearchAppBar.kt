@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import com.pocs.presentation.R
+import com.pocs.presentation.constant.MIN_USER_NAME_SEARCH_LEN
 import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.component.button.ClearButton
 import kotlinx.coroutines.delay
@@ -61,11 +62,12 @@ fun SearchAppBar(
                     focusRequester = focusRequester,
                     onQueryChange = { query = it },
                     onSearch = { query ->
-                        if (query.length >= 2) {
+                        if (query.length >= MIN_USER_NAME_SEARCH_LEN) {
                             keyboardController?.hide()
                         }
                         onSearch(query)
-                    }
+                    },
+                    onDebounce = onSearch
                 )
             } else {
                 Text(text = title)
@@ -105,9 +107,18 @@ private fun SearchTextField(
     query: String,
     focusRequester: FocusRequester,
     onQueryChange: (String) -> Unit,
-    onSearch: (String) -> Unit
+    onSearch: (String) -> Unit,
+    onDebounce: (String) -> Unit
 ) {
     val textStyle = MaterialTheme.typography.titleLarge
+
+    LaunchedEffect(query) {
+        if (query.isBlank() || query.length < MIN_USER_NAME_SEARCH_LEN) {
+            return@LaunchedEffect
+        }
+        delay(500)
+        onDebounce(query)
+    }
 
     BasicTextField(
         modifier = Modifier.focusRequester(focusRequester),

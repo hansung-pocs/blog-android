@@ -8,3 +8,4 @@ const val MAX_USER_GENERATION_LEN = 5
 const val MAX_USER_EMAIL_LEN = 255
 const val MAX_USER_COMPANY_LEN = 20
 const val MAX_USER_GITHUB_LEN = 255
+const val MIN_USER_NAME_SEARCH_LEN = 2
