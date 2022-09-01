@@ -24,7 +24,7 @@ import com.pocs.presentation.constant.MAX_USER_EMAIL_LEN
 import com.pocs.presentation.constant.MAX_USER_GITHUB_LEN
 import com.pocs.presentation.constant.MAX_USER_NAME_LEN
 import com.pocs.presentation.model.user.UserEditUiState
-import com.pocs.presentation.view.UserAvatar
+import com.pocs.presentation.view.component.UserAvatar
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
 import com.pocs.presentation.view.component.textfield.PasswordOutlineTextField

@@ -26,6 +26,7 @@ import com.pocs.presentation.extension.RefreshStateContract
 import com.pocs.presentation.model.user.item.UserDetailItemUiState
 import com.pocs.presentation.model.user.UserDetailUiState
 import com.pocs.presentation.model.user.item.UserDefaultInfoUiState
+import com.pocs.presentation.view.component.UserAvatar
 import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.component.FailureContent
 import com.pocs.presentation.view.component.LoadingContent
@@ -242,18 +243,12 @@ fun UserDetailTopBar(
 }
 
 @Composable
-fun UserAvatar(name: String, isKicked: Boolean) {
+private fun UserAvatarWithName(name: String, profileImageUrl: String?, isKicked: Boolean) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(top = 16.dp, bottom = 32.dp)
     ) {
-        // TODO: 회원 사진 정보가 생기면 넣기
-        Icon(
-            modifier = Modifier.size(120.dp),
-            imageVector = Icons.Filled.AccountCircle,
-            tint = MaterialTheme.colorScheme.onBackground,
-            contentDescription = stringResource(id = R.string.user_image)
-        )
+        UserAvatar(url = profileImageUrl)
         Text(text = name, style = MaterialTheme.typography.titleMedium)
         if (isKicked) {
             Text(
@@ -280,7 +275,11 @@ fun MemberUserInfoList(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         item {
-            UserAvatar(name = userDefaultInfo.name, isKicked = isKicked)
+            UserAvatarWithName(
+                name = userDefaultInfo.name,
+                profileImageUrl = userDefaultInfo.profileImageUrl,
+                isKicked = isKicked
+            )
         }
         item {
             UserInfo(
