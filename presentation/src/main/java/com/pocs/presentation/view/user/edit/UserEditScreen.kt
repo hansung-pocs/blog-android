@@ -1,20 +1,16 @@
 package com.pocs.presentation.view.user.edit
 
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -28,12 +24,11 @@ import com.pocs.presentation.constant.MAX_USER_EMAIL_LEN
 import com.pocs.presentation.constant.MAX_USER_GITHUB_LEN
 import com.pocs.presentation.constant.MAX_USER_NAME_LEN
 import com.pocs.presentation.model.user.UserEditUiState
-import com.pocs.presentation.view.component.FailureImage
+import com.pocs.presentation.view.UserAvatar
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
 import com.pocs.presentation.view.component.textfield.PasswordOutlineTextField
 import com.pocs.presentation.view.component.textfield.PocsOutlineTextField
-import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.launch
 
 @Composable
@@ -194,35 +189,14 @@ fun UserEditAvatar(profileImageUrl: String?, onClick: () -> Unit) {
             .fillMaxWidth()
     ) {
         Box {
-            val contentDescription = stringResource(id = R.string.user_image)
-            val modifier = Modifier
-                .size(120.dp)
-                .clickable(onClick = onClick)
-                .clip(CircleShape)
-
-            if (profileImageUrl != null) {
-                GlideImage(
-                    modifier = modifier,
-                    imageModel = profileImageUrl,
-                    failure = { FailureImage() },
-                    contentDescription = contentDescription
-                )
-            } else {
-                Icon(
-                    modifier = modifier,
-                    imageVector = Icons.Filled.AccountCircle,
-                    tint = MaterialTheme.colorScheme.onBackground,
-                    contentDescription = contentDescription
-                )
-            }
-
+            UserAvatar(url = profileImageUrl, onClick = onClick)
             Icon(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(4.dp)
                     .size(24.dp),
                 imageVector = Icons.Default.Edit,
-                contentDescription = contentDescription
+                contentDescription = stringResource(id = R.string.user_image)
             )
         }
     }
