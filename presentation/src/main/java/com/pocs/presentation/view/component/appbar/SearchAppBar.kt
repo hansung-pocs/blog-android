@@ -2,6 +2,10 @@ package com.pocs.presentation.view.component.appbar
 
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.annotation.VisibleForTesting
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -14,12 +18,15 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import com.pocs.presentation.R
+import com.pocs.presentation.constant.MIN_USER_NAME_SEARCH_LEN
 import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.component.button.ClearButton
-import com.pocs.presentation.view.component.textfield.SimpleTextField
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
@@ -58,11 +65,12 @@ fun SearchAppBar(
                     focusRequester = focusRequester,
                     onQueryChange = { query = it },
                     onSearch = { query ->
-                        if (query.length >= 2) {
+                        if (query.length >= MIN_USER_NAME_SEARCH_LEN) {
                             keyboardController?.hide()
                         }
                         onSearch(query)
-                    }
+                    },
+                    onDebounce = onSearch
                 )
             } else {
                 Text(text = title)
@@ -96,29 +104,65 @@ fun SearchAppBar(
     )
 }
 
+@VisibleForTesting
+const val searchDebounceDelay = 500L
+
+@VisibleForTesting
+const val searchTextFieldContentDescription = "SearchTextField"
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchTextField(
     query: String,
     focusRequester: FocusRequester,
     onQueryChange: (String) -> Unit,
-    onSearch: (String) -> Unit
+    onSearch: (String) -> Unit,
+    onDebounce: (String) -> Unit
 ) {
-    SimpleTextField(
-        modifier = Modifier.focusRequester(focusRequester),
-        hint = stringResource(R.string.search_by_name),
-        hintStyle = MaterialTheme.typography.titleLarge.copy(
-            color = MaterialTheme.colorScheme.onBackground.copy(
-                alpha = 0.4f
-            )
-        ),
+    val textStyle = MaterialTheme.typography.titleLarge
+
+    LaunchedEffect(query) {
+        if (query.isBlank() || query.length < MIN_USER_NAME_SEARCH_LEN) {
+            return@LaunchedEffect
+        }
+        delay(searchDebounceDelay)
+        onDebounce(query)
+    }
+
+    BasicTextField(
+        modifier = Modifier
+            .focusRequester(focusRequester)
+            .semantics { contentDescription = searchTextFieldContentDescription },
+        textStyle = textStyle,
         value = query,
-        maxLength = 40,
         onValueChange = {
+            if (it.length >= 40) {
+                return@BasicTextField
+            }
             val value = it.filter { char -> char != '\n' }
             onQueryChange(value)
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(onSearch = { onSearch(query) })
+        keyboardActions = KeyboardActions(onSearch = { onSearch(query) }),
+        decorationBox = { innerTextField ->
+            TextFieldDefaults.TextFieldDecorationBox(
+                value = query,
+                innerTextField = innerTextField,
+                enabled = true,
+                singleLine = true,
+                visualTransformation = VisualTransformation.None,
+                interactionSource = remember { MutableInteractionSource() },
+                contentPadding = PaddingValues(),
+                placeholder = {
+                    Text(
+                        text = stringResource(R.string.search_by_name),
+                        style = textStyle.copy(
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
+                        )
+                    )
+                }
+            )
+        }
     )
 }
 

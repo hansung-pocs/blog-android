@@ -11,6 +11,7 @@ import com.pocs.domain.usecase.user.GetAllUsersUseCase
 import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.user.SearchUserUseCase
 import com.pocs.presentation.R
+import com.pocs.presentation.constant.MIN_USER_NAME_SEARCH_LEN
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.user.UserUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,7 +54,7 @@ class UserViewModel @Inject constructor(
     }
 
     fun search(query: String) {
-        if (query.length < 2) {
+        if (query.length < MIN_USER_NAME_SEARCH_LEN) {
             showErrorMessage(R.string.query_min_length_error)
             return
         }
