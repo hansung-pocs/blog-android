@@ -22,6 +22,7 @@ import com.pocs.presentation.model.user.item.UserDefaultInfoUiState
 import com.pocs.presentation.model.user.item.UserDetailItemUiState
 import com.pocs.presentation.view.component.PocsDivider
 import com.pocs.presentation.view.component.RecheckDialog
+import com.pocs.presentation.view.component.UserAvatar
 import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.user.detail.UserDetailActivity
 
@@ -92,6 +93,7 @@ fun SettingContent(
                 SettingUserTile(
                     name = userDefaultInfo.name,
                     studentId = userDefaultInfo.studentId.toString(),
+                    profileImageUrl = userDefaultInfo.profileImageUrl,
                     onClick = {
                         val intent = UserDetailActivity.getIntent(context, uiState.currentUser.id)
                         context.startActivity(intent)
@@ -118,7 +120,7 @@ fun SettingContent(
 }
 
 @Composable
-fun SettingAnonymousTile(userId : Int) {
+fun SettingAnonymousTile(userId: Int) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -144,7 +146,12 @@ fun SettingAnonymousTile(userId : Int) {
 }
 
 @Composable
-fun SettingUserTile(name: String, studentId: String, onClick: () -> Unit) {
+fun SettingUserTile(
+    name: String,
+    studentId: String,
+    profileImageUrl: String?,
+    onClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .clickable(onClick = onClick)
@@ -152,13 +159,7 @@ fun SettingUserTile(name: String, studentId: String, onClick: () -> Unit) {
             .padding(20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // TODO: 회원 사진으로 수정하기
-        Icon(
-            modifier = Modifier.size(64.dp),
-            imageVector = Icons.Filled.AccountCircle,
-            tint = MaterialTheme.colorScheme.onBackground,
-            contentDescription = stringResource(id = R.string.user_image)
-        )
+        UserAvatar(url = profileImageUrl, size = 64.dp)
         Box(modifier = Modifier.width(16.dp))
         Column(
             modifier = Modifier.weight(1f)
@@ -268,7 +269,7 @@ fun SettingScreenLoginPreview() {
 @Composable
 @Preview(showBackground = true)
 fun SettingUserTilePreview() {
-    SettingUserTile(name = "홍길동", studentId = "1921034") {
+    SettingUserTile(name = "홍길동", studentId = "1921034", profileImageUrl = null) {
 
     }
 }
