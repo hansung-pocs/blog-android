@@ -249,6 +249,7 @@ private fun UserAvatarWithName(name: String, profileImageUrl: String?, isKicked:
         modifier = Modifier.padding(top = 16.dp, bottom = 32.dp)
     ) {
         UserAvatar(url = profileImageUrl)
+        Spacer(modifier = Modifier.height(8.dp))
         Text(text = name, style = MaterialTheme.typography.titleMedium)
         if (isKicked) {
             Text(
