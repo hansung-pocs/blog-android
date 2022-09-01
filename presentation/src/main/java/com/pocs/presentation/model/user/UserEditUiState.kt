@@ -8,6 +8,7 @@ data class UserEditUiState(
     val password: String = "",
     val name: String,
     val email: String,
+    val profileImageUrl: String?,
     val company: String?,
     val github: String?,
     val isInSaving: Boolean = false,

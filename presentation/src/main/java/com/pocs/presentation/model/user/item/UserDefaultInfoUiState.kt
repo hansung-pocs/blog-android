@@ -5,6 +5,7 @@ import java.io.Serializable
 data class UserDefaultInfoUiState(
     val name: String,
     val email: String,
+    val profileImageUrl: String?,
     val studentId: Int,
     val company: String?,
     val generation: Int,

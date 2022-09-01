@@ -404,6 +404,7 @@ fun UserDetailContentPreview() {
             defaultInfo = UserDefaultInfoUiState(
                 name = "권김정",
                 email = "abc@google.com",
+                profileImageUrl = null,
                 studentId = 1971034,
                 company = null,
                 generation = 30,
@@ -430,6 +431,7 @@ fun KickedUserDetailContentPreview() {
             defaultInfo = UserDefaultInfoUiState(
                 name = "권김정",
                 email = "abc@google.com",
+                profileImageUrl = null,
                 studentId = 1971034,
                 company = null,
                 generation = 30,

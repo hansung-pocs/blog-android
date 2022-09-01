@@ -24,6 +24,7 @@ class UserEditViewModel @Inject constructor(
             UserEditUiState(
                 id = userDetail.id,
                 name = userDetail.defaultInfo.name,
+                profileImageUrl = userDetail.defaultInfo.profileImageUrl,
                 email = userDetail.defaultInfo.email,
                 company = userDetail.defaultInfo.company,
                 github = userDetail.defaultInfo.github,

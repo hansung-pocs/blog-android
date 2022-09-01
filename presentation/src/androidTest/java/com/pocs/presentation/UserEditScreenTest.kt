@@ -22,6 +22,7 @@ class UserEditScreenTest {
         password = "",
         name = "박민석",
         email = "hello@gmiad.com",
+        profileImageUrl = null,
         company = "google",
         github = "https://github.com/user",
         isInSaving = false,

@@ -4,14 +4,17 @@ import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -25,10 +28,12 @@ import com.pocs.presentation.constant.MAX_USER_EMAIL_LEN
 import com.pocs.presentation.constant.MAX_USER_GITHUB_LEN
 import com.pocs.presentation.constant.MAX_USER_NAME_LEN
 import com.pocs.presentation.model.user.UserEditUiState
+import com.pocs.presentation.view.component.FailureImage
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
 import com.pocs.presentation.view.component.textfield.PasswordOutlineTextField
 import com.pocs.presentation.view.component.textfield.PocsOutlineTextField
+import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.launch
 
 @Composable
@@ -90,7 +95,8 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
                 .verticalScroll(scrollState)
                 .fillMaxWidth()
         ) {
-            UserEditAvatar {}
+            // TODO: onClick 콜백에 이미지 업로드 기능 구현
+            UserEditAvatar(profileImageUrl = uiState.profileImageUrl, onClick = {})
             PocsOutlineTextField(
                 value = uiState.name,
                 label = if (uiState.canSaveName) {
@@ -180,22 +186,45 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
 }
 
 @Composable
-fun UserEditAvatar(onClick: () -> Unit) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+fun UserEditAvatar(profileImageUrl: String?, onClick: () -> Unit) {
+    Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier
             .padding(vertical = 16.dp)
             .fillMaxWidth()
     ) {
-        // TODO: 회원 사진 정보가 생기면 넣기
-        Icon(
-            modifier = Modifier
+        Box {
+            val contentDescription = stringResource(id = R.string.user_image)
+            val modifier = Modifier
                 .size(120.dp)
-                .clickable(onClick = onClick),
-            imageVector = Icons.Filled.AccountCircle,
-            tint = MaterialTheme.colorScheme.onBackground,
-            contentDescription = stringResource(id = R.string.user_image)
-        )
+                .clickable(onClick = onClick)
+                .clip(CircleShape)
+
+            if (profileImageUrl != null) {
+                GlideImage(
+                    modifier = modifier,
+                    imageModel = profileImageUrl,
+                    failure = { FailureImage() },
+                    contentDescription = contentDescription
+                )
+            } else {
+                Icon(
+                    modifier = modifier,
+                    imageVector = Icons.Filled.AccountCircle,
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    contentDescription = contentDescription
+                )
+            }
+
+            Icon(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(4.dp)
+                    .size(24.dp),
+                imageVector = Icons.Default.Edit,
+                contentDescription = contentDescription
+            )
+        }
     }
 }
 
@@ -208,9 +237,10 @@ fun UserEditContentPreview() {
             password = "password",
             name = "박민석",
             email = "hello@gmiad.com",
+            profileImageUrl = null,
             company = "google",
-            isInSaving = false,
             github = "https://github.com/",
+            isInSaving = false,
             onUpdate = {},
             onSave = { Result.success(Unit) }
         ),

@@ -109,6 +109,9 @@ dependencies {
     // markdown toolbar
     implementation 'io.github.jja08111:markdown-toolbar-compose:0.0.1'
 
+    // landscapist
+    implementation "com.github.skydoves:landscapist-glide:1.6.1"
+
     implementation "androidx.core:core-ktx:$androidx_core"
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.7.0-alpha03'

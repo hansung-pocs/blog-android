@@ -223,6 +223,7 @@ fun SettingScreenNotLoginPreview() {
                 defaultInfo = UserDefaultInfoUiState(
                     name = "권김정",
                     email = "abc@google.com",
+                    profileImageUrl = null,
                     studentId = 1971034,
                     company = null,
                     generation = 30,
@@ -248,6 +249,7 @@ fun SettingScreenLoginPreview() {
                 defaultInfo = UserDefaultInfoUiState(
                     name = "권김정",
                     email = "abc@google.com",
+                    profileImageUrl = null,
                     studentId = 1971034,
                     company = null,
                     generation = 30,
