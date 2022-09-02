@@ -21,7 +21,8 @@ interface UserRepository {
         name: String,
         email: String,
         company: String?,
-        github: String?
+        github: String?,
+        profileImageUrl: String?
     ): Result<Unit>
 
     suspend fun createAnonymous(anonymousCreateInfo: AnonymousCreateInfo): Result<Unit>

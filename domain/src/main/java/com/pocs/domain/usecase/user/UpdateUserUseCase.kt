@@ -14,7 +14,8 @@ class UpdateUserUseCase @Inject constructor(
         name: String,
         email: String,
         company: String?,
-        github: String?
+        github: String?,
+        profileImageUrl: String?
     ): Result<Unit> {
         require(id == authRepository.getCurrentUser().value?.id) { "자신의 정보만 수정할 수 있습니다." }
 
@@ -24,7 +25,8 @@ class UpdateUserUseCase @Inject constructor(
             name = name,
             email = email,
             company = company,
-            github = github
+            github = github,
+            profileImageUrl = profileImageUrl
         )
         if (result.isSuccess) {
             authRepository.syncCurrentUser(
