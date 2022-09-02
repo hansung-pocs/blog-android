@@ -5,5 +5,6 @@ data class UserUpdateBody(
     val name: String,
     val email: String,
     val github: String?,
-    val company: String?
+    val company: String?,
+    val profileImageUrl: String?
 )

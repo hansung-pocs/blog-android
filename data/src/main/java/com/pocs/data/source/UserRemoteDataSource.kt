@@ -15,7 +15,8 @@ interface UserRemoteDataSource {
         password: String?,
         email: String,
         company: String?,
-        github: String?
+        github: String?,
+        profileImageUrl: String?
     ): Response<ResponseBody<Unit>>
 
     suspend fun createAnonymous(AnonymousCreateInfoBody: AnonymousCreateInfoBody): Response<ResponseBody<Unit>>

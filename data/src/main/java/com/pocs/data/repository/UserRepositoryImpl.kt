@@ -65,7 +65,8 @@ class UserRepositoryImpl @Inject constructor(
         name: String,
         email: String,
         company: String?,
-        github: String?
+        github: String?,
+        profileImageUrl: String?
     ): Result<Unit> {
         return try {
             val response = dataSource.updateUser(
@@ -74,7 +75,8 @@ class UserRepositoryImpl @Inject constructor(
                 name = name,
                 email = email,
                 company = company,
-                github = github
+                github = github,
+                profileImageUrl = profileImageUrl
             )
             if (response.isSuccessful) {
                 Result.success(Unit)

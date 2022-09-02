@@ -19,7 +19,8 @@ class UserRemoteDataSourceImpl @Inject constructor(
         password: String?,
         email: String,
         company: String?,
-        github: String?
+        github: String?,
+        profileImageUrl: String?
     ) = api.updateUser(
         userId = id,
         userUpdateBody = UserUpdateBody(
@@ -27,7 +28,8 @@ class UserRemoteDataSourceImpl @Inject constructor(
             name = name,
             email = email,
             github = github,
-            company = company
+            company = company,
+            profileImageUrl = profileImageUrl
         )
     )
 
