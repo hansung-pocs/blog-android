@@ -14,7 +14,6 @@ data class UserEditUiState(
     val newProfileImage: Bitmap? = null,
     val company: String?,
     val github: String?,
-    val profileImageUrl: Bitmap?,
     val isInSaving: Boolean = false,
     val message: String? = null,
     private val onUpdate: (UserEditUiState) -> Unit,

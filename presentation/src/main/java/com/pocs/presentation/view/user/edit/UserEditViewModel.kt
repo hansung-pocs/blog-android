@@ -29,8 +29,7 @@ class UserEditViewModel @Inject constructor(
                 company = userDetail.defaultInfo.company,
                 github = userDetail.defaultInfo.github,
                 onUpdate = ::update,
-                onSave = ::save,
-                profileImageUrl = userDetail.defaultInfo.profileImageUrl
+                onSave = ::save
             )
         )
     }
@@ -49,8 +48,7 @@ class UserEditViewModel @Inject constructor(
                 name = name,
                 email = email,
                 company = company,
-                github = github,
-                profileImageUrl = profileImageUrl
+                github = github
             )
         }
         _uiState.value = _uiState.value.copy(isInSaving = false)
