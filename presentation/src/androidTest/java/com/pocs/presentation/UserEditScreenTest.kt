@@ -18,11 +18,12 @@ class UserEditScreenTest {
     val composeTestRule = createComposeRule()
 
     private var mockUiState by mutableStateOf(UserEditUiState(
-        1,
-        "박민석",
-        "hello@gmiad.com",
-        "google",
-        "https://github.com/user",
+        id = 1,
+        password = "",
+        name = "박민석",
+        email = "hello@gmiad.com",
+        company = "google",
+        github = "https://github.com/user",
         isInSaving = false,
         onUpdate = ::onUpdate,
         onSave = { Result.success(Unit) }
@@ -67,24 +68,6 @@ class UserEditScreenTest {
             onAllNodesWithContentDescription("입력 창 내용 지우기")[0].performClick()
 
             onNodeWithText(name).assertDoesNotExist()
-        }
-    }
-
-    @Test
-    fun showPasswordDialog_WhenClickSendButton() {
-        composeTestRule.run {
-            setContent {
-                UserEditContent(
-                    uiState = mockUiState,
-                    navigateUp = {},
-                    onSuccessToSave = {}
-                )
-            }
-
-            onNodeWithContentDescription("저장하기").performClick()
-            mainClock.advanceTimeByFrame()
-
-            onNodeWithText("비밀번호를 입력하세요").assertIsDisplayed()
         }
     }
 

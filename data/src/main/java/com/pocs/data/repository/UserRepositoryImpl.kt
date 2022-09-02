@@ -61,7 +61,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun updateUser(
         id: Int,
-        password: String,
+        password: String?,
         name: String,
         email: String,
         company: String?,

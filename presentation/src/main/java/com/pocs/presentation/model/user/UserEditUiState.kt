@@ -5,13 +5,14 @@ import com.pocs.presentation.extension.isValidEmail
 
 data class UserEditUiState(
     val id: Int,
+    val password: String = "",
     val name: String,
     val email: String,
     val company: String?,
     val github: String?,
     val isInSaving: Boolean = false,
     private val onUpdate: (UserEditUiState) -> Unit,
-    val onSave: suspend (password: String) -> Result<Unit>
+    val onSave: suspend () -> Result<Unit>
 ) {
     val canSave: Boolean
         get() {

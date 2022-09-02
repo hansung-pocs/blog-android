@@ -10,7 +10,7 @@ class UpdateUserUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         id: Int,
-        password: String,
+        password: String?,
         name: String,
         email: String,
         company: String?,

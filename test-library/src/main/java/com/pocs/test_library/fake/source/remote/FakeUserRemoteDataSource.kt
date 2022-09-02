@@ -15,7 +15,7 @@ class FakeUserRemoteDataSource @Inject constructor() : UserRemoteDataSource {
     override suspend fun updateUser(
         id: Int,
         name: String,
-        password: String,
+        password: String?,
         email: String,
         company: String?,
         github: String?

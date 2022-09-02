@@ -8,7 +8,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -28,7 +27,7 @@ import com.pocs.presentation.constant.MAX_USER_NAME_LEN
 import com.pocs.presentation.model.user.UserEditUiState
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
-import com.pocs.presentation.view.component.dialog.PasswordDialog
+import com.pocs.presentation.view.component.textfield.PasswordOutlineTextField
 import com.pocs.presentation.view.component.textfield.PocsOutlineTextField
 import kotlinx.coroutines.launch
 
@@ -51,34 +50,9 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     val coroutineScope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
-    var showPasswordDialog by remember { mutableStateOf(false) }
+    val failedToUpdateString = stringResource(R.string.failed_to_update)
 
     RecheckHandler(navigateUp = navigateUp)
-
-    if (showPasswordDialog) {
-        val failedToUpdateString = stringResource(R.string.failed_to_update)
-
-        PasswordDialog(
-            onDismissRequest = { showPasswordDialog = false },
-            onSaveClick = { password ->
-                if (!uiState.isInSaving) {
-                    coroutineScope.launch {
-                        val result = uiState.onSave(password)
-                        if (result.isSuccess) {
-                            onSuccessToSave()
-                            navigateUp()
-                        } else {
-                            val exception = result.exceptionOrNull()!!
-                            showPasswordDialog = false
-                            snackBarHostState.showSnackbar(
-                                exception.message ?: failedToUpdateString
-                            )
-                        }
-                    }
-                }
-            }
-        )
-    }
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
@@ -88,7 +62,22 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
                 onBackPressed = { onBackPressedDispatcher?.onBackPressed() },
                 isInSaving = uiState.isInSaving,
                 enableSendIcon = uiState.canSave,
-                onClickSend = { showPasswordDialog = true }
+                onClickSend = {
+                    if (!uiState.isInSaving) {
+                        coroutineScope.launch {
+                            val result = uiState.onSave()
+                            if (result.isSuccess) {
+                                onSuccessToSave()
+                                navigateUp()
+                            } else {
+                                val exception = result.exceptionOrNull()!!
+                                snackBarHostState.showSnackbar(
+                                    exception.message ?: failedToUpdateString
+                                )
+                            }
+                        }
+                    }
+                }
             )
         }
     ) { innerPadding ->
@@ -118,6 +107,19 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
                 },
                 onClearClick = {
                     uiState.update { it.copy(name = "") }
+                }
+            )
+            PasswordOutlineTextField(
+                password = uiState.password,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Next
+                ),
+                onPasswordChange = { password ->
+                    uiState.update { it.copy(password = password) }
+                },
+                onClearClick = {
+                    uiState.update { it.copy(password = "") }
                 }
             )
             PocsOutlineTextField(
@@ -201,15 +203,17 @@ fun UserEditAvatar(onClick: () -> Unit) {
 @Composable
 fun UserEditContentPreview() {
     UserEditContent(
-        UserEditUiState(
-            1,
-            "박민석",
-            "hello@gmiad.com",
-            "google",
-            "https://github.com/",
+        uiState = UserEditUiState(
+            id = 1,
+            password = "password",
+            name = "박민석",
+            email = "hello@gmiad.com",
+            company = "google",
             isInSaving = false,
-            {}
-        ) { Result.success(Unit) },
-        {}
+            github = "https://github.com/",
+            onUpdate = {},
+            onSave = { Result.success(Unit) }
+        ),
+        navigateUp = {}
     ) {}
 }
