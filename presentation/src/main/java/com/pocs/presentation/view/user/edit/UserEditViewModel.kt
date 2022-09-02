@@ -48,7 +48,8 @@ class UserEditViewModel @Inject constructor(
                 name = name,
                 email = email,
                 company = company,
-                github = github
+                github = github,
+                profileImage = null
             )
         }
         _uiState.value = _uiState.value.copy(isInSaving = false)
