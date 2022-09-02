@@ -11,5 +11,6 @@ fun UserDefaultInfo.toUiState() = UserDefaultInfoUiState(
     studentId = studentId,
     company = company,
     generation = generation,
-    github = github
+    github = github,
+    profileImageUrl = profileImageUrl
 )
