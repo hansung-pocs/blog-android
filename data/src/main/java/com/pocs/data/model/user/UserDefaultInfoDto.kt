@@ -1,7 +1,5 @@
 package com.pocs.data.model.user
 
-import android.graphics.Bitmap
-
 data class UserDefaultInfoDto(
     val name: String,
     val email: String,
@@ -9,5 +7,5 @@ data class UserDefaultInfoDto(
     val company: String? = null,
     val generation: Int,
     val github: String? = null,
-    val profileImageUrl: Bitmap? = null
+    val profileImageUrl: String? = null
 )
