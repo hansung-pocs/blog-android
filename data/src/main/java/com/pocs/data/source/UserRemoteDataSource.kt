@@ -1,10 +1,10 @@
 package com.pocs.data.source
 
-import android.graphics.Bitmap
 import com.pocs.data.model.ResponseBody
 import com.pocs.data.model.user.UserDto
 import com.pocs.data.model.user.anonymous.AnonymousCreateInfoBody
 import retrofit2.Response
+import java.io.File
 
 interface UserRemoteDataSource {
 
@@ -17,7 +17,7 @@ interface UserRemoteDataSource {
         email: String,
         company: String?,
         github: String?,
-        profileImageUrl: Bitmap?
+        profileImage: File?
     ): Response<ResponseBody<Unit>>
 
     suspend fun createAnonymous(AnonymousCreateInfoBody: AnonymousCreateInfoBody): Response<ResponseBody<Unit>>

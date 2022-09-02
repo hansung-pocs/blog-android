@@ -5,6 +5,7 @@ import com.pocs.data.model.user.UserDto
 import com.pocs.data.model.user.anonymous.AnonymousCreateInfoBody
 import com.pocs.data.source.UserRemoteDataSource
 import retrofit2.Response
+import java.io.File
 import javax.inject.Inject
 
 class FakeUserRemoteDataSource @Inject constructor() : UserRemoteDataSource {
@@ -18,7 +19,8 @@ class FakeUserRemoteDataSource @Inject constructor() : UserRemoteDataSource {
         password: String?,
         email: String,
         company: String?,
-        github: String?
+        github: String?,
+        profileImage: File?
     ): Response<ResponseBody<Unit>> {
         TODO("Not yet implemented")
     }

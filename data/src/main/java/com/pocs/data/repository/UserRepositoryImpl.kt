@@ -1,6 +1,5 @@
 package com.pocs.data.repository
 
-import android.graphics.Bitmap
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -17,6 +16,7 @@ import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserListSortingMethod
 import com.pocs.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
+import java.io.File
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -67,7 +67,7 @@ class UserRepositoryImpl @Inject constructor(
         email: String,
         company: String?,
         github: String?,
-        profileImageUrl: Bitmap?
+        profileImage: File?
     ): Result<Unit> {
         return try {
             val response = dataSource.updateUser(
@@ -77,7 +77,7 @@ class UserRepositoryImpl @Inject constructor(
                 email = email,
                 company = company,
                 github = github,
-                profileImageUrl = profileImageUrl
+                profileImage = profileImage
             )
             if (response.isSuccessful) {
                 Result.success(Unit)

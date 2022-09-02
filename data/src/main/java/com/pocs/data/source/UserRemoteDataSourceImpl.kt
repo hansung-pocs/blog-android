@@ -1,11 +1,13 @@
 package com.pocs.data.source
 
-import android.graphics.Bitmap
 import com.pocs.data.api.UserApi
 import com.pocs.data.model.ResponseBody
-import com.pocs.data.model.user.UserUpdateBody
 import com.pocs.data.model.user.anonymous.AnonymousCreateInfoBody
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Response
+import java.io.File
 import javax.inject.Inject
 
 class UserRemoteDataSourceImpl @Inject constructor(
@@ -21,18 +23,24 @@ class UserRemoteDataSourceImpl @Inject constructor(
         email: String,
         company: String?,
         github: String?,
-        profileImageUrl: Bitmap?
-    ) = api.updateUser(
-        userId = id,
-        userUpdateBody = UserUpdateBody(
-            password = password,
-            name = name,
-            email = email,
-            github = github,
-            company = company,
-            profileImageUrl = profileImageUrl
+        profileImage: File?
+    ): Response<ResponseBody<Unit>> {
+        return api.updateUser(
+            userId = id,
+            password = password?.let { MultipartBody.Part.createFormData("password", it) },
+            name = MultipartBody.Part.createFormData("name", name),
+            email = MultipartBody.Part.createFormData("email", email),
+            github = github?.let { MultipartBody.Part.createFormData("github", it) },
+            company = company?.let { MultipartBody.Part.createFormData("company", it) },
+            profileImage = profileImage?.let {
+                MultipartBody.Part.createFormData(
+                    "profileImage",
+                    it.name,
+                    it.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                )
+            },
         )
-    )
+    }
 
     override suspend fun createAnonymous(
         AnonymousCreateInfoBody: AnonymousCreateInfoBody
