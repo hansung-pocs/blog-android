@@ -22,8 +22,12 @@ import com.pocs.presentation.constant.MAX_USER_PASSWORD_LEN
 fun PasswordOutlineTextField(
     modifier: Modifier = Modifier,
     password: String,
+    keyboardOptions: KeyboardOptions = KeyboardOptions(
+        keyboardType = KeyboardType.Password,
+        imeAction = ImeAction.Send
+    ),
     onPasswordChange: (String) -> Unit,
-    onSend: (String) -> Unit,
+    onSend: ((String) -> Unit)? = null,
     onClearClick: () -> Unit,
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
@@ -35,13 +39,10 @@ fun PasswordOutlineTextField(
         onValueChange = {
             onPasswordChange(it)
         },
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Password,
-            imeAction = ImeAction.Send
-        ),
+        keyboardOptions = keyboardOptions,
         keyboardActions = KeyboardActions(
             onSend = {
-                onSend(password)
+                onSend?.invoke(password)
             }
         ),
         visualTransformation = if (passwordVisible) {

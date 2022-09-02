@@ -37,7 +37,7 @@ class UserEditViewModel @Inject constructor(
         _uiState.value = uiState
     }
 
-    private suspend fun save(password: String): Result<Unit> {
+    private suspend fun save(): Result<Unit> {
         _uiState.value = _uiState.value.copy(isInSaving = true)
         val result = with(uiState.value) {
             updateUserUseCase(

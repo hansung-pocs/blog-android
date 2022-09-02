@@ -8,7 +8,6 @@ import com.pocs.domain.model.user.UserListSortingMethod
 import com.pocs.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
@@ -39,7 +38,7 @@ class FakeUserRepositoryImpl @Inject constructor() : UserRepository {
 
     override suspend fun updateUser(
         id: Int,
-        password: String,
+        password: String?,
         name: String,
         email: String,
         company: String?,
