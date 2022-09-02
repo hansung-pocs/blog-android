@@ -408,8 +408,7 @@ fun UserDetailContentPreview() {
                 studentId = 1971034,
                 company = null,
                 generation = 30,
-                github = "https://github.com/",
-                profileImageUrl = null
+                github = "https://github.com/"
             ),
             type = UserType.ADMIN,
             createdAt = "2021-02-12",
@@ -436,8 +435,7 @@ fun KickedUserDetailContentPreview() {
                 studentId = 1971034,
                 company = null,
                 generation = 30,
-                github = "https://github.com/",
-                profileImageUrl = null
+                github = "https://github.com/"
             ),
             type = UserType.ADMIN,
             createdAt = "2021-02-12",
