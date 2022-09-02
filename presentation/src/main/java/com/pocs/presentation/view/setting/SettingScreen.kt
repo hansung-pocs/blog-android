@@ -159,7 +159,7 @@ fun SettingUserTile(
             .padding(20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        UserAvatar(url = profileImageUrl, size = 64.dp)
+        UserAvatar(imageModel = profileImageUrl, size = 64.dp)
         Box(modifier = Modifier.width(16.dp))
         Column(
             modifier = Modifier.weight(1f)

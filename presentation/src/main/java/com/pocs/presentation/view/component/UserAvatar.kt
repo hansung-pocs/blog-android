@@ -18,7 +18,11 @@ import com.pocs.presentation.R
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
-fun UserAvatar(url: String?, size: Dp = 120.dp, onClick: (() -> Unit)? = null) {
+fun UserAvatar(
+    imageModel: Any?,
+    size: Dp = 120.dp,
+    onClick: (() -> Unit)? = null,
+) {
     val contentDescription = stringResource(id = R.string.user_image)
     var modifier = Modifier.size(size)
     if (onClick != null) {
@@ -28,10 +32,10 @@ fun UserAvatar(url: String?, size: Dp = 120.dp, onClick: (() -> Unit)? = null) {
     }
     modifier = modifier.clip(CircleShape)
 
-    if (url != null) {
+    if (imageModel != null) {
         GlideImage(
             modifier = modifier,
-            imageModel = url,
+            imageModel = imageModel,
             failure = { FailureImage() },
             contentDescription = contentDescription
         )

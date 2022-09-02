@@ -1,14 +1,20 @@
 package com.pocs.presentation
 
+import android.content.Context
+import android.graphics.BitmapFactory
+import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.test.platform.app.InstrumentationRegistry
 import com.pocs.presentation.constant.MAX_USER_NAME_LEN
 import com.pocs.presentation.model.user.UserEditUiState
 import com.pocs.presentation.view.user.edit.UserEditContent
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -30,10 +36,18 @@ class UserEditScreenTest {
         onSave = { Result.success(Unit) }
     ))
 
+    private lateinit var context: Context
+
+    private fun getString(@StringRes resId: Int) = context.getString(resId)
+
+    @Before
+    fun setUp() {
+        context = InstrumentationRegistry.getInstrumentation().targetContext
+    }
+
     private fun onUpdate(userEditUiState: UserEditUiState) {
         mockUiState = userEditUiState
     }
-
 
     @Test
     fun showRecheckDialog_WhenUserClickBackButton() {
@@ -188,6 +202,46 @@ class UserEditScreenTest {
             }
 
             onNodeWithText("이메일은 필수 사항입니다").assertIsDisplayed()
+        }
+    }
+
+    @Test
+    fun shouldClearProfileImageUrl_WhenClickRemoveProfileImageButton() {
+        composeTestRule.run {
+            setContent {
+                UserEditContent(
+                    uiState = mockUiState.copy(profileImageUrl = "https://user-images.githubusercontent.com/57604817/179393181-8521a33b-a344-4f12-afb5-7cb3e77c44f2.png"),
+                    navigateUp = {},
+                    onSuccessToSave = {},
+                )
+            }
+
+            onNodeWithContentDescription(getString(R.string.edit_user_image)).performClick()
+            onNodeWithText(getString(R.string.remove_profile_image)).performClick()
+
+            assertNull(mockUiState.profileImageUrl)
+        }
+    }
+
+    @Test
+    fun shouldClearNewProfileImage_WhenClickRemoveProfileImageButton() {
+        composeTestRule.run {
+            val bitmap = BitmapFactory.decodeResource(
+                context.resources,
+                R.drawable.ic_baseline_add_24
+            )
+            setContent {
+                UserEditContent(
+                    uiState = mockUiState.copy(newProfileImage = bitmap),
+                    navigateUp = {},
+                    onSuccessToSave = {},
+                )
+            }
+
+            onNodeWithContentDescription(getString(R.string.edit_user_image)).performClick()
+            onNodeWithText(getString(R.string.remove_profile_image)).performClick()
+
+            assertNull(mockUiState.profileImageUrl)
         }
     }
 }
