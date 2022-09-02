@@ -1,5 +1,6 @@
 package com.pocs.presentation.view.user
 
+import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -28,10 +29,15 @@ class UserViewHolder(
                 defaultInfo.studentId,
                 defaultInfo.generation.toString()
             )
-            Glide.with(binding.root)
-                .load(defaultInfo.profileImageUrl)
-                .circleCrop()
-                .into(profileImage)
+            if (defaultInfo.profileImageUrl != null) {
+                Glide.with(binding.root)
+                    .load(defaultInfo.profileImageUrl)
+                    .circleCrop()
+                    .error(R.drawable.ic_baseline_error_24)
+                    .into(profileImage)
+            } else {
+                profileImage.setImageDrawable(getUserDefaultProfileDrawable())
+            }
         } else { // 익명 로그인 경우
             name.text = context.getString(R.string.anonymous_name, uiState.id.toString())
             if (uiState.isKicked) {
@@ -41,14 +47,16 @@ class UserViewHolder(
                 subtitle.text = null
                 subtitle.isVisible = false
             }
-            profileImage.setImageDrawable(
-                AppCompatResources.getDrawable(
-                    binding.root.context,
-                    R.drawable.ic_baseline_account_circle_24
-                )
-            )
+            profileImage.setImageDrawable(getUserDefaultProfileDrawable())
         }
 
         cardView.setOnClickListener { onClickCard(uiState.id) }
+    }
+
+    private fun getUserDefaultProfileDrawable(): Drawable? {
+        return AppCompatResources.getDrawable(
+            binding.root.context,
+            R.drawable.ic_baseline_account_circle_24
+        )
     }
 }
