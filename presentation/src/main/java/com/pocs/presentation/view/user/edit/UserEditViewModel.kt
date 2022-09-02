@@ -24,6 +24,7 @@ class UserEditViewModel @Inject constructor(
             UserEditUiState(
                 id = userDetail.id,
                 name = userDetail.defaultInfo.name,
+                profileImageUrl = userDetail.defaultInfo.profileImageUrl,
                 email = userDetail.defaultInfo.email,
                 company = userDetail.defaultInfo.company,
                 github = userDetail.defaultInfo.github,
@@ -43,6 +44,7 @@ class UserEditViewModel @Inject constructor(
             updateUserUseCase(
                 id = id,
                 password = password,
+                // TODO: UseCase 가 업데이트되면 newProfileImage 를 전달하도록 수정
                 name = name,
                 email = email,
                 company = company,

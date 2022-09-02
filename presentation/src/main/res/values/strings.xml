@@ -16,6 +16,7 @@
     <string name="fail_to_connect">연결에 실패하였습니다.</string>
     <string name="retry">재시도</string>
     <string name="user_image">회원 사진</string>
+    <string name="edit_user_image">회원 사진 편집</string>
     <string name="edit">편집</string>
     <string name="delete">삭제</string>
     <string name="edit_post">게시글 편집</string>
@@ -124,6 +125,10 @@
     <string name="can_see_only_member">회원 전용</string>
     <string name="can_add_comment_only_member">이곳에 댓글은 회원만 작성할 수 있어요.</string>
     <string name="edit_question">질문 수정</string>
+    <string name="failed_to_load_image">이미지 로딩 실패</string>
+    <string name="remove_profile_image">기본 이미지로 변경</string>
+    <string name="choose_from_gallery">갤러리에서 선택</string>
+    <string name="profile_image">프로필 사진</string>
     <string-array name="admin_tab">
         <item>전체 게시글</item>
         <item>회원목록</item>

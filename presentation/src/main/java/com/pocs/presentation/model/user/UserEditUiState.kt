@@ -1,5 +1,6 @@
 package com.pocs.presentation.model.user
 
+import android.graphics.Bitmap
 import com.pocs.presentation.extension.canSaveAsGithubUrl
 import com.pocs.presentation.extension.isValidEmail
 
@@ -8,6 +9,8 @@ data class UserEditUiState(
     val password: String = "",
     val name: String,
     val email: String,
+    val profileImageUrl: String?,
+    val newProfileImage: Bitmap? = null,
     val company: String?,
     val github: String?,
     val isInSaving: Boolean = false,

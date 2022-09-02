@@ -1,17 +1,24 @@
 package com.pocs.presentation.view.user.edit
 
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -19,12 +26,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.pocs.presentation.R
 import com.pocs.presentation.constant.MAX_USER_COMPANY_LEN
 import com.pocs.presentation.constant.MAX_USER_EMAIL_LEN
 import com.pocs.presentation.constant.MAX_USER_GITHUB_LEN
 import com.pocs.presentation.constant.MAX_USER_NAME_LEN
 import com.pocs.presentation.model.user.UserEditUiState
+import com.pocs.presentation.view.component.UserProfileImage
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
 import com.pocs.presentation.view.component.textfield.PasswordOutlineTextField
@@ -48,11 +57,40 @@ fun UserEditScreen(
 @Composable
 fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessToSave: () -> Unit) {
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
+    var showProfileDialog by remember { mutableStateOf(false) }
     val failedToUpdateString = stringResource(R.string.failed_to_update)
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        if (uri != null) {
+            val bitmap = if (Build.VERSION.SDK_INT < 28) {
+                MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+            } else {
+                val source = ImageDecoder.createSource(context.contentResolver, uri)
+                ImageDecoder.decodeBitmap(source)
+            }
+            uiState.update { it.copy(newProfileImage = bitmap) }
+        }
+    }
 
     RecheckHandler(navigateUp = navigateUp)
+
+    if (showProfileDialog) {
+        UserProfileDialog(
+            onDismissRequest = { showProfileDialog = false },
+            onChooseFromGalleryClick = {
+                imagePickerLauncher.launch("image/*")
+                showProfileDialog = false
+            },
+            onRemoveImageClick = {
+                uiState.update { it.copy(profileImageUrl = null, newProfileImage = null) }
+                showProfileDialog = false
+            }
+        )
+    }
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
@@ -90,7 +128,12 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
                 .verticalScroll(scrollState)
                 .fillMaxWidth()
         ) {
-            UserEditAvatar {}
+            UserEditAvatar(
+                imageModel = uiState.newProfileImage ?: uiState.profileImageUrl,
+                onClick = {
+                    showProfileDialog = true
+                }
+            )
             PocsOutlineTextField(
                 value = uiState.name,
                 label = if (uiState.canSaveName) {
@@ -180,22 +223,77 @@ fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessT
 }
 
 @Composable
-fun UserEditAvatar(onClick: () -> Unit) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+private fun UserProfileDialog(
+    onDismissRequest: () -> Unit,
+    onChooseFromGalleryClick: () -> Unit,
+    onRemoveImageClick: () -> Unit
+) {
+    Dialog(
+        onDismissRequest = onDismissRequest
+    ) {
+        Surface(
+            shape = AlertDialogDefaults.shape,
+            color = AlertDialogDefaults.containerColor,
+            tonalElevation = AlertDialogDefaults.TonalElevation
+        ) {
+            Column(
+                modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 24.dp, bottom = 12.dp)
+            ) {
+                Text(
+                    modifier = Modifier.padding(horizontal = 12.dp),
+                    text = stringResource(R.string.profile_image),
+                    style = MaterialTheme.typography.titleLarge
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                UserProfileDialogMenuItem(
+                    text = stringResource(R.string.choose_from_gallery),
+                    onClick = onChooseFromGalleryClick
+                )
+                UserProfileDialogMenuItem(
+                    text = stringResource(R.string.remove_profile_image),
+                    onClick = onRemoveImageClick
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun UserProfileDialogMenuItem(text: String, onClick: () -> Unit) {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(12.dp)
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.titleMedium.copy(
+                color = MaterialTheme.colorScheme.onSurface.copy(0.8f)
+            )
+        )
+    }
+}
+
+@Composable
+fun UserEditAvatar(imageModel: Any?, onClick: () -> Unit) {
+    Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier
             .padding(vertical = 16.dp)
             .fillMaxWidth()
     ) {
-        // TODO: 회원 사진 정보가 생기면 넣기
-        Icon(
-            modifier = Modifier
-                .size(120.dp)
-                .clickable(onClick = onClick),
-            imageVector = Icons.Filled.AccountCircle,
-            tint = MaterialTheme.colorScheme.onBackground,
-            contentDescription = stringResource(id = R.string.user_image)
-        )
+        Box {
+            UserProfileImage(imageModel = imageModel, onClick = onClick)
+            Icon(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(4.dp)
+                    .size(24.dp),
+                imageVector = Icons.Default.PhotoCamera,
+                contentDescription = stringResource(id = R.string.edit_user_image)
+            )
+        }
     }
 }
 
@@ -208,9 +306,10 @@ fun UserEditContentPreview() {
             password = "password",
             name = "박민석",
             email = "hello@gmiad.com",
+            profileImageUrl = null,
             company = "google",
-            isInSaving = false,
             github = "https://github.com/",
+            isInSaving = false,
             onUpdate = {},
             onSave = { Result.success(Unit) }
         ),
