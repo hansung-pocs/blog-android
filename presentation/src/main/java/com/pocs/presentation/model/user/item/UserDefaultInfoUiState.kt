@@ -9,5 +9,6 @@ data class UserDefaultInfoUiState(
     val studentId: Int,
     val company: String?,
     val generation: Int,
-    val github: String?
+    val github: String?,
+    val profileImageUrl: String?
 ) : Serializable
