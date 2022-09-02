@@ -1,5 +1,6 @@
 package com.pocs.data.repository
 
+import android.graphics.Bitmap
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -66,7 +67,7 @@ class UserRepositoryImpl @Inject constructor(
         email: String,
         company: String?,
         github: String?,
-        profileImageUrl: String?
+        profileImageUrl: Bitmap?
     ): Result<Unit> {
         return try {
             val response = dataSource.updateUser(

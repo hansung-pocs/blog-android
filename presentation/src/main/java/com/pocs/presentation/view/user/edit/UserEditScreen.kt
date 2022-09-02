@@ -338,7 +338,8 @@ fun UserEditContentPreview() {
             github = "https://github.com/",
             isInSaving = false,
             onUpdate = {},
-            onSave = { Result.success(Unit) }
+            onSave = { Result.success(Unit) },
+            profileImageUrl = null
         ),
         snackBarHostState = SnackbarHostState(),
         navigateUp = {}

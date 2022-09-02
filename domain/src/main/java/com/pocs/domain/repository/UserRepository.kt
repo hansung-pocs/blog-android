@@ -1,5 +1,6 @@
 package com.pocs.domain.repository
 
+import android.graphics.Bitmap
 import androidx.paging.PagingData
 import com.pocs.domain.model.user.AnonymousCreateInfo
 import com.pocs.domain.model.user.User
@@ -22,7 +23,7 @@ interface UserRepository {
         email: String,
         company: String?,
         github: String?,
-        profileImageUrl: String?
+        profileImageUrl: Bitmap?
     ): Result<Unit>
 
     suspend fun createAnonymous(anonymousCreateInfo: AnonymousCreateInfo): Result<Unit>

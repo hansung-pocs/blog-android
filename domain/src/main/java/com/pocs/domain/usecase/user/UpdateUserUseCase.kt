@@ -1,5 +1,6 @@
 package com.pocs.domain.usecase.user
 
+import android.graphics.Bitmap
 import com.pocs.domain.repository.AuthRepository
 import com.pocs.domain.repository.UserRepository
 import javax.inject.Inject
@@ -15,7 +16,7 @@ class UpdateUserUseCase @Inject constructor(
         email: String,
         company: String?,
         github: String?,
-        profileImageUrl: String?
+        profileImageUrl: Bitmap?
     ): Result<Unit> {
         require(id == authRepository.getCurrentUser().value?.id) { "자신의 정보만 수정할 수 있습니다." }
 

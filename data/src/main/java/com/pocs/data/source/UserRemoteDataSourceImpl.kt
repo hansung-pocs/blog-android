@@ -1,5 +1,6 @@
 package com.pocs.data.source
 
+import android.graphics.Bitmap
 import com.pocs.data.api.UserApi
 import com.pocs.data.model.ResponseBody
 import com.pocs.data.model.user.UserUpdateBody
@@ -20,7 +21,7 @@ class UserRemoteDataSourceImpl @Inject constructor(
         email: String,
         company: String?,
         github: String?,
-        profileImageUrl: String?
+        profileImageUrl: Bitmap?
     ) = api.updateUser(
         userId = id,
         userUpdateBody = UserUpdateBody(

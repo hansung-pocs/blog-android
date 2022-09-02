@@ -1,5 +1,6 @@
 package com.pocs.presentation.model.user.item
 
+import android.graphics.Bitmap
 import java.io.Serializable
 
 data class UserDefaultInfoUiState(
@@ -10,5 +11,5 @@ data class UserDefaultInfoUiState(
     val company: String?,
     val generation: Int,
     val github: String?,
-    val profileImageUrl: String?
+    val profileImageUrl: Bitmap?
 ) : Serializable
