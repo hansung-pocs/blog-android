@@ -18,7 +18,7 @@ import com.pocs.presentation.R
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
-fun UserAvatar(
+fun UserProfileImage(
     imageModel: Any?,
     size: Dp = 120.dp,
     onClick: (() -> Unit)? = null,

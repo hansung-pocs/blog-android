@@ -26,7 +26,7 @@ import com.pocs.presentation.extension.RefreshStateContract
 import com.pocs.presentation.model.user.item.UserDetailItemUiState
 import com.pocs.presentation.model.user.UserDetailUiState
 import com.pocs.presentation.model.user.item.UserDefaultInfoUiState
-import com.pocs.presentation.view.component.UserAvatar
+import com.pocs.presentation.view.component.UserProfileImage
 import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.component.FailureContent
 import com.pocs.presentation.view.component.LoadingContent
@@ -248,7 +248,7 @@ private fun UserAvatarWithName(name: String, profileImageUrl: String?, isKicked:
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(top = 16.dp, bottom = 32.dp)
     ) {
-        UserAvatar(imageModel = profileImageUrl)
+        UserProfileImage(imageModel = profileImageUrl)
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = name, style = MaterialTheme.typography.titleMedium)
         if (isKicked) {

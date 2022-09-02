@@ -22,7 +22,7 @@ import com.pocs.presentation.model.user.item.UserDefaultInfoUiState
 import com.pocs.presentation.model.user.item.UserDetailItemUiState
 import com.pocs.presentation.view.component.PocsDivider
 import com.pocs.presentation.view.component.RecheckDialog
-import com.pocs.presentation.view.component.UserAvatar
+import com.pocs.presentation.view.component.UserProfileImage
 import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.user.detail.UserDetailActivity
 
@@ -159,7 +159,7 @@ fun SettingUserTile(
             .padding(20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        UserAvatar(imageModel = profileImageUrl, size = 64.dp)
+        UserProfileImage(imageModel = profileImageUrl, size = 64.dp)
         Box(modifier = Modifier.width(16.dp))
         Column(
             modifier = Modifier.weight(1f)

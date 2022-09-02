@@ -33,7 +33,7 @@ import com.pocs.presentation.constant.MAX_USER_EMAIL_LEN
 import com.pocs.presentation.constant.MAX_USER_GITHUB_LEN
 import com.pocs.presentation.constant.MAX_USER_NAME_LEN
 import com.pocs.presentation.model.user.UserEditUiState
-import com.pocs.presentation.view.component.UserAvatar
+import com.pocs.presentation.view.component.UserProfileImage
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
 import com.pocs.presentation.view.component.textfield.PasswordOutlineTextField
@@ -284,7 +284,7 @@ fun UserEditAvatar(imageModel: Any?, onClick: () -> Unit) {
             .fillMaxWidth()
     ) {
         Box {
-            UserAvatar(imageModel = imageModel, onClick = onClick)
+            UserProfileImage(imageModel = imageModel, onClick = onClick)
             Icon(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
