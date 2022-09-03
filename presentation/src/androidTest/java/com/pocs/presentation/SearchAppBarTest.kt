@@ -62,7 +62,7 @@ class SearchAppBarTest {
 
             findSearchTextField().performTextInput(query)
             waitForIdle()
-            mainClock.advanceTimeBy(200)
+            mainClock.advanceTimeBy(100)
 
             findSearchTextField().performTextInput(query)
             waitForIdle()
@@ -70,7 +70,7 @@ class SearchAppBarTest {
 
             findSearchTextField().performTextInput(query)
             waitForIdle()
-            mainClock.advanceTimeBy(200)
+            mainClock.advanceTimeBy(100)
 
             findSearchTextField().performTextInput(query)
             waitForIdle()
