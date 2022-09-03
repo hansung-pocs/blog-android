@@ -4,6 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.pocs.domain.usecase.util.ConvertBitmapToFileUseCase
 import com.pocs.domain.usecase.user.UpdateUserUseCase
 import com.pocs.presentation.model.user.item.UserDetailItemUiState
 import com.pocs.presentation.model.user.UserEditUiState
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserEditViewModel @Inject constructor(
-    private val updateUserUseCase: UpdateUserUseCase
+    private val updateUserUseCase: UpdateUserUseCase,
+    private val convertBitmapToFileUseCase: ConvertBitmapToFileUseCase
 ) : ViewModel() {
 
     private lateinit var _uiState: MutableState<UserEditUiState>
@@ -44,12 +46,13 @@ class UserEditViewModel @Inject constructor(
             updateUserUseCase(
                 id = id,
                 password = password,
-                // TODO: UseCase 가 업데이트되면 newProfileImage 를 전달하도록 수정
                 name = name,
                 email = email,
                 company = company,
                 github = github,
-                profileImage = null
+                profileImage = newProfileImage?.let {
+                    convertBitmapToFileUseCase(it, "userProfileImage.png")
+                }
             )
         }
         _uiState.value = _uiState.value.copy(isInSaving = false)
