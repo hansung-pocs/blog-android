@@ -95,7 +95,7 @@ class PostDetailViewModelTest {
         assertTrue(viewModel.uiState.value is PostDetailUiState.Failure)
         assertEquals(
             exception.message!!,
-            (viewModel.uiState.value as PostDetailUiState.Failure).message!!
+            (viewModel.uiState.value as PostDetailUiState.Failure).exception.message!!
         )
 
         collectJob.cancel()

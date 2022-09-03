@@ -78,8 +78,8 @@ class PostDetailViewModel @Inject constructor(
 
                 fetchComments()
             } else {
-                val errorMessage = result.exceptionOrNull()!!.message
-                _uiState.update { PostDetailUiState.Failure(message = errorMessage) }
+                val exception = result.exceptionOrNull()!!
+                _uiState.update { PostDetailUiState.Failure(exception = exception) }
             }
         }
     }

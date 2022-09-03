@@ -11,6 +11,7 @@ import com.pocs.presentation.view.user.detail.UserDetailScreen
 import com.pocs.test_library.mock.mockAdminUserDetail
 import org.junit.Rule
 import org.junit.Test
+import java.net.ConnectException
 
 class UserDetailScreenTest {
 
@@ -131,5 +132,20 @@ class UserDetailScreenTest {
 
             onNodeWithText(errorMessage).assertIsDisplayed()
         }
+    }
+
+    @Test
+    fun shouldNotShowServerUrl_WhenExceptionIsConnectException() {
+        val exception = ConnectException("Failed to connect http://123.123.123/")
+        val uiState = UserDetailUiState.Failure(exception, onRetryClick = {})
+        composeTestRule.setContent {
+            UserDetailScreen(
+                uiState = uiState,
+                onEdited = {},
+                onSuccessToKick = {}
+            )
+        }
+
+        composeTestRule.onNodeWithText(exception.message!!).assertDoesNotExist()
     }
 }
