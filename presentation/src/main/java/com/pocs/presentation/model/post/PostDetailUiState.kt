@@ -15,7 +15,7 @@ sealed class PostDetailUiState {
         val comments: CommentsUiState = CommentsUiState.Loading
     ) : PostDetailUiState()
 
-    data class Failure(val message: String?) : PostDetailUiState()
+    data class Failure(val exception: Throwable) : PostDetailUiState()
 
     object Loading : PostDetailUiState()
 }

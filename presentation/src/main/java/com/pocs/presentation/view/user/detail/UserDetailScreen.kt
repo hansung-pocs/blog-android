@@ -76,7 +76,7 @@ fun UserDetailScreen(
         }
         is UserDetailUiState.Failure -> {
             UserDetailFailureContent(
-                message = uiState.e.message ?: stringResource(R.string.failed_to_load),
+                exception = uiState.e,
                 onRetryClick = uiState.onRetryClick
             )
         }
@@ -383,13 +383,13 @@ fun UserInfoContainer(label: String, annotatedString: AnnotatedString) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserDetailFailureContent(message: String, onRetryClick: () -> Unit) {
+fun UserDetailFailureContent(exception: Throwable, onRetryClick: () -> Unit) {
     Scaffold(
         topBar = { UserDetailTopBar("", displayActions = false, isUserKicked = false, {}, {}) }
     ) {
         FailureContent(
             modifier = Modifier.padding(it),
-            message = message,
+            exception = exception,
             onRetryClick = onRetryClick
         )
     }

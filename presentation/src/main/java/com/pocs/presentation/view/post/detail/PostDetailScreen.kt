@@ -8,22 +8,18 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.*
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -360,29 +356,10 @@ private fun PostDetailFailureContent(uiState: PostDetailUiState.Failure) {
             )
         }
     ) {
-        Column(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize()
-                .padding(20.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Icon(
-                imageVector = Icons.Default.Error,
-                contentDescription = stringResource(R.string.error_icon),
-                modifier = Modifier.size(96.dp),
-                tint = MaterialTheme.colorScheme.primary
-            )
-            Box(modifier = Modifier.height(16.dp))
-            Text(
-                text = uiState.message ?: stringResource(id = R.string.failed_to_load),
-                style = MaterialTheme.typography.headlineSmall.copy(
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
-                ),
-                textAlign = TextAlign.Center
-            )
-        }
+        FailureContent(
+            modifier = Modifier.padding(it),
+            exception = uiState.exception
+        )
     }
 }
 
@@ -444,5 +421,5 @@ private fun PostDetailContentPreview() {
 @Preview
 @Composable
 fun PostDetailFailureContentPreview() {
-    PostDetailFailureContent(PostDetailUiState.Failure("연결 실패"))
+    PostDetailFailureContent(PostDetailUiState.Failure(Exception("연결 실패")))
 }
