@@ -3,8 +3,10 @@ package com.pocs.presentation
 import android.content.Context
 import android.graphics.BitmapFactory
 import androidx.annotation.StringRes
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -55,6 +57,7 @@ class UserEditScreenTest {
             setContent {
                 UserEditContent(
                     uiState = mockUiState,
+                    snackBarHostState = remember { SnackbarHostState() },
                     navigateUp = {},
                     onSuccessToSave = {}
                 )
@@ -72,6 +75,7 @@ class UserEditScreenTest {
             setContent {
                 UserEditContent(
                     uiState = mockUiState,
+                    snackBarHostState = remember { SnackbarHostState() },
                     navigateUp = {},
                     onSuccessToSave = {}
                 )
@@ -92,6 +96,7 @@ class UserEditScreenTest {
             setContent {
                 UserEditContent(
                     uiState = mockUiState.copy(name = "", email = "abc"),
+                    snackBarHostState = remember { SnackbarHostState() },
                     navigateUp = {},
                     onSuccessToSave = {}
                 )
@@ -107,6 +112,7 @@ class UserEditScreenTest {
             setContent {
                 UserEditContent(
                     uiState = mockUiState.copy(name = "kim", email = ""),
+                    snackBarHostState = remember { SnackbarHostState() },
                     navigateUp = {},
                     onSuccessToSave = {}
                 )
@@ -126,6 +132,7 @@ class UserEditScreenTest {
                         email = "ail@he.com",
                         github = "https://github.com/user"
                     ),
+                    snackBarHostState = remember { SnackbarHostState() },
                     navigateUp = {},
                     onSuccessToSave = {}
                 )
@@ -143,6 +150,7 @@ class UserEditScreenTest {
                     uiState = mockUiState.copy(name = "", onUpdate = {
                         assertTrue(it.name.length <= MAX_USER_NAME_LEN)
                     }),
+                    snackBarHostState = remember { SnackbarHostState() },
                     navigateUp = {},
                     onSuccessToSave = {},
                 )
@@ -166,6 +174,7 @@ class UserEditScreenTest {
             setContent {
                 UserEditContent(
                     uiState = mockUiState.copy(email = "abc@.com"),
+                    snackBarHostState = remember { SnackbarHostState() },
                     navigateUp = {},
                     onSuccessToSave = {},
                 )
@@ -181,6 +190,7 @@ class UserEditScreenTest {
             setContent {
                 UserEditContent(
                     uiState = mockUiState.copy(name = ""),
+                    snackBarHostState = remember { SnackbarHostState() },
                     navigateUp = {},
                     onSuccessToSave = {},
                 )
@@ -196,6 +206,7 @@ class UserEditScreenTest {
             setContent {
                 UserEditContent(
                     uiState = mockUiState.copy(email = ""),
+                    snackBarHostState = remember { SnackbarHostState() },
                     navigateUp = {},
                     onSuccessToSave = {},
                 )
@@ -211,6 +222,7 @@ class UserEditScreenTest {
             setContent {
                 UserEditContent(
                     uiState = mockUiState.copy(profileImageUrl = "https://user-images.githubusercontent.com/57604817/179393181-8521a33b-a344-4f12-afb5-7cb3e77c44f2.png"),
+                    snackBarHostState = remember { SnackbarHostState() },
                     navigateUp = {},
                     onSuccessToSave = {},
                 )
@@ -233,6 +245,7 @@ class UserEditScreenTest {
             setContent {
                 UserEditContent(
                     uiState = mockUiState.copy(newProfileImage = bitmap),
+                    snackBarHostState = remember { SnackbarHostState() },
                     navigateUp = {},
                     onSuccessToSave = {},
                 )

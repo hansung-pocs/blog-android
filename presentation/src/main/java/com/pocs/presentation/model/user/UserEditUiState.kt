@@ -14,6 +14,7 @@ data class UserEditUiState(
     val company: String?,
     val github: String?,
     val isInSaving: Boolean = false,
+    val message: String? = null,
     private val onUpdate: (UserEditUiState) -> Unit,
     val onSave: suspend () -> Result<Unit>
 ) {
