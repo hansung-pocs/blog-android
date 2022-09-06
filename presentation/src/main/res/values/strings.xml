@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">presentation</string>
+    <string name="app_name">Pocs</string>
     <string name="notice">공지사항</string>
     <string name="post">게시글</string>
     <string name="study">스터디</string>
