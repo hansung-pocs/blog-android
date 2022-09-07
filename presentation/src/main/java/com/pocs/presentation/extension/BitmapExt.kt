@@ -2,9 +2,11 @@ package com.pocs.presentation.extension
 
 import android.content.ContentResolver
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import java.io.File
 import java.io.InputStream
+import kotlin.math.roundToInt
 
 fun Uri.getImageSizeInMegaByte(context: Context): Long {
     val scheme: String? = this.scheme
@@ -31,4 +33,20 @@ fun Uri.getImageSizeInMegaByte(context: Context): Long {
         }
     }
     return dataSize / (1024 * 1024)
+}
+
+fun Bitmap.scaleDown(maxImageSize: Float): Bitmap {
+    val ratio = (maxImageSize / width).coerceAtMost(maxImageSize / height)
+    val width = (ratio * width).roundToInt()
+    val height = (ratio * height).roundToInt()
+
+    if (ratio >= 1.0) {
+        return this
+    }
+    return Bitmap.createScaledBitmap(
+        this,
+        width,
+        height,
+        true
+    )
 }

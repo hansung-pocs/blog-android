@@ -30,6 +30,7 @@ import androidx.compose.ui.window.Dialog
 import com.pocs.presentation.R
 import com.pocs.presentation.constant.*
 import com.pocs.presentation.extension.getImageSizeInMegaByte
+import com.pocs.presentation.extension.scaleDown
 import com.pocs.presentation.model.user.UserEditUiState
 import com.pocs.presentation.view.component.UserProfileImage
 import com.pocs.presentation.view.component.RecheckHandler
@@ -83,12 +84,13 @@ fun UserEditContent(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         if (uri != null) {
-            val bitmap = if (Build.VERSION.SDK_INT < 28) {
+            var bitmap = if (Build.VERSION.SDK_INT < 28) {
                 MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
             } else {
                 val source = ImageDecoder.createSource(context.contentResolver, uri)
                 ImageDecoder.decodeBitmap(source)
             }
+            bitmap = bitmap.scaleDown(3000f)
 
             val imageMegaByteSize = uri.getImageSizeInMegaByte(context)
             uiState.update {
