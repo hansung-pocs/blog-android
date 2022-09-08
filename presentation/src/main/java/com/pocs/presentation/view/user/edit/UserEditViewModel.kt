@@ -54,4 +54,8 @@ class UserEditViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(isInSaving = false)
         return result
     }
+
+    fun messageShown() {
+        _uiState.value = _uiState.value.copy(message = null)
+    }
 }

@@ -28,10 +28,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.pocs.presentation.R
-import com.pocs.presentation.constant.MAX_USER_COMPANY_LEN
-import com.pocs.presentation.constant.MAX_USER_EMAIL_LEN
-import com.pocs.presentation.constant.MAX_USER_GITHUB_LEN
-import com.pocs.presentation.constant.MAX_USER_NAME_LEN
+import com.pocs.presentation.constant.*
+import com.pocs.presentation.extension.getImageSizeInMegaByte
+import com.pocs.presentation.extension.scaleDown
 import com.pocs.presentation.model.user.UserEditUiState
 import com.pocs.presentation.view.component.UserProfileImage
 import com.pocs.presentation.view.component.RecheckHandler
@@ -46,8 +45,19 @@ fun UserEditScreen(
     navigateUp: () -> Unit,
     onSuccessToSave: () -> Unit
 ) {
+    val snackBarHostState = remember { SnackbarHostState() }
+    val uiState = viewModel.uiState.value
+
+    if (uiState.message != null) {
+        LaunchedEffect(Unit) {
+            snackBarHostState.showSnackbar(uiState.message)
+            viewModel.messageShown()
+        }
+    }
+
     UserEditContent(
-        uiState = viewModel.uiState.value,
+        uiState = uiState,
+        snackBarHostState = snackBarHostState,
         navigateUp = navigateUp,
         onSuccessToSave = onSuccessToSave
     )
@@ -55,24 +65,41 @@ fun UserEditScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserEditContent(uiState: UserEditUiState, navigateUp: () -> Unit, onSuccessToSave: () -> Unit) {
+fun UserEditContent(
+    uiState: UserEditUiState,
+    snackBarHostState: SnackbarHostState,
+    navigateUp: () -> Unit,
+    onSuccessToSave: () -> Unit
+) {
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val snackBarHostState = remember { SnackbarHostState() }
     var showProfileDialog by remember { mutableStateOf(false) }
     val failedToUpdateString = stringResource(R.string.failed_to_update)
+    val maxProfileImageSizeWarning = stringResource(
+        R.string.user_profile_image_max_size,
+        MAX_PROFILE_IMAGE_MB_SIZE
+    )
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         if (uri != null) {
-            val bitmap = if (Build.VERSION.SDK_INT < 28) {
+            var bitmap = if (Build.VERSION.SDK_INT < 28) {
                 MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
             } else {
                 val source = ImageDecoder.createSource(context.contentResolver, uri)
                 ImageDecoder.decodeBitmap(source)
             }
-            uiState.update { it.copy(newProfileImage = bitmap) }
+            bitmap = bitmap.scaleDown(3000f)
+
+            val imageMegaByteSize = uri.getImageSizeInMegaByte(context)
+            uiState.update {
+                if (imageMegaByteSize >= MAX_PROFILE_IMAGE_MB_SIZE) {
+                    it.copy(message = maxProfileImageSizeWarning)
+                } else {
+                    it.copy(newProfileImage = bitmap)
+                }
+            }
         }
     }
 
@@ -313,6 +340,7 @@ fun UserEditContentPreview() {
             onUpdate = {},
             onSave = { Result.success(Unit) }
         ),
+        snackBarHostState = SnackbarHostState(),
         navigateUp = {}
     ) {}
 }
