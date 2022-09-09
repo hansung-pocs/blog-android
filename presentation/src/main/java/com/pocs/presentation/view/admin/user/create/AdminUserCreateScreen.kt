@@ -18,6 +18,7 @@ import com.pocs.presentation.constant.*
 import com.pocs.presentation.model.admin.AdminUserCreateUiState
 import com.pocs.presentation.view.component.RecheckHandler
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
+import com.pocs.presentation.view.component.textfield.PasswordOutlineTextField
 import com.pocs.presentation.view.component.textfield.PocsOutlineTextField
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,15 +79,13 @@ fun AdminUserCreateScreen(
                     uiState.updateCreateInfo { it.copy(userName = "") }
                 }
             )
-            PocsOutlineTextField(
-                value = createInfo.password,
-                label = stringResource(R.string.password),
-                maxLength = MAX_USER_PASSWORD_LEN,
+            PasswordOutlineTextField(
+                password = createInfo.password,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Next
                 ),
-                onValueChange = { password ->
+                onPasswordChange = { password ->
                     uiState.updateCreateInfo { it.copy(password = password) }
                 },
                 onClearClick = {

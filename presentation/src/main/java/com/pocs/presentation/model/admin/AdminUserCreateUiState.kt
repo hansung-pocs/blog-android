@@ -1,5 +1,6 @@
 package com.pocs.presentation.model.admin
 
+import com.pocs.presentation.constant.MIN_USER_PASSWORD_LEN
 import com.pocs.presentation.extension.canSaveAsGithubUrl
 import com.pocs.presentation.extension.isValidEmail
 
@@ -15,7 +16,7 @@ data class AdminUserCreateUiState(
     val canSave
         get() : Boolean {
             return createInfo.userName.isNotEmpty()
-                    && createInfo.password.isNotEmpty()
+                    && createInfo.password.length >= MIN_USER_PASSWORD_LEN
                     && createInfo.name.isNotEmpty()
                     && createInfo.studentId.isNotEmpty()
                     && createInfo.generation.isNotEmpty()

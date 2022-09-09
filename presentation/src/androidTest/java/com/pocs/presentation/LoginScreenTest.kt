@@ -18,7 +18,7 @@ class LoginScreenTest {
     fun disableLoginButton_WhenUserNameIsEmtpy() {
         val uiState = LoginUiState(
             userName = "",
-            password = "123",
+            password = "123456",
             onUpdate = {}
         )
         composeRule.run {
@@ -57,10 +57,31 @@ class LoginScreenTest {
     }
 
     @Test
-    fun enableLoginButton_WhenUserNameAndPasswordIsNotEmtpy() {
+    fun disableLoginButton_WhenPasswordIsShort() {
+        val uiState = LoginUiState(
+            userName = "32",
+            password = "12345",
+            onUpdate = {}
+        )
+        composeRule.run {
+            setContent {
+                LoginContent(
+                    uiState = uiState,
+                    onLoginClick = {},
+                    onClickCreateAnonymous = {},
+                    onUserMessageShown = {}
+                )
+            }
+
+            onNodeWithText("로그인").assertIsNotEnabled()
+        }
+    }
+
+    @Test
+    fun enableLoginButton_WhenUserNameAndPasswordLengthAreCorrect() {
         val uiState = LoginUiState(
             userName = "423",
-            password = "123",
+            password = "123456",
             onUpdate = {}
         )
         composeRule.run {

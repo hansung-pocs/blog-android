@@ -257,4 +257,20 @@ class UserEditScreenTest {
             assertNull(mockUiState.profileImageUrl)
         }
     }
+
+    @Test
+    fun shouldDisableSaveButton_WhenPasswordIsShortAndNotEmpty() {
+        composeTestRule.run {
+            setContent {
+                UserEditContent(
+                    uiState = mockUiState.copy(password = "hey"),
+                    snackBarHostState = remember { SnackbarHostState() },
+                    navigateUp = {},
+                    onSuccessToSave = {},
+                )
+            }
+
+            onNodeWithContentDescription(getString(R.string.save)).assertIsNotEnabled()
+        }
+    }
 }

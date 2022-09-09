@@ -1,6 +1,7 @@
 package com.pocs.presentation.model.user
 
 import android.graphics.Bitmap
+import com.pocs.presentation.constant.MIN_USER_PASSWORD_LEN
 import com.pocs.presentation.extension.canSaveAsGithubUrl
 import com.pocs.presentation.extension.isValidEmail
 
@@ -20,9 +21,10 @@ data class UserEditUiState(
 ) {
     val canSave: Boolean
         get() {
-            return canSaveName && canSaveEmail && canSaveGithubUrl
+            return canSaveName && canSavePassword && canSaveEmail && canSaveGithubUrl
         }
 
+    private val canSavePassword = password.isEmpty() || password.length >= MIN_USER_PASSWORD_LEN
     val canSaveName = name.isNotEmpty()
     val canSaveEmail = email.isValidEmail()
     val canSaveGithubUrl = github == null || github.canSaveAsGithubUrl()

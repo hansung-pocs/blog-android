@@ -1,5 +1,7 @@
 package com.pocs.presentation.model.auth
 
+import com.pocs.presentation.constant.MIN_USER_PASSWORD_LEN
+
 data class LoginUiState(
     val hideSplashScreen: Boolean = false,
     val isLoggedIn: Boolean = false,
@@ -12,5 +14,6 @@ data class LoginUiState(
         onUpdate(function(this))
     }
 
-    val enableLoginButton: Boolean get() = userName.isNotEmpty() && password.isNotEmpty()
+    val enableLoginButton: Boolean
+        get() = userName.isNotEmpty() && password.length >= MIN_USER_PASSWORD_LEN
 }
