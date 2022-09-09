@@ -93,6 +93,7 @@ fun LoginContent(
             PasswordOutlineTextField(
                 modifier = Modifier.focusRequester(passwordFocusRequester),
                 password = uiState.password,
+                enableMinLengthError = false,
                 onPasswordChange = { password ->
                     uiState.update { it.copy(password = password) }
                 },
