@@ -1,9 +1,11 @@
 package com.pocs.data.model.user
 
+import com.google.gson.annotations.SerializedName
+
 data class UserUpdateBody(
-    val password: String?,
-    val name: String,
-    val email: String,
-    val github: String?,
-    val company: String?
+    @SerializedName("password") val password: String?,
+    @SerializedName("name") val name: String,
+    @SerializedName("email") val email: String,
+    @SerializedName("github") val github: String?,
+    @SerializedName("company") val company: String?
 )

@@ -1,5 +1,7 @@
 package com.pocs.data.model.post
 
+import com.google.gson.annotations.SerializedName
+
 data class PostListDto(
-    val posts: List<PostDto>
+    @SerializedName("posts") val posts: List<PostDto>
 )

@@ -1,5 +1,7 @@
 package com.pocs.data.model.admin
 
+import com.google.gson.annotations.SerializedName
+
 data class UserKickInfoBody(
-    val canceledAt: String
+    @SerializedName("canceledAt") val canceledAt: String
 )

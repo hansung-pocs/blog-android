@@ -1,5 +1,7 @@
 package com.pocs.data.model.user
 
+import com.google.gson.annotations.SerializedName
+
 data class UserListDto(
-    val users: List<UserDto>
+    @SerializedName("users") val users: List<UserDto>
 )

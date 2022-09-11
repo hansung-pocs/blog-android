@@ -1,10 +1,12 @@
 package com.pocs.data.model.user
 
+import com.google.gson.annotations.SerializedName
+
 data class UserDefaultInfoDto(
-    val name: String,
-    val email: String,
-    val studentId: Int,
-    val company: String? = null,
-    val generation: Int,
-    val github: String? = null
+    @SerializedName("name") val name: String,
+    @SerializedName("email") val email: String,
+    @SerializedName("studentId") val studentId: Int,
+    @SerializedName("company") val company: String? = null,
+    @SerializedName("generation") val generation: Int,
+    @SerializedName("github") val github: String? = null
 )

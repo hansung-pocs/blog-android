@@ -1,5 +1,7 @@
 package com.pocs.data.model.comment
 
+import com.google.gson.annotations.SerializedName
+
 data class CommentsDto(
-    val comments: List<CommentDto>
+    @SerializedName("comments") val comments: List<CommentDto>
 )

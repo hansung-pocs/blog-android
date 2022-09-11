@@ -1,5 +1,7 @@
 package com.pocs.data.model.post
 
+import com.google.gson.annotations.SerializedName
+
 data class PostDeleteBody(
-    val userId: Int
+    @SerializedName("userId") val userId: Int
 )

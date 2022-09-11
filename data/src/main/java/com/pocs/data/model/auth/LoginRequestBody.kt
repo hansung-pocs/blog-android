@@ -1,6 +1,8 @@
 package com.pocs.data.model.auth
 
+import com.google.gson.annotations.SerializedName
+
 data class LoginRequestBody(
-    val username: String,
-    val password: String
+    @SerializedName("username") val username: String,
+    @SerializedName("password") val password: String
 )
