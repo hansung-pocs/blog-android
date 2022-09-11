@@ -59,4 +59,5 @@ jobs:
           track: internal
           serviceAccountJson: service_account.json
           packageName: com.pocs.blog
+          status: completed
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
