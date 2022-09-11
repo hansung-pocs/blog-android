@@ -22,7 +22,7 @@ jobs:
       - name: Access SERVER_URL
         env:
           SERVER_URL: $
-        run: echo SERVER_URL=\"SERVER_URL\" > ./apikey.properties
+        run: echo '${{ secrets.SERVER_URL }}' > ./apikey.properties
 
       - name: Build with Gradle
         run: ./gradlew build
