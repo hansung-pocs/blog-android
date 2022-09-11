@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 data class UserDto(
     @SerializedName("userId") val id: Int,
-    @SerializedName("defaultInfo") val defaultInfo: UserDefaultInfoDto? = null,
-    @SerializedName("type") val type: String,
-    @SerializedName("createdAt") val createdAt: String,
-    @SerializedName("canceledAt") val canceledAt: String? = null
+    val defaultInfo: UserDefaultInfoDto? = null,
+    val type: String,
+    val createdAt: String,
+    val canceledAt: String? = null
 )
