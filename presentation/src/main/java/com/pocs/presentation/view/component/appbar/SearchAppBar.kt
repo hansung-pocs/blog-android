@@ -16,6 +16,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -119,7 +120,9 @@ private fun SearchTextField(
     onSearch: (String) -> Unit,
     onDebounce: (String) -> Unit
 ) {
-    val textStyle = MaterialTheme.typography.titleLarge
+    val textStyle = MaterialTheme.typography.titleLarge.copy(
+        color = MaterialTheme.colorScheme.onBackground
+    )
 
     LaunchedEffect(query) {
         if (query.isBlank() || query.length < MIN_USER_NAME_SEARCH_LEN) {
@@ -134,6 +137,7 @@ private fun SearchTextField(
             .focusRequester(focusRequester)
             .semantics { contentDescription = searchTextFieldContentDescription },
         textStyle = textStyle,
+        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
         value = query,
         onValueChange = {
             if (it.length >= 40) {
