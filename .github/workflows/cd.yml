@@ -2,7 +2,8 @@ name: Build and Publish to Play Store
 on:
   push:
     branches:
-      - release/**
+      - stable
+      - internal
 jobs:
   build:
     runs-on: ubuntu-latest
