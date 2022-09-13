@@ -29,6 +29,8 @@ data class UserEditUiState(
     val canSaveEmail = email.isValidEmail()
     val canSaveGithubUrl = github == null || github.canSaveAsGithubUrl()
 
+    val useDefaultProfileImage get() = profileImageUrl == null && newProfileImage == null
+
     fun update(updater: (UserEditUiState) -> UserEditUiState) {
         onUpdate(updater(this))
     }

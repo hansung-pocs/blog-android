@@ -16,7 +16,11 @@ interface UserRemoteDataSource {
         password: String?,
         email: String,
         company: String?,
-        github: String?,
+        github: String?
+    ): Response<ResponseBody<Unit>>
+
+    suspend fun uploadProfileImage(
+        id: Int,
         profileImage: File?
     ): Response<ResponseBody<Unit>>
 

@@ -44,7 +44,8 @@ class FakeUserRepositoryImpl @Inject constructor() : UserRepository {
         email: String,
         company: String?,
         github: String?,
-        profileImage: File?
+        useDefaultProfileImage: Boolean,
+        newProfileImage: File?
     ): Result<Unit> {
         return updateUserResult
     }

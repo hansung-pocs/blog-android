@@ -4,11 +4,17 @@ import com.pocs.data.model.ResponseBody
 import com.pocs.data.model.user.UserDto
 import com.pocs.data.model.user.anonymous.AnonymousCreateInfoBody
 import com.pocs.data.source.UserRemoteDataSource
+import com.pocs.test_library.mock.errorResponse
+import com.pocs.test_library.mock.successResponse
 import retrofit2.Response
 import java.io.File
 import javax.inject.Inject
 
 class FakeUserRemoteDataSource @Inject constructor() : UserRemoteDataSource {
+
+    var updateUserResult = errorResponse<Unit>()
+    var uploadProfileImageCallBack : () -> Unit = {}
+
     override suspend fun getUserDetail(id: Int): Response<ResponseBody<UserDto>> {
         TODO("Not yet implemented")
     }
@@ -19,10 +25,17 @@ class FakeUserRemoteDataSource @Inject constructor() : UserRemoteDataSource {
         password: String?,
         email: String,
         company: String?,
-        github: String?,
+        github: String?
+    ): Response<ResponseBody<Unit>> {
+        return updateUserResult
+    }
+
+    override suspend fun uploadProfileImage(
+        id: Int,
         profileImage: File?
     ): Response<ResponseBody<Unit>> {
-        TODO("Not yet implemented")
+        uploadProfileImageCallBack.invoke()
+        return successResponse(Unit)
     }
 
     override suspend fun createAnonymous(AnonymousCreateInfoBody: AnonymousCreateInfoBody): Response<ResponseBody<Unit>> {

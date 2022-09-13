@@ -50,7 +50,8 @@ class UserEditViewModel @Inject constructor(
                 email = email,
                 company = company,
                 github = github,
-                profileImage = newProfileImage?.let {
+                useDefaultProfileImage = useDefaultProfileImage,
+                newProfileImage = newProfileImage?.let {
                     convertBitmapToFileUseCase(it, "userProfileImage.png")
                 }
             )

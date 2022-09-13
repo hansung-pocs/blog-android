@@ -7,6 +7,7 @@ import com.pocs.data.api.UserApi
 import com.pocs.data.extension.errorMessage
 import com.pocs.data.mapper.toDetailEntity
 import com.pocs.data.mapper.toDto
+import com.pocs.data.model.ResponseBody
 import com.pocs.data.paging.UserPagingSource
 import com.pocs.data.paging.UserPagingSource.Companion.PAGE_SIZE
 import com.pocs.data.source.UserRemoteDataSource
@@ -16,6 +17,7 @@ import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserListSortingMethod
 import com.pocs.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
+import retrofit2.Response
 import java.io.File
 import javax.inject.Inject
 
@@ -67,22 +69,45 @@ class UserRepositoryImpl @Inject constructor(
         email: String,
         company: String?,
         github: String?,
-        profileImage: File?
+        useDefaultProfileImage: Boolean,
+        newProfileImage: File?
     ): Result<Unit> {
+        if (useDefaultProfileImage) {
+            require(newProfileImage == null) { "기본 이미지로 변경하는 경우 newProfileImage은 null이어야 합니다." }
+        }
         return try {
-            val response = dataSource.updateUser(
+            val updateResponse = dataSource.updateUser(
                 id = id,
                 password = password,
                 name = name,
                 email = email,
                 company = company,
-                github = github,
-                profileImage = profileImage
+                github = github
             )
-            if (response.isSuccessful) {
+            var imageResponse: Response<ResponseBody<Unit>>? = null
+            if (newProfileImage != null) {
+                // 새로운 이미지 변경이 있을때만 새 파일과 함께 변경 요청을 보낸다.
+                imageResponse = dataSource.uploadProfileImage(
+                    id = id,
+                    profileImage = newProfileImage
+                )
+            } else if (useDefaultProfileImage) {
+                imageResponse = dataSource.uploadProfileImage(
+                    id = id,
+                    profileImage = null
+                )
+            }
+
+            if (updateResponse.isSuccessful && imageResponse?.isSuccessful != false) {
                 Result.success(Unit)
             } else {
-                throw Exception(response.errorMessage)
+                if (!updateResponse.isSuccessful) {
+                    throw Exception(updateResponse.errorMessage)
+                } else if (imageResponse?.isSuccessful == false) {
+                    throw Exception(imageResponse.errorMessage)
+                } else {
+                    throw Exception("유저 정보 업데이트 실패")
+                }
             }
         } catch (e: Exception) {
             Result.failure(e)

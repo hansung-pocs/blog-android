@@ -5,6 +5,7 @@ import com.pocs.data.model.user.anonymous.AnonymousCreateInfoBody
 import com.pocs.data.model.user.UserDto
 import com.pocs.data.model.user.UserListDto
 import com.pocs.data.model.user.UserListSortingMethodDto
+import com.pocs.data.model.user.UserUpdateBody
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -23,16 +24,17 @@ interface UserApi {
         @Path("userId") id: Int
     ): Response<ResponseBody<UserDto>>
 
-    @Multipart
     @PATCH("users/{userId}")
     suspend fun updateUser(
         @Path("userId") userId: Int,
-        @Part password: MultipartBody.Part?,
-        @Part name: MultipartBody.Part,
-        @Part email: MultipartBody.Part,
-        @Part github: MultipartBody.Part?,
-        @Part company: MultipartBody.Part?,
-        @Part profileImage: MultipartBody.Part?
+        @Body userUpdateBody: UserUpdateBody
+    ): Response<ResponseBody<Unit>>
+
+    @Multipart
+    @PATCH("users/{userId}/profile")
+    suspend fun uploadProfileImage(
+        @Path("userId") userId: Int,
+        @Part image: MultipartBody.Part?
     ): Response<ResponseBody<Unit>>
 
     @POST("users")

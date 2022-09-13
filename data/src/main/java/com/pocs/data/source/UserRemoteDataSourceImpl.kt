@@ -2,6 +2,7 @@ package com.pocs.data.source
 
 import com.pocs.data.api.UserApi
 import com.pocs.data.model.ResponseBody
+import com.pocs.data.model.user.UserUpdateBody
 import com.pocs.data.model.user.anonymous.AnonymousCreateInfoBody
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -22,23 +23,36 @@ class UserRemoteDataSourceImpl @Inject constructor(
         password: String?,
         email: String,
         company: String?,
-        github: String?,
-        profileImage: File?
+        github: String?
     ): Response<ResponseBody<Unit>> {
         return api.updateUser(
             userId = id,
-            password = password?.let { MultipartBody.Part.createFormData("password", it) },
-            name = MultipartBody.Part.createFormData("name", name),
-            email = MultipartBody.Part.createFormData("email", email),
-            github = github?.let { MultipartBody.Part.createFormData("github", it) },
-            company = company?.let { MultipartBody.Part.createFormData("company", it) },
-            profileImage = profileImage?.let {
-                MultipartBody.Part.createFormData(
-                    "profileImage",
-                    it.name,
-                    it.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-                )
-            },
+            userUpdateBody = UserUpdateBody(
+                password = password,
+                name = name,
+                email = email,
+                github = github,
+                company = company,
+            )
+        )
+    }
+
+    override suspend fun uploadProfileImage(
+        id: Int,
+        profileImage: File?
+    ): Response<ResponseBody<Unit>> {
+        val image = if (profileImage != null) {
+            MultipartBody.Part.createFormData(
+                IMAGE_KEY,
+                profileImage.name,
+                profileImage.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            )
+        } else {
+            MultipartBody.Part.createFormData(IMAGE_KEY, "")
+        }
+        return api.uploadProfileImage(
+            userId = id,
+            image = image
         )
     }
 
@@ -46,5 +60,9 @@ class UserRemoteDataSourceImpl @Inject constructor(
         AnonymousCreateInfoBody: AnonymousCreateInfoBody
     ): Response<ResponseBody<Unit>> {
         return api.createAnonymous(AnonymousCreateInfoBody)
+    }
+
+    companion object {
+        private const val IMAGE_KEY = "image"
     }
 }

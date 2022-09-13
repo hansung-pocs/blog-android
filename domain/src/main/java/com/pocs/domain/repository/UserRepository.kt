@@ -23,7 +23,8 @@ interface UserRepository {
         email: String,
         company: String?,
         github: String?,
-        profileImage: File?
+        useDefaultProfileImage: Boolean,
+        newProfileImage: File?
     ): Result<Unit>
 
     suspend fun createAnonymous(anonymousCreateInfo: AnonymousCreateInfo): Result<Unit>
