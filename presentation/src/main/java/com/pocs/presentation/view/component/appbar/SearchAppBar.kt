@@ -12,10 +12,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -40,7 +42,7 @@ fun SearchAppBar(
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-    var query by remember { mutableStateOf("") }
+    var query by rememberSaveable { mutableStateOf("") }
 
     LaunchedEffect(enabledSearchMode) {
         if (enabledSearchMode) {
@@ -119,7 +121,9 @@ private fun SearchTextField(
     onSearch: (String) -> Unit,
     onDebounce: (String) -> Unit
 ) {
-    val textStyle = MaterialTheme.typography.titleLarge
+    val textStyle = MaterialTheme.typography.titleLarge.copy(
+        color = MaterialTheme.colorScheme.onBackground
+    )
 
     LaunchedEffect(query) {
         if (query.isBlank() || query.length < MIN_USER_NAME_SEARCH_LEN) {
@@ -134,6 +138,7 @@ private fun SearchTextField(
             .focusRequester(focusRequester)
             .semantics { contentDescription = searchTextFieldContentDescription },
         textStyle = textStyle,
+        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
         value = query,
         onValueChange = {
             if (it.length >= 40) {
