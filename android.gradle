@@ -16,6 +16,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "SERVER_URL", apikeyProperties['SERVER_URL'])
+        buildConfigField("String", "IMAGE_URL_PREFIX", apikeyProperties['IMAGE_URL_PREFIX'])
     }
 
     buildTypes {

@@ -1,5 +1,7 @@
 package com.pocs.data.model.user
 
+import com.google.gson.annotations.SerializedName
+
 data class UserDefaultInfoDto(
     val name: String,
     val email: String,
@@ -7,5 +9,5 @@ data class UserDefaultInfoDto(
     val company: String? = null,
     val generation: Int,
     val github: String? = null,
-    val profileImageUrl: String? = null
+    @SerializedName("userProfilePath") val profilePath: String? = null
 )
