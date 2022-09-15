@@ -37,4 +37,6 @@ interface AuthRepository {
         company: String?,
         github: String?
     )
+
+    fun syncCurrentUserProfileImage(url: String?)
 }

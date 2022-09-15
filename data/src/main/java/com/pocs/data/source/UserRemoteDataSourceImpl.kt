@@ -2,6 +2,7 @@ package com.pocs.data.source
 
 import com.pocs.data.api.UserApi
 import com.pocs.data.model.ResponseBody
+import com.pocs.data.model.user.UserProfileUpdateResponse
 import com.pocs.data.model.user.UserUpdateBody
 import com.pocs.data.model.user.anonymous.AnonymousCreateInfoBody
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -40,7 +41,7 @@ class UserRemoteDataSourceImpl @Inject constructor(
     override suspend fun uploadProfileImage(
         id: Int,
         profileImage: File?
-    ): Response<ResponseBody<Unit>> {
+    ): Response<ResponseBody<UserProfileUpdateResponse>> {
         val image = if (profileImage != null) {
             MultipartBody.Part.createFormData(
                 IMAGE_KEY,

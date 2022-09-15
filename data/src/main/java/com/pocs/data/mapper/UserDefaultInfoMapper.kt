@@ -11,5 +11,9 @@ fun UserDefaultInfoDto.toEntity() = UserDefaultInfo(
     company = company,
     generation = generation,
     github = github,
-    profileImageUrl = profilePath?.let { BuildConfig.IMAGE_URL_PREFIX + it + ".png" }
+    profileImageUrl = profilePath?.toUserProfileImageUrl()
 )
+
+fun String.toUserProfileImageUrl(): String {
+    return this.let { BuildConfig.IMAGE_URL_PREFIX + it + ".png" }
+}

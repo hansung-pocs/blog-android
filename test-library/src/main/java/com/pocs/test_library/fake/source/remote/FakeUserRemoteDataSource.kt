@@ -2,6 +2,7 @@ package com.pocs.test_library.fake.source.remote
 
 import com.pocs.data.model.ResponseBody
 import com.pocs.data.model.user.UserDto
+import com.pocs.data.model.user.UserProfileUpdateResponse
 import com.pocs.data.model.user.anonymous.AnonymousCreateInfoBody
 import com.pocs.data.source.UserRemoteDataSource
 import com.pocs.test_library.mock.errorResponse
@@ -33,9 +34,9 @@ class FakeUserRemoteDataSource @Inject constructor() : UserRemoteDataSource {
     override suspend fun uploadProfileImage(
         id: Int,
         profileImage: File?
-    ): Response<ResponseBody<Unit>> {
+    ): Response<ResponseBody<UserProfileUpdateResponse>> {
         uploadProfileImageCallBack.invoke()
-        return successResponse(Unit)
+        return successResponse(UserProfileUpdateResponse(ok = true, userProfilePath = null))
     }
 
     override suspend fun createAnonymous(AnonymousCreateInfoBody: AnonymousCreateInfoBody): Response<ResponseBody<Unit>> {

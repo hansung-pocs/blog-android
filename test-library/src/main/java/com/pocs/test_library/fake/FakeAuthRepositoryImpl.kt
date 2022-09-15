@@ -51,4 +51,15 @@ class FakeAuthRepositoryImpl @Inject constructor() : AuthRepository {
             )
         }
     }
+
+    override fun syncCurrentUserProfileImage(url: String?) {
+        val currentUserStateValue = currentUser.value
+        if (currentUserStateValue != null) {
+            currentUser.value = currentUserStateValue.copy(
+                defaultInfo = currentUserStateValue.defaultInfo?.copy(
+                    profileImageUrl = url
+                )
+            )
+        }
+    }
 }

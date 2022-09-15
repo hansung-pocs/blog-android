@@ -2,11 +2,14 @@ package com.pocs.data
 
 import com.pocs.data.api.UserApi
 import com.pocs.data.repository.UserRepositoryImpl
+import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.source.remote.FakeUserRemoteDataSource
+import com.pocs.test_library.mock.mockMemberUserDetail
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 import retrofit2.Retrofit
 import java.io.File
@@ -16,13 +19,15 @@ import java.io.File
 class UserRepositoryTest {
 
     private val dataSource = FakeUserRemoteDataSource()
+    private val authRepository = FakeAuthRepositoryImpl()
 
     private val repository = UserRepositoryImpl(
         api = Retrofit.Builder()
             .baseUrl("https://www.google.com")
             .build()
             .create(UserApi::class.java),
-        dataSource = dataSource
+        dataSource = dataSource,
+        authRepository = authRepository
     )
 
     @Test
@@ -86,5 +91,25 @@ class UserRepositoryTest {
         )
 
         assertEquals(0, count)
+    }
+
+    @Test
+    fun shouldSyncUserProfileImage_WhenUpdateUserProfileAsDefaultImage() = runTest {
+        authRepository.currentUser.value = mockMemberUserDetail.copy(
+            defaultInfo = mockMemberUserDetail.defaultInfo?.copy(profileImageUrl = "url")
+        )
+
+        repository.updateUser(
+            id = 1,
+            password = null,
+            name = "name",
+            email = "dsifjovie@gmail.com",
+            company = null,
+            github = null,
+            useDefaultProfileImage = true,
+            newProfileImage = null
+        )
+
+        assertNull(authRepository.currentUser.value?.defaultInfo?.profileImageUrl)
     }
 }

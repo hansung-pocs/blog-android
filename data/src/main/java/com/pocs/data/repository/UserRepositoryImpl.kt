@@ -7,7 +7,9 @@ import com.pocs.data.api.UserApi
 import com.pocs.data.extension.errorMessage
 import com.pocs.data.mapper.toDetailEntity
 import com.pocs.data.mapper.toDto
+import com.pocs.data.mapper.toUserProfileImageUrl
 import com.pocs.data.model.ResponseBody
+import com.pocs.data.model.user.UserProfileUpdateResponse
 import com.pocs.data.paging.UserPagingSource
 import com.pocs.data.paging.UserPagingSource.Companion.PAGE_SIZE
 import com.pocs.data.source.UserRemoteDataSource
@@ -15,6 +17,7 @@ import com.pocs.domain.model.user.AnonymousCreateInfo
 import com.pocs.domain.model.user.User
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserListSortingMethod
+import com.pocs.domain.repository.AuthRepository
 import com.pocs.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
@@ -23,7 +26,8 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val api: UserApi,
-    private val dataSource: UserRemoteDataSource
+    private val dataSource: UserRemoteDataSource,
+    private val authRepository: AuthRepository
 ) : UserRepository {
 
     override fun getAll(sortingMethod: UserListSortingMethod): Flow<PagingData<User>> {
@@ -84,7 +88,7 @@ class UserRepositoryImpl @Inject constructor(
                 company = company,
                 github = github
             )
-            var imageResponse: Response<ResponseBody<Unit>>? = null
+            var imageResponse: Response<ResponseBody<UserProfileUpdateResponse>>? = null
             if (newProfileImage != null) {
                 // 새로운 이미지 변경이 있을때만 새 파일과 함께 변경 요청을 보낸다.
                 imageResponse = dataSource.uploadProfileImage(
@@ -96,6 +100,11 @@ class UserRepositoryImpl @Inject constructor(
                     id = id,
                     profileImage = null
                 )
+            }
+
+            if (imageResponse?.isSuccessful == true) {
+                val imageUrl = imageResponse.body()!!.data.userProfilePath?.toUserProfileImageUrl()
+                authRepository.syncCurrentUserProfileImage(imageUrl)
             }
 
             if (updateResponse.isSuccessful && imageResponse?.isSuccessful != false) {

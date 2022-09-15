@@ -30,8 +30,16 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideUserRepository(api: UserApi, dataSource: UserRemoteDataSource): UserRepository {
-        return UserRepositoryImpl(api = api, dataSource = dataSource)
+    fun provideUserRepository(
+        api: UserApi,
+        dataSource: UserRemoteDataSource,
+        authRepository: AuthRepository
+    ): UserRepository {
+        return UserRepositoryImpl(
+            api = api,
+            dataSource = dataSource,
+            authRepository = authRepository
+        )
     }
 
     @Singleton

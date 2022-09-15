@@ -2,6 +2,7 @@ package com.pocs.data.source
 
 import com.pocs.data.model.ResponseBody
 import com.pocs.data.model.user.UserDto
+import com.pocs.data.model.user.UserProfileUpdateResponse
 import com.pocs.data.model.user.anonymous.AnonymousCreateInfoBody
 import retrofit2.Response
 import java.io.File
@@ -22,7 +23,7 @@ interface UserRemoteDataSource {
     suspend fun uploadProfileImage(
         id: Int,
         profileImage: File?
-    ): Response<ResponseBody<Unit>>
+    ): Response<ResponseBody<UserProfileUpdateResponse>>
 
     suspend fun createAnonymous(AnonymousCreateInfoBody: AnonymousCreateInfoBody): Response<ResponseBody<Unit>>
 }
