@@ -108,4 +108,15 @@ class AuthRepositoryImpl @Inject constructor(
             )
         }
     }
+
+    override fun syncCurrentUserProfileImage(url: String?) {
+        val currentUserStateValue = currentUserState.value
+        if (currentUserStateValue != null) {
+            currentUserState.value = currentUserStateValue.copy(
+                defaultInfo = currentUserStateValue.defaultInfo?.copy(
+                    profileImageUrl = url
+                )
+            )
+        }
+    }
 }

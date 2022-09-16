@@ -6,6 +6,7 @@ import com.pocs.domain.model.user.User
 import com.pocs.domain.model.user.UserDetail
 import com.pocs.domain.model.user.UserListSortingMethod
 import kotlinx.coroutines.flow.Flow
+import java.io.File
 
 interface UserRepository {
 
@@ -21,7 +22,9 @@ interface UserRepository {
         name: String,
         email: String,
         company: String?,
-        github: String?
+        github: String?,
+        useDefaultProfileImage: Boolean,
+        newProfileImage: File?
     ): Result<Unit>
 
     suspend fun createAnonymous(anonymousCreateInfo: AnonymousCreateInfo): Result<Unit>

@@ -33,7 +33,9 @@ class UpdateUserUseCaseTest {
             name = updatedName,
             email = userDetail.defaultInfo!!.email,
             company = userDetail.defaultInfo!!.company,
-            github = userDetail.defaultInfo!!.github
+            github = userDetail.defaultInfo!!.github,
+            useDefaultProfileImage = false,
+            newProfileImage = null
         )
 
         assertEquals(updatedName, authRepository.currentUser.value?.defaultInfo!!.name)

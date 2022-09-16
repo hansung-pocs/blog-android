@@ -9,6 +9,7 @@ import com.pocs.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
+import java.io.File
 import javax.inject.Inject
 
 class FakeUserRepositoryImpl @Inject constructor() : UserRepository {
@@ -42,7 +43,9 @@ class FakeUserRepositoryImpl @Inject constructor() : UserRepository {
         name: String,
         email: String,
         company: String?,
-        github: String?
+        github: String?,
+        useDefaultProfileImage: Boolean,
+        newProfileImage: File?
     ): Result<Unit> {
         return updateUserResult
     }
