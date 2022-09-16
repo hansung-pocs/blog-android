@@ -15,5 +15,5 @@ fun UserDefaultInfoDto.toEntity() = UserDefaultInfo(
 )
 
 fun String.toUserProfileImageUrl(): String {
-    return this.let { BuildConfig.IMAGE_URL_PREFIX + it + ".png" }
+    return BuildConfig.IMAGE_URL_PREFIX + this + ".png"
 }
