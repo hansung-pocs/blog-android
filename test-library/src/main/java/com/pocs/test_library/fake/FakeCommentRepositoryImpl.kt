@@ -18,7 +18,11 @@ class FakeCommentRepositoryImpl @Inject constructor() : CommentRepository {
     var isSuccessToDelete = true
 
     override suspend fun getAllBy(postId: Int): Result<List<Comment>> {
-        return if (isSuccessToGetAllBy) Result.success(comments) else Result.failure(Exception("ee"))
+        return if (isSuccessToGetAllBy) {
+            Result.success(comments)
+        } else {
+            Result.failure(Exception("ee"))
+        }
     }
 
     override suspend fun add(content: String, postId: Int, parentId: Int?): Result<Unit> {

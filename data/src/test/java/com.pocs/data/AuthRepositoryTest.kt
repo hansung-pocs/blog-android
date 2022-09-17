@@ -5,8 +5,8 @@ import com.pocs.data.model.auth.AuthLocalData
 import com.pocs.data.model.auth.LoginResponseData
 import com.pocs.data.model.auth.SessionValidResponseData
 import com.pocs.data.repository.AuthRepositoryImpl
-import com.pocs.test_library.fake.source.remote.FakeAuthRemoteDataSource
 import com.pocs.test_library.fake.source.local.FakeAuthLocalDataSource
+import com.pocs.test_library.fake.source.remote.FakeAuthRemoteDataSource
 import com.pocs.test_library.mock.errorResponse
 import com.pocs.test_library.mock.mockUserDto
 import com.pocs.test_library.mock.successResponse
@@ -59,7 +59,9 @@ class AuthRepositoryTest {
     fun currentUserExists_WhenUserAlreadyLoggedInBefore() {
         val userDto = mockUserDto
         localDataSource.authLocalData = AuthLocalData("abc")
-        remoteDataSource.isSessionValidResponse = successResponse(SessionValidResponseData(mockUserDto))
+        remoteDataSource.isSessionValidResponse = successResponse(
+            SessionValidResponseData(mockUserDto)
+        )
 
         initRepository()
 
@@ -124,7 +126,9 @@ class AuthRepositoryTest {
     @Test
     fun currentUserIsNull_WhenLoggedOut() = runTest {
         localDataSource.authLocalData = AuthLocalData("abc")
-        remoteDataSource.isSessionValidResponse = successResponse(SessionValidResponseData(mockUserDto))
+        remoteDataSource.isSessionValidResponse = successResponse(
+            SessionValidResponseData(mockUserDto)
+        )
         remoteDataSource.logoutResponse = successResponse(Unit)
         initRepository()
 
@@ -138,7 +142,9 @@ class AuthRepositoryTest {
     @Test
     fun clearLocalAuthData_WhenLoggedOut() = runTest {
         localDataSource.authLocalData = AuthLocalData("abc")
-        remoteDataSource.isSessionValidResponse = successResponse(SessionValidResponseData(mockUserDto))
+        remoteDataSource.isSessionValidResponse = successResponse(
+            SessionValidResponseData(mockUserDto)
+        )
         remoteDataSource.logoutResponse = successResponse(Unit)
         initRepository()
 

@@ -54,7 +54,7 @@ class CommentRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 Result.success(Unit)
             } else {
-                throw  Exception(response.errorMessage)
+                throw Exception(response.errorMessage)
             }
         } catch (e: Exception) {
             Result.failure(e)

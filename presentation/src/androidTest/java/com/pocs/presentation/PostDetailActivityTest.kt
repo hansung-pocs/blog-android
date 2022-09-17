@@ -20,9 +20,9 @@ import com.pocs.domain.usecase.post.GetPostDetailUseCase
 import com.pocs.presentation.view.post.detail.PostDetailActivity
 import com.pocs.presentation.view.post.detail.PostDetailViewModel
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
+import com.pocs.test_library.fake.FakeCommentRepositoryImpl
 import com.pocs.test_library.fake.FakePostRepositoryImpl
 import com.pocs.test_library.mock.mockAdminUserDetail
-import com.pocs.test_library.fake.FakeCommentRepositoryImpl
 import com.pocs.test_library.mock.mockAnonymousUserDetail
 import com.pocs.test_library.mock.mockPostDetail1
 import dagger.hilt.android.testing.BindValue
@@ -149,7 +149,7 @@ class PostDetailActivityTest {
     }
 
     @Test
-    fun shouldDisableCommentAddButton_WhenCurrentUserIsAnonymousAndPostTypeIsQna_ButUserIsNotWriter() {
+    fun shouldDisableCommentAddButton_WhenUserIsAnonymousAndPostTypeIsQna_ButUserIsNotWriter() {
         val anonymousUser = mockAnonymousUserDetail
         val postDetail = mockPostDetail1.copy(
             category = PostCategory.QNA,

@@ -170,7 +170,11 @@ fun Comment(
                 Label(
                     imageVector = Icons.Outlined.Comment,
                     onClick = if (canAddReply) onReplyIconClick else null,
-                    label = if (uiState.childrenCount == 0) null else uiState.childrenCount.toString(),
+                    label = if (uiState.childrenCount == 0) {
+                        null
+                    } else {
+                        uiState.childrenCount.toString()
+                    },
                     contentDescription = stringResource(R.string.reply_count)
                 )
             }

@@ -31,13 +31,15 @@ class NetworkModule {
             .readTimeout(5, TimeUnit.SECONDS)
             .connectTimeout(5, TimeUnit.SECONDS)
             .writeTimeout(5, TimeUnit.SECONDS)
-            .addInterceptor(HttpLoggingInterceptor().apply {
-                this.level = if (BuildConfig.DEBUG) {
-                    HttpLoggingInterceptor.Level.BODY
-                } else {
-                    HttpLoggingInterceptor.Level.NONE
+            .addInterceptor(
+                HttpLoggingInterceptor().apply {
+                    this.level = if (BuildConfig.DEBUG) {
+                        HttpLoggingInterceptor.Level.BODY
+                    } else {
+                        HttpLoggingInterceptor.Level.NONE
+                    }
                 }
-            })
+            )
             .addInterceptor {
                 val authLocalData = authLocalDataSource.getData()
                 var newRequest = it.request()

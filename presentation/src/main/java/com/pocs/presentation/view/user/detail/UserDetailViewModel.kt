@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pocs.domain.usecase.admin.KickUserUseCase
 import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
-import com.pocs.domain.usecase.user.GetUserDetailUseCase
 import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
+import com.pocs.domain.usecase.user.GetUserDetailUseCase
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.user.UserDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel

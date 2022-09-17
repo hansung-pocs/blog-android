@@ -25,5 +25,7 @@ interface UserRemoteDataSource {
         profileImage: File?
     ): Response<ResponseBody<UserProfileUpdateResponse>>
 
-    suspend fun createAnonymous(AnonymousCreateInfoBody: AnonymousCreateInfoBody): Response<ResponseBody<Unit>>
+    suspend fun createAnonymous(
+        AnonymousCreateInfoBody: AnonymousCreateInfoBody
+    ): Response<ResponseBody<Unit>>
 }

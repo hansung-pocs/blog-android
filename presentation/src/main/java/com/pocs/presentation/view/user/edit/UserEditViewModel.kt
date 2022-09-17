@@ -4,10 +4,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.pocs.domain.usecase.util.ConvertBitmapToFileUseCase
 import com.pocs.domain.usecase.user.UpdateUserUseCase
-import com.pocs.presentation.model.user.item.UserDetailItemUiState
+import com.pocs.domain.usecase.util.ConvertBitmapToFileUseCase
 import com.pocs.presentation.model.user.UserEditUiState
+import com.pocs.presentation.model.user.item.UserDetailItemUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

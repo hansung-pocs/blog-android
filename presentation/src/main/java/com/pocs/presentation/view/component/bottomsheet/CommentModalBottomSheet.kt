@@ -58,7 +58,7 @@ private fun CommentTextField(
         hint = hint,
         value = value,
         onValueChange = onValueChange,
-        maxLength = 250,// TODO: 벡엔드에서 댓글 최대 길이 결정되면 수정하기
+        maxLength = 250, // TODO: 벡엔드에서 댓글 최대 길이 결정되면 수정하기
         trailingIcon = {
             if (showSendIcon) {
                 IconButton(onClick = { onSend(value.text) }) {
@@ -259,7 +259,7 @@ class CommentModalController {
 
     @VisibleForTesting
     val isCleared: Boolean
-        get() = textFieldValueState.value.text.isEmpty()
-                && parentId == null
-                && commentToBeUpdated == null
+        get() = textFieldValueState.value.text.isEmpty() &&
+            parentId == null &&
+            commentToBeUpdated == null
 }

@@ -21,7 +21,8 @@ inline fun <reified T : Fragment> launchFragmentInHiltContainer(
             HiltTestActivity::class.java
         )
     ).putExtra(
-        "androidx.fragment.app.testing.FragmentScenario.EmptyFragmentActivity.THEME_EXTRAS_BUNDLE_KEY",
+        "androidx.fragment.app.testing.FragmentScenario." +
+            "EmptyFragmentActivity.THEME_EXTRAS_BUNDLE_KEY",
         themeResId
     )
 

@@ -16,6 +16,6 @@ data class AnonymousCreateUiState(
     }
 
     val enableCreateButton: Boolean
-        get() = createInfo.userName.isNotEmpty()
-                && createInfo.password.length >= MIN_USER_PASSWORD_LEN
+        get() = createInfo.userName.isNotEmpty() &&
+            createInfo.password.length >= MIN_USER_PASSWORD_LEN
 }

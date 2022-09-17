@@ -11,7 +11,7 @@ data class PostUiState(
 ) {
     val visiblePostCategory: Boolean
         get() {
-            return selectedPostFilterType == PostFilterType.ALL
-                    || selectedPostFilterType == PostFilterType.BEST
+            return selectedPostFilterType == PostFilterType.ALL ||
+                selectedPostFilterType == PostFilterType.BEST
         }
 }

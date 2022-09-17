@@ -30,8 +30,11 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-  test:
-    name: Tests on Android (API level ${{ matrix.api-level }})
+      - name: Check Lint
+        run: ./gradlew ktlintCheck
+
+  ui-test:
+    name: UI tests on Android (API level ${{ matrix.api-level }})
     runs-on: macos-latest
     strategy:
       matrix:
@@ -53,9 +56,6 @@ jobs:
           cache: gradle
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
-
-      - name: Run Unit tests
-        run: ./gradlew test
 
       - name: Run UI test
         uses: reactivecircus/android-emulator-runner@v2

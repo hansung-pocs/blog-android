@@ -19,7 +19,9 @@ class FakeAuthRemoteDataSource @Inject constructor() : AuthRemoteDataSource {
 
     var isSessionValidInnerLambda: () -> Unit = {}
 
-    override suspend fun login(loginRequestBody: LoginRequestBody): Response<ResponseBody<LoginResponseData>> {
+    override suspend fun login(
+        loginRequestBody: LoginRequestBody
+    ): Response<ResponseBody<LoginResponseData>> {
         return loginResponse
     }
 

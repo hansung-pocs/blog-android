@@ -121,7 +121,13 @@ fun AdminUserCreateScreen(
             )
             PocsOutlineTextField(
                 value = createInfo.email,
-                label = stringResource(if (uiState.showEmailError) R.string.email_is_not_valid else R.string.email),
+                label = stringResource(
+                    if (uiState.showEmailError) {
+                        R.string.email_is_not_valid
+                    } else {
+                        R.string.email
+                    }
+                ),
                 isError = uiState.showEmailError,
                 maxLength = MAX_USER_EMAIL_LEN,
                 placeholder = stringResource(R.string.email_placeholder),
@@ -172,7 +178,13 @@ fun AdminUserCreateScreen(
             )
             PocsOutlineTextField(
                 value = createInfo.github,
-                label = stringResource(if (uiState.canSaveGithubUrl) R.string.github else R.string.github_url_is_not_valid),
+                label = stringResource(
+                    if (uiState.canSaveGithubUrl) {
+                        R.string.github
+                    } else {
+                        R.string.github_url_is_not_valid
+                    }
+                ),
                 isError = !uiState.canSaveGithubUrl,
                 maxLength = MAX_USER_GITHUB_LEN,
                 keyboardOptions = KeyboardOptions(

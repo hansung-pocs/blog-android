@@ -270,7 +270,6 @@ fun SettingScreenLoginPreview() {
 @Preview(showBackground = true)
 fun SettingUserTilePreview() {
     SettingUserTile(name = "홍길동", studentId = "1921034", profileImageUrl = null) {
-
     }
 }
 

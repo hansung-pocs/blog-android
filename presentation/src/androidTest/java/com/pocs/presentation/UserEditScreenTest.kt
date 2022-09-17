@@ -25,18 +25,20 @@ class UserEditScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private var mockUiState by mutableStateOf(UserEditUiState(
-        id = 1,
-        password = "",
-        name = "박민석",
-        email = "hello@gmiad.com",
-        profileImageUrl = null,
-        company = "google",
-        github = "https://github.com/user",
-        isInSaving = false,
-        onUpdate = ::onUpdate,
-        onSave = { Result.success(Unit) }
-    ))
+    private var mockUiState by mutableStateOf(
+        UserEditUiState(
+            id = 1,
+            password = "",
+            name = "박민석",
+            email = "hello@gmiad.com",
+            profileImageUrl = null,
+            company = "google",
+            github = "https://github.com/user",
+            isInSaving = false,
+            onUpdate = ::onUpdate,
+            onSave = { Result.success(Unit) }
+        )
+    )
 
     private lateinit var context: Context
 
@@ -221,7 +223,11 @@ class UserEditScreenTest {
         composeTestRule.run {
             setContent {
                 UserEditContent(
-                    uiState = mockUiState.copy(profileImageUrl = "https://user-images.githubusercontent.com/57604817/179393181-8521a33b-a344-4f12-afb5-7cb3e77c44f2.png"),
+                    uiState = mockUiState.copy(
+                        profileImageUrl = """
+https://user-images.githubusercontent.com/57604817/179393181-8521a33b-a344-4f12-afb5-7cb3e77c44f2.png
+                        """
+                    ),
                     snackBarHostState = remember { SnackbarHostState() },
                     navigateUp = {},
                     onSuccessToSave = {},

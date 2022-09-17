@@ -58,7 +58,11 @@ class AuthRepositoryImpl @Inject constructor(
                 val loginResponseData = response.body()!!.data
 
                 currentUserState.value = loginResponseData.user.toDetailEntity()
-                localDataSource.setData(AuthLocalData(sessionToken = loginResponseData.sessionToken))
+                localDataSource.setData(
+                    authLocalData = AuthLocalData(
+                        sessionToken = loginResponseData.sessionToken
+                    )
+                )
 
                 return Result.success(Unit)
             } else {

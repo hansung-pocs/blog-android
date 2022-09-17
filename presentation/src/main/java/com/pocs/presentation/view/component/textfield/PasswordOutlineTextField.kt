@@ -33,7 +33,9 @@ fun PasswordOutlineTextField(
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
     val showMinPasswordLengthError by rememberUpdatedState(
-        newValue = enableMinLengthError && password.isNotEmpty() && password.length < MIN_USER_PASSWORD_LEN
+        newValue = enableMinLengthError &&
+            password.isNotEmpty() &&
+            password.length < MIN_USER_PASSWORD_LEN
     )
 
     PocsOutlineTextField(

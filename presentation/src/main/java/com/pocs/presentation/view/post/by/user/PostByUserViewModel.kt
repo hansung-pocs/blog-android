@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PostByUserViewModel @Inject constructor(
     private val getAllPostsByUserUseCase: GetAllPostsByUserUseCase
-): ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PostByUserUiState())
     val uiState = _uiState.asStateFlow()

@@ -14,14 +14,14 @@ data class AdminUserCreateUiState(
     private val onUpdateCreateInfo: (UserCreateInfoUiState) -> Unit,
 ) {
     val canSave
-        get() : Boolean {
-            return createInfo.userName.isNotEmpty()
-                    && createInfo.password.length >= MIN_USER_PASSWORD_LEN
-                    && createInfo.name.isNotEmpty()
-                    && createInfo.studentId.isNotEmpty()
-                    && createInfo.generation.isNotEmpty()
-                    && canSaveEmail
-                    && canSaveGithubUrl
+        get(): Boolean {
+            return createInfo.userName.isNotEmpty() &&
+                createInfo.password.length >= MIN_USER_PASSWORD_LEN &&
+                createInfo.name.isNotEmpty() &&
+                createInfo.studentId.isNotEmpty() &&
+                createInfo.generation.isNotEmpty() &&
+                canSaveEmail &&
+                canSaveGithubUrl
         }
 
     private val canSaveEmail = createInfo.email.isValidEmail()

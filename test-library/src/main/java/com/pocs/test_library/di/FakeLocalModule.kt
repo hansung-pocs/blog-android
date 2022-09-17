@@ -18,5 +18,7 @@ abstract class FakeLocalModule {
 
     @Singleton
     @Binds
-    abstract fun provideAuthLocalDataSource(fakeAuthLocalDataSource: FakeAuthLocalDataSource): AuthLocalDataSource
+    abstract fun provideAuthLocalDataSource(
+        fakeAuthLocalDataSource: FakeAuthLocalDataSource
+    ): AuthLocalDataSource
 }

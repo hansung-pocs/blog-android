@@ -97,8 +97,9 @@ class PostDetailViewModel @Inject constructor(
                     UserType.ADMIN -> true
                     UserType.MEMBER -> true
                     // 익명 회원은 본인이 작성한 QnA 게시글에서만 댓글을 작성할 수 있다.
-                    UserType.ANONYMOUS -> postDetail.writer.id == currentUser.id
-                            && postDetail.category == PostCategory.QNA
+                    UserType.ANONYMOUS ->
+                        postDetail.writer.id == currentUser.id &&
+                            postDetail.category == PostCategory.QNA
                     null -> false
                 }
                 val comments = result.getOrNull()!!.map {
