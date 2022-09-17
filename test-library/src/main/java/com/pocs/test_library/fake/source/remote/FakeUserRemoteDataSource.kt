@@ -14,7 +14,7 @@ import javax.inject.Inject
 class FakeUserRemoteDataSource @Inject constructor() : UserRemoteDataSource {
 
     var updateUserResult = errorResponse<Unit>()
-    var uploadProfileImageCallBack : () -> Unit = {}
+    var uploadProfileImageCallBack: () -> Unit = {}
 
     override suspend fun getUserDetail(id: Int): Response<ResponseBody<UserDto>> {
         TODO("Not yet implemented")
@@ -39,7 +39,9 @@ class FakeUserRemoteDataSource @Inject constructor() : UserRemoteDataSource {
         return successResponse(UserProfileUpdateResponse(ok = true, userProfilePath = null))
     }
 
-    override suspend fun createAnonymous(AnonymousCreateInfoBody: AnonymousCreateInfoBody): Response<ResponseBody<Unit>> {
+    override suspend fun createAnonymous(
+        AnonymousCreateInfoBody: AnonymousCreateInfoBody
+    ): Response<ResponseBody<Unit>> {
         TODO("Not yet implemented")
     }
 }

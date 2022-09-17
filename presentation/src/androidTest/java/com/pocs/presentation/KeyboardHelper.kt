@@ -72,7 +72,7 @@ class KeyboardHelper(
     @RequiresApi(30)
     private fun isSoftwareKeyboardShownWithInsets(): Boolean {
         return view.rootWindowInsets != null &&
-                view.rootWindowInsets.isVisible(WindowInsets.Type.ime())
+            view.rootWindowInsets.isVisible(WindowInsets.Type.ime())
     }
 
     private fun isSoftwareKeyboardShownWithScreenHeight(): Boolean {

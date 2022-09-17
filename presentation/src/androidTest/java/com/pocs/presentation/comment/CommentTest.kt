@@ -1,11 +1,11 @@
 package com.pocs.presentation.comment
 
-import com.pocs.presentation.R
 import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
+import com.pocs.presentation.R
 import com.pocs.presentation.model.comment.item.CommentItemUiState
 import com.pocs.presentation.view.component.Comment
 import com.pocs.test_library.mock.mockComment
@@ -158,7 +158,7 @@ class CommentTest {
     }
 
     private fun findCommentContent(comment: CommentItemUiState): SemanticsNodeInteraction {
-        return  composeRule.onNodeWithText(comment.content)
+        return composeRule.onNodeWithText(comment.content)
     }
 
     private fun findReplyLabelButton(): SemanticsNodeInteraction {

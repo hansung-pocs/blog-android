@@ -174,5 +174,4 @@ private fun SearchTextField(
 @Preview
 @Composable
 fun SearchAppBarPreview() {
-
 }

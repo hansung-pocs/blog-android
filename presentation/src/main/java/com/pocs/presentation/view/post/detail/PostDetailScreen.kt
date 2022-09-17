@@ -90,7 +90,9 @@ fun PostDetailScreen(
 fun PostDetailContent(
     uiState: PostDetailUiState.Success,
     commentModalController: CommentModalController = remember { CommentModalController() },
-    optionModalController: OptionModalController<CommentItemUiState> = remember { OptionModalController() },
+    optionModalController: OptionModalController<CommentItemUiState> = remember {
+        OptionModalController()
+    },
     snackbarHostState: SnackbarHostState,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
@@ -124,7 +126,6 @@ fun PostDetailContent(
         )
     }
 
-
     CommentModalBottomSheet(
         controller = commentModalController,
         onCreated = onCommentCreated,
@@ -135,22 +136,26 @@ fun PostDetailContent(
             optionBuilder = { comment ->
                 val options = mutableListOf<Option<CommentItemUiState>>()
                 if (comment?.canEdit == true) {
-                    options.add(Option(
-                        imageVector = Icons.Default.Edit,
-                        stringResId = R.string.edit,
-                        onClick = {
-                            coroutineScope.launch {
-                                commentModalController.showForUpdate(it)
+                    options.add(
+                        Option(
+                            imageVector = Icons.Default.Edit,
+                            stringResId = R.string.edit,
+                            onClick = {
+                                coroutineScope.launch {
+                                    commentModalController.showForUpdate(it)
+                                }
                             }
-                        }
-                    ))
+                        )
+                    )
                 }
                 if (comment?.canDelete == true) {
-                    options.add(Option(
-                        imageVector = Icons.Default.Delete,
-                        stringResId = R.string.delete,
-                        onClick = { commentToBeDeleted = it }
-                    ))
+                    options.add(
+                        Option(
+                            imageVector = Icons.Default.Delete,
+                            stringResId = R.string.delete,
+                            onClick = { commentToBeDeleted = it }
+                        )
+                    )
                 }
                 return@OptionModalBottomSheet options
             }

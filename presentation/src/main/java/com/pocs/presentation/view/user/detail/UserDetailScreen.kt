@@ -23,14 +23,14 @@ import androidx.compose.ui.unit.dp
 import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.R
 import com.pocs.presentation.extension.RefreshStateContract
-import com.pocs.presentation.model.user.item.UserDetailItemUiState
 import com.pocs.presentation.model.user.UserDetailUiState
 import com.pocs.presentation.model.user.item.UserDefaultInfoUiState
-import com.pocs.presentation.view.component.UserProfileImage
-import com.pocs.presentation.view.component.button.AppBarBackButton
+import com.pocs.presentation.model.user.item.UserDetailItemUiState
 import com.pocs.presentation.view.component.FailureContent
 import com.pocs.presentation.view.component.LoadingContent
 import com.pocs.presentation.view.component.RecheckDialog
+import com.pocs.presentation.view.component.UserProfileImage
+import com.pocs.presentation.view.component.button.AppBarBackButton
 import com.pocs.presentation.view.component.button.DropdownButton
 import com.pocs.presentation.view.component.button.DropdownOption
 import com.pocs.presentation.view.post.by.user.PostByUserActivity

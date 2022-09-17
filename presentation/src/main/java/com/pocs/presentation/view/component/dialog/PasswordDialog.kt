@@ -70,7 +70,6 @@ private fun PasswordDialogContent(
     )
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun PasswordDialogContent() {

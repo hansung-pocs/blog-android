@@ -95,7 +95,7 @@ class LoginActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun navigateToAnonymousCreateActivity(){
+    private fun navigateToAnonymousCreateActivity() {
         val intent = AnonymousCreateActivity.getIntent(this)
         launcher?.launch(intent)
     }

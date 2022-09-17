@@ -79,10 +79,15 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
     }
 
     private fun initBottomNavigationView() {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(
-            topLevelDestinationIds = setOf(R.id.PostFragment, R.id.StudyFragment, R.id.QuestionFragment),
+            topLevelDestinationIds = setOf(
+                R.id.PostFragment,
+                R.id.StudyFragment,
+                R.id.QuestionFragment
+            ),
             drawerLayout = binding.drawerLayout,
             fallbackOnNavigateUpListener = ::onSupportNavigateUp
         )

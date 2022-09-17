@@ -10,7 +10,7 @@ import io.noties.markwon.*
 class PostViewHolder(
     private val binding: ItemPostBinding,
     private val onClickItem: (PostItemUiState) -> Unit,
-    private val markwon : Markwon
+    private val markwon: Markwon
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(uiState: PostItemUiState) = with(binding) {
@@ -30,7 +30,8 @@ class PostViewHolder(
             subtitleText += middleDot + uiState.writer
         }
         if (uiState.displayCategory) {
-            subtitleText += middleDot + root.context.getString(uiState.category.koreanStringResource)
+            val categoryString = root.context.getString(uiState.category.koreanStringResource)
+            subtitleText += middleDot + categoryString
         }
         subtitle.text = subtitleText
 

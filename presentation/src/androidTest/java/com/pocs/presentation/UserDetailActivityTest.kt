@@ -13,8 +13,8 @@ import com.pocs.domain.model.user.UserType
 import com.pocs.domain.usecase.admin.KickUserUseCase
 import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
-import com.pocs.domain.usecase.user.GetUserDetailUseCase
 import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
+import com.pocs.domain.usecase.user.GetUserDetailUseCase
 import com.pocs.presentation.extension.RESULT_REFRESH
 import com.pocs.presentation.model.user.UserDetailUiState
 import com.pocs.presentation.view.user.detail.UserDetailActivity
@@ -154,7 +154,7 @@ class UserDetailActivityTest {
         adminRepository.userDetailResult = Result.success(
             userDetail.copy(canceledAt = "2022-08-09")
         )
-        with (composeRule) {
+        with(composeRule) {
             onNodeWithContentDescription("더보기 버튼").performClick()
             onNodeWithText("강퇴하기").performClick()
             onNodeWithText("강퇴하기").performClick()

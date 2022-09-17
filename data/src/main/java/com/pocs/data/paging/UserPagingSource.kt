@@ -54,5 +54,4 @@ class UserPagingSource @Inject constructor(
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
-
 }

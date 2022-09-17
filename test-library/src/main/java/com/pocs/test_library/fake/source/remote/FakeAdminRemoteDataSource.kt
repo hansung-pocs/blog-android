@@ -9,11 +9,14 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class FakeAdminRemoteDataSource @Inject constructor() : AdminRemoteDataSource {
+
     override suspend fun getUserDetail(userId: Int): Response<ResponseBody<UserDto>> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun createUser(userCreateInfoBody: UserCreateInfoBody): Response<ResponseBody<Unit>> {
+    override suspend fun createUser(
+        userCreateInfoBody: UserCreateInfoBody
+    ): Response<ResponseBody<Unit>> {
         TODO("Not yet implemented")
     }
 

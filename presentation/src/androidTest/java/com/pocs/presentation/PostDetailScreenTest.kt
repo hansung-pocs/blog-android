@@ -143,7 +143,7 @@ class PostDetailScreenTest {
 
             onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
 
-            onNodeWithContentDescription(getString(R.string.comment_text_field)).assertIsDisplayed()
+            findCommentTextField().assertIsDisplayed()
         }
     }
 
@@ -293,7 +293,7 @@ class PostDetailScreenTest {
             }
 
             onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
-            onNodeWithContentDescription(getString(R.string.comment_text_field)).performTextInput("hi")
+            findCommentTextField().performTextInput("hi")
             onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
 
             onNodeWithText(getString(R.string.stop)).assertIsDisplayed()
@@ -318,11 +318,11 @@ class PostDetailScreenTest {
             }
 
             onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
-            onNodeWithContentDescription(getString(R.string.comment_text_field)).performTextInput("hi")
+            findCommentTextField().performTextInput("hi")
             onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
             onNodeWithText(getString(R.string.stop)).performClick()
 
-            onNodeWithContentDescription(getString(R.string.comment_text_field)).assertIsNotDisplayed()
+            findCommentTextField().assertIsNotDisplayed()
         }
     }
 
@@ -347,7 +347,7 @@ class PostDetailScreenTest {
             }
 
             onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
-            onNodeWithContentDescription(getString(R.string.comment_text_field)).performTextInput("hi")
+            findCommentTextField().performTextInput("hi")
             onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
             onNodeWithText(getString(R.string.stop)).performClick()
 
@@ -377,9 +377,7 @@ class PostDetailScreenTest {
 
             val text = "hello"
             onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
-            onNodeWithContentDescription(getString(R.string.comment_text_field)).performTextInput(
-                text
-            )
+            findCommentTextField().performTextInput(text)
             onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
 
             onNodeWithText(text).assertIsNotDisplayed()
@@ -438,9 +436,7 @@ class PostDetailScreenTest {
 
             val text = "hello"
             onNodeWithContentDescription(getString(R.string.comment_add_button)).performClick()
-            onNodeWithContentDescription(getString(R.string.comment_text_field)).performTextInput(
-                text
-            )
+            findCommentTextField().performTextInput(text)
             onNodeWithContentDescription(getString(R.string.send_comment)).performClick()
             mainClock.autoAdvance = false
             mainClock.advanceTimeByFrame() // trigger recomposition
@@ -487,7 +483,9 @@ class PostDetailScreenTest {
                     uiState = uiState.copy(
                         postDetail = mockPostDetail1.copy(
                             title = title,
-                            content = "t\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt"
+                            content = """
+t\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt\n\nt
+                            """
                         ).toUiState()
                     ),
                     snackbarHostState = snackbarHostState,
@@ -646,7 +644,8 @@ class PostDetailScreenTest {
                 )
             }
 
-            onNodeWithContentDescription(getString(R.string.comment_add_button)).assertIsNotEnabled()
+            onNodeWithContentDescription(getString(R.string.comment_add_button))
+                .assertIsNotEnabled()
         }
     }
 
@@ -736,5 +735,9 @@ class PostDetailScreenTest {
             }
             transparentNodes.isEmpty()
         }
+    }
+
+    private fun findCommentTextField(): SemanticsNodeInteraction {
+        return composeRule.onNodeWithContentDescription(getString(R.string.comment_text_field))
     }
 }

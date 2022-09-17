@@ -27,8 +27,8 @@ import androidx.core.graphics.ColorUtils
 import coil.ImageLoader
 import com.google.android.material.color.MaterialColors
 import com.pocs.presentation.extension.isDarkMode
-import com.pocs.presentation.extension.toDp
 import com.pocs.presentation.extension.syncLineHeight
+import com.pocs.presentation.extension.toDp
 import io.noties.markwon.*
 import io.noties.markwon.core.MarkwonTheme
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin

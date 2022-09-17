@@ -15,9 +15,9 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.constant.MAX_POST_TITLE_LEN
+import com.pocs.presentation.extension.assertSnackBarIsDisplayed
 import com.pocs.presentation.model.post.PostEditUiState
 import com.pocs.presentation.view.post.edit.PostEditScreen
-import com.pocs.presentation.extension.assertSnackBarIsDisplayed
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -219,11 +219,14 @@ class PostEditScreenTest {
     @Test
     fun shouldNotInputEnterCharacter_AtTitleTextField() {
         composeTestRule.setContent {
-            PostEditScreen(uiState = emptyUiState.copy(
-                onTitleChange = {
-                    assertEquals("hello", it)
-                }
-            ), {}) {}
+            PostEditScreen(
+                uiState = emptyUiState.copy(
+                    onTitleChange = {
+                        assertEquals("hello", it)
+                    }
+                ),
+                {}
+            ) {}
         }
 
         composeTestRule.onNodeWithContentDescription("제목 입력창").performTextInput("he\nll\no\n")
@@ -232,9 +235,12 @@ class PostEditScreenTest {
     @Test
     fun shouldLimitLengthOfTitle_WhenTypeTitle() {
         composeTestRule.setContent {
-            PostEditScreen(uiState = emptyUiState.copy(onTitleChange = {
-                assertTrue(it.length <= MAX_POST_TITLE_LEN)
-            }), {}) {}
+            PostEditScreen(
+                uiState = emptyUiState.copy(onTitleChange = {
+                    assertTrue(it.length <= MAX_POST_TITLE_LEN)
+                }),
+                {}
+            ) {}
         }
 
         val stringBuilder = StringBuilder()

@@ -36,7 +36,6 @@ class PostByUserActivityTest {
         GetAllPostsByUserUseCase(repository)
     )
 
-
     @Before
     fun setUp() {
         hiltRule.inject()

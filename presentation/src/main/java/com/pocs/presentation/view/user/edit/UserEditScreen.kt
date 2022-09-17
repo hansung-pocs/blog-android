@@ -32,8 +32,8 @@ import com.pocs.presentation.constant.*
 import com.pocs.presentation.extension.getImageSizeInMegaByte
 import com.pocs.presentation.extension.scaleDown
 import com.pocs.presentation.model.user.UserEditUiState
-import com.pocs.presentation.view.component.UserProfileImage
 import com.pocs.presentation.view.component.RecheckHandler
+import com.pocs.presentation.view.component.UserProfileImage
 import com.pocs.presentation.view.component.appbar.EditContentAppBar
 import com.pocs.presentation.view.component.textfield.PasswordOutlineTextField
 import com.pocs.presentation.view.component.textfield.PocsOutlineTextField
@@ -229,7 +229,13 @@ fun UserEditContent(
             )
             PocsOutlineTextField(
                 value = uiState.github ?: "",
-                label = stringResource(if (uiState.canSaveGithubUrl) R.string.github else R.string.github_url_is_not_valid),
+                label = stringResource(
+                    if (uiState.canSaveGithubUrl) {
+                        R.string.github
+                    } else {
+                        R.string.github_url_is_not_valid
+                    }
+                ),
                 isError = !uiState.canSaveGithubUrl,
                 maxLength = MAX_USER_GITHUB_LEN,
                 keyboardOptions = KeyboardOptions(

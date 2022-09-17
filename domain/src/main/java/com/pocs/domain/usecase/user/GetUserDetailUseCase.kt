@@ -21,7 +21,7 @@ class GetUserDetailUseCase @Inject constructor(
      * - [UserType.ANONYMOUS]: 열람할 권한이 없어 [Result.failure]를 반환한다.
      */
     suspend operator fun invoke(id: Int): Result<UserDetail> {
-        return when(getCurrentUserTypeUseCase()) {
+        return when (getCurrentUserTypeUseCase()) {
             UserType.ADMIN -> adminRepository.getUserDetail(id)
             UserType.MEMBER -> userRepository.getUserDetail(id)
             UserType.ANONYMOUS -> Result.failure(Exception("회원만 열람할 수 있습니다."))

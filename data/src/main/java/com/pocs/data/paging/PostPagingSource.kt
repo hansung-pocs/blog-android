@@ -48,5 +48,4 @@ class PostPagingSource @Inject constructor(
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
-
 }

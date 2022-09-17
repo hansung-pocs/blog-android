@@ -31,11 +31,13 @@ class AdminUserCreateScreenTest {
         type = UserType.MEMBER
     )
 
-    private var mockUiState by mutableStateOf(AdminUserCreateUiState(
-        onSave = {},
-        shownErrorMessage = {},
-        onUpdateCreateInfo = {}
-    ))
+    private var mockUiState by mutableStateOf(
+        AdminUserCreateUiState(
+            onSave = {},
+            shownErrorMessage = {},
+            onUpdateCreateInfo = {}
+        )
+    )
 
     @Test
     fun showSnackBar_WhenErrorMessageIsNotNull() {

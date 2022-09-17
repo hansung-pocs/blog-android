@@ -3,8 +3,8 @@ package com.pocs.presentation
 import com.pocs.domain.usecase.admin.KickUserUseCase
 import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.auth.GetCurrentUserUseCase
-import com.pocs.domain.usecase.user.GetUserDetailUseCase
 import com.pocs.domain.usecase.auth.IsCurrentUserAdminUseCase
+import com.pocs.domain.usecase.user.GetUserDetailUseCase
 import com.pocs.presentation.model.user.UserDetailUiState
 import com.pocs.presentation.view.user.detail.UserDetailViewModel
 import com.pocs.test_library.fake.FakeAdminRepositoryImpl

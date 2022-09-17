@@ -7,8 +7,8 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.pocs.domain.model.user.UserListSortingMethod
-import com.pocs.domain.usecase.user.GetAllUsersUseCase
 import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
+import com.pocs.domain.usecase.user.GetAllUsersUseCase
 import com.pocs.domain.usecase.user.SearchUserUseCase
 import com.pocs.presentation.R
 import com.pocs.presentation.constant.MIN_USER_NAME_SEARCH_LEN

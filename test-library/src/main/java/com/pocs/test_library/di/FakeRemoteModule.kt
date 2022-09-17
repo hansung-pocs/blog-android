@@ -18,21 +18,31 @@ abstract class FakeRemoteModule {
 
     @Singleton
     @Binds
-    abstract fun providePostRemoteDataSource(fakePostRemoteDataSource: FakePostRemoteDataSource): PostRemoteDataSource
+    abstract fun providePostRemoteDataSource(
+        fakePostRemoteDataSource: FakePostRemoteDataSource
+    ): PostRemoteDataSource
 
     @Singleton
     @Binds
-    abstract fun provideCommentRemoteDataSource(fakeCommentRemoteDataSource: FakeCommentRemoteDataSource): CommentRemoteDataSource
+    abstract fun provideCommentRemoteDataSource(
+        fakeCommentRemoteDataSource: FakeCommentRemoteDataSource
+    ): CommentRemoteDataSource
 
     @Singleton
     @Binds
-    abstract fun provideUserRemoteDataSource(fakeUserRemoteDataSource: FakeUserRemoteDataSource): UserRemoteDataSource
+    abstract fun provideUserRemoteDataSource(
+        fakeUserRemoteDataSource: FakeUserRemoteDataSource
+    ): UserRemoteDataSource
 
     @Singleton
     @Binds
-    abstract fun provideAdminRemoteDataSource(fakeAdminRemoteDataSource: FakeAdminRemoteDataSource): AdminRemoteDataSource
+    abstract fun provideAdminRemoteDataSource(
+        fakeAdminRemoteDataSource: FakeAdminRemoteDataSource
+    ): AdminRemoteDataSource
 
     @Singleton
     @Binds
-    abstract fun provideAuthRemoteDataSource(fakeAuthRemoteDataSource: FakeAuthRemoteDataSource): AuthRemoteDataSource
+    abstract fun provideAuthRemoteDataSource(
+        fakeAuthRemoteDataSource: FakeAuthRemoteDataSource
+    ): AuthRemoteDataSource
 }

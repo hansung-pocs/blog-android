@@ -3,8 +3,8 @@ package com.pocs.presentation
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
 import com.pocs.domain.model.user.UserListSortingMethod
-import com.pocs.domain.usecase.user.GetAllUsersUseCase
 import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
+import com.pocs.domain.usecase.user.GetAllUsersUseCase
 import com.pocs.domain.usecase.user.SearchUserUseCase
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.view.user.UserViewModel

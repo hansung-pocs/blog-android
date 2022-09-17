@@ -6,12 +6,12 @@ import com.pocs.domain.usecase.user.GetUserDetailUseCase
 import com.pocs.test_library.fake.FakeAdminRepositoryImpl
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
-import com.pocs.test_library.mock.mockKickedUserDetail
 import com.pocs.test_library.mock.mockAdminUserDetail
+import com.pocs.test_library.mock.mockKickedUserDetail
 import kotlinx.coroutines.runBlocking
-import org.junit.Test
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Test
 
 class GetUserDetailUseCaseTest {
 

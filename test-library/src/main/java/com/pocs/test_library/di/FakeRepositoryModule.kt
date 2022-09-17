@@ -4,9 +4,9 @@ import com.pocs.data.di.RepositoryModule
 import com.pocs.domain.repository.*
 import com.pocs.test_library.fake.FakeAdminRepositoryImpl
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
+import com.pocs.test_library.fake.FakeCommentRepositoryImpl
 import com.pocs.test_library.fake.FakePostRepositoryImpl
 import com.pocs.test_library.fake.FakeUserRepositoryImpl
-import com.pocs.test_library.fake.FakeCommentRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.components.SingletonComponent
@@ -22,21 +22,31 @@ abstract class FakeRepositoryModule {
 
     @Singleton
     @Binds
-    abstract fun providePostRepository(fakePostRepositoryImpl: FakePostRepositoryImpl): PostRepository
+    abstract fun providePostRepository(
+        fakePostRepositoryImpl: FakePostRepositoryImpl
+    ): PostRepository
 
     @Singleton
     @Binds
-    abstract fun provideCommentRepository(fakeCommentRepositoryImpl: FakeCommentRepositoryImpl): CommentRepository
+    abstract fun provideCommentRepository(
+        fakeCommentRepositoryImpl: FakeCommentRepositoryImpl
+    ): CommentRepository
 
     @Singleton
     @Binds
-    abstract fun provideUserRepository(fakeUserRepositoryImpl: FakeUserRepositoryImpl): UserRepository
+    abstract fun provideUserRepository(
+        fakeUserRepositoryImpl: FakeUserRepositoryImpl
+    ): UserRepository
 
     @Singleton
     @Binds
-    abstract fun provideAdminRepository(fakeAdminRepositoryImpl: FakeAdminRepositoryImpl): AdminRepository
+    abstract fun provideAdminRepository(
+        fakeAdminRepositoryImpl: FakeAdminRepositoryImpl
+    ): AdminRepository
 
     @Singleton
     @Binds
-    abstract fun provideAuthRepository(fakeAuthRepositoryImpl: FakeAuthRepositoryImpl): AuthRepository
+    abstract fun provideAuthRepository(
+        fakeAuthRepositoryImpl: FakeAuthRepositoryImpl
+    ): AuthRepository
 }

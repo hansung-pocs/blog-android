@@ -5,7 +5,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
 
-fun <T: Any> successResponse(data: T) : Response<ResponseBody<T>> {
+fun <T : Any> successResponse(data: T): Response<ResponseBody<T>> {
     return Response.success(
         ResponseBody(
             message = "",

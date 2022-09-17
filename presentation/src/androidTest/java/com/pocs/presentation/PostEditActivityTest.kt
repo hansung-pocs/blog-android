@@ -9,9 +9,9 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.pocs.domain.usecase.auth.GetCurrentUserTypeUseCase
 import com.pocs.domain.usecase.post.UpdatePostUseCase
 import com.pocs.presentation.extension.RESULT_REFRESH
+import com.pocs.presentation.extension.assertSnackBarIsDisplayed
 import com.pocs.presentation.view.post.edit.PostEditActivity
 import com.pocs.presentation.view.post.edit.PostEditViewModel
-import com.pocs.presentation.extension.assertSnackBarIsDisplayed
 import com.pocs.test_library.fake.FakeAuthRepositoryImpl
 import com.pocs.test_library.fake.FakePostRepositoryImpl
 import com.pocs.test_library.mock.mockAdminUserDetail
