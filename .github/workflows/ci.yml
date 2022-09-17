@@ -31,7 +31,7 @@ jobs:
         run: ./gradlew build
 
       - name: Check Lint
-        run: ./gradlew ktlintCkeck
+        run: ./gradlew ktlintCheck
 
   ui-test:
     name: UI tests on Android (API level ${{ matrix.api-level }})
