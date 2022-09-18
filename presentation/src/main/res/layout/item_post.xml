@@ -16,10 +16,10 @@
         style="?attr/textAppearanceLabelMedium"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="12dp"
         android:alpha="0.6"
         android:ellipsize="end"
         android:maxLines="1"
+        android:paddingBottom="12dp"
         android:textColor="?attr/colorOnBackground"
         app:layout_constraintBottom_toTopOf="@+id/title"
         app:layout_constraintTop_toTopOf="parent"
@@ -31,16 +31,16 @@
         style="?attr/textAppearanceTitleLarge"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textStyle="bold"
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="?attr/colorOnBackground"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/category"
         tools:text="이번주 공지사항입니다."
-        tools:textColor="@color/black"
-        tools:textSize="22sp" />
+        tools:textColor="@color/black" />
 
     <TextView
         android:id="@+id/content"
