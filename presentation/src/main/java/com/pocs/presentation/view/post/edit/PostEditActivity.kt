@@ -10,6 +10,7 @@ import androidx.core.view.WindowCompat
 import com.google.android.material.composethemeadapter3.Mdc3Theme
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
+import com.pocs.presentation.extension.getSerializableExtra
 import com.pocs.presentation.extension.setResultRefresh
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,15 +43,13 @@ class PostEditActivity : AppCompatActivity() {
 
         WindowCompat.setDecorFitsSystemWindows(window, true)
 
-        with(intent) {
-            viewModel.initUiState(
-                id = getIntExtra("id", -1),
-                title = getStringExtra("title")!!,
-                content = getStringExtra("content")!!,
-                category = intent.getSerializableExtra("category") as PostCategory,
-                onlyMember = getBooleanExtra("isMember", true)
-            )
-        }
+        viewModel.initUiState(
+            id = intent.getIntExtra("id", -1),
+            title = intent.getStringExtra("title")!!,
+            content = intent.getStringExtra("content")!!,
+            category = getSerializableExtra(this, "category", PostCategory::class.java),
+            onlyMember = intent.getBooleanExtra("isMember", true)
+        )
 
         setContent {
             Mdc3Theme(this) {

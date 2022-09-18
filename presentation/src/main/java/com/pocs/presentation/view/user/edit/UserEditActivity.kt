@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import com.google.android.material.composethemeadapter3.Mdc3Theme
 import com.pocs.presentation.R
+import com.pocs.presentation.extension.getSerializableExtra
 import com.pocs.presentation.extension.setResultRefresh
 import com.pocs.presentation.model.user.item.UserDetailItemUiState
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,7 +35,7 @@ class UserEditActivity : AppCompatActivity() {
 
         WindowCompat.setDecorFitsSystemWindows(window, true)
 
-        val userDetail = intent.getSerializableExtra("userDetail") as UserDetailItemUiState
+        val userDetail = getSerializableExtra(this, "userDetail", UserDetailItemUiState::class.java)
         viewModel.init(userDetail)
 
         setContent {
