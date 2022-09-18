@@ -8,7 +8,7 @@ import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
 import org.intellij.markdown.html.HtmlGenerator
 import org.intellij.markdown.parser.MarkdownParser
 
-private fun String.parseMarkdown() : String {
+private fun String.parseMarkdown(): String {
     val flavour = CommonMarkFlavourDescriptor()
     val parsedTree = MarkdownParser(flavour).buildMarkdownTreeFromString(this)
     val html = HtmlGenerator(this, parsedTree, flavour).generateHtml()
