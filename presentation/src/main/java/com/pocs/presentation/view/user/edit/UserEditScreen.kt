@@ -85,6 +85,7 @@ fun UserEditContent(
     ) { uri: Uri? ->
         if (uri != null) {
             var bitmap = if (Build.VERSION.SDK_INT < 28) {
+                @Suppress("DEPRECATION")
                 MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
             } else {
                 val source = ImageDecoder.createSource(context.contentResolver, uri)
