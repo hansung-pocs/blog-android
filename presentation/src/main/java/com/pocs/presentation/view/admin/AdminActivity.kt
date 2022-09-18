@@ -40,7 +40,7 @@ class AdminActivity : ViewBindingActivity<ActivityAdminBinding>() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         return true
     }
 
