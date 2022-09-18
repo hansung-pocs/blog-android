@@ -9,30 +9,46 @@
     android:clickable="true"
     android:focusable="true"
     android:paddingHorizontal="20dp"
-    android:paddingVertical="24dp">
+    android:paddingVertical="20dp">
+
+    <TextView
+        android:id="@+id/category"
+        style="?attr/textAppearanceLabelMedium"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="12dp"
+        android:alpha="0.6"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="?attr/colorOnBackground"
+        app:layout_constraintBottom_toTopOf="@+id/title"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="공지"
+        tools:textColor="@color/black" />
 
     <TextView
         android:id="@+id/title"
-        style="?attr/textAppearanceHeadlineSmall"
+        style="?attr/textAppearanceTitleLarge"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:textStyle="bold"
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="?attr/colorOnBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/category"
         tools:text="이번주 공지사항입니다."
         tools:textColor="@color/black"
-        tools:textSize="24sp" />
+        tools:textSize="22sp" />
 
     <TextView
         android:id="@+id/content"
         style="?attr/textAppearanceBodyMedium"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
-        android:alpha="0.6"
+        android:layout_marginTop="8dp"
+        android:alpha="0.7"
         android:ellipsize="end"
         android:maxLines="2"
         android:textColor="?attr/colorOnBackground"
@@ -42,17 +58,16 @@
 
     <TextView
         android:id="@+id/subtitle"
-        style="?attr/textAppearanceBodyMedium"
+        style="?attr/textAppearanceLabelMedium"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:alpha="0.6"
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="?attr/colorOnBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/content"
-        tools:layout_editor_absoluteX="24dp"
         tools:text="삭제됨 · 어제 · 관리자"
         tools:textColor="@color/black" />
 
