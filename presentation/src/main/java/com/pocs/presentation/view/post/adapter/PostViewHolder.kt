@@ -1,5 +1,6 @@
 package com.pocs.presentation.view.post.adapter
 
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ItemPostBinding
@@ -14,6 +15,11 @@ class PostViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(uiState: PostItemUiState) = with(binding) {
+        category.isVisible = uiState.displayCategory
+        if (uiState.displayCategory) {
+            category.text = root.context.getString(uiState.category.koreanStringResource)
+        }
+
         title.text = uiState.title
         // 마크다운 태그를 제거하기 위해서 사용한다. 게시글 목록에서는 제목을 강조하기 때문에 content는 마크다운 형식 없이
         // 보여야 한다. 그래서 마크다운 태그를 제거하고 있다.
@@ -28,10 +34,6 @@ class PostViewHolder(
         }
         if (uiState.writer != null) {
             subtitleText += middleDot + uiState.writer
-        }
-        if (uiState.displayCategory) {
-            val categoryString = root.context.getString(uiState.category.koreanStringResource)
-            subtitleText += middleDot + categoryString
         }
         subtitle.text = subtitleText
 
