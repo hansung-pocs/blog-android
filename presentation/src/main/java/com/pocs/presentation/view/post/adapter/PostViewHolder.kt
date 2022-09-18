@@ -1,7 +1,6 @@
 package com.pocs.presentation.view.post.adapter
 
 import androidx.core.view.isVisible
-import androidx.core.text.parseAsHtml
 import androidx.recyclerview.widget.RecyclerView
 import com.pocs.presentation.R
 import com.pocs.presentation.databinding.ItemPostBinding
