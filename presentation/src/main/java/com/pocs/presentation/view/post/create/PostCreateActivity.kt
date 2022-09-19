@@ -10,6 +10,7 @@ import androidx.core.view.WindowCompat
 import com.google.android.material.composethemeadapter3.Mdc3Theme
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
+import com.pocs.presentation.extension.getSerializableExtra
 import com.pocs.presentation.extension.setResultRefresh
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,7 +32,7 @@ class PostCreateActivity : AppCompatActivity() {
 
         WindowCompat.setDecorFitsSystemWindows(window, true)
 
-        val category = intent.getSerializableExtra("category") as PostCategory
+        val category = getSerializableExtra(this, "category", PostCategory::class.java)
         viewModel.initUiState(category = category)
 
         setContent {

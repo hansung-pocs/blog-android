@@ -81,7 +81,7 @@ class PostByUserActivity : ViewBindingActivity<ActivityPostByUserBinding>() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         return true
     }
 
