@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
@@ -70,8 +71,10 @@ class QuestionFragment : ViewBindingFragment<FragmentQuestionBinding>() {
         loadState.setListeners(adapter, refresh)
         adapter.registerObserverForScrollToTop(recyclerView)
 
-        fab.text = getString(R.string.write_question)
-        fab.setOnClickListener { startQuestionCreateActivity() }
+        with(getFloatingActionButton()) {
+            text = getString(R.string.write_question)
+            setOnClickListener { startQuestionCreateActivity() }
+        }
     }
 
     private fun onClickPost(postItemUiState: PostItemUiState) {
@@ -88,8 +91,12 @@ class QuestionFragment : ViewBindingFragment<FragmentQuestionBinding>() {
 
     private fun showSnackBar(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
-            anchorView = binding.fab
+            anchorView = getFloatingActionButton()
         }.show()
+    }
+
+    private fun getFloatingActionButton(): ExtendedFloatingActionButton {
+        return requireActivity().findViewById(R.id.fab)
     }
 
     private fun startQuestionCreateActivity() {

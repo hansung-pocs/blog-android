@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
@@ -71,13 +72,15 @@ class StudyFragment : ViewBindingFragment<FragmentPostBinding>() {
         loadState.setListeners(adapter, refresh)
         adapter.registerObserverForScrollToTop(recyclerView)
 
-        fab.text = getString(R.string.write_post)
-        fab.setOnClickListener { startPostCreateActivity() }
+        with(getFloatingActionButton()) {
+            text = getString(R.string.write_post)
+            setOnClickListener { startPostCreateActivity() }
+        }
     }
 
     private fun updateUi(uiState: StudyUiState, adapter: PostAdapter) {
         adapter.submitData(viewLifecycleOwner.lifecycle, uiState.pagingData)
-        binding.fab.isVisible = !uiState.isUserAnonymous
+        getFloatingActionButton().isVisible = !uiState.isUserAnonymous
     }
 
     private fun onClickPost(postItemUiState: PostItemUiState) {
@@ -88,11 +91,16 @@ class StudyFragment : ViewBindingFragment<FragmentPostBinding>() {
         launcher?.launch(intent)
     }
 
+    private fun getFloatingActionButton(): ExtendedFloatingActionButton {
+        return requireActivity().findViewById(R.id.fab)
+    }
+
     private fun showSnackBar(message: String) {
+        val floatingActionButton = getFloatingActionButton()
         // floating 버튼이 보일때는 버튼위에 띄우 안보일때는 bottom nav bar 위에 띄운다.
-        if (binding.fab.isVisible) {
+        if (floatingActionButton.isVisible) {
             Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
-                anchorView = binding.fab
+                anchorView = floatingActionButton
             }.show()
         } else {
             homeViewModel.showUserMessage(message)

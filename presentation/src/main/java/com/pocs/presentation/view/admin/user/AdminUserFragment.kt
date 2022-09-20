@@ -11,7 +11,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.pocs.presentation.R
 import com.pocs.presentation.base.ViewBindingFragment
 import com.pocs.presentation.databinding.FragmentAdminUserBinding
 import com.pocs.presentation.extension.RefreshStateContract
@@ -50,8 +52,6 @@ class AdminUserFragment : ViewBindingFragment<FragmentAdminUserBinding>() {
             loadState.setListeners(adapter, refresh)
             adapter.registerObserverForScrollToTop(recyclerView)
 
-            fab.setOnClickListener { startAdminUserCreateActivity() }
-
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.uiState.collect(::updateUi)
@@ -64,6 +64,14 @@ class AdminUserFragment : ViewBindingFragment<FragmentAdminUserBinding>() {
                 adapter.refresh()
                 it.message?.let { message -> showSnackBar(message) }
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        with(getFloatingActionButton()) {
+            text = getString(R.string.create_user)
+            setOnClickListener { startAdminUserCreateActivity() }
         }
     }
 
@@ -81,6 +89,10 @@ class AdminUserFragment : ViewBindingFragment<FragmentAdminUserBinding>() {
         adapter.submitData(viewLifecycleOwner.lifecycle, uiState.userPagingData)
     }
 
+    private fun getFloatingActionButton(): ExtendedFloatingActionButton {
+        return requireActivity().findViewById(R.id.fab)
+    }
+
     private fun startAdminUserCreateActivity() {
         val intent = AdminUserCreateActivity.getIntent(requireContext())
         launcher?.launch(intent)
@@ -88,7 +100,7 @@ class AdminUserFragment : ViewBindingFragment<FragmentAdminUserBinding>() {
 
     private fun showSnackBar(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
-            anchorView = binding.fab
+            anchorView = getFloatingActionButton()
         }.show()
     }
 }

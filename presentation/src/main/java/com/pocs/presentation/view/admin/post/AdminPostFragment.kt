@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
@@ -51,9 +52,6 @@ class AdminPostFragment : ViewBindingFragment<FragmentPostBinding>() {
             loadState.setListeners(adapter, refresh)
             adapter.registerObserverForScrollToTop(recyclerView)
 
-            fab.text = getString(R.string.write_notice)
-            fab.setOnClickListener { startPostCreateActivity() }
-
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.uiState.collect {
@@ -68,6 +66,14 @@ class AdminPostFragment : ViewBindingFragment<FragmentPostBinding>() {
                 adapter.refresh()
                 it.message?.let { message -> showSnackBar(message) }
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        with(getFloatingActionButton()) {
+            text = getString(R.string.write_notice)
+            setOnClickListener { startPostCreateActivity() }
         }
     }
 
@@ -88,9 +94,13 @@ class AdminPostFragment : ViewBindingFragment<FragmentPostBinding>() {
         launcher?.launch(intent)
     }
 
+    private fun getFloatingActionButton(): ExtendedFloatingActionButton {
+        return requireActivity().findViewById(R.id.fab)
+    }
+
     private fun showSnackBar(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
-            anchorView = binding.fab
+            anchorView = getFloatingActionButton()
         }.show()
     }
 

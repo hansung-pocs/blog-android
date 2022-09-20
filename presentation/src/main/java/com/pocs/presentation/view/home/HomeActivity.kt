@@ -45,7 +45,7 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        WindowCompat.setDecorFitsSystemWindows(window, true)
         super.onCreate(savedInstanceState)
 
         setSupportActionBar(binding.toolbar)
