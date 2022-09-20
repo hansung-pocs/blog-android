@@ -51,7 +51,7 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun login(userName: String, password: String): Result<Unit> {
         try {
             val response = remoteDataSource.login(
-                LoginRequestBody(username = userName, password = password)
+                LoginRequestBody(userName = userName, password = password)
             )
 
             if (response.isSuccessful) {
