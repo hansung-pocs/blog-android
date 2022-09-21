@@ -1,12 +1,12 @@
 package com.pocs.presentation
 
+import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.pocs.domain.usecase.admin.GetAllPostsAsAdminUseCase
-import com.pocs.presentation.view.admin.post.AdminPostFragment
+import com.pocs.presentation.view.admin.AdminActivity
 import com.pocs.presentation.view.admin.post.AdminPostViewModel
-import com.pocs.test_library.extension.launchFragmentInHiltContainer
 import com.pocs.test_library.fake.FakeAdminRepositoryImpl
 import com.pocs.test_library.mock.mockPost
 import dagger.hilt.android.testing.BindValue
@@ -39,7 +39,7 @@ class AdminPostFragmentTest {
         repository.postList = listOf(mockPost.copy(canceledAt = "2022-01-02"))
         initViewModel()
 
-        launchFragmentInHiltContainer<AdminPostFragment>(themeResId = R.style.Theme_PocsBlog)
+        launchActivity<AdminActivity>()
 
         onView(withSubstring("삭제됨")).check(matches(isDisplayed()))
     }
@@ -49,7 +49,7 @@ class AdminPostFragmentTest {
         repository.postList = listOf(mockPost.copy(canceledAt = null))
         initViewModel()
 
-        launchFragmentInHiltContainer<AdminPostFragment>(themeResId = R.style.Theme_PocsBlog)
+        launchActivity<AdminActivity>()
 
         onView(withSubstring("삭제됨")).check { _, noViewFoundException ->
             assertNotNull(noViewFoundException)

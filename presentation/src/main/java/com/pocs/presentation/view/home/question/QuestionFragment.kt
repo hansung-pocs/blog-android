@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.presentation.R
@@ -23,6 +24,7 @@ import com.pocs.presentation.extension.setListeners
 import com.pocs.presentation.model.post.item.PostItemUiState
 import com.pocs.presentation.model.question.QuestionUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
+import com.pocs.presentation.view.home.HomeActivity
 import com.pocs.presentation.view.post.adapter.PostAdapter
 import com.pocs.presentation.view.post.create.PostCreateActivity
 import com.pocs.presentation.view.post.detail.PostDetailActivity
@@ -40,9 +42,11 @@ class QuestionFragment : ViewBindingFragment<FragmentQuestionBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val extendedFab = requireActivity().findViewById<ExtendedFloatingActionButton>(R.id.fab)
         val adapter = PostAdapter(::onClickPost)
 
         initRecyclerView(adapter)
+        initExtendedFloatingActionButton(extendedFab)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -61,17 +65,25 @@ class QuestionFragment : ViewBindingFragment<FragmentQuestionBinding>() {
     }
 
     private fun initRecyclerView(adapter: PostAdapter) = with(binding) {
+        val activity = requireActivity() as HomeActivity
         recyclerView.adapter = adapter.withLoadStateFooter(
             PagingLoadStateAdapter { adapter.retry() }
         )
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.addDividerDecoration()
+        recyclerView.setOnScrollChangeListener(activity::onScrollChangeListener)
 
         loadState.setListeners(adapter, refresh)
         adapter.registerObserverForScrollToTop(recyclerView)
+    }
 
-        fab.text = getString(R.string.write_question)
-        fab.setOnClickListener { startQuestionCreateActivity() }
+    private fun initExtendedFloatingActionButton(
+        extendedFloatingActionButton: ExtendedFloatingActionButton
+    ) {
+        extendedFloatingActionButton.apply {
+            text = getString(R.string.write_question)
+            setOnClickListener { startQuestionCreateActivity() }
+        }
     }
 
     private fun onClickPost(postItemUiState: PostItemUiState) {
@@ -87,9 +99,7 @@ class QuestionFragment : ViewBindingFragment<FragmentQuestionBinding>() {
     }
 
     private fun showSnackBar(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
-            anchorView = binding.fab
-        }.show()
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun startQuestionCreateActivity() {

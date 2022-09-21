@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.composethemeadapter3.Mdc3Theme
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.pocs.domain.model.post.PostCategory
 import com.pocs.domain.model.post.PostFilterType
@@ -26,7 +27,7 @@ import com.pocs.presentation.model.post.PostUiState
 import com.pocs.presentation.model.post.item.PostItemUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
 import com.pocs.presentation.view.component.HorizontalChips
-import com.pocs.presentation.view.home.HomeViewModel
+import com.pocs.presentation.view.home.HomeActivity
 import com.pocs.presentation.view.post.adapter.PostAdapter
 import com.pocs.presentation.view.post.create.PostCreateActivity
 import com.pocs.presentation.view.post.detail.PostDetailActivity
@@ -38,22 +39,23 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
         get() = FragmentPostBinding::inflate
 
     private val postViewModel: PostViewModel by activityViewModels()
-    private val homeViewModel: HomeViewModel by activityViewModels()
 
     private var launcher: ActivityResultLauncher<Intent>? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val extendedFab = requireActivity().findViewById<ExtendedFloatingActionButton>(R.id.fab)
         val adapter = PostAdapter(::onClickPost)
 
         initRecyclerView(adapter)
+        initExtendedFloatingActionButton(extendedFab)
         initChips()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 postViewModel.uiState.collect {
-                    updateUi(it, adapter)
+                    updateUi(it, extendedFab, adapter)
                 }
             }
         }
@@ -67,17 +69,16 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
     }
 
     private fun initRecyclerView(adapter: PostAdapter) = with(binding) {
+        val activity = requireActivity() as HomeActivity
         recyclerView.adapter = adapter.withLoadStateFooter(
             PagingLoadStateAdapter { adapter.retry() }
         )
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.addDividerDecoration()
+        recyclerView.setOnScrollChangeListener(activity::onScrollChangeListener)
 
         loadState.setListeners(adapter, refresh)
         adapter.registerObserverForScrollToTop(recyclerView, whenItemRangeMoved = true)
-
-        fab.text = getString(R.string.write_post)
-        fab.setOnClickListener { startPostCreateActivity() }
     }
 
     private fun initChips() {
@@ -99,9 +100,22 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
         }
     }
 
-    private fun updateUi(uiState: PostUiState, adapter: PostAdapter) {
+    private fun initExtendedFloatingActionButton(
+        extendedFloatingActionButton: ExtendedFloatingActionButton
+    ) {
+        extendedFloatingActionButton.apply {
+            text = getString(R.string.write_post)
+            setOnClickListener { startPostCreateActivity() }
+        }
+    }
+
+    private fun updateUi(
+        uiState: PostUiState,
+        extendedFloatingActionButton: ExtendedFloatingActionButton,
+        adapter: PostAdapter
+    ) {
         adapter.submitData(viewLifecycleOwner.lifecycle, uiState.pagingData)
-        binding.fab.isVisible = !uiState.isUserAnonymous
+        extendedFloatingActionButton.isVisible = !uiState.isUserAnonymous
     }
 
     private fun onClickPost(postItemUiState: PostItemUiState) {
@@ -112,15 +126,12 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
         launcher?.launch(intent)
     }
 
+    private fun View.findFloatingActionButton(): ExtendedFloatingActionButton {
+        return this.findViewById(R.id.fab)
+    }
+
     private fun showSnackBar(message: String) {
-        // floating 버튼이 보일때는 버튼위에 띄우 안보일때는 bottom nav bar 위에 띄운다.
-        if (binding.fab.isVisible) {
-            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
-                anchorView = binding.fab
-            }.show()
-        } else {
-            homeViewModel.showUserMessage(message)
-        }
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun startPostCreateActivity() {

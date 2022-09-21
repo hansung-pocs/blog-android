@@ -17,7 +17,8 @@
         </activity>
         <activity
             android:name=".view.admin.AdminActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.PocsBlog" />
         <activity
             android:name=".view.admin.user.create.AdminUserCreateActivity"
             android:exported="false"

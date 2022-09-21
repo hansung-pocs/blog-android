@@ -7,7 +7,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,12 +18,4 @@ class HomeViewModel @Inject constructor(
         HomeUiState(currentUserType = getCurrentUserTypeUseCase())
     )
     val uiState: StateFlow<HomeUiState> get() = _uiState.asStateFlow()
-
-    fun showUserMessage(message: String) {
-        _uiState.update { it.copy(userMessage = message) }
-    }
-
-    fun userMessageShown() {
-        _uiState.update { it.copy(userMessage = null) }
-    }
 }
