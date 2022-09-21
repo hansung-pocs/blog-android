@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.core.view.WindowCompat
 import androidx.navigation.findNavController
@@ -116,5 +117,20 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun onScrollChangeListener(
+        v: View,
+        scrollX: Int,
+        scrollY: Int,
+        oldScrollX: Int,
+        oldScrollY: Int
+    ) {
+        if (scrollY > oldScrollY) {
+            binding.fab.shrink()
+        } else {
+            binding.fab.extend()
+        }
     }
 }

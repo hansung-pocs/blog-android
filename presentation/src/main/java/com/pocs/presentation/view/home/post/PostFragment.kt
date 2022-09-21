@@ -27,6 +27,7 @@ import com.pocs.presentation.model.post.PostUiState
 import com.pocs.presentation.model.post.item.PostItemUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
 import com.pocs.presentation.view.component.HorizontalChips
+import com.pocs.presentation.view.home.HomeActivity
 import com.pocs.presentation.view.post.adapter.PostAdapter
 import com.pocs.presentation.view.post.create.PostCreateActivity
 import com.pocs.presentation.view.post.detail.PostDetailActivity
@@ -66,11 +67,13 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
     }
 
     private fun initRecyclerView(adapter: PostAdapter) = with(binding) {
+        val activity = requireActivity() as HomeActivity
         recyclerView.adapter = adapter.withLoadStateFooter(
             PagingLoadStateAdapter { adapter.retry() }
         )
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.addDividerDecoration()
+        recyclerView.setOnScrollChangeListener(activity::onScrollChangeListener)
 
         loadState.setListeners(adapter, refresh)
         adapter.registerObserverForScrollToTop(recyclerView, whenItemRangeMoved = true)
