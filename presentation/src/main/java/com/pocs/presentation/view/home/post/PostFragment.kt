@@ -27,7 +27,6 @@ import com.pocs.presentation.model.post.PostUiState
 import com.pocs.presentation.model.post.item.PostItemUiState
 import com.pocs.presentation.paging.PagingLoadStateAdapter
 import com.pocs.presentation.view.component.HorizontalChips
-import com.pocs.presentation.view.home.HomeViewModel
 import com.pocs.presentation.view.post.adapter.PostAdapter
 import com.pocs.presentation.view.post.create.PostCreateActivity
 import com.pocs.presentation.view.post.detail.PostDetailActivity
@@ -39,7 +38,6 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
         get() = FragmentPostBinding::inflate
 
     private val postViewModel: PostViewModel by activityViewModels()
-    private val homeViewModel: HomeViewModel by activityViewModels()
 
     private var launcher: ActivityResultLauncher<Intent>? = null
 
@@ -120,15 +118,7 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
     }
 
     private fun showSnackBar(message: String) {
-        val floatingActionButton = getFloatingActionButton()
-        // floating 버튼이 보일때는 버튼위에 띄우 안보일때는 bottom nav bar 위에 띄운다.
-        if (floatingActionButton.isVisible) {
-            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
-                anchorView = floatingActionButton
-            }.show()
-        } else {
-            homeViewModel.showUserMessage(message)
-        }
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun startPostCreateActivity() {

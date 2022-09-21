@@ -90,9 +90,7 @@ class QuestionFragment : ViewBindingFragment<FragmentQuestionBinding>() {
     }
 
     private fun showSnackBar(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).apply {
-            anchorView = getFloatingActionButton()
-        }.show()
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun getFloatingActionButton(): ExtendedFloatingActionButton {
