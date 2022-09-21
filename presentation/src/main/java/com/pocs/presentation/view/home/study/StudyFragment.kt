@@ -41,14 +41,16 @@ class StudyFragment : ViewBindingFragment<FragmentPostBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val extendedFab = requireActivity().findViewById<ExtendedFloatingActionButton>(R.id.fab)
         val adapter = PostAdapter(::onClickPost)
 
         initRecyclerView(adapter)
+        initExtendedFloatingActionButton(extendedFab)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 studyViewModel.uiState.collect {
-                    updateUi(it, adapter)
+                    updateUi(it, extendedFab, adapter)
                 }
             }
         }
@@ -72,16 +74,24 @@ class StudyFragment : ViewBindingFragment<FragmentPostBinding>() {
 
         loadState.setListeners(adapter, refresh)
         adapter.registerObserverForScrollToTop(recyclerView)
+    }
 
-        with(getFloatingActionButton()) {
+    private fun initExtendedFloatingActionButton(
+        extendedFloatingActionButton: ExtendedFloatingActionButton
+    ) {
+        extendedFloatingActionButton.apply {
             text = getString(R.string.write_post)
             setOnClickListener { startPostCreateActivity() }
         }
     }
 
-    private fun updateUi(uiState: StudyUiState, adapter: PostAdapter) {
+    private fun updateUi(
+        uiState: StudyUiState,
+        extendedFloatingActionButton: ExtendedFloatingActionButton,
+        adapter: PostAdapter
+    ) {
         adapter.submitData(viewLifecycleOwner.lifecycle, uiState.pagingData)
-        getFloatingActionButton().isVisible = !uiState.isUserAnonymous
+        extendedFloatingActionButton.isVisible = !uiState.isUserAnonymous
     }
 
     private fun onClickPost(postItemUiState: PostItemUiState) {
@@ -90,10 +100,6 @@ class StudyFragment : ViewBindingFragment<FragmentPostBinding>() {
             id = postItemUiState.id
         )
         launcher?.launch(intent)
-    }
-
-    private fun getFloatingActionButton(): ExtendedFloatingActionButton {
-        return requireActivity().findViewById(R.id.fab)
     }
 
     private fun showSnackBar(message: String) {

@@ -42,9 +42,11 @@ class QuestionFragment : ViewBindingFragment<FragmentQuestionBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val extendedFab = requireActivity().findViewById<ExtendedFloatingActionButton>(R.id.fab)
         val adapter = PostAdapter(::onClickPost)
 
         initRecyclerView(adapter)
+        initExtendedFloatingActionButton(extendedFab)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -73,8 +75,12 @@ class QuestionFragment : ViewBindingFragment<FragmentQuestionBinding>() {
 
         loadState.setListeners(adapter, refresh)
         adapter.registerObserverForScrollToTop(recyclerView)
+    }
 
-        with(getFloatingActionButton()) {
+    private fun initExtendedFloatingActionButton(
+        extendedFloatingActionButton: ExtendedFloatingActionButton
+    ) {
+        extendedFloatingActionButton.apply {
             text = getString(R.string.write_question)
             setOnClickListener { startQuestionCreateActivity() }
         }
@@ -94,10 +100,6 @@ class QuestionFragment : ViewBindingFragment<FragmentQuestionBinding>() {
 
     private fun showSnackBar(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
-    }
-
-    private fun getFloatingActionButton(): ExtendedFloatingActionButton {
-        return requireActivity().findViewById(R.id.fab)
     }
 
     private fun startQuestionCreateActivity() {
