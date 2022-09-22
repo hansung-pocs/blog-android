@@ -2,6 +2,7 @@ package com.pocs.presentation
 
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.DrawerActions
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -79,6 +80,17 @@ class HomeActivityTest {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open())
 
         onView(withId(R.id.action_user_list)).check(matches(isEnabled()))
+    }
+
+    @Test
+    fun shouldShowFloatingActionButton_WhenTabIsQuestionAndCurrentUserIsAnonymous() {
+        authRepository.currentUser.value = mockAnonymousUserDetail
+        initViewModels()
+        launchActivity<HomeActivity>()
+
+        onView(withId(R.id.QuestionFragment)).perform(click())
+
+        onView(withId(R.id.fab)).check(matches(isDisplayed()))
     }
 
     private fun initViewModels() {
