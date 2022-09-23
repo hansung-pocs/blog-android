@@ -38,7 +38,7 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentPostBinding
         get() = FragmentPostBinding::inflate
 
-    private val postViewModel: PostViewModel by activityViewModels()
+    private val viewModel: PostViewModel by activityViewModels()
 
     private var launcher: ActivityResultLauncher<Intent>? = null
 
@@ -54,8 +54,8 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                postViewModel.uiState.collect {
-                    updateUi(it, extendedFab, adapter)
+                viewModel.uiState.collect {
+                    updateUi(it, adapter)
                 }
             }
         }
@@ -88,13 +88,13 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
         }
         binding.chips.setContent {
             Mdc3Theme {
-                val uiState = postViewModel.uiState.collectAsState()
+                val uiState = viewModel.uiState.collectAsState()
 
                 HorizontalChips(
                     items = items,
                     itemLabelBuilder = { stringResource(id = it.koreanStringResource) },
                     selectedItem = uiState.value.selectedPostFilterType,
-                    onItemClick = postViewModel::updatePostFilterType
+                    onItemClick = viewModel::updatePostFilterType
                 )
             }
         }
@@ -104,18 +104,14 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
         extendedFloatingActionButton: ExtendedFloatingActionButton
     ) {
         extendedFloatingActionButton.apply {
+            isVisible = !viewModel.uiState.value.isUserAnonymous
             text = getString(R.string.write_post)
             setOnClickListener { startPostCreateActivity() }
         }
     }
 
-    private fun updateUi(
-        uiState: PostUiState,
-        extendedFloatingActionButton: ExtendedFloatingActionButton,
-        adapter: PostAdapter
-    ) {
+    private fun updateUi(uiState: PostUiState, adapter: PostAdapter) {
         adapter.submitData(viewLifecycleOwner.lifecycle, uiState.pagingData)
-        extendedFloatingActionButton.isVisible = !uiState.isUserAnonymous
     }
 
     private fun onClickPost(postItemUiState: PostItemUiState) {
@@ -124,10 +120,6 @@ class PostFragment : ViewBindingFragment<FragmentPostBinding>() {
             id = postItemUiState.id
         )
         launcher?.launch(intent)
-    }
-
-    private fun View.findFloatingActionButton(): ExtendedFloatingActionButton {
-        return this.findViewById(R.id.fab)
     }
 
     private fun showSnackBar(message: String) {

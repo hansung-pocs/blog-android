@@ -34,7 +34,7 @@ class StudyFragment : ViewBindingFragment<FragmentPostBinding>() {
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentPostBinding
         get() = FragmentPostBinding::inflate
 
-    private val studyViewModel: StudyViewModel by activityViewModels()
+    private val viewModel: StudyViewModel by activityViewModels()
 
     private var launcher: ActivityResultLauncher<Intent>? = null
 
@@ -49,8 +49,8 @@ class StudyFragment : ViewBindingFragment<FragmentPostBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                studyViewModel.uiState.collect {
-                    updateUi(it, extendedFab, adapter)
+                viewModel.uiState.collect {
+                    updateUi(it, adapter)
                 }
             }
         }
@@ -80,18 +80,14 @@ class StudyFragment : ViewBindingFragment<FragmentPostBinding>() {
         extendedFloatingActionButton: ExtendedFloatingActionButton
     ) {
         extendedFloatingActionButton.apply {
+            isVisible = !viewModel.uiState.value.isUserAnonymous
             text = getString(R.string.write_post)
             setOnClickListener { startPostCreateActivity() }
         }
     }
 
-    private fun updateUi(
-        uiState: StudyUiState,
-        extendedFloatingActionButton: ExtendedFloatingActionButton,
-        adapter: PostAdapter
-    ) {
+    private fun updateUi(uiState: StudyUiState, adapter: PostAdapter) {
         adapter.submitData(viewLifecycleOwner.lifecycle, uiState.pagingData)
-        extendedFloatingActionButton.isVisible = !uiState.isUserAnonymous
     }
 
     private fun onClickPost(postItemUiState: PostItemUiState) {

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -81,6 +82,7 @@ class QuestionFragment : ViewBindingFragment<FragmentQuestionBinding>() {
         extendedFloatingActionButton: ExtendedFloatingActionButton
     ) {
         extendedFloatingActionButton.apply {
+            isVisible = true
             text = getString(R.string.write_question)
             setOnClickListener { startQuestionCreateActivity() }
         }
