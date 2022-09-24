@@ -17,9 +17,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.R
 import com.pocs.presentation.extension.RefreshStateContract
@@ -271,7 +273,7 @@ fun MemberUserInfoList(
 ) {
     LazyColumn(
         modifier = modifier
-            .padding(horizontal = 24.dp)
+            .padding(horizontal = 32.dp)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -348,23 +350,21 @@ fun UserInfoContainer(label: String, annotatedString: AnnotatedString) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
+            .padding(vertical = 12.dp)
     ) {
         val uriHandler = LocalUriHandler.current
+        val textStyle = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp)
+        val onBackgroundColor = MaterialTheme.colorScheme.onBackground
 
         Text(
             label,
-            modifier = Modifier.fillMaxWidth(0.3f),
-            style = MaterialTheme.typography.bodyMedium.copy(
-                color = MaterialTheme.colorScheme.onBackground
-            )
+            style = textStyle.copy(color = onBackgroundColor.copy(alpha = 0.6f))
         )
+        Spacer(modifier = Modifier.width(16.dp))
         ClickableText(
             annotatedString,
-            modifier = Modifier.fillMaxWidth(0.7f),
-            style = MaterialTheme.typography.bodyMedium.copy(
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
-            ),
+            modifier = Modifier.fillMaxWidth(),
+            style = textStyle.copy(color = onBackgroundColor, textAlign = TextAlign.End),
             onClick = { offset ->
                 annotatedString.getStringAnnotations(
                     tag = URL_TAG,
