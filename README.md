@@ -4,13 +4,13 @@
 
 # 스크린샷
 
-| 홈                                          | 게시글                                        | 회원프로필                                                      |
-|--------------------------------------------|--------------------------------------------|------------------------------------------------------------|
-| ![home](./screenshots/screenshot_home.jpg) | ![post](./screenshots/screenshot_post.jpg) | ![user_profile](./screenshots/screenshot_user_profile.jpg) |
+| 홈                                   | 게시글                                 | 회원프로필                                               |
+|-------------------------------------|-------------------------------------|-----------------------------------------------------|
+| ![home](images/screenshot_home.jpg) | ![post](images/screenshot_post.jpg) | ![user_profile](images/screenshot_user_profile.jpg) |
 
-| 로그인                                          | 관리자                                          | 게시글작성                                                |
-|----------------------------------------------|----------------------------------------------|------------------------------------------------------|
-| ![login](./screenshots/screenshot_login.png) | ![admin](./screenshots/screenshot_admin.png) | ![edit_post](./screenshots/screenshot_edit_post.png) |
+| 로그인                                   | 관리자                                   | 게시글작성                                         |
+|---------------------------------------|---------------------------------------|-----------------------------------------------|
+| ![login](images/screenshot_login.png) | ![admin](images/screenshot_admin.png) | ![edit_post](images/screenshot_edit_post.png) |
 
 # 기술
 
