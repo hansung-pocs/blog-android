@@ -12,6 +12,10 @@
 |---------------------------------------|---------------------------------------|-----------------------------------------------|
 | ![login](images/screenshot_login.png) | ![admin](images/screenshot_admin.png) | ![edit_post](images/screenshot_edit_post.png) |
 
+# 아키텍처
+
+![architecture](images/architecture.png)
+
 # 기술
 
 - Coroutine
