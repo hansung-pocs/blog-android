@@ -26,6 +26,7 @@
 - Hilt
 - Glide
 - Retrofit
+- Espresso
 - Github Action(CI/CD)
 
 # [위키 페이지](https://github.com/hansung-pocs/blog-android/wiki)
