@@ -19,13 +19,13 @@
 # 기술
 
 - Coroutine
-- Paging
+- Paging3
 - View Binding
 - ViewModel
 - Compose
 - Hilt
 - Glide
-- Retrofit
+- Retrofit2
 - Espresso
 - Github Action(CI/CD)
 
