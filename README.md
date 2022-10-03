@@ -24,8 +24,10 @@
 - ViewModel
 - Compose
 - Hilt
+- Dagger
 - Glide
 - Retrofit2
+- OkHttp3
 - Espresso
 - Github Action(CI/CD)
 
