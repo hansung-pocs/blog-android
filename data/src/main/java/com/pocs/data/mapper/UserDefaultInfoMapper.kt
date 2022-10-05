@@ -15,5 +15,5 @@ fun UserDefaultInfoDto.toEntity() = UserDefaultInfo(
 )
 
 fun String.toUserProfileImageUrl(): String {
-    return BuildConfig.IMAGE_URL_PREFIX + this
+    return BuildConfig.SERVER_URL.removeSuffix("/api/") + this
 }

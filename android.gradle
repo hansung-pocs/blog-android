@@ -14,15 +14,17 @@ android {
         versionName globalConfiguration["android_version_name"]
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        buildConfigField("String", "SERVER_URL", apikeyProperties['SERVER_URL'])
-        buildConfigField("String", "IMAGE_URL_PREFIX", apikeyProperties['IMAGE_URL_PREFIX'])
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "SERVER_URL", apikeyProperties['DEBUG_SERVER_URL'])
+        }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField("String", "SERVER_URL", apikeyProperties['RELEASE_SERVER_URL'])
         }
     }
     compileOptions {
