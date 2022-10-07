@@ -4,8 +4,8 @@ buildscript {
         android_compile_sdk_version = 33
         android_min_sdk_version = 23
         android_target_sdk_version = 33
-        android_version_code = 6
-        android_version_name = "0.0.1"
+        android_version_code = 7
+        android_version_name = "1.0.0"
 
         // Dependencies
         paging = "3.1.1"
