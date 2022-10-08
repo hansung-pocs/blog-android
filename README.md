@@ -2,7 +2,7 @@
 
 한성대학교 소모임 POCS의 블로그 앱입니다. 우리의 미션은 회원들이 모바일에서 쉽게 소모임 정보를 공유하고 수집할 수 있도록 도와주는 것입니다.
 
-<a href='https://play.google.com/store/apps/details?id=com.pocs.blog&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
+<a href='https://play.google.com/store/apps/details?id=com.pocs.blog&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="200"/></a>
 
 # 스크린샷
 
