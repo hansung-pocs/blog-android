@@ -42,7 +42,7 @@ class PostDetailActivity : AppCompatActivity() {
                     viewModel,
                     onEditClick = ::startPostEditActivity,
                     onDeleteSuccess = ::onDeleteSuccess,
-                    onWriterNameClick = ::onWriterNameClick
+                    onUserNameClick = ::onUserNameClick
                 )
             }
         }
@@ -63,10 +63,8 @@ class PostDetailActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun onWriterNameClick() {
-        val uiState = viewModel.uiState.value
-        check(uiState is PostDetailUiState.Success)
-        val intent = UserDetailActivity.getIntent(this, uiState.postDetail.writer.id)
+    private fun onUserNameClick(userId: Int) {
+        val intent = UserDetailActivity.getIntent(this, userId)
         startActivity(intent)
     }
 

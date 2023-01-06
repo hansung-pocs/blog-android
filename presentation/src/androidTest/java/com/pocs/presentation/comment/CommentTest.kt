@@ -2,6 +2,7 @@ package com.pocs.presentation.comment
 
 import android.content.Context
 import androidx.annotation.StringRes
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
@@ -10,6 +11,7 @@ import com.pocs.presentation.model.comment.item.CommentItemUiState
 import com.pocs.presentation.view.component.Comment
 import com.pocs.test_library.mock.mockComment
 import com.pocs.test_library.mock.mockReply
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -32,7 +34,7 @@ class CommentTest {
     fun shouldShowReplyIcon_WhenItIsComment() {
         composeRule.run {
             setContent {
-                Comment(
+                BuildComment(
                     uiState = mockComment,
                     onClick = {}, onMoreButtonClick = {}, onReplyIconClick = {}, canAddReply = true
                 )
@@ -46,7 +48,7 @@ class CommentTest {
     fun shouldNotShowReplyIcon_WhenItIsReply() {
         composeRule.run {
             setContent {
-                Comment(
+                BuildComment(
                     uiState = mockReply,
                     onClick = {}, onMoreButtonClick = {}, onReplyIconClick = {}, canAddReply = true
                 )
@@ -60,7 +62,7 @@ class CommentTest {
     fun shouldShowReplyCount_WhenItHasRepliesOverOne() {
         composeRule.run {
             setContent {
-                Comment(
+                BuildComment(
                     uiState = mockComment.copy(childrenCount = 1),
                     onClick = {}, onMoreButtonClick = {}, onReplyIconClick = {}, canAddReply = true
                 )
@@ -74,7 +76,7 @@ class CommentTest {
     fun shouldNotShowReplyCount_WhenItDoesNotHaveReply() {
         composeRule.run {
             setContent {
-                Comment(
+                BuildComment(
                     uiState = mockComment.copy(childrenCount = 0),
                     onClick = {}, onMoreButtonClick = {}, onReplyIconClick = {}, canAddReply = true
                 )
@@ -88,7 +90,7 @@ class CommentTest {
     fun shouldShowMoreInfoButton_WhenCanEdit() {
         composeRule.run {
             setContent {
-                Comment(
+                BuildComment(
                     uiState = mockComment.copy(canEdit = true, canDelete = false),
                     onClick = {}, onMoreButtonClick = {}, onReplyIconClick = {}, canAddReply = true
                 )
@@ -102,7 +104,7 @@ class CommentTest {
     fun shouldShowMoreInfoButton_WhenCanDelete() {
         composeRule.run {
             setContent {
-                Comment(
+                BuildComment(
                     uiState = mockComment.copy(canEdit = false, canDelete = true),
                     onClick = {}, onMoreButtonClick = {}, onReplyIconClick = {}, canAddReply = true
                 )
@@ -116,7 +118,7 @@ class CommentTest {
     fun shouldNotShowMoreInfoButton_WhenCanNotEditAndDelete() {
         composeRule.run {
             setContent {
-                Comment(
+                BuildComment(
                     uiState = mockComment.copy(canEdit = false, canDelete = false),
                     onClick = {}, onMoreButtonClick = {}, onReplyIconClick = {}, canAddReply = true
                 )
@@ -131,7 +133,7 @@ class CommentTest {
         composeRule.run {
             val comment = mockComment
             setContent {
-                Comment(
+                BuildComment(
                     canAddReply = false,
                     uiState = comment,
                     onClick = {}, onMoreButtonClick = {}, onReplyIconClick = {}
@@ -146,7 +148,7 @@ class CommentTest {
     fun shouldDisableReplyIconClick_WhenCanAddReplyIsFalse() {
         composeRule.run {
             setContent {
-                Comment(
+                BuildComment(
                     canAddReply = false,
                     uiState = mockComment,
                     onClick = {}, onMoreButtonClick = {}, onReplyIconClick = {}
@@ -154,6 +156,29 @@ class CommentTest {
             }
 
             findReplyLabelButton().assertIsNotEnabled()
+        }
+    }
+
+    @Test
+    fun onWriterNameClick() {
+        val writerName = mockComment.writer.name ?: "익명"
+        var count = 0
+
+        composeRule.run {
+            setContent {
+                BuildComment(
+                    uiState = mockComment,
+                    canAddReply = true,
+                    onWriterNameClick = { ++count }
+                )
+            }
+
+            onNodeWithText(text = writerName, substring = true)
+                .performTouchInput {
+                    click(percentOffset(.1f, .5f))
+                }
+
+            assertEquals(1, count)
         }
     }
 
@@ -167,5 +192,25 @@ class CommentTest {
 
     private fun findCommentInfoButton(): SemanticsNodeInteraction {
         return composeRule.onNodeWithContentDescription(getString(R.string.comment_info_button))
+    }
+
+    @Suppress("TestFunctionName")
+    @Composable
+    private fun BuildComment(
+        uiState: CommentItemUiState,
+        canAddReply: Boolean,
+        onClick: () -> Unit = {},
+        onWriterNameClick: (userId: Int) -> Unit = {},
+        onReplyIconClick: () -> Unit = {},
+        onMoreButtonClick: () -> Unit = {}
+    ) {
+        Comment(
+            uiState = uiState,
+            canAddReply = canAddReply,
+            onClick = onClick,
+            onWriterNameClick = onWriterNameClick,
+            onReplyIconClick = onReplyIconClick,
+            onMoreButtonClick = onMoreButtonClick
+        )
     }
 }

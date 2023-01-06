@@ -48,7 +48,7 @@ fun PostDetailScreen(
     viewModel: PostDetailViewModel,
     onEditClick: () -> Unit,
     onDeleteSuccess: () -> Unit,
-    onWriterNameClick: () -> Unit
+    onUserNameClick: (userId: Int) -> Unit
 ) {
     when (val uiState = viewModel.uiState.collectAsState().value) {
         is PostDetailUiState.Failure -> {
@@ -80,7 +80,7 @@ fun PostDetailScreen(
                 snackbarHostState = snackbarHostState,
                 onEditClick = onEditClick,
                 onDeleteClick = { viewModel.requestPostDeleting(uiState.postDetail.id) },
-                onWriterNameClick = onWriterNameClick,
+                onUserNameClick = onUserNameClick,
                 onCommentDelete = viewModel::deleteComment,
                 onCommentCreated = viewModel::addComment,
                 onCommentUpdated = viewModel::updateComment
@@ -100,7 +100,7 @@ fun PostDetailContent(
     snackbarHostState: SnackbarHostState,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    onWriterNameClick: () -> Unit,
+    onUserNameClick: (userId: Int) -> Unit,
     onCommentDelete: (commentId: Int) -> Unit,
     onCommentCreated: CommentCreateCallback,
     onCommentUpdated: CommentUpdateCallback
@@ -188,7 +188,7 @@ fun PostDetailContent(
                         subtitleDivider = middleDot,
                         date = postDetail.date,
                         onlyMember = postDetail.onlyMember,
-                        onWriterNameClick = onWriterNameClick
+                        onWriterNameClick = { onUserNameClick(postDetail.writer.id) }
                     )
                     item {
                         MarkdownText(
@@ -232,6 +232,7 @@ fun PostDetailContent(
                                 commentModalController.showForCreate(parentComment = it)
                             }
                         },
+                        onWriterNameClick = onUserNameClick,
                         onCommentClick = {
                             coroutineScope.launch {
                                 commentModalController.showForCreate(parentComment = it)
@@ -315,7 +316,7 @@ private fun LazyListScope.headerItems(
     onlyMember: Boolean,
     onWriterNameClick: () -> Unit
 ) {
-    val annotatedText = buildAnnotatedString {
+    val annotatedInfoText = buildAnnotatedString {
         pushStringAnnotation(tag = USER_NAME_TAG, annotation = "")
         append(writerName)
         append(subtitleDivider)
@@ -334,12 +335,12 @@ private fun LazyListScope.headerItems(
             )
             Box(modifier = Modifier.height(8.dp))
             ClickableText(
-                text = annotatedText,
+                text = annotatedInfoText,
                 style = MaterialTheme.typography.bodyMedium.copy(
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                 ),
                 onClick = { offset ->
-                    annotatedText.getStringAnnotations(
+                    annotatedInfoText.getStringAnnotations(
                         tag = USER_NAME_TAG,
                         offset,
                         offset
@@ -443,7 +444,7 @@ private fun PostDetailContentPreview() {
         snackbarHostState = SnackbarHostState(),
         onEditClick = {},
         onDeleteClick = {},
-        onWriterNameClick = {},
+        onUserNameClick = {},
         onCommentDelete = {},
         onCommentCreated = { _, _ -> },
         onCommentUpdated = { _, _ -> }

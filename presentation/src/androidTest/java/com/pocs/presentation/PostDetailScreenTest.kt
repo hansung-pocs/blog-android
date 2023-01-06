@@ -636,8 +636,6 @@ class PostDetailScreenTest {
                 )
             }
 
-            onRoot(useUnmergedTree = true).printToLog("currentLabelExists")
-
             onNodeWithText(name, substring = true)
                 .performTouchInput {
                     click(percentOffset(.1f, .5f))
@@ -677,7 +675,7 @@ class PostDetailScreenTest {
         snackbarHostState: SnackbarHostState,
         onEditClick: () -> Unit = {},
         onDeleteClick: () -> Unit = {},
-        onWriterNameClick: () -> Unit = {},
+        onWriterNameClick: (Int) -> Unit = {},
         onCommentDelete: (commentId: Int) -> Unit = { _ -> },
         onCommentCreated: CommentCreateCallback = { _, _ -> },
         onCommentUpdated: CommentUpdateCallback = { _, _ -> }
@@ -689,7 +687,7 @@ class PostDetailScreenTest {
             snackbarHostState = snackbarHostState,
             onEditClick = onEditClick,
             onDeleteClick = onDeleteClick,
-            onWriterNameClick = onWriterNameClick,
+            onUserNameClick = onWriterNameClick,
             onCommentDelete = onCommentDelete,
             onCommentCreated = onCommentCreated,
             onCommentUpdated = onCommentUpdated
