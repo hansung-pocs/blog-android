@@ -14,6 +14,7 @@ import com.pocs.presentation.extension.RefreshStateContract
 import com.pocs.presentation.extension.setResultRefresh
 import com.pocs.presentation.model.post.PostDetailUiState
 import com.pocs.presentation.view.post.edit.PostEditActivity
+import com.pocs.presentation.view.user.detail.UserDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,7 +41,8 @@ class PostDetailActivity : AppCompatActivity() {
                 PostDetailScreen(
                     viewModel,
                     onEditClick = ::startPostEditActivity,
-                    onDeleteSuccess = ::onDeleteSuccess
+                    onDeleteSuccess = ::onDeleteSuccess,
+                    onWriterNameClick = ::onWriterNameClick
                 )
             }
         }
@@ -59,6 +61,13 @@ class PostDetailActivity : AppCompatActivity() {
     private fun onDeleteSuccess() {
         setResultRefresh(R.string.post_deleted)
         finish()
+    }
+
+    private fun onWriterNameClick() {
+        val uiState = viewModel.uiState.value
+        check(uiState is PostDetailUiState.Success)
+        val intent = UserDetailActivity.getIntent(this, uiState.postDetail.writer.id)
+        startActivity(intent)
     }
 
     private fun fetchPost() {
