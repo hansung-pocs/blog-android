@@ -34,6 +34,7 @@ typealias CommentCallback = (CommentItemUiState) -> Unit
 fun LazyListScope.commentItems(
     uiState: CommentsUiState,
     onCommentClick: CommentCallback,
+    onWriterNameClick: (userId: Int) -> Unit,
     onReplyIconClick: CommentCallback,
     onMoreButtonClick: CommentCallback
 ) {
@@ -62,6 +63,7 @@ fun LazyListScope.commentItems(
                             uiState = comment,
                             canAddReply = uiState.canAddComment,
                             onClick = { onCommentClick(comment) },
+                            onWriterNameClick = onWriterNameClick,
                             onReplyIconClick = { onReplyIconClick(comment) },
                             onMoreButtonClick = { onMoreButtonClick(comment) }
                         )
@@ -107,6 +109,7 @@ fun Comment(
     uiState: CommentItemUiState,
     canAddReply: Boolean,
     onClick: () -> Unit,
+    onWriterNameClick: (userId: Int) -> Unit,
     onReplyIconClick: () -> Unit,
     onMoreButtonClick: () -> Unit
 ) {
@@ -132,16 +135,22 @@ fun Comment(
             modifier = Modifier.padding(top = 20.dp, start = 20.dp),
             verticalAlignment = Alignment.Top
         ) {
-            val onBackgroundColor = MaterialTheme.colorScheme.onBackground
             val name = uiState.writer.name ?: stringResource(id = R.string.anonymous)
+            val onBackgroundColor = MaterialTheme.colorScheme.onBackground
+            val infoTextStyle = MaterialTheme.typography.bodySmall.copy(
+                color = onBackgroundColor.copy(alpha = 0.5f)
+            )
 
             Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = name + stringResource(R.string.middle_dot) + uiState.date,
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        color = onBackgroundColor.copy(alpha = 0.5f)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = name,
+                        style = infoTextStyle,
+                        modifier = Modifier.clickable { onWriterNameClick(uiState.writer.userId) },
                     )
-                )
+                    Text(text = stringResource(id = R.string.middle_dot), style = infoTextStyle)
+                    Text(text = uiState.date, style = infoTextStyle)
+                }
                 Box(Modifier.height(8.dp))
                 Text(
                     text = uiState.content,
@@ -243,6 +252,7 @@ fun CommentsPreview() {
         commentItems(
             uiState = uiState,
             onCommentClick = {},
+            onWriterNameClick = {},
             onReplyIconClick = {},
             onMoreButtonClick = {}
         )
@@ -269,6 +279,7 @@ fun CommentPreview() {
             isDeleted = false
         ),
         onClick = {},
+        onWriterNameClick = {},
         onMoreButtonClick = {},
         onReplyIconClick = {},
         canAddReply = true

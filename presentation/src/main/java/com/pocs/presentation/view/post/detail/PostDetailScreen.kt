@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -19,6 +20,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,6 +48,7 @@ fun PostDetailScreen(
     viewModel: PostDetailViewModel,
     onEditClick: () -> Unit,
     onDeleteSuccess: () -> Unit,
+    onUserNameClick: (userId: Int) -> Unit
 ) {
     when (val uiState = viewModel.uiState.collectAsState().value) {
         is PostDetailUiState.Failure -> {
@@ -77,6 +80,7 @@ fun PostDetailScreen(
                 snackbarHostState = snackbarHostState,
                 onEditClick = onEditClick,
                 onDeleteClick = { viewModel.requestPostDeleting(uiState.postDetail.id) },
+                onUserNameClick = onUserNameClick,
                 onCommentDelete = viewModel::deleteComment,
                 onCommentCreated = viewModel::addComment,
                 onCommentUpdated = viewModel::updateComment
@@ -96,6 +100,7 @@ fun PostDetailContent(
     snackbarHostState: SnackbarHostState,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
+    onUserNameClick: (userId: Int) -> Unit,
     onCommentDelete: (commentId: Int) -> Unit,
     onCommentCreated: CommentCreateCallback,
     onCommentUpdated: CommentUpdateCallback
@@ -174,12 +179,16 @@ fun PostDetailContent(
                 }
             ) { paddingValues ->
                 val anonymousString = stringResource(id = R.string.anonymous)
+                val middleDot = stringResource(id = R.string.middle_dot)
+
                 LazyColumn(Modifier.padding(paddingValues), state = lazyListState) {
                     headerItems(
                         title = postDetail.title,
                         writerName = postDetail.writer.name ?: anonymousString,
+                        subtitleDivider = middleDot,
                         date = postDetail.date,
-                        onlyMember = postDetail.onlyMember
+                        onlyMember = postDetail.onlyMember,
+                        onWriterNameClick = { onUserNameClick(postDetail.writer.id) }
                     )
                     item {
                         MarkdownText(
@@ -223,6 +232,7 @@ fun PostDetailContent(
                                 commentModalController.showForCreate(parentComment = it)
                             }
                         },
+                        onWriterNameClick = onUserNameClick,
                         onCommentClick = {
                             coroutineScope.launch {
                                 commentModalController.showForCreate(parentComment = it)
@@ -296,12 +306,24 @@ fun PostDetailTopAppBar(
     )
 }
 
+private const val USER_NAME_TAG = "userName"
+
 private fun LazyListScope.headerItems(
     title: String,
     writerName: String,
+    subtitleDivider: String,
     date: String,
-    onlyMember: Boolean
+    onlyMember: Boolean,
+    onWriterNameClick: () -> Unit
 ) {
+    val annotatedInfoText = buildAnnotatedString {
+        pushStringAnnotation(tag = USER_NAME_TAG, annotation = "")
+        append(writerName)
+        append(subtitleDivider)
+        pop()
+        append(date)
+    }
+
     item(HEADER_KEY) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
@@ -312,15 +334,20 @@ private fun LazyListScope.headerItems(
                 )
             )
             Box(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(
-                    id = R.string.post_subtitle,
-                    writerName,
-                    date
-                ),
+            ClickableText(
+                text = annotatedInfoText,
                 style = MaterialTheme.typography.bodyMedium.copy(
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
-                )
+                ),
+                onClick = { offset ->
+                    annotatedInfoText.getStringAnnotations(
+                        tag = USER_NAME_TAG,
+                        offset,
+                        offset
+                    ).firstOrNull()?.let {
+                        onWriterNameClick()
+                    }
+                },
             )
             if (onlyMember) {
                 Box(modifier = Modifier.height(8.dp))
@@ -417,6 +444,7 @@ private fun PostDetailContentPreview() {
         snackbarHostState = SnackbarHostState(),
         onEditClick = {},
         onDeleteClick = {},
+        onUserNameClick = {},
         onCommentDelete = {},
         onCommentCreated = { _, _ -> },
         onCommentUpdated = { _, _ -> }

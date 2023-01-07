@@ -3,6 +3,7 @@ package com.pocs.presentation
 import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -11,12 +12,14 @@ import androidx.compose.ui.semantics.SemanticsNode
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
+import com.pocs.domain.model.post.PostWriter
+import com.pocs.domain.model.user.UserType
 import com.pocs.presentation.mapper.toUiState
 import com.pocs.presentation.model.comment.CommentsUiState
+import com.pocs.presentation.model.comment.item.CommentItemUiState
 import com.pocs.presentation.model.post.PostDetailUiState
 import com.pocs.presentation.model.post.item.PostWriterUiState
-import com.pocs.presentation.view.component.bottomsheet.CommentModalController
-import com.pocs.presentation.view.component.bottomsheet.MODAL_BOTTOM_SHEET_CONTENT_TAG
+import com.pocs.presentation.view.component.bottomsheet.*
 import com.pocs.presentation.view.post.detail.PostDetailContent
 import com.pocs.test_library.mock.mockComment
 import com.pocs.test_library.mock.mockPostDetail1
@@ -55,14 +58,9 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     uiState = uiState,
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -78,14 +76,9 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     uiState = uiState,
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -103,18 +96,13 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     uiState = uiState.copy(
                         comments = commentsUiState.copy(
                             comments = listOf(reply)
                         )
                     ),
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -130,14 +118,9 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     uiState = uiState,
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -155,15 +138,10 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     uiState = uiState,
                     snackbarHostState = snackbarHostState,
                     commentModalController = commentModalController,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -187,17 +165,12 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     commentModalController = commentModalController,
                     uiState = uiState.copy(
                         comments = commentsUiState.copy(comments = listOf(comment))
                     ),
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -218,17 +191,12 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     commentModalController = commentModalController,
                     uiState = uiState.copy(
                         comments = commentsUiState.copy(comments = listOf(replyComment))
                     ),
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -281,14 +249,9 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     uiState = uiState,
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -306,14 +269,9 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     uiState = uiState,
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -334,15 +292,10 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     commentModalController = controller,
                     uiState = uiState,
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -363,15 +316,10 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     commentModalController = controller,
                     uiState = uiState,
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -394,14 +342,9 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     uiState = uiState,
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -422,15 +365,10 @@ class PostDetailScreenTest {
                 keyboardHelper.view = LocalView.current
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     commentModalController = controller,
                     uiState = uiState,
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -454,16 +392,11 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     uiState = uiState.copy(
                         postDetail = mockPostDetail1.copy(views = 10).toUiState()
                     ),
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -479,7 +412,7 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     uiState = uiState.copy(
                         postDetail = mockPostDetail1.copy(
                             title = title,
@@ -489,11 +422,6 @@ class PostDetailScreenTest {
                         ).toUiState()
                     ),
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -511,18 +439,13 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     uiState = uiState.copy(
                         comments = commentsUiState.copy(
                             comments = listOf(mockComment.copy(isDeleted = true, childrenCount = 2))
                         )
                     ),
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -536,7 +459,7 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     uiState = uiState.copy(
                         postDetail = mockPostDetail1.toUiState().copy(
                             writer = PostWriterUiState(
@@ -546,11 +469,6 @@ class PostDetailScreenTest {
                         )
                     ),
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -568,7 +486,7 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     uiState = uiState.copy(
                         comments = CommentsUiState.Success(
                             comments = listOf(comment),
@@ -576,11 +494,6 @@ class PostDetailScreenTest {
                         )
                     ),
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -598,7 +511,7 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     uiState = uiState.copy(
                         comments = CommentsUiState.Success(
                             comments = listOf(comment),
@@ -606,11 +519,6 @@ class PostDetailScreenTest {
                         )
                     ),
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -628,7 +536,7 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     uiState = uiState.copy(
                         comments = CommentsUiState.Success(
                             comments = emptyList(),
@@ -636,11 +544,6 @@ class PostDetailScreenTest {
                         )
                     ),
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -656,7 +559,7 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     uiState = uiState.copy(
                         comments = CommentsUiState.Success(
                             comments = listOf(comment),
@@ -664,11 +567,6 @@ class PostDetailScreenTest {
                         )
                     ),
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -682,16 +580,11 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     uiState = uiState.copy(
                         postDetail = mockPostDetail1.copy(onlyMember = true).toUiState()
                     ),
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
@@ -705,20 +598,50 @@ class PostDetailScreenTest {
             setContent {
                 val snackbarHostState = remember { SnackbarHostState() }
 
-                PostDetailContent(
+                BuildPostDetailContent(
                     uiState = uiState.copy(
                         postDetail = mockPostDetail1.copy(onlyMember = false).toUiState()
                     ),
                     snackbarHostState = snackbarHostState,
-                    onEditClick = {},
-                    onDeleteClick = {},
-                    onCommentDelete = {},
-                    onCommentCreated = { _, _ -> },
-                    onCommentUpdated = { _, _ -> }
                 )
             }
 
             onNodeWithText(getString(R.string.can_see_only_member)).assertDoesNotExist()
+        }
+    }
+
+    @Test
+    fun onWriterNameClick() {
+        val name = "김민성"
+
+        composeRule.run {
+            var counter = 0
+
+            setContent {
+                val snackbarHostState = remember { SnackbarHostState() }
+
+                BuildPostDetailContent(
+                    uiState = uiState.copy(
+                        postDetail = mockPostDetail1.copy(
+                            writer = PostWriter(
+                                id = 0,
+                                name = name,
+                                email = "",
+                                type = UserType.MEMBER,
+                            )
+                        ).toUiState()
+                    ),
+                    snackbarHostState = snackbarHostState,
+                    onWriterNameClick = { ++counter }
+                )
+            }
+
+            onNodeWithText(name, substring = true)
+                .performTouchInput {
+                    click(percentOffset(.1f, .5f))
+                }
+
+            assertEquals(1, counter)
         }
     }
 
@@ -739,5 +662,35 @@ class PostDetailScreenTest {
 
     private fun findCommentTextField(): SemanticsNodeInteraction {
         return composeRule.onNodeWithContentDescription(getString(R.string.comment_text_field))
+    }
+
+    @Suppress("TestFunctionName")
+    @Composable
+    private fun BuildPostDetailContent(
+        uiState: PostDetailUiState.Success,
+        commentModalController: CommentModalController = remember { CommentModalController() },
+        optionModalController: OptionModalController<CommentItemUiState> = remember {
+            OptionModalController()
+        },
+        snackbarHostState: SnackbarHostState,
+        onEditClick: () -> Unit = {},
+        onDeleteClick: () -> Unit = {},
+        onWriterNameClick: (Int) -> Unit = {},
+        onCommentDelete: (commentId: Int) -> Unit = { _ -> },
+        onCommentCreated: CommentCreateCallback = { _, _ -> },
+        onCommentUpdated: CommentUpdateCallback = { _, _ -> }
+    ) {
+        PostDetailContent(
+            uiState = uiState,
+            commentModalController = commentModalController,
+            optionModalController = optionModalController,
+            snackbarHostState = snackbarHostState,
+            onEditClick = onEditClick,
+            onDeleteClick = onDeleteClick,
+            onUserNameClick = onWriterNameClick,
+            onCommentDelete = onCommentDelete,
+            onCommentCreated = onCommentCreated,
+            onCommentUpdated = onCommentUpdated
+        )
     }
 }
