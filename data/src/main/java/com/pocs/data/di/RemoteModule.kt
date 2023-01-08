@@ -2,43 +2,43 @@ package com.pocs.data.di
 
 import com.pocs.data.api.*
 import com.pocs.data.source.*
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class RemoteModule {
+abstract class RemoteModule {
 
     @Singleton
-    @Provides
-    fun providePostRemoteDataSource(api: PostApi): PostRemoteDataSource {
-        return PostRemoteDataSourceImpl(api)
-    }
+    @Binds
+    abstract fun bindsPostRemoteDataSource(
+        postRemoteDataSourceImpl: PostRemoteDataSourceImpl
+    ): PostRemoteDataSource
 
     @Singleton
-    @Provides
-    fun provideCommentRemoteDataSource(api: CommentApi): CommentRemoteDataSource {
-        return CommentRemoteDataSourceImpl(api)
-    }
+    @Binds
+    abstract fun bindsCommentRemoteDataSource(
+        commentRemoteDataSourceImpl: CommentRemoteDataSourceImpl
+    ): CommentRemoteDataSource
 
     @Singleton
-    @Provides
-    fun provideUserRemoteDataSource(api: UserApi): UserRemoteDataSource {
-        return UserRemoteDataSourceImpl(api)
-    }
+    @Binds
+    abstract fun bindsUserRemoteDataSource(
+        userRemoteDataSourceImpl: UserRemoteDataSourceImpl
+    ): UserRemoteDataSource
 
     @Singleton
-    @Provides
-    fun provideAdminRemoteDataSource(api: AdminApi): AdminRemoteDataSource {
-        return AdminRemoteDataSourceImpl(api)
-    }
+    @Binds
+    abstract fun bindsAdminRemoteDataSource(
+        adminRemoteDataSourceImpl: AdminRemoteDataSourceImpl
+    ): AdminRemoteDataSource
 
     @Singleton
-    @Provides
-    fun provideAuthRemoteDataSource(api: AuthApi): AuthRemoteDataSource {
-        return AuthRemoteDataSourceImpl(api)
-    }
+    @Binds
+    abstract fun bindsAuthRemoteDataSource(
+        authRemoteDataSourceImpl: AuthRemoteDataSourceImpl
+    ): AuthRemoteDataSource
 }
