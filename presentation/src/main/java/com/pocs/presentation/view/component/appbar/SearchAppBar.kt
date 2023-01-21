@@ -59,7 +59,7 @@ fun SearchAppBar(
         onSearchModeChange(false)
     }
 
-    SmallTopAppBar(
+    TopAppBar(
         title = {
             if (enabledSearchMode) {
                 SearchTextField(

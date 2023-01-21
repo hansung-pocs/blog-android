@@ -47,7 +47,7 @@ fun AnonymousCreateScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
         topBar = {
-            SmallTopAppBar(
+            TopAppBar(
                 navigationIcon = {
                     AppBarBackButton()
                 },

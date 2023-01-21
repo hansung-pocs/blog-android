@@ -209,7 +209,7 @@ fun UserDetailTopBar(
     onKickClick: () -> Unit,
     onSeeUsersPostClick: () -> Unit
 ) {
-    SmallTopAppBar(
+    TopAppBar(
         title = { Text(text = stringResource(R.string.user_info_title, name)) },
         navigationIcon = { AppBarBackButton() },
         actions = {

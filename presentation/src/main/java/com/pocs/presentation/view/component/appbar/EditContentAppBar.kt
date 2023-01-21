@@ -21,7 +21,7 @@ fun EditContentAppBar(
     enableSendIcon: Boolean,
     onClickSend: () -> Unit
 ) {
-    SmallTopAppBar(
+    TopAppBar(
         title = { Text(text = title) },
         navigationIcon = {
             IconButton(onClick = onBackPressed) {

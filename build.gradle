@@ -14,7 +14,6 @@ buildscript {
         hilt_version = "2.42"
         fragment_version = "1.5.1"
         paging = "3.1.1"
-        compose_version = "1.2.0"
         coroutines_version = "1.6.4"
         joda = "2.10.13"
         markwon_version = "4.6.2"
