@@ -261,7 +261,7 @@ fun PostDetailTopAppBar(
         lazyListState = lazyListState
     )
 
-    SmallTopAppBar(
+    TopAppBar(
         navigationIcon = {
             AppBarBackButton()
         },
@@ -382,7 +382,7 @@ private fun LazyListScope.postInfoItems(views: Int) {
 private fun PostDetailFailureContent(uiState: PostDetailUiState.Failure) {
     Scaffold(
         topBar = {
-            SmallTopAppBar(
+            TopAppBar(
                 title = {},
                 navigationIcon = { AppBarBackButton() }
             )

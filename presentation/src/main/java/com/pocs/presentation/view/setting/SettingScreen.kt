@@ -72,7 +72,7 @@ fun SettingContent(
 
     Scaffold(
         topBar = {
-            SmallTopAppBar(
+            TopAppBar(
                 title = { Text(text = stringResource(id = R.string.setting)) },
                 navigationIcon = { AppBarBackButton() }
             )

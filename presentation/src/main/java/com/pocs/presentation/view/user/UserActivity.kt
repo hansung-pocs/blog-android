@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.res.stringResource
-import com.google.android.material.composethemeadapter3.Mdc3Theme
+import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import com.pocs.presentation.R
 import com.pocs.presentation.base.ViewBindingActivity
 import com.pocs.presentation.databinding.ActivityUserBinding
