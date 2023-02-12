@@ -5,6 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.pocs.data.api.UserApi
 import com.pocs.data.extension.errorMessage
+import com.pocs.data.extension.getDataOrThrowMessage
 import com.pocs.data.mapper.toDetailEntity
 import com.pocs.data.mapper.toDto
 import com.pocs.data.mapper.toUserProfileImageUrl
@@ -54,15 +55,9 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getUserDetail(id: Int): Result<UserDetail> {
-        return try {
+        return runCatching {
             val response = dataSource.getUserDetail(id)
-            if (response.isSuccessful) {
-                Result.success(response.body()!!.data.toDetailEntity())
-            } else {
-                throw Exception(response.errorMessage)
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
+            response.getDataOrThrowMessage().toDetailEntity()
         }
     }
 
@@ -124,15 +119,9 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun createAnonymous(anonymousCreateInfo: AnonymousCreateInfo): Result<Unit> {
-        return try {
+        return runCatching {
             val response = dataSource.createAnonymous(anonymousCreateInfo.toDto())
-            if (response.isSuccessful) {
-                Result.success(Unit)
-            } else {
-                throw Exception(response.errorMessage)
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
+            response.getDataOrThrowMessage()
         }
     }
 }
