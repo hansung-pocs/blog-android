@@ -4,7 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.pocs.data.api.PostApi
-import com.pocs.data.extension.errorMessage
+import com.pocs.data.extension.getDataOrThrowMessage
 import com.pocs.data.mapper.toDto
 import com.pocs.data.mapper.toEntity
 import com.pocs.data.model.post.PostAddBody
@@ -34,15 +34,9 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getPostDetail(id: Int): Result<PostDetail> {
-        return try {
+        return runCatching {
             val response = dataSource.getPostDetail(id)
-            if (response.isSuccessful) {
-                Result.success(response.body()!!.data.toEntity(id))
-            } else {
-                throw Exception(response.errorMessage)
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
+            response.getDataOrThrowMessage().toEntity(id)
         }
     }
 
@@ -53,7 +47,7 @@ class PostRepositoryImpl @Inject constructor(
         userId: Int,
         category: PostCategory
     ): Result<Unit> {
-        return try {
+        return runCatching {
             val response = dataSource.addPost(
                 PostAddBody(
                     title = title,
@@ -63,13 +57,7 @@ class PostRepositoryImpl @Inject constructor(
                     category = category.toDto()
                 )
             )
-            if (response.isSuccessful) {
-                Result.success(Unit)
-            } else {
-                throw Exception(response.errorMessage)
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
+            response.getDataOrThrowMessage()
         }
     }
 
@@ -81,7 +69,7 @@ class PostRepositoryImpl @Inject constructor(
         userId: Int,
         category: PostCategory
     ): Result<Unit> {
-        return try {
+        return runCatching {
             val response = dataSource.updatePost(
                 postId = postId,
                 postUpdateBody = PostUpdateBody(
@@ -92,13 +80,7 @@ class PostRepositoryImpl @Inject constructor(
                     category = category.toDto()
                 )
             )
-            if (response.isSuccessful) {
-                Result.success(Unit)
-            } else {
-                throw Exception(response.errorMessage)
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
+            response.getDataOrThrowMessage()
         }
     }
 
@@ -106,18 +88,12 @@ class PostRepositoryImpl @Inject constructor(
         postId: Int,
         userId: Int
     ): Result<Unit> {
-        return try {
-            val result = dataSource.deletePost(
+        return runCatching {
+            val response = dataSource.deletePost(
                 postId = postId,
                 postDeleteBody = PostDeleteBody(userId = userId)
             )
-            if (result.isSuccessful) {
-                Result.success(Unit)
-            } else {
-                throw Exception(result.errorMessage)
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
+            response.getDataOrThrowMessage()
         }
     }
 }

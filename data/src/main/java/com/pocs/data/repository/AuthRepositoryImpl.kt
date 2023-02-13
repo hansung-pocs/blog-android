@@ -1,6 +1,7 @@
 package com.pocs.data.repository
 
 import com.pocs.data.extension.errorMessage
+import com.pocs.data.extension.getDataOrThrowMessage
 import com.pocs.data.mapper.toDetailEntity
 import com.pocs.data.model.auth.AuthLocalData
 import com.pocs.data.model.auth.LoginRequestBody
@@ -49,44 +50,31 @@ class AuthRepositoryImpl @Inject constructor(
     override fun isReady(): Flow<Boolean> = isReady
 
     override suspend fun login(userName: String, password: String): Result<Unit> {
-        try {
+        return runCatching {
             val response = remoteDataSource.login(
                 LoginRequestBody(userName = userName, password = password)
             )
+            val loginResponseBody = response.getDataOrThrowMessage()
 
-            if (response.isSuccessful) {
-                val loginResponseData = response.body()!!.data
-
-                currentUserState.value = loginResponseData.user.toDetailEntity()
-                localDataSource.setData(
-                    authLocalData = AuthLocalData(
-                        sessionToken = loginResponseData.sessionToken
-                    )
+            currentUserState.value = loginResponseBody.user.toDetailEntity()
+            localDataSource.setData(
+                authLocalData = AuthLocalData(
+                    sessionToken = loginResponseBody.sessionToken
                 )
-
-                return Result.success(Unit)
-            } else {
-                throw Exception(response.errorMessage)
-            }
-        } catch (e: Exception) {
-            return Result.failure(e)
+            )
         }
     }
 
     override suspend fun logout(): Result<Unit> {
-        return try {
+        return runCatching {
             val response = remoteDataSource.logout()
 
             if (response.isSuccessful) {
                 currentUserState.value = null
                 localDataSource.clear()
-
-                Result.success(Unit)
             } else {
                 throw Exception(response.errorMessage)
             }
-        } catch (e: Exception) {
-            Result.failure(e)
         }
     }
 

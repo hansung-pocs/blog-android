@@ -4,7 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.pocs.data.api.AdminApi
-import com.pocs.data.extension.errorMessage
+import com.pocs.data.extension.getDataOrThrowMessage
 import com.pocs.data.mapper.toDetailEntity
 import com.pocs.data.mapper.toDto
 import com.pocs.data.model.admin.UserKickInfoBody
@@ -36,44 +36,26 @@ class AdminRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getUserDetail(id: Int): Result<UserDetail> {
-        return try {
+        return runCatching {
             val response = dataSource.getUserDetail(id)
-            if (response.isSuccessful) {
-                Result.success(response.body()!!.data.toDetailEntity())
-            } else {
-                throw Exception(response.errorMessage)
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
+            response.getDataOrThrowMessage().toDetailEntity()
         }
     }
 
     override suspend fun createUser(userCreateInfo: UserCreateInfo): Result<Unit> {
-        return try {
+        return runCatching {
             val response = dataSource.createUser(userCreateInfo.toDto())
-            if (response.isSuccessful) {
-                Result.success(Unit)
-            } else {
-                throw Exception(response.errorMessage)
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
+            response.getDataOrThrowMessage()
         }
     }
 
     override suspend fun kickUser(id: Int): Result<Unit> {
-        return try {
+        return runCatching {
             val response = dataSource.kickUser(
                 id = id,
                 userKickInfoBody = UserKickInfoBody(canceledAt = getCurrentDateTime())
             )
-            if (response.isSuccessful) {
-                Result.success(Unit)
-            } else {
-                throw Exception(response.errorMessage)
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
+            response.getDataOrThrowMessage()
         }
     }
 
